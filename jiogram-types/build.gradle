@@ -27,3 +27,15 @@ sourceSets {
 tasks.named('compileJava') {
     dependsOn 'generateTelegramApi'
 }
+
+tasks.named('sourcesJar') {
+    dependsOn 'generateTelegramApi'
+}
+
+tasks.named('javadocJar') {
+    dependsOn 'javadoc'
+}
+
+tasks.named('javadoc') {
+    dependsOn 'generateTelegramApi'
+}

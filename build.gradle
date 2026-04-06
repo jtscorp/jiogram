@@ -15,11 +15,15 @@ allprojects {
 
 subprojects {
     apply plugin: 'java'
+    apply plugin: 'maven-publish'
+    apply plugin: 'signing'
 
     java {
         toolchain {
             languageVersion = JavaLanguageVersion.of(25)
         }
+        withJavadocJar()
+        withSourcesJar()
     }
 
     tasks.withType(JavaCompile) {
@@ -34,7 +38,7 @@ subprojects {
 
     tasks.withType(Javadoc) {
         def opts = options as StandardJavadocDocletOptions
-        opts.addStringOption('-enable-preview', '')
+        opts.addBooleanOption('-enable-preview', true)
         opts.addStringOption('source', '25')
     }
 
@@ -42,5 +46,57 @@ subprojects {
         testImplementation platform("org.junit:junit-bom:${junitVersion}")
         testImplementation 'org.junit.jupiter:junit-jupiter'
         testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    }
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+
+                pom {
+                    name = project.name
+                    description = 'Jiogram - Java Spring Framework for Telegram Bots'
+                    url = 'https://github.com/jaxongir/jiogram'
+
+                    licenses {
+                        license {
+                            name = 'MIT License'
+                            url = 'https://opensource.org/licenses/MIT'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id = 'jaxongir'
+                            name = 'Jaxongir'
+                        }
+                    }
+
+                    scm {
+                        connection = 'scm:git:git://github.com/jaxongir/jiogram.git'
+                        developerConnection = 'scm:git:ssh://github.com/jaxongir/jiogram.git'
+                        url = 'https://github.com/jaxongir/jiogram'
+                    }
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                name = 'sonatype'
+                def releasesUrl = 'https://central.sonatype.com/api/v1/publisher/deployments/download'
+                def snapshotsUrl = 'https://central.sonatype.com/repository/maven-snapshots/'
+                url = version.toString().endsWith('SNAPSHOT') ? snapshotsUrl : releasesUrl
+                credentials {
+                    username = findProperty('sonatypeUsername') ?: ''
+                    password = findProperty('sonatypePassword') ?: ''
+                }
+            }
+        }
+    }
+
+    signing {
+        required { !version.toString().endsWith('SNAPSHOT') }
+        sign publishing.publications.mavenJava
     }
 }
