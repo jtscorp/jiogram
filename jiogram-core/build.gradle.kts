@@ -17,8 +17,10 @@ dependencies {
     api(project(":jiogram-methods"))
 
     api("org.springframework:spring-webflux")
+    api("org.springframework:spring-context")
     api("io.projectreactor:reactor-core")
     implementation("io.projectreactor.netty:reactor-netty-http")
+    implementation("org.slf4j:slf4j-api")
 
     implementation("com.fasterxml.jackson.core:jackson-databind")
     implementation("org.jspecify:jspecify:1.0.0")
