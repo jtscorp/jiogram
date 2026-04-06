@@ -1,0 +1,28 @@
+plugins {
+    id 'java-library'
+    id 'org.springframework.boot' apply false
+    id 'io.spring.dependency-management'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
+    }
+}
+
+dependencies {
+    api project(':jiogram-types')
+    api project(':jiogram-methods')
+
+    api 'org.springframework:spring-webflux'
+    api 'org.springframework:spring-context'
+    api 'io.projectreactor:reactor-core'
+    implementation 'io.projectreactor.netty:reactor-netty-http'
+    implementation 'org.slf4j:slf4j-api'
+
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    implementation 'org.jspecify:jspecify:1.0.0'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.projectreactor:reactor-test'
+}

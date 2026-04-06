@@ -1,0 +1,29 @@
+plugins {
+    id 'java-library'
+    id 'io.jiogram.codegen'
+}
+
+dependencies {
+    api "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
+    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+    implementation 'org.jspecify:jspecify:1.0.0'
+}
+
+jiogramCodegen {
+    schemaFile = file('../schema/schema.json')
+    outputDir = file('src/main/generated')
+    basePackage = 'io.jiogram.types'
+    generate = ['types', 'enums'] as Set
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/generated'
+        }
+    }
+}
+
+tasks.named('compileJava') {
+    dependsOn 'generateTelegramApi'
+}

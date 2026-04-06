@@ -1,1 +1,0 @@
-rootProject.name = "jiogram-codegen-plugin"

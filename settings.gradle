@@ -1,0 +1,13 @@
+pluginManagement {
+    includeBuild 'jiogram-codegen'
+}
+
+rootProject.name = 'jiogram'
+
+include(
+    'jiogram-types',
+    'jiogram-methods',
+    'jiogram-core',
+    'jiogram-fsm',
+    'jiogram-spring-boot-starter'
+)
