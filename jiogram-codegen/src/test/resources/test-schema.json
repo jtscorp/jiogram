@@ -1,0 +1,275 @@
+{
+  "api": {
+    "version": "9.6",
+    "release_date": "2026-04-03"
+  },
+  "items": [
+    {
+      "title": "Getting updates",
+      "anchor": "getting-updates",
+      "description": "Methods and types for receiving updates.",
+      "children": [
+        {
+          "anchor": "update",
+          "name": "Update",
+          "description": "This object represents an incoming update.\nAt most one of the optional parameters can be present in any given update.",
+          "html_description": "",
+          "rst_description": "",
+          "annotations": [
+            {
+              "type": "Integer",
+              "description": "The update's unique identifier.",
+              "html_description": "",
+              "rst_description": "",
+              "name": "update_id",
+              "required": true
+            },
+            {
+              "type": "Message",
+              "description": "New incoming message of any kind - text, photo, sticker, etc.",
+              "html_description": "",
+              "rst_description": "",
+              "name": "message",
+              "required": false
+            },
+            {
+              "type": "CallbackQuery",
+              "description": "New incoming callback query.",
+              "html_description": "",
+              "rst_description": "",
+              "name": "callback_query",
+              "required": false
+            }
+          ],
+          "category": "types"
+        },
+        {
+          "anchor": "getupdates",
+          "name": "getUpdates",
+          "description": "Use this method to receive incoming updates using long polling. Returns an Array of Update objects.",
+          "html_description": "",
+          "rst_description": "",
+          "annotations": [
+            {
+              "type": "Integer",
+              "required": false,
+              "description": "Identifier of the first update to be returned.",
+              "html_description": "",
+              "rst_description": "",
+              "name": "offset"
+            },
+            {
+              "type": "Integer",
+              "required": false,
+              "description": "Limits the number of updates to be retrieved. Values between 1-100 are accepted.",
+              "html_description": "",
+              "rst_description": "",
+              "name": "limit"
+            },
+            {
+              "type": "Integer",
+              "required": false,
+              "description": "Timeout in seconds for long polling.",
+              "html_description": "",
+              "rst_description": "",
+              "name": "timeout"
+            },
+            {
+              "type": "Array of String",
+              "required": false,
+              "description": "A list of the update types you want your bot to receive.",
+              "html_description": "",
+              "rst_description": "",
+              "name": "allowed_updates"
+            }
+          ],
+          "category": "methods"
+        }
+      ]
+    },
+    {
+      "title": "Available types",
+      "anchor": "available-types",
+      "description": "All types used in the Bot API responses.",
+      "children": [
+        {
+          "anchor": "user",
+          "name": "User",
+          "description": "This object represents a Telegram user or bot.",
+          "html_description": "",
+          "rst_description": "",
+          "annotations": [
+            {
+              "type": "Integer",
+              "description": "Unique identifier for this user or bot.",
+              "html_description": "",
+              "rst_description": "",
+              "name": "id",
+              "required": true
+            },
+            {
+              "type": "Boolean",
+              "description": "True, if this user is a bot.",
+              "html_description": "",
+              "rst_description": "",
+              "name": "is_bot",
+              "required": true
+            },
+            {
+              "type": "String",
+              "description": "User's or bot's first name.",
+              "html_description": "",
+              "rst_description": "",
+              "name": "first_name",
+              "required": true
+            },
+            {
+              "type": "String",
+              "description": "User's or bot's last name.",
+              "html_description": "",
+              "rst_description": "",
+              "name": "last_name",
+              "required": false
+            },
+            {
+              "type": "String",
+              "description": "User's or bot's username.",
+              "html_description": "",
+              "rst_description": "",
+              "name": "username",
+              "required": false
+            }
+          ],
+          "category": "types"
+        },
+        {
+          "anchor": "message",
+          "name": "Message",
+          "description": "This object represents a message.",
+          "html_description": "",
+          "rst_description": "",
+          "annotations": [
+            {
+              "type": "Integer",
+              "description": "Unique message identifier inside this chat.",
+              "html_description": "",
+              "rst_description": "",
+              "name": "message_id",
+              "required": true
+            },
+            {
+              "type": "User",
+              "description": "Sender of the message.",
+              "html_description": "",
+              "rst_description": "",
+              "name": "from",
+              "required": false
+            },
+            {
+              "type": "Integer",
+              "description": "Date the message was sent in Unix time.",
+              "html_description": "",
+              "rst_description": "",
+              "name": "date",
+              "required": true
+            },
+            {
+              "type": "String",
+              "description": "The actual UTF-8 text of the message.",
+              "html_description": "",
+              "rst_description": "",
+              "name": "text",
+              "required": false
+            },
+            {
+              "type": "Array of PhotoSize",
+              "description": "Available sizes of the photo.",
+              "html_description": "",
+              "rst_description": "",
+              "name": "photo",
+              "required": false
+            }
+          ],
+          "category": "types"
+        },
+        {
+          "anchor": "chatmember",
+          "name": "ChatMember",
+          "description": "This object contains information about one member of a chat. Currently, the following 6 types of chat members are supported: ChatMemberOwner, ChatMemberAdministrator, ChatMemberMember, ChatMemberRestricted, ChatMemberLeft, ChatMemberBanned.",
+          "html_description": "",
+          "rst_description": "",
+          "annotations": [],
+          "category": "types"
+        }
+      ]
+    },
+    {
+      "title": "Available methods",
+      "anchor": "available-methods",
+      "description": "All methods in the Bot API.",
+      "children": [
+        {
+          "anchor": "getme",
+          "name": "getMe",
+          "description": "A simple method for testing your bot's authentication token. Requires no parameters. Returns basic information about the bot in form of a User object.",
+          "html_description": "",
+          "rst_description": "",
+          "annotations": [],
+          "category": "methods"
+        },
+        {
+          "anchor": "sendmessage",
+          "name": "sendMessage",
+          "description": "Use this method to send text messages. On success, the sent Message is returned.",
+          "html_description": "",
+          "rst_description": "",
+          "annotations": [
+            {
+              "type": "Integer or String",
+              "required": true,
+              "description": "Unique identifier for the target chat or username of the target channel.",
+              "html_description": "",
+              "rst_description": "",
+              "name": "chat_id"
+            },
+            {
+              "type": "String",
+              "required": true,
+              "description": "Text of the message to be sent.",
+              "html_description": "",
+              "rst_description": "",
+              "name": "text"
+            },
+            {
+              "type": "InlineKeyboardMarkup or ReplyKeyboardMarkup or ReplyKeyboardRemove or ForceReply",
+              "required": false,
+              "description": "Additional interface options.",
+              "html_description": "",
+              "rst_description": "",
+              "name": "reply_markup"
+            }
+          ],
+          "category": "methods"
+        },
+        {
+          "anchor": "deletewebhook",
+          "name": "deleteWebhook",
+          "description": "Use this method to remove webhook integration if you decide to switch back to getUpdates. Returns True on success.",
+          "html_description": "",
+          "rst_description": "",
+          "annotations": [
+            {
+              "type": "Boolean",
+              "required": false,
+              "description": "Pass True to drop all pending updates.",
+              "html_description": "",
+              "rst_description": "",
+              "name": "drop_pending_updates"
+            }
+          ],
+          "category": "methods"
+        }
+      ]
+    }
+  ]
+}
