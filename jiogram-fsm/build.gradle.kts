@@ -15,11 +15,15 @@ dependencyManagement {
 dependencies {
     api(project(":jiogram-core"))
 
-    implementation("org.springframework:spring-context")
+    implementation("org.jspecify:jspecify:1.0.0")
+    implementation("io.projectreactor:reactor-core")
+    implementation("org.slf4j:slf4j-api")
 
     // Optional Redis support for distributed state storage
     compileOnly("org.springframework.data:spring-data-redis")
     compileOnly("io.lettuce:lettuce-core")
+    compileOnly("com.fasterxml.jackson.core:jackson-databind")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("io.projectreactor:reactor-test")
 }
