@@ -1,0 +1,28 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.5.3'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.example'
+version = '1.0.0'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs.addAll(['--enable-preview'])
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // When building from the Jiogram source tree, use:
+    // implementation project(':jiogram-spring-boot-starter')
+    implementation 'io.jiogram:jiogram-spring-boot-starter:0.1.0-SNAPSHOT'
+}

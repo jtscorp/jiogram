@@ -1,0 +1,6 @@
+telegram:
+  token: ${BOT_TOKEN}
+  fsm:
+    enabled: true
+    strategy: USER_IN_CHAT
+    storage: memory
