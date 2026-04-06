@@ -21,6 +21,7 @@ dependencies {
     implementation("io.projectreactor.netty:reactor-netty-http")
 
     implementation("com.fasterxml.jackson.core:jackson-databind")
+    implementation("org.jspecify:jspecify:1.0.0")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.projectreactor:reactor-test")
