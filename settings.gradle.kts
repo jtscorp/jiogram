@@ -1,7 +1,10 @@
 rootProject.name = "jiogram"
 
+pluginManagement {
+    includeBuild("jiogram-codegen")
+}
+
 include(
-    "jiogram-codegen",
     "jiogram-types",
     "jiogram-methods",
     "jiogram-core",

@@ -46,6 +46,11 @@ public final class EnumGenerator {
         Objects.requireNonNull(enumDef, "enumDef must not be null");
         Objects.requireNonNull(outputDir, "outputDir must not be null");
 
+        // Skip enums with no values — they would produce invalid Java
+        if (enumDef.values().isEmpty()) {
+            return;
+        }
+
         String source = generateToString(enumDef);
 
         Path packageDir = outputDir.toPath().resolve(basePackage.replace('.', '/'));
@@ -135,12 +140,12 @@ public final class EnumGenerator {
     static String toConstantName(String value) {
         // If already all uppercase/underscore, return as-is
         if (value.matches("[A-Z_0-9]+")) {
-            return value;
+            return ensureValidIdentifier(value);
         }
 
         // If already snake_case (lowercase with underscores), just uppercase it
         if (value.matches("[a-z_0-9]+")) {
-            return value.toUpperCase();
+            return ensureValidIdentifier(value.toUpperCase());
         }
 
         // Handle camelCase/PascalCase: insert underscore before uppercase letters
@@ -155,6 +160,17 @@ public final class EnumGenerator {
             }
             sb.append(Character.toUpperCase(c));
         }
-        return sb.toString();
+        return ensureValidIdentifier(sb.toString());
+    }
+
+    /**
+     * Ensures the constant name is a valid Java identifier.
+     * Prepends underscore if it starts with a digit.
+     */
+    private static String ensureValidIdentifier(String name) {
+        if (!name.isEmpty() && Character.isDigit(name.charAt(0))) {
+            return "_" + name;
+        }
+        return name;
     }
 }

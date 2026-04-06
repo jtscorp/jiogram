@@ -27,6 +27,23 @@ public final class TypeGenerator {
     private static final String NULLABLE_PACKAGE = "org.jspecify.annotations";
     private static final String JACKSON_ANNOTATION_PACKAGE = "com.fasterxml.jackson.annotation";
 
+    /** Types that should implement the ReplyMarkup marker interface. */
+    private static final Set<String> REPLY_MARKUP_TYPES = Set.of(
+            "InlineKeyboardMarkup", "ReplyKeyboardMarkup", "ReplyKeyboardRemove", "ForceReply"
+    );
+
+    /**
+     * Types that should implement a marker interface (not in UnionRegistry subtypes).
+     * Map from interface name to the set of implementing type names.
+     */
+    private static final Map<String, Set<String>> INTERFACE_IMPLEMENTATIONS = Map.of(
+            "InputMessageContent", Set.of(
+                    "InputTextMessageContent", "InputLocationMessageContent",
+                    "InputVenueMessageContent", "InputContactMessageContent",
+                    "InputInvoiceMessageContent"
+            )
+    );
+
     private final TypeMapper typeMapper;
     private final String basePackage;
 
@@ -81,6 +98,16 @@ public final class TypeGenerator {
         Set<String> imports = new TreeSet<>();
         List<String> components = buildRecordComponents(type.fields(), imports);
 
+        // Collect all interfaces this type should implement
+        List<String> interfaces = new ArrayList<>();
+        if (REPLY_MARKUP_TYPES.contains(type.name())) {
+            interfaces.add("ReplyMarkup");
+        }
+        String additionalIface = getAdditionalInterface(type.name());
+        if (additionalIface != null) {
+            interfaces.add(additionalIface);
+        }
+
         StringBuilder sb = new StringBuilder();
         sb.append("package ").append(basePackage).append(";\n\n");
         for (String imp : imports) {
@@ -91,20 +118,28 @@ public final class TypeGenerator {
         }
         sb.append("public record ").append(type.name()).append("(\n");
         sb.append(String.join(",\n", components));
-        sb.append("\n) {}\n");
+        sb.append("\n)");
+        if (!interfaces.isEmpty()) {
+            sb.append(" implements ").append(String.join(", ", interfaces));
+        }
+        sb.append(" {}\n");
 
         return sb.toString();
     }
 
     private String generateSealedInterface(TypeDefinition type) {
         UnionRegistry.UnionInfo unionInfo = UnionRegistry.get(type.name());
+        boolean hasSubtypes = !unionInfo.subtypes().isEmpty();
+
+        // When there are no registered subtypes, generate a plain interface
+        // (e.g. InputMessageContent which has subtypes but no discriminator)
+        if (!hasSubtypes) {
+            return generatePlainInterface(type);
+        }
 
         Set<String> imports = new TreeSet<>();
         imports.add(JACKSON_ANNOTATION_PACKAGE + ".JsonTypeInfo");
-
-        if (!unionInfo.subtypes().isEmpty()) {
-            imports.add(JACKSON_ANNOTATION_PACKAGE + ".JsonSubTypes");
-        }
+        imports.add(JACKSON_ANNOTATION_PACKAGE + ".JsonSubTypes");
 
         StringBuilder sb = new StringBuilder();
         sb.append("package ").append(basePackage).append(";\n\n");
@@ -118,33 +153,49 @@ public final class TypeGenerator {
                 .append(unionInfo.discriminator()).append("\")\n");
 
         // @JsonSubTypes
-        if (!unionInfo.subtypes().isEmpty()) {
-            sb.append("@JsonSubTypes({\n");
-            List<Map.Entry<String, String>> entries = new ArrayList<>(unionInfo.subtypes().entrySet());
-            for (int i = 0; i < entries.size(); i++) {
-                Map.Entry<String, String> entry = entries.get(i);
-                sb.append("    @JsonSubTypes.Type(value = ").append(entry.getValue()).append(".class, name = \"")
-                        .append(entry.getKey()).append("\")");
-                if (i < entries.size() - 1) {
-                    sb.append(",");
-                }
-                sb.append("\n");
+        sb.append("@JsonSubTypes({\n");
+        List<Map.Entry<String, String>> entries = new ArrayList<>(unionInfo.subtypes().entrySet());
+        for (int i = 0; i < entries.size(); i++) {
+            Map.Entry<String, String> entry = entries.get(i);
+            sb.append("    @JsonSubTypes.Type(value = ").append(entry.getValue()).append(".class, name = \"")
+                    .append(entry.getKey()).append("\")");
+            if (i < entries.size() - 1) {
+                sb.append(",");
             }
-            sb.append("})\n");
+            sb.append("\n");
         }
+        sb.append("})\n");
 
         // sealed interface declaration with permits
         sb.append("public sealed interface ").append(type.name());
 
-        if (!unionInfo.subtypes().isEmpty()) {
-            String permits = unionInfo.subtypes().values().stream()
-                    .collect(Collectors.joining(", "));
-            sb.append(" permits ").append(permits);
-        }
+        String permits = unionInfo.subtypes().values().stream()
+                .collect(Collectors.joining(", "));
+        sb.append(" permits ").append(permits);
 
         sb.append(" {}\n");
 
         return sb.toString();
+    }
+
+    private String generatePlainInterface(TypeDefinition type) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("package ").append(basePackage).append(";\n\n");
+        sb.append("public interface ").append(type.name()).append(" {}\n");
+        return sb.toString();
+    }
+
+    /**
+     * Returns the interface name this type should implement via INTERFACE_IMPLEMENTATIONS,
+     * or null if none.
+     */
+    private static String getAdditionalInterface(String typeName) {
+        for (Map.Entry<String, Set<String>> entry : INTERFACE_IMPLEMENTATIONS.entrySet()) {
+            if (entry.getValue().contains(typeName)) {
+                return entry.getKey();
+            }
+        }
+        return null;
     }
 
     private String generateSubtypeRecord(TypeDefinition type) {

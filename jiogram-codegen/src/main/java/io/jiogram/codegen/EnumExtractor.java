@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
  */
 public final class EnumExtractor {
 
-    private static final Pattern QUOTED_VALUE = Pattern.compile("\"([a-z_]+)\"");
+    private static final Pattern QUOTED_VALUE = Pattern.compile("[\"']([a-z_]+)[\"']");
 
     private EnumExtractor() {
     }
@@ -81,6 +81,13 @@ public final class EnumExtractor {
                 "pinned_message", "web_app_data"
         )));
 
+        // ChatAction — hardcoded because the schema description uses italics, not quotes
+        enums.add(new EnumDefinition("ChatAction", "Type of action to broadcast.", List.of(
+                "typing", "upload_photo", "record_video", "upload_video",
+                "record_voice", "upload_voice", "upload_document",
+                "choose_sticker", "find_location", "record_video_note", "upload_video_note"
+        )));
+
         return enums;
     }
 
@@ -96,11 +103,6 @@ public final class EnumExtractor {
         extractFromTypeField(schema, "MessageEntity", "type")
                 .ifPresent(values -> enums.add(new EnumDefinition(
                         "MessageEntityType", "Type of the entity.", values)));
-
-        // ChatAction — from sendChatAction.action description
-        extractFromMethodParameter(schema, "sendChatAction", "action")
-                .ifPresent(values -> enums.add(new EnumDefinition(
-                        "ChatAction", "Type of action.", values)));
 
         return enums;
     }

@@ -50,6 +50,11 @@ public final class TypeMapper {
         // Handle array types first (recursive)
         if (telegramType.startsWith("Array of ")) {
             String elementType = telegramType.substring("Array of ".length());
+            // Handle comma/and-separated multi-type arrays
+            // e.g. "InputMediaAudio, InputMediaDocument, InputMediaPhoto and InputMediaVideo" -> InputMedia
+            if (elementType.contains(",") || elementType.contains(" and ")) {
+                elementType = resolveMultiTypeArrayElement(elementType);
+            }
             // Element types in arrays are always boxed
             TypeName element = resolve(elementType, false);
             return ParameterizedTypeName.get(ClassName.get(List.class), element.box());
@@ -62,7 +67,7 @@ public final class TypeMapper {
 
         // Handle scalar/primitive types
         return switch (telegramType) {
-            case "Integer" -> required ? TypeName.LONG : TypeName.LONG.box();
+            case "Integer", "Int" -> required ? TypeName.LONG : TypeName.LONG.box();
             case "String" -> ClassName.get(String.class);
             case "Boolean" -> required ? TypeName.BOOLEAN : TypeName.BOOLEAN.box();
             case "Float", "Float number" -> required ? TypeName.DOUBLE : TypeName.DOUBLE.box();
@@ -109,5 +114,36 @@ public final class TypeMapper {
         // For other 2-3 part unions, fall back to the first type
         // (this handles edge cases not explicitly specified)
         return ClassName.get(typesPackage, parts[0].trim());
+    }
+
+    /**
+     * Resolves a comma-and-"and"-separated multi-type list to a common parent type.
+     * e.g. "InputMediaAudio, InputMediaDocument, InputMediaPhoto and InputMediaVideo" -> "InputMedia"
+     */
+    private String resolveMultiTypeArrayElement(String elementType) {
+        // Split on commas and " and "
+        String[] types = elementType.split("\\s*,\\s*|\\s+and\\s+");
+        if (types.length == 0) {
+            return elementType;
+        }
+
+        // Find the longest common prefix of all type names
+        String prefix = types[0].trim();
+        for (int i = 1; i < types.length; i++) {
+            String t = types[i].trim();
+            int j = 0;
+            while (j < prefix.length() && j < t.length() && prefix.charAt(j) == t.charAt(j)) {
+                j++;
+            }
+            prefix = prefix.substring(0, j);
+        }
+
+        // If we found a meaningful common prefix (at least 3 chars), check if it's a known union parent
+        if (prefix.length() >= 3 && UnionRegistry.isDiscriminatedUnion(prefix)) {
+            return prefix;
+        }
+
+        // Fallback: use the first type
+        return types[0].trim();
     }
 }
