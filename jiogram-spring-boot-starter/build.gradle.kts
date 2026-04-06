@@ -19,6 +19,9 @@ dependencies {
     api("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.boot:spring-boot-autoconfigure")
 
+    // Optional Redis support for distributed FSM storage
+    compileOnly("org.springframework.data:spring-data-redis")
+
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
