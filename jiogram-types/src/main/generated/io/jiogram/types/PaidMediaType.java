@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum PaidMediaType {
     PHOTO("photo"),
-    VIDEO("video"),
-    PREVIEW("preview");
+    PREVIEW("preview"),
+    VIDEO("video");
 
     private final String value;
 

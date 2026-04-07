@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum MessageOriginType {
     CHANNEL("channel"),
-    HIDDEN_USER("hidden_user"),
     CHAT("chat"),
+    HIDDEN_USER("hidden_user"),
     USER("user");
 
     private final String value;

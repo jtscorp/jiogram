@@ -152,9 +152,13 @@ public final class TypeGenerator {
         sb.append("@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = \"")
                 .append(unionInfo.discriminator()).append("\")\n");
 
-        // @JsonSubTypes
+        // @JsonSubTypes — entries are sorted alphabetically by discriminator
+        // value to keep generated output deterministic across JVM runs (the
+        // input map is built from Map.of(...), which has unspecified iteration
+        // order between processes).
         sb.append("@JsonSubTypes({\n");
         List<Map.Entry<String, String>> entries = new ArrayList<>(unionInfo.subtypes().entrySet());
+        entries.sort(Map.Entry.comparingByKey());
         for (int i = 0; i < entries.size(); i++) {
             Map.Entry<String, String> entry = entries.get(i);
             sb.append("    @JsonSubTypes.Type(value = ").append(entry.getValue()).append(".class, name = \"")
@@ -166,10 +170,14 @@ public final class TypeGenerator {
         }
         sb.append("})\n");
 
-        // sealed interface declaration with permits
+        // sealed interface declaration with permits — same deterministic
+        // ordering by discriminator key, so the permits clause matches the
+        // @JsonSubTypes ordering above.
         sb.append("public sealed interface ").append(type.name());
 
-        String permits = unionInfo.subtypes().values().stream()
+        String permits = unionInfo.subtypes().entrySet().stream()
+                .sorted(Map.Entry.comparingByKey())
+                .map(Map.Entry::getValue)
                 .collect(Collectors.joining(", "));
         sb.append(" permits ").append(permits);
 

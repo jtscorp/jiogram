@@ -121,7 +121,12 @@ public final class EnumExtractor {
             // Create enum name: e.g. ChatMember -> ChatMemberType
             String enumName = parentName + "Type";
 
-            List<String> values = new ArrayList<>(info.subtypes().keySet());
+            // Sort discriminator values alphabetically so the generated enum
+            // is deterministic across JVM runs (UnionRegistry's Map.of(...)
+            // input has unspecified iteration order).
+            List<String> values = info.subtypes().keySet().stream()
+                    .sorted()
+                    .collect(Collectors.toList());
             enums.add(new EnumDefinition(enumName,
                     "Discriminator values for " + parentName + ".",
                     values));

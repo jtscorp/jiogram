@@ -4,15 +4,15 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum PassportElementErrorType {
-    SELFIE("selfie"),
-    FILES("files"),
-    REVERSE_SIDE("reverse_side"),
-    TRANSLATION_FILE("translation_file"),
+    DATA("data"),
     FILE("file"),
+    FILES("files"),
     FRONT_SIDE("front_side"),
+    REVERSE_SIDE("reverse_side"),
+    SELFIE("selfie"),
+    TRANSLATION_FILE("translation_file"),
     TRANSLATION_FILES("translation_files"),
-    UNSPECIFIED("unspecified"),
-    DATA("data");
+    UNSPECIFIED("unspecified");
 
     private final String value;
 

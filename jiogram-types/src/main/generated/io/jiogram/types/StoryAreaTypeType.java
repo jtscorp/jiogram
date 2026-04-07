@@ -4,10 +4,10 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum StoryAreaTypeType {
-    SUGGESTED_REACTION("suggested_reaction"),
-    LOCATION("location"),
-    UNIQUE_GIFT("unique_gift"),
     LINK("link"),
+    LOCATION("location"),
+    SUGGESTED_REACTION("suggested_reaction"),
+    UNIQUE_GIFT("unique_gift"),
     WEATHER("weather");
 
     private final String value;

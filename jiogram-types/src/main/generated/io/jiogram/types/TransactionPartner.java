@@ -5,12 +5,12 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
-    @JsonSubTypes.Type(value = TransactionPartnerOther.class, name = "other"),
+    @JsonSubTypes.Type(value = TransactionPartnerAffiliateProgram.class, name = "affiliate_program"),
     @JsonSubTypes.Type(value = TransactionPartnerChat.class, name = "chat"),
     @JsonSubTypes.Type(value = TransactionPartnerFragment.class, name = "fragment"),
-    @JsonSubTypes.Type(value = TransactionPartnerTelegramApi.class, name = "telegram_api"),
+    @JsonSubTypes.Type(value = TransactionPartnerOther.class, name = "other"),
     @JsonSubTypes.Type(value = TransactionPartnerTelegramAds.class, name = "telegram_ads"),
-    @JsonSubTypes.Type(value = TransactionPartnerUser.class, name = "user"),
-    @JsonSubTypes.Type(value = TransactionPartnerAffiliateProgram.class, name = "affiliate_program")
+    @JsonSubTypes.Type(value = TransactionPartnerTelegramApi.class, name = "telegram_api"),
+    @JsonSubTypes.Type(value = TransactionPartnerUser.class, name = "user")
 })
-public sealed interface TransactionPartner permits TransactionPartnerOther, TransactionPartnerChat, TransactionPartnerFragment, TransactionPartnerTelegramApi, TransactionPartnerTelegramAds, TransactionPartnerUser, TransactionPartnerAffiliateProgram {}
+public sealed interface TransactionPartner permits TransactionPartnerAffiliateProgram, TransactionPartnerChat, TransactionPartnerFragment, TransactionPartnerOther, TransactionPartnerTelegramAds, TransactionPartnerTelegramApi, TransactionPartnerUser {}

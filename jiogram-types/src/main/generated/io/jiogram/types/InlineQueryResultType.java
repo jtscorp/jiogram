@@ -5,25 +5,25 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum InlineQueryResultType {
     ARTICLE("article"),
-    PHOTO("photo"),
-    GIF("gif"),
-    MPEG4_GIF("mpeg4_gif"),
-    VIDEO("video"),
     AUDIO("audio"),
-    VOICE("voice"),
-    DOCUMENT("document"),
-    LOCATION("location"),
-    VENUE("venue"),
-    CONTACT("contact"),
-    GAME("game"),
-    STICKER("sticker"),
-    CACHED_PHOTO("cached_photo"),
+    CACHED_AUDIO("cached_audio"),
+    CACHED_DOCUMENT("cached_document"),
     CACHED_GIF("cached_gif"),
     CACHED_MPEG4_GIF("cached_mpeg4_gif"),
+    CACHED_PHOTO("cached_photo"),
     CACHED_VIDEO("cached_video"),
-    CACHED_AUDIO("cached_audio"),
     CACHED_VOICE("cached_voice"),
-    CACHED_DOCUMENT("cached_document");
+    CONTACT("contact"),
+    DOCUMENT("document"),
+    GAME("game"),
+    GIF("gif"),
+    LOCATION("location"),
+    MPEG4_GIF("mpeg4_gif"),
+    PHOTO("photo"),
+    STICKER("sticker"),
+    VENUE("venue"),
+    VIDEO("video"),
+    VOICE("voice");
 
     private final String value;
 

@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum RevenueWithdrawalStateType {
+    FAILED("failed"),
     PENDING("pending"),
-    SUCCEEDED("succeeded"),
-    FAILED("failed");
+    SUCCEEDED("succeeded");
 
     private final String value;
 

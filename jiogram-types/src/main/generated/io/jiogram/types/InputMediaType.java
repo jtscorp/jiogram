@@ -4,11 +4,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum InputMediaType {
-    VIDEO("video"),
     ANIMATION("animation"),
-    DOCUMENT("document"),
     AUDIO("audio"),
-    PHOTO("photo");
+    DOCUMENT("document"),
+    PHOTO("photo"),
+    VIDEO("video");
 
     private final String value;
 

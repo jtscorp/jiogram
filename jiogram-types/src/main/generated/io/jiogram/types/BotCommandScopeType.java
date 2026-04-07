@@ -5,12 +5,12 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum BotCommandScopeType {
     ALL_CHAT_ADMINISTRATORS("all_chat_administrators"),
+    ALL_GROUP_CHATS("all_group_chats"),
+    ALL_PRIVATE_CHATS("all_private_chats"),
     CHAT("chat"),
     CHAT_ADMINISTRATORS("chat_administrators"),
     CHAT_MEMBER("chat_member"),
-    DEFAULT("default"),
-    ALL_PRIVATE_CHATS("all_private_chats"),
-    ALL_GROUP_CHATS("all_group_chats");
+    DEFAULT("default");
 
     private final String value;
 
