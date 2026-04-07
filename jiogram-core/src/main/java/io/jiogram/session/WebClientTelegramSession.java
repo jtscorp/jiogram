@@ -1,6 +1,8 @@
 package io.jiogram.session;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jiogram.types.TelegramMethod;
@@ -23,12 +25,33 @@ public class WebClientTelegramSession implements TelegramSession {
     private final ObjectMapper objectMapper;
 
     public WebClientTelegramSession(WebClient webClient) {
-        this(webClient, new ObjectMapper());
+        this(webClient, defaultObjectMapper());
     }
 
+    /**
+     * Constructs a session with a caller-supplied {@link ObjectMapper}.
+     *
+     * <p><strong>Important:</strong> the supplied mapper MUST be configured with
+     * {@link JsonInclude.Include#NON_NULL} serialization inclusion. The Telegram Bot
+     * API rejects optional parameters that are explicitly set to JSON {@code null}
+     * (e.g. it returns {@code "Bad Request: object expected as link preview options"}
+     * when {@code link_preview_options: null} is sent). Prefer the single-argument
+     * constructor or {@link #defaultObjectMapper()} unless you need custom modules.
+     */
     public WebClientTelegramSession(WebClient webClient, ObjectMapper objectMapper) {
         this.webClient = webClient;
         this.objectMapper = objectMapper;
+    }
+
+    /**
+     * Returns a fresh {@link ObjectMapper} configured for the Telegram Bot API:
+     * null-valued properties are omitted from request bodies, and unknown response
+     * properties are tolerated for forward compatibility with new API fields.
+     */
+    public static ObjectMapper defaultObjectMapper() {
+        return new ObjectMapper()
+            .setSerializationInclusion(JsonInclude.Include.NON_NULL)
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
     @Override
@@ -50,24 +73,30 @@ public class WebClientTelegramSession implements TelegramSession {
             .uri(url)
             .contentType(MediaType.APPLICATION_JSON)
             .bodyValue(body)
-            .retrieve()
-            .bodyToMono(String.class)
-            .flatMap(responseBody -> {
-                try {
-                    TelegramApiResponse<T> response = objectMapper.readValue(responseBody, responseType);
+            .exchangeToMono(clientResponse -> clientResponse.bodyToMono(String.class)
+                .defaultIfEmpty("")
+                .flatMap(responseBody -> {
+                    TelegramApiResponse<T> response;
+                    try {
+                        response = objectMapper.readValue(responseBody, responseType);
+                    } catch (JsonProcessingException e) {
+                        // Body is not a valid Telegram API response — surface raw HTTP status + body
+                        int rawStatus = clientResponse.statusCode().value();
+                        String snippet = responseBody.isEmpty() ? "<empty body>" : responseBody;
+                        return Mono.error(new TelegramApiException(
+                            rawStatus,
+                            "Unparseable Telegram API response (HTTP " + rawStatus + "): " + snippet
+                        ));
+                    }
                     if (response.ok()) {
                         return Mono.justOrEmpty(response.result());
-                    } else {
-                        int errorCode = response.errorCode() != null ? response.errorCode() : -1;
-                        String description = response.description() != null
-                            ? response.description()
-                            : "Unknown error";
-                        return Mono.error(new TelegramApiException(errorCode, description));
                     }
-                } catch (JsonProcessingException e) {
-                    return Mono.error(e);
-                }
-            });
+                    int errorCode = response.errorCode() != null ? response.errorCode() : -1;
+                    String description = response.description() != null
+                        ? response.description()
+                        : "Unknown error";
+                    return Mono.error(new TelegramApiException(errorCode, description));
+                }));
     }
 
     @Override

@@ -83,20 +83,17 @@ subprojects {
 
         repositories {
             maven {
-                name = 'sonatype'
-                def releasesUrl = 'https://central.sonatype.com/api/v1/publisher/deployments/download'
-                def snapshotsUrl = 'https://central.sonatype.com/repository/maven-snapshots/'
-                url = version.toString().endsWith('SNAPSHOT') ? snapshotsUrl : releasesUrl
-                credentials {
-                    username = findProperty('sonatypeUsername') ?: ''
-                    password = findProperty('sonatypePassword') ?: ''
-                }
+                name = 'staging'
+                url = layout.buildDirectory.dir('staging-deploy').get().asFile.toURI()
             }
         }
     }
 
     signing {
         required { !version.toString().endsWith('SNAPSHOT') }
-        sign publishing.publications.mavenJava
+        if (!version.toString().endsWith('SNAPSHOT')) {
+            useGpgCmd()
+            sign publishing.publications.mavenJava
+        }
     }
 }

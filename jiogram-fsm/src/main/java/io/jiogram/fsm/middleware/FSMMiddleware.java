@@ -63,7 +63,9 @@ public class FSMMiddleware implements Middleware {
             .defaultIfEmpty("")
             .flatMap(rawState -> {
                 context.put("state", fsmContext);
-                context.put("raw_state", rawState.isEmpty() ? null : rawState);
+                if (!rawState.isEmpty()) {
+                    context.put("raw_state", rawState);
+                }
                 return chain.next(event, context);
             });
     }

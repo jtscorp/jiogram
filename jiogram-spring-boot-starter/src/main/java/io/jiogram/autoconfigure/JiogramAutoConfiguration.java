@@ -1,6 +1,5 @@
 package io.jiogram.autoconfigure;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jiogram.bot.Bot;
 import io.jiogram.bot.DefaultBotProperties;
 import io.jiogram.dispatcher.Dispatcher;
@@ -33,14 +32,11 @@ public class JiogramAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public ObjectMapper objectMapper() {
-        return new ObjectMapper();
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public TelegramSession telegramSession(WebClient telegramWebClient, ObjectMapper objectMapper) {
-        return new WebClientTelegramSession(telegramWebClient, objectMapper);
+    public TelegramSession telegramSession(WebClient telegramWebClient) {
+        // Intentionally does NOT depend on the application's shared ObjectMapper.
+        // The Telegram Bot API rejects null-valued optional parameters, so this
+        // session uses its own NON_NULL-configured ObjectMapper internally.
+        return new WebClientTelegramSession(telegramWebClient);
     }
 
     @Bean
