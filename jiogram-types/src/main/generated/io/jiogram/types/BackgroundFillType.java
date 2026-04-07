@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum BackgroundFillType {
-    SOLID("solid"),
     GRADIENT("gradient"),
+    SOLID("solid"),
     FREEFORM_GRADIENT("freeform_gradient");
 
     private final String value;

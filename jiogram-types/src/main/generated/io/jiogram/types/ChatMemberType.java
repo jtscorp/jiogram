@@ -4,12 +4,12 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum ChatMemberType {
-    LEFT("left"),
-    CREATOR("creator"),
-    KICKED("kicked"),
-    MEMBER("member"),
+    ADMINISTRATOR("administrator"),
     RESTRICTED("restricted"),
-    ADMINISTRATOR("administrator");
+    MEMBER("member"),
+    KICKED("kicked"),
+    CREATOR("creator"),
+    LEFT("left");
 
     private final String value;
 

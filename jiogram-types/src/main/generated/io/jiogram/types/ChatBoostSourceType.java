@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum ChatBoostSourceType {
-    GIFT_CODE("gift_code"),
+    GIVEAWAY("giveaway"),
     PREMIUM("premium"),
-    GIVEAWAY("giveaway");
+    GIFT_CODE("gift_code");
 
     private final String value;
 

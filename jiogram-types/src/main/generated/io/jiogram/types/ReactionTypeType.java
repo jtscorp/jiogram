@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum ReactionTypeType {
-    EMOJI("emoji"),
+    PAID("paid"),
     CUSTOM_EMOJI("custom_emoji"),
-    PAID("paid");
+    EMOJI("emoji");
 
     private final String value;
 

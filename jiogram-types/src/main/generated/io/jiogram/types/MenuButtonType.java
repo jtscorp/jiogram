@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum MenuButtonType {
-    DEFAULT("default"),
+    COMMANDS("commands"),
     WEB_APP("web_app"),
-    COMMANDS("commands");
+    DEFAULT("default");
 
     private final String value;
 

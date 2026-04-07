@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum InputStoryContentType {
-    PHOTO("photo"),
-    VIDEO("video");
+    VIDEO("video"),
+    PHOTO("photo");
 
     private final String value;
 

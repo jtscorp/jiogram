@@ -4,13 +4,13 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum TransactionPartnerType {
-    OTHER("other"),
-    CHAT("chat"),
-    FRAGMENT("fragment"),
     TELEGRAM_API("telegram_api"),
-    TELEGRAM_ADS("telegram_ads"),
+    FRAGMENT("fragment"),
+    CHAT("chat"),
+    OTHER("other"),
+    AFFILIATE_PROGRAM("affiliate_program"),
     USER("user"),
-    AFFILIATE_PROGRAM("affiliate_program");
+    TELEGRAM_ADS("telegram_ads");
 
     private final String value;
 

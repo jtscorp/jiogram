@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum InputProfilePhotoType {
-    STATIC("static"),
-    ANIMATED("animated");
+    ANIMATED("animated"),
+    STATIC("static");
 
     private final String value;
 

@@ -5,9 +5,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
-    @JsonSubTypes.Type(value = BackgroundTypeChatTheme.class, name = "chat_theme"),
     @JsonSubTypes.Type(value = BackgroundTypePattern.class, name = "pattern"),
-    @JsonSubTypes.Type(value = BackgroundTypeWallpaper.class, name = "wallpaper"),
-    @JsonSubTypes.Type(value = BackgroundTypeFill.class, name = "fill")
+    @JsonSubTypes.Type(value = BackgroundTypeChatTheme.class, name = "chat_theme"),
+    @JsonSubTypes.Type(value = BackgroundTypeFill.class, name = "fill"),
+    @JsonSubTypes.Type(value = BackgroundTypeWallpaper.class, name = "wallpaper")
 })
-public sealed interface BackgroundType permits BackgroundTypeChatTheme, BackgroundTypePattern, BackgroundTypeWallpaper, BackgroundTypeFill {}
+public sealed interface BackgroundType permits BackgroundTypePattern, BackgroundTypeChatTheme, BackgroundTypeFill, BackgroundTypeWallpaper {}

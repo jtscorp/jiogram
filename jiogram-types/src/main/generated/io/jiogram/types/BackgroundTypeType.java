@@ -4,10 +4,10 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum BackgroundTypeType {
-    CHAT_THEME("chat_theme"),
     PATTERN("pattern"),
-    WALLPAPER("wallpaper"),
-    FILL("fill");
+    CHAT_THEME("chat_theme"),
+    FILL("fill"),
+    WALLPAPER("wallpaper");
 
     private final String value;
 

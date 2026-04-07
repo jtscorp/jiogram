@@ -26,6 +26,7 @@ public final class TypeGenerator {
 
     private static final String NULLABLE_PACKAGE = "org.jspecify.annotations";
     private static final String JACKSON_ANNOTATION_PACKAGE = "com.fasterxml.jackson.annotation";
+    private static final String JACKSON_DATABIND_ANNOTATION_PACKAGE = "com.fasterxml.jackson.databind.annotation";
 
     /** Types that should implement the ReplyMarkup marker interface. */
     private static final Set<String> REPLY_MARKUP_TYPES = Set.of(
@@ -137,9 +138,19 @@ public final class TypeGenerator {
             return generatePlainInterface(type);
         }
 
+        // Detect value-based discriminators (e.g. MaybeInaccessibleMessage's
+        // "date == 0" pattern). These cannot be expressed with @JsonSubTypes
+        // because Jackson does exact string matching on discriminator values;
+        // a hand-written TypeIdResolver bridges the gap.
+        boolean isValueBasedDiscriminator = unionInfo.subtypes().containsKey("nonzero");
+
         Set<String> imports = new TreeSet<>();
         imports.add(JACKSON_ANNOTATION_PACKAGE + ".JsonTypeInfo");
-        imports.add(JACKSON_ANNOTATION_PACKAGE + ".JsonSubTypes");
+        if (isValueBasedDiscriminator) {
+            imports.add(JACKSON_DATABIND_ANNOTATION_PACKAGE + ".JsonTypeIdResolver");
+        } else {
+            imports.add(JACKSON_ANNOTATION_PACKAGE + ".JsonSubTypes");
+        }
 
         StringBuilder sb = new StringBuilder();
         sb.append("package ").append(basePackage).append(";\n\n");
@@ -148,23 +159,33 @@ public final class TypeGenerator {
         }
         sb.append("\n");
 
-        // @JsonTypeInfo
-        sb.append("@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = \"")
-                .append(unionInfo.discriminator()).append("\")\n");
+        if (isValueBasedDiscriminator) {
+            // @JsonTypeInfo with CUSTOM resolver, reading the existing discriminator
+            // property and keeping it visible so the subtype's record component
+            // is still populated by the default deserializer.
+            sb.append("@JsonTypeInfo(use = JsonTypeInfo.Id.CUSTOM, property = \"")
+                    .append(unionInfo.discriminator())
+                    .append("\", include = JsonTypeInfo.As.EXISTING_PROPERTY, visible = true)\n");
+            sb.append("@JsonTypeIdResolver(").append(type.name()).append("TypeIdResolver.class)\n");
+        } else {
+            // @JsonTypeInfo
+            sb.append("@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = \"")
+                    .append(unionInfo.discriminator()).append("\")\n");
 
-        // @JsonSubTypes
-        sb.append("@JsonSubTypes({\n");
-        List<Map.Entry<String, String>> entries = new ArrayList<>(unionInfo.subtypes().entrySet());
-        for (int i = 0; i < entries.size(); i++) {
-            Map.Entry<String, String> entry = entries.get(i);
-            sb.append("    @JsonSubTypes.Type(value = ").append(entry.getValue()).append(".class, name = \"")
-                    .append(entry.getKey()).append("\")");
-            if (i < entries.size() - 1) {
-                sb.append(",");
+            // @JsonSubTypes
+            sb.append("@JsonSubTypes({\n");
+            List<Map.Entry<String, String>> entries = new ArrayList<>(unionInfo.subtypes().entrySet());
+            for (int i = 0; i < entries.size(); i++) {
+                Map.Entry<String, String> entry = entries.get(i);
+                sb.append("    @JsonSubTypes.Type(value = ").append(entry.getValue()).append(".class, name = \"")
+                        .append(entry.getKey()).append("\")");
+                if (i < entries.size() - 1) {
+                    sb.append(",");
+                }
+                sb.append("\n");
             }
-            sb.append("\n");
+            sb.append("})\n");
         }
-        sb.append("})\n");
 
         // sealed interface declaration with permits
         sb.append("public sealed interface ").append(type.name());
