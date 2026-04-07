@@ -33,9 +33,17 @@ public sealed interface InputFileOrString permits InputFileOrString.OfInputFile,
     final class Serializer extends JsonSerializer<InputFileOrString> {
         @Override
         public void serialize(InputFileOrString value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-            switch (value) {
-                case OfInputFile(InputFile file) -> gen.writeObject(file);
-                case OfString(String s) -> gen.writeString(s);
+            // Traditional instanceof + cast: kept Java 17-compatible (no record
+            // patterns, no pattern instanceof binding). The sealed interface
+            // guarantees exhaustiveness; the trailing else is defensive only.
+            if (value instanceof OfInputFile) {
+                OfInputFile oi = (OfInputFile) value;
+                gen.writeObject(oi.file());
+            } else if (value instanceof OfString) {
+                OfString os = (OfString) value;
+                gen.writeString(os.value());
+            } else {
+                throw new IllegalStateException("Unknown InputFileOrString variant: " + value);
             }
         }
     }

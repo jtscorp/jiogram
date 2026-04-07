@@ -213,7 +213,7 @@ class HandlerRegistryTest {
                 .verifyComplete();
 
         assertEquals(1, controller.handled.size());
-        assertEquals("confirm", controller.handled.getFirst());
+        assertEquals("confirm", controller.handled.get(0));
     }
 
     @Test

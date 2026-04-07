@@ -39,16 +39,20 @@ public class HandlerObject<E> {
 
         for (Filter<E> filter : filters) {
             result = result.flatMap(accumulated ->
-                    filter.apply(event, context).flatMap(filterResult ->
-                            switch (filterResult) {
-                                case FilterResult.Failed f -> Mono.empty();
-                                case FilterResult.Passed passed -> {
-                                    var merged = new HashMap<>(accumulated);
-                                    merged.putAll(passed.data());
-                                    yield Mono.just((Map<String, Object>) merged);
-                                }
-                            }
-                    )
+                    filter.apply(event, context).flatMap(filterResult -> {
+                        // Java 17-compatible exhaustive dispatch over the sealed
+                        // FilterResult interface (no type pattern in switch).
+                        if (filterResult instanceof FilterResult.Failed) {
+                            return Mono.<Map<String, Object>>empty();
+                        } else if (filterResult instanceof FilterResult.Passed) {
+                            FilterResult.Passed passed = (FilterResult.Passed) filterResult;
+                            HashMap<String, Object> merged = new HashMap<>(accumulated);
+                            merged.putAll(passed.data());
+                            return Mono.<Map<String, Object>>just(merged);
+                        } else {
+                            throw new IllegalStateException("Unknown FilterResult variant: " + filterResult);
+                        }
+                    })
             );
         }
 

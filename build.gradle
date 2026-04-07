@@ -20,7 +20,7 @@ subprojects {
 
     java {
         toolchain {
-            languageVersion = JavaLanguageVersion.of(25)
+            languageVersion = JavaLanguageVersion.of(17)
         }
         withJavadocJar()
         withSourcesJar()
@@ -28,18 +28,15 @@ subprojects {
 
     tasks.withType(JavaCompile) {
         options.encoding = 'UTF-8'
-        options.compilerArgs.addAll(['--enable-preview'])
     }
 
     tasks.withType(Test) {
         useJUnitPlatform()
-        jvmArgs('--enable-preview')
     }
 
     tasks.withType(Javadoc) {
         def opts = options as StandardJavadocDocletOptions
-        opts.addBooleanOption('-enable-preview', true)
-        opts.addStringOption('source', '25')
+        opts.addStringOption('source', '17')
     }
 
     dependencies {

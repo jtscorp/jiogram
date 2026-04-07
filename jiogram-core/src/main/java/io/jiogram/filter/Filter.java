@@ -30,17 +30,28 @@ public interface Filter<E> {
      */
     default Filter<E> and(Filter<E> other) {
         return (event, context) -> this.apply(event, context)
-                .flatMap(result -> switch (result) {
-                    case FilterResult.Failed f -> Mono.just(FilterResult.failed());
-                    case FilterResult.Passed first -> other.apply(event, context)
-                            .map(otherResult -> switch (otherResult) {
-                                case FilterResult.Failed f -> FilterResult.failed();
-                                case FilterResult.Passed second -> {
-                                    var merged = new HashMap<String, Object>(first.data());
-                                    merged.putAll(second.data());
-                                    yield FilterResult.passed(Map.copyOf(merged));
-                                }
-                            });
+                .flatMap(result -> {
+                    // Java 17-compatible dispatch over sealed FilterResult.
+                    if (result instanceof FilterResult.Failed) {
+                        return Mono.just(FilterResult.failed());
+                    } else if (result instanceof FilterResult.Passed) {
+                        FilterResult.Passed first = (FilterResult.Passed) result;
+                        return other.apply(event, context)
+                                .map(otherResult -> {
+                                    if (otherResult instanceof FilterResult.Failed) {
+                                        return FilterResult.failed();
+                                    } else if (otherResult instanceof FilterResult.Passed) {
+                                        FilterResult.Passed second = (FilterResult.Passed) otherResult;
+                                        HashMap<String, Object> merged = new HashMap<>(first.data());
+                                        merged.putAll(second.data());
+                                        return FilterResult.passed(Map.copyOf(merged));
+                                    } else {
+                                        throw new IllegalStateException("Unknown FilterResult variant: " + otherResult);
+                                    }
+                                });
+                    } else {
+                        throw new IllegalStateException("Unknown FilterResult variant: " + result);
+                    }
                 });
     }
 
@@ -50,9 +61,14 @@ public interface Filter<E> {
      */
     default Filter<E> or(Filter<E> other) {
         return (event, context) -> this.apply(event, context)
-                .flatMap(result -> switch (result) {
-                    case FilterResult.Passed p -> Mono.just(result);
-                    case FilterResult.Failed f -> other.apply(event, context);
+                .flatMap(result -> {
+                    if (result instanceof FilterResult.Passed) {
+                        return Mono.just(result);
+                    } else if (result instanceof FilterResult.Failed) {
+                        return other.apply(event, context);
+                    } else {
+                        throw new IllegalStateException("Unknown FilterResult variant: " + result);
+                    }
                 });
     }
 
@@ -62,9 +78,14 @@ public interface Filter<E> {
      */
     default Filter<E> negate() {
         return (event, context) -> this.apply(event, context)
-                .map(result -> switch (result) {
-                    case FilterResult.Passed p -> FilterResult.failed();
-                    case FilterResult.Failed f -> FilterResult.passed();
+                .map(result -> {
+                    if (result instanceof FilterResult.Passed) {
+                        return FilterResult.failed();
+                    } else if (result instanceof FilterResult.Failed) {
+                        return FilterResult.passed();
+                    } else {
+                        throw new IllegalStateException("Unknown FilterResult variant: " + result);
+                    }
                 });
     }
 }

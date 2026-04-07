@@ -69,7 +69,7 @@ public class PollingRunner implements SmartLifecycle {
                         log.warn("Polling error, retrying (attempt {}): {}",
                             signal.totalRetries() + 1, signal.failure().getMessage())
                     )
-                    .filter(_ -> running.get()))
+                    .filter(throwable -> running.get()))
                 .subscribe();
         }
     }

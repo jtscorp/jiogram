@@ -58,7 +58,7 @@ class RouterTest {
                 .verifyComplete();
 
         assertEquals(1, handled.size());
-        assertEquals("hello", handled.getFirst());
+        assertEquals("hello", handled.get(0));
     }
 
     @Test
@@ -83,7 +83,7 @@ class RouterTest {
                 .verifyComplete();
 
         assertEquals(1, handled.size());
-        assertEquals("child:world", handled.getFirst());
+        assertEquals("child:world", handled.get(0));
     }
 
     @Test
@@ -167,7 +167,7 @@ class RouterTest {
                 .verifyComplete();
 
         assertEquals(1, handled.size());
-        assertEquals("parent", handled.getFirst());
+        assertEquals("parent", handled.get(0));
     }
 
     @Test
@@ -196,7 +196,7 @@ class RouterTest {
                 .verifyComplete();
 
         assertEquals(1, handled.size());
-        assertEquals("child1", handled.getFirst());
+        assertEquals("child1", handled.get(0));
     }
 
     @Test

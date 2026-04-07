@@ -92,7 +92,7 @@ class DispatcherTest {
                 .verifyComplete();
 
         assertEquals(1, handled.size());
-        assertEquals("hello", handled.getFirst());
+        assertEquals("hello", handled.get(0));
     }
 
     @Test
@@ -113,7 +113,7 @@ class DispatcherTest {
                 .verifyComplete();
 
         assertEquals(1, handled.size());
-        assertEquals("button_data", handled.getFirst());
+        assertEquals("button_data", handled.get(0));
     }
 
     @Test
@@ -253,6 +253,6 @@ class DispatcherTest {
                 .verifyComplete();
 
         assertEquals(1, handled.size());
-        assertEquals("sub:routed", handled.getFirst());
+        assertEquals("sub:routed", handled.get(0));
     }
 }
