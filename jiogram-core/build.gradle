@@ -20,7 +20,12 @@ dependencies {
     implementation 'io.projectreactor.netty:reactor-netty-http'
     implementation 'org.slf4j:slf4j-api'
 
-    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    // Pinned to ${jacksonVersion} to stay on Jackson 2 even when Spring
+    // Boot 4 swaps its default JSON library to Jackson 3 (tools.jackson).
+    // jiogram never goes through Spring's Jackson auto-configuration —
+    // WebClientTelegramSession constructs its own ObjectMapper — so we
+    // are unaffected by the Spring-side switch.
+    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
     implementation 'org.jspecify:jspecify:1.0.0'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

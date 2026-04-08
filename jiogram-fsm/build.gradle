@@ -20,7 +20,8 @@ dependencies {
     // Optional Redis support for distributed state storage
     compileOnly 'org.springframework.data:spring-data-redis'
     compileOnly 'io.lettuce:lettuce-core'
-    compileOnly 'com.fasterxml.jackson.core:jackson-databind'
+    // Pinned to ${jacksonVersion} (same rationale as jiogram-core).
+    compileOnly "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.projectreactor:reactor-test'

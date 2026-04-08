@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.5.3' apply false
+    id 'org.springframework.boot' version '4.0.5' apply false
     id 'io.spring.dependency-management' version '1.1.7' apply false
 }
 
@@ -50,8 +50,18 @@ subprojects {
             mavenJava(MavenPublication) {
                 from components.java
 
+                // Spec §3: every artifact on main (Spring Boot 4) carries
+                // a -sb4 suffix to avoid Maven Central GAV collisions with
+                // the sb3.x and sb2.x branches. The starter is special-cased
+                // to 'jiogram-spring-boot-4-starter' per the spec naming.
+                artifactId = (project.name == 'jiogram-spring-boot-starter')
+                    ? 'jiogram-spring-boot-4-starter'
+                    : "${project.name}-sb4"
+
                 pom {
-                    name = project.name
+                    name = (project.name == 'jiogram-spring-boot-starter')
+                        ? 'jiogram-spring-boot-4-starter'
+                        : "${project.name}-sb4"
                     description = 'Jiogram - Java Spring Framework for Telegram Bots'
                     url = 'https://github.com/jaxongir/jiogram'
 

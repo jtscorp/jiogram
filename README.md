@@ -4,6 +4,15 @@ A Java Spring Boot framework for building Telegram bots, inspired by Python's [a
 
 Jiogram brings the ergonomic, annotation-driven handler model of aiogram to the Java/Spring ecosystem with full reactive support via Project Reactor.
 
+> **This branch (`main`) targets Spring Boot 4.0.x.**
+> For Spring Boot 3.5.x see the [`sb3.x` branch](https://github.com/jaxongir/jiogram/tree/sb3.x).
+> For Spring Boot 2.7.x see the [`sb2.x` branch](https://github.com/jaxongir/jiogram/tree/sb2.x).
+>
+> **Maven coordinates:**
+> ```
+> implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-4-starter:0.2.0-SNAPSHOT'
+> ```
+
 ## Quick Start
 
 **1. build.gradle**
@@ -11,18 +20,18 @@ Jiogram brings the ergonomic, annotation-driven handler model of aiogram to the 
 ```groovy
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.5.3'
+    id 'org.springframework.boot' version '4.0.5'
     id 'io.spring.dependency-management' version '1.1.7'
 }
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(25)
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }
 
 dependencies {
-    implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-starter:0.1.0'
+    implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-4-starter:0.2.0-SNAPSHOT'
 }
 ```
 
@@ -85,9 +94,11 @@ That's it. Run your Spring Boot app and the bot starts polling for updates autom
 
 ## Requirements
 
-- **Java 25** (preview features enabled)
-- **Spring Boot 3.5.x**
+- **Java 17** or newer
+- **Spring Boot 4.0.x** (this branch)
 - **Project Reactor** (comes with Spring Boot WebFlux)
+
+For other Spring Boot versions, see [`docs/spring-boot-versions.md`](docs/spring-boot-versions.md).
 
 ## Configuration Reference
 
