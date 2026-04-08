@@ -4,6 +4,15 @@ A Java Spring Boot framework for building Telegram bots, inspired by Python's [a
 
 Jiogram brings the ergonomic, annotation-driven handler model of aiogram to the Java/Spring ecosystem with full reactive support via Project Reactor.
 
+> **This branch (`sb3.x`) targets Spring Boot 3.5.x.**
+> For Spring Boot 4.x see the [`main` branch](https://github.com/jaxongir/jiogram/tree/main).
+> For Spring Boot 2.7.x see the [`sb2.x` branch](https://github.com/jaxongir/jiogram/tree/sb2.x).
+>
+> **Maven coordinates:**
+> ```
+> implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-3-starter:0.2.0-SNAPSHOT'
+> ```
+
 ## Quick Start
 
 **1. build.gradle**
@@ -17,12 +26,12 @@ plugins {
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(25)
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }
 
 dependencies {
-    implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-starter:0.1.0'
+    implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-3-starter:0.2.0-SNAPSHOT'
 }
 ```
 
@@ -85,7 +94,7 @@ That's it. Run your Spring Boot app and the bot starts polling for updates autom
 
 ## Requirements
 
-- **Java 25** (preview features enabled)
+- **Java 17** or newer
 - **Spring Boot 3.5.x**
 - **Project Reactor** (comes with Spring Boot WebFlux)
 

@@ -50,8 +50,18 @@ subprojects {
             mavenJava(MavenPublication) {
                 from components.java
 
+                // Spec §3: every artifact on sb3.x carries a -sb3 suffix to
+                // avoid Maven Central GAV collisions with the future main
+                // (sb4) and sb2.x branches. The starter is special-cased to
+                // 'jiogram-spring-boot-3-starter' per the spec naming.
+                artifactId = (project.name == 'jiogram-spring-boot-starter')
+                    ? 'jiogram-spring-boot-3-starter'
+                    : "${project.name}-sb3"
+
                 pom {
-                    name = project.name
+                    name = (project.name == 'jiogram-spring-boot-starter')
+                        ? 'jiogram-spring-boot-3-starter'
+                        : "${project.name}-sb3"
                     description = 'Jiogram - Java Spring Framework for Telegram Bots'
                     url = 'https://github.com/jaxongir/jiogram'
 
