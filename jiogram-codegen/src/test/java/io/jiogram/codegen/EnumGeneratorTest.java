@@ -157,12 +157,18 @@ class EnumGeneratorTest {
                 .filter(e -> "ChatType".equals(e.name())).findFirst().orElseThrow();
         assertEquals(List.of("private", "group", "supergroup", "channel"), chatType.values());
 
-        // ChatAction
+        // ChatAction — hardcoded well-known enum (not extracted from description, because
+        // the real Telegram schema uses italics rather than quoted values for chat actions).
+        // The test schema only has 3 quoted values in the description, but the extractor
+        // always returns the full hardcoded list.
         assertTrue(enums.stream().anyMatch(e -> "ChatAction".equals(e.name())),
-                "Should extract ChatAction from sendChatAction.action description");
+                "Should include hardcoded ChatAction enum");
         EnumDefinition chatAction = enums.stream()
                 .filter(e -> "ChatAction".equals(e.name())).findFirst().orElseThrow();
-        assertEquals(List.of("typing", "upload_photo", "record_video"), chatAction.values());
+        assertTrue(chatAction.values().contains("typing"), "ChatAction should include 'typing'");
+        assertTrue(chatAction.values().contains("upload_photo"), "ChatAction should include 'upload_photo'");
+        assertTrue(chatAction.values().contains("record_video"), "ChatAction should include 'record_video'");
+        assertTrue(chatAction.values().contains("upload_video_note"), "ChatAction should include full hardcoded list");
     }
 
     @Test

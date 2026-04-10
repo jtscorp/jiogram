@@ -31,13 +31,15 @@ class MethodGeneratorTest {
 
         String source = generator.generateToString(sendMessage);
 
-        assertTrue(source.contains("public record SendMessage("), "Should be a record named SendMessage");
+        assertTrue(source.contains("public class SendMessage"), "Should be a class named SendMessage");
+        assertFalse(source.contains("record"), "Should not be a record");
         assertTrue(source.contains("implements TelegramMethod<Message>"), "Should implement TelegramMethod<Message>");
-        assertTrue(source.contains("@JsonProperty(\"chat_id\") ChatId chatId"), "Required union -> ChatId");
-        assertTrue(source.contains("@JsonProperty(\"text\") String text"), "Required String");
-        assertTrue(source.contains("@JsonProperty(\"parse_mode\") @Nullable String parseMode"), "Optional String -> @Nullable");
-        assertTrue(source.contains("@JsonProperty(\"disable_notification\") @Nullable Boolean disableNotification"),
-                "Optional Boolean -> @Nullable Boolean");
+        assertTrue(source.contains("@JsonProperty(\"chat_id\")"), "Required union -> ChatId annotation");
+        assertTrue(source.contains("private final ChatId chatId"), "Required union -> ChatId field");
+        assertTrue(source.contains("private final String text"), "Required String field");
+        assertTrue(source.contains("@JsonProperty(\"parse_mode\") @Nullable private final String parseMode"), "Optional String -> @Nullable field");
+        assertTrue(source.contains("@JsonProperty(\"disable_notification\") @Nullable private final Boolean disableNotification"),
+                "Optional Boolean -> @Nullable Boolean field");
     }
 
     @Test
@@ -116,7 +118,8 @@ class MethodGeneratorTest {
 
         String source = generator.generateToString(getMe);
 
-        assertTrue(source.contains("public record GetMe("), "Should be named GetMe");
+        assertTrue(source.contains("public class GetMe"), "Should be named GetMe");
+        assertFalse(source.contains("record"), "Should not be a record");
         assertTrue(source.contains("implements TelegramMethod<User>"), "Should implement TelegramMethod<User>");
         assertTrue(source.contains("return \"getMe\""), "apiMethod should return 'getMe'");
         assertTrue(source.contains("return \"User\""), "apiReturnType should return 'User'");
@@ -140,7 +143,8 @@ class MethodGeneratorTest {
 
         String source = generator.generateToString(getUpdates);
 
-        assertTrue(source.contains("public record GetUpdates("), "Should be named GetUpdates");
+        assertTrue(source.contains("public class GetUpdates"), "Should be named GetUpdates");
+        assertFalse(source.contains("record"), "Should not be a record");
         assertTrue(source.contains("implements TelegramMethod<List<Update>>"),
                 "Array of Update -> TelegramMethod<List<Update>>");
         assertTrue(source.contains("return \"getUpdates\""), "apiMethod should return 'getUpdates'");
