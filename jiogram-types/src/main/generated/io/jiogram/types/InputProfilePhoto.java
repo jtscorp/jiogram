@@ -8,4 +8,4 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     @JsonSubTypes.Type(value = InputProfilePhotoAnimated.class, name = "animated"),
     @JsonSubTypes.Type(value = InputProfilePhotoStatic.class, name = "static")
 })
-public sealed interface InputProfilePhoto permits InputProfilePhotoAnimated, InputProfilePhotoStatic {}
+public interface InputProfilePhoto {}

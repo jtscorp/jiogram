@@ -13,4 +13,4 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     @JsonSubTypes.Type(value = BotCommandScopeChatMember.class, name = "chat_member"),
     @JsonSubTypes.Type(value = BotCommandScopeDefault.class, name = "default")
 })
-public sealed interface BotCommandScope permits BotCommandScopeAllChatAdministrators, BotCommandScopeAllGroupChats, BotCommandScopeAllPrivateChats, BotCommandScopeChat, BotCommandScopeChatAdministrators, BotCommandScopeChatMember, BotCommandScopeDefault {}
+public interface BotCommandScope {}

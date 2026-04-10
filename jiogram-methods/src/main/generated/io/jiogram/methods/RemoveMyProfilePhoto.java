@@ -1,11 +1,13 @@
 package io.jiogram.methods;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.TelegramMethod;
 
-public record RemoveMyProfilePhoto(
-
-) implements TelegramMethod<Boolean> {
+public class RemoveMyProfilePhoto implements TelegramMethod<Boolean> {
+    @JsonCreator
+    public RemoveMyProfilePhoto() {
+    }
 
     @Override
     public String apiMethod() {

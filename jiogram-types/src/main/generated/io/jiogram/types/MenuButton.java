@@ -9,4 +9,4 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     @JsonSubTypes.Type(value = MenuButtonDefault.class, name = "default"),
     @JsonSubTypes.Type(value = MenuButtonWebApp.class, name = "web_app")
 })
-public sealed interface MenuButton permits MenuButtonCommands, MenuButtonDefault, MenuButtonWebApp {}
+public interface MenuButton {}

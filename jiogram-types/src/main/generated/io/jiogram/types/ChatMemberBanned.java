@@ -1,10 +1,34 @@
 package io.jiogram.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.User;
 
-public record ChatMemberBanned(
-    @JsonProperty("status") String status,
-    @JsonProperty("user") User user,
-    @JsonProperty("until_date") long untilDate
-) implements ChatMember {}
+public class ChatMemberBanned implements ChatMember {
+    @JsonProperty("status") private final String status;
+    @JsonProperty("user") private final User user;
+    @JsonProperty("until_date") private final long untilDate;
+
+    @JsonCreator
+    public ChatMemberBanned(
+            @JsonProperty("status") String status,
+            @JsonProperty("user") User user,
+            @JsonProperty("until_date") long untilDate
+    ) {
+        this.status = status;
+        this.user = user;
+        this.untilDate = untilDate;
+    }
+
+    public String status() {
+        return this.status;
+    }
+
+    public User user() {
+        return this.user;
+    }
+
+    public long untilDate() {
+        return this.untilDate;
+    }
+}

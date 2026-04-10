@@ -8,4 +8,4 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     @JsonSubTypes.Type(value = InaccessibleMessage.class, name = "0"),
     @JsonSubTypes.Type(value = Message.class, name = "nonzero")
 })
-public sealed interface MaybeInaccessibleMessage permits InaccessibleMessage, Message {}
+public interface MaybeInaccessibleMessage {}

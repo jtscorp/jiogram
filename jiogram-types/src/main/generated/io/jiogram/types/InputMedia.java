@@ -11,4 +11,4 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     @JsonSubTypes.Type(value = InputMediaPhoto.class, name = "photo"),
     @JsonSubTypes.Type(value = InputMediaVideo.class, name = "video")
 })
-public sealed interface InputMedia permits InputMediaAnimation, InputMediaAudio, InputMediaDocument, InputMediaPhoto, InputMediaVideo {}
+public interface InputMedia {}

@@ -1,10 +1,34 @@
 package io.jiogram.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jspecify.annotations.Nullable;
 
-public record InputProfilePhotoAnimated(
-    @JsonProperty("type") String type,
-    @JsonProperty("animation") String animation,
-    @JsonProperty("main_frame_timestamp") @Nullable Double mainFrameTimestamp
-) implements InputProfilePhoto {}
+public class InputProfilePhotoAnimated implements InputProfilePhoto {
+    @JsonProperty("type") private final String type;
+    @JsonProperty("animation") private final String animation;
+    @JsonProperty("main_frame_timestamp") @Nullable private final Double mainFrameTimestamp;
+
+    @JsonCreator
+    public InputProfilePhotoAnimated(
+            @JsonProperty("type") String type,
+            @JsonProperty("animation") String animation,
+            @JsonProperty("main_frame_timestamp") @Nullable Double mainFrameTimestamp
+    ) {
+        this.type = type;
+        this.animation = animation;
+        this.mainFrameTimestamp = mainFrameTimestamp;
+    }
+
+    public String type() {
+        return this.type;
+    }
+
+    public String animation() {
+        return this.animation;
+    }
+
+    public Double mainFrameTimestamp() {
+        return this.mainFrameTimestamp;
+    }
+}

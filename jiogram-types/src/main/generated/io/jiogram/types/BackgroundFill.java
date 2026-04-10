@@ -9,4 +9,4 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     @JsonSubTypes.Type(value = BackgroundFillGradient.class, name = "gradient"),
     @JsonSubTypes.Type(value = BackgroundFillSolid.class, name = "solid")
 })
-public sealed interface BackgroundFill permits BackgroundFillFreeformGradient, BackgroundFillGradient, BackgroundFillSolid {}
+public interface BackgroundFill {}

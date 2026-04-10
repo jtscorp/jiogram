@@ -13,7 +13,18 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class MemoryStateStorage implements StateStorage {
 
-    private record StateRecord(@Nullable String state, Map<String, Object> data) {}
+    private static final class StateRecord {
+        private final @Nullable String state;
+        private final Map<String, Object> data;
+
+        StateRecord(@Nullable String state, Map<String, Object> data) {
+            this.state = state;
+            this.data = data;
+        }
+
+        @Nullable String state() { return state; }
+        Map<String, Object> data() { return data; }
+    }
 
     private final ConcurrentHashMap<StorageKey, StateRecord> store = new ConcurrentHashMap<>();
 

@@ -10,4 +10,4 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     @JsonSubTypes.Type(value = BackgroundTypePattern.class, name = "pattern"),
     @JsonSubTypes.Type(value = BackgroundTypeWallpaper.class, name = "wallpaper")
 })
-public sealed interface BackgroundType permits BackgroundTypeChatTheme, BackgroundTypeFill, BackgroundTypePattern, BackgroundTypeWallpaper {}
+public interface BackgroundType {}

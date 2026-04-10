@@ -1,12 +1,14 @@
 package io.jiogram.methods;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.TelegramMethod;
 import io.jiogram.types.User;
 
-public record GetMe(
-
-) implements TelegramMethod<User> {
+public class GetMe implements TelegramMethod<User> {
+    @JsonCreator
+    public GetMe() {
+    }
 
     @Override
     public String apiMethod() {

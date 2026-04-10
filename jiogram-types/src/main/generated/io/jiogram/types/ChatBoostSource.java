@@ -9,4 +9,4 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     @JsonSubTypes.Type(value = ChatBoostSourceGiveaway.class, name = "giveaway"),
     @JsonSubTypes.Type(value = ChatBoostSourcePremium.class, name = "premium")
 })
-public sealed interface ChatBoostSource permits ChatBoostSourceGiftCode, ChatBoostSourceGiveaway, ChatBoostSourcePremium {}
+public interface ChatBoostSource {}

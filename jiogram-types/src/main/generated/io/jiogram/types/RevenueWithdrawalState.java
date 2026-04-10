@@ -9,4 +9,4 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     @JsonSubTypes.Type(value = RevenueWithdrawalStatePending.class, name = "pending"),
     @JsonSubTypes.Type(value = RevenueWithdrawalStateSucceeded.class, name = "succeeded")
 })
-public sealed interface RevenueWithdrawalState permits RevenueWithdrawalStateFailed, RevenueWithdrawalStatePending, RevenueWithdrawalStateSucceeded {}
+public interface RevenueWithdrawalState {}

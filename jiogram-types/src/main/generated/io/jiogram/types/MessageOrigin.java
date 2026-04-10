@@ -10,4 +10,4 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     @JsonSubTypes.Type(value = MessageOriginHiddenUser.class, name = "hidden_user"),
     @JsonSubTypes.Type(value = MessageOriginUser.class, name = "user")
 })
-public sealed interface MessageOrigin permits MessageOriginChannel, MessageOriginChat, MessageOriginHiddenUser, MessageOriginUser {}
+public interface MessageOrigin {}

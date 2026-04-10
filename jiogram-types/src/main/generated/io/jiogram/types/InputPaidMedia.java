@@ -8,4 +8,4 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     @JsonSubTypes.Type(value = InputPaidMediaPhoto.class, name = "photo"),
     @JsonSubTypes.Type(value = InputPaidMediaVideo.class, name = "video")
 })
-public sealed interface InputPaidMedia permits InputPaidMediaPhoto, InputPaidMediaVideo {}
+public interface InputPaidMedia {}

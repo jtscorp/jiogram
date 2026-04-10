@@ -8,4 +8,4 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     @JsonSubTypes.Type(value = OwnedGiftRegular.class, name = "regular"),
     @JsonSubTypes.Type(value = OwnedGiftUnique.class, name = "unique")
 })
-public sealed interface OwnedGift permits OwnedGiftRegular, OwnedGiftUnique {}
+public interface OwnedGift {}

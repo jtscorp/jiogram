@@ -13,4 +13,4 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     @JsonSubTypes.Type(value = TransactionPartnerTelegramApi.class, name = "telegram_api"),
     @JsonSubTypes.Type(value = TransactionPartnerUser.class, name = "user")
 })
-public sealed interface TransactionPartner permits TransactionPartnerAffiliateProgram, TransactionPartnerChat, TransactionPartnerFragment, TransactionPartnerOther, TransactionPartnerTelegramAds, TransactionPartnerTelegramApi, TransactionPartnerUser {}
+public interface TransactionPartner {}

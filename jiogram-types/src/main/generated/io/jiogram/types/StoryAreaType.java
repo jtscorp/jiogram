@@ -11,4 +11,4 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     @JsonSubTypes.Type(value = StoryAreaTypeUniqueGift.class, name = "unique_gift"),
     @JsonSubTypes.Type(value = StoryAreaTypeWeather.class, name = "weather")
 })
-public sealed interface StoryAreaType permits StoryAreaTypeLink, StoryAreaTypeLocation, StoryAreaTypeSuggestedReaction, StoryAreaTypeUniqueGift, StoryAreaTypeWeather {}
+public interface StoryAreaType {}

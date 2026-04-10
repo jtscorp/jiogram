@@ -1,5 +1,6 @@
 package io.jiogram.methods;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.ChatId;
 import io.jiogram.types.InputFileOrString;
@@ -12,24 +13,124 @@ import io.jiogram.types.TelegramMethod;
 import java.util.List;
 import org.jspecify.annotations.Nullable;
 
-public record SendVoice(
-    @JsonProperty("business_connection_id") @Nullable String businessConnectionId,
-    @JsonProperty("chat_id") ChatId chatId,
-    @JsonProperty("message_thread_id") @Nullable Long messageThreadId,
-    @JsonProperty("direct_messages_topic_id") @Nullable Long directMessagesTopicId,
-    @JsonProperty("voice") InputFileOrString voice,
-    @JsonProperty("caption") @Nullable String caption,
-    @JsonProperty("parse_mode") @Nullable String parseMode,
-    @JsonProperty("caption_entities") @Nullable List<MessageEntity> captionEntities,
-    @JsonProperty("duration") @Nullable Long duration,
-    @JsonProperty("disable_notification") @Nullable Boolean disableNotification,
-    @JsonProperty("protect_content") @Nullable Boolean protectContent,
-    @JsonProperty("allow_paid_broadcast") @Nullable Boolean allowPaidBroadcast,
-    @JsonProperty("message_effect_id") @Nullable String messageEffectId,
-    @JsonProperty("suggested_post_parameters") @Nullable SuggestedPostParameters suggestedPostParameters,
-    @JsonProperty("reply_parameters") @Nullable ReplyParameters replyParameters,
-    @JsonProperty("reply_markup") @Nullable ReplyMarkup replyMarkup
-) implements TelegramMethod<Message> {
+public class SendVoice implements TelegramMethod<Message> {
+    @JsonProperty("business_connection_id") @Nullable private final String businessConnectionId;
+    @JsonProperty("chat_id") private final ChatId chatId;
+    @JsonProperty("message_thread_id") @Nullable private final Long messageThreadId;
+    @JsonProperty("direct_messages_topic_id") @Nullable private final Long directMessagesTopicId;
+    @JsonProperty("voice") private final InputFileOrString voice;
+    @JsonProperty("caption") @Nullable private final String caption;
+    @JsonProperty("parse_mode") @Nullable private final String parseMode;
+    @JsonProperty("caption_entities") @Nullable private final List<MessageEntity> captionEntities;
+    @JsonProperty("duration") @Nullable private final Long duration;
+    @JsonProperty("disable_notification") @Nullable private final Boolean disableNotification;
+    @JsonProperty("protect_content") @Nullable private final Boolean protectContent;
+    @JsonProperty("allow_paid_broadcast") @Nullable private final Boolean allowPaidBroadcast;
+    @JsonProperty("message_effect_id") @Nullable private final String messageEffectId;
+    @JsonProperty("suggested_post_parameters") @Nullable private final SuggestedPostParameters suggestedPostParameters;
+    @JsonProperty("reply_parameters") @Nullable private final ReplyParameters replyParameters;
+    @JsonProperty("reply_markup") @Nullable private final ReplyMarkup replyMarkup;
+
+    @JsonCreator
+    public SendVoice(
+            @JsonProperty("business_connection_id") @Nullable String businessConnectionId,
+            @JsonProperty("chat_id") ChatId chatId,
+            @JsonProperty("message_thread_id") @Nullable Long messageThreadId,
+            @JsonProperty("direct_messages_topic_id") @Nullable Long directMessagesTopicId,
+            @JsonProperty("voice") InputFileOrString voice,
+            @JsonProperty("caption") @Nullable String caption,
+            @JsonProperty("parse_mode") @Nullable String parseMode,
+            @JsonProperty("caption_entities") @Nullable List<MessageEntity> captionEntities,
+            @JsonProperty("duration") @Nullable Long duration,
+            @JsonProperty("disable_notification") @Nullable Boolean disableNotification,
+            @JsonProperty("protect_content") @Nullable Boolean protectContent,
+            @JsonProperty("allow_paid_broadcast") @Nullable Boolean allowPaidBroadcast,
+            @JsonProperty("message_effect_id") @Nullable String messageEffectId,
+            @JsonProperty("suggested_post_parameters") @Nullable SuggestedPostParameters suggestedPostParameters,
+            @JsonProperty("reply_parameters") @Nullable ReplyParameters replyParameters,
+            @JsonProperty("reply_markup") @Nullable ReplyMarkup replyMarkup
+    ) {
+        this.businessConnectionId = businessConnectionId;
+        this.chatId = chatId;
+        this.messageThreadId = messageThreadId;
+        this.directMessagesTopicId = directMessagesTopicId;
+        this.voice = voice;
+        this.caption = caption;
+        this.parseMode = parseMode;
+        this.captionEntities = captionEntities;
+        this.duration = duration;
+        this.disableNotification = disableNotification;
+        this.protectContent = protectContent;
+        this.allowPaidBroadcast = allowPaidBroadcast;
+        this.messageEffectId = messageEffectId;
+        this.suggestedPostParameters = suggestedPostParameters;
+        this.replyParameters = replyParameters;
+        this.replyMarkup = replyMarkup;
+    }
+
+    public String businessConnectionId() {
+        return this.businessConnectionId;
+    }
+
+    public ChatId chatId() {
+        return this.chatId;
+    }
+
+    public Long messageThreadId() {
+        return this.messageThreadId;
+    }
+
+    public Long directMessagesTopicId() {
+        return this.directMessagesTopicId;
+    }
+
+    public InputFileOrString voice() {
+        return this.voice;
+    }
+
+    public String caption() {
+        return this.caption;
+    }
+
+    public String parseMode() {
+        return this.parseMode;
+    }
+
+    public List<MessageEntity> captionEntities() {
+        return this.captionEntities;
+    }
+
+    public Long duration() {
+        return this.duration;
+    }
+
+    public Boolean disableNotification() {
+        return this.disableNotification;
+    }
+
+    public Boolean protectContent() {
+        return this.protectContent;
+    }
+
+    public Boolean allowPaidBroadcast() {
+        return this.allowPaidBroadcast;
+    }
+
+    public String messageEffectId() {
+        return this.messageEffectId;
+    }
+
+    public SuggestedPostParameters suggestedPostParameters() {
+        return this.suggestedPostParameters;
+    }
+
+    public ReplyParameters replyParameters() {
+        return this.replyParameters;
+    }
+
+    public ReplyMarkup replyMarkup() {
+        return this.replyMarkup;
+    }
 
     @Override
     public String apiMethod() {

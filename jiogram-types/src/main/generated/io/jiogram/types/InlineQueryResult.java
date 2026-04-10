@@ -26,4 +26,4 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     @JsonSubTypes.Type(value = InlineQueryResultVideo.class, name = "video"),
     @JsonSubTypes.Type(value = InlineQueryResultVoice.class, name = "voice")
 })
-public sealed interface InlineQueryResult permits InlineQueryResultArticle, InlineQueryResultAudio, InlineQueryResultCachedAudio, InlineQueryResultCachedDocument, InlineQueryResultCachedGif, InlineQueryResultCachedMpeg4Gif, InlineQueryResultCachedPhoto, InlineQueryResultCachedVideo, InlineQueryResultCachedVoice, InlineQueryResultContact, InlineQueryResultDocument, InlineQueryResultGame, InlineQueryResultGif, InlineQueryResultLocation, InlineQueryResultMpeg4Gif, InlineQueryResultPhoto, InlineQueryResultCachedSticker, InlineQueryResultVenue, InlineQueryResultVideo, InlineQueryResultVoice {}
+public interface InlineQueryResult {}

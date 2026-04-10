@@ -83,17 +83,18 @@ public class HandlerAdapter<E> implements Handler<E> {
             return Mono.empty();
         }
 
-        if (result instanceof Mono<?> mono) {
+        if (result instanceof Mono) {
+            Mono<?> mono = (Mono<?>) result;
             return mono.flatMap(value -> {
-                if (value instanceof TelegramMethod<?> method) {
-                    return context.bot().execute(method).then();
+                if (value instanceof TelegramMethod) {
+                    return context.bot().execute((TelegramMethod<?>) value).then();
                 }
                 return Mono.empty();
             }).then();
         }
 
-        if (result instanceof TelegramMethod<?> telegramMethod) {
-            return context.bot().execute(telegramMethod).then();
+        if (result instanceof TelegramMethod) {
+            return context.bot().execute((TelegramMethod<?>) result).then();
         }
 
         return Mono.empty();

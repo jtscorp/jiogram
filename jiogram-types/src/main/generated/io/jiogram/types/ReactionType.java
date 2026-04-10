@@ -9,4 +9,4 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     @JsonSubTypes.Type(value = ReactionTypeEmoji.class, name = "emoji"),
     @JsonSubTypes.Type(value = ReactionTypePaid.class, name = "paid")
 })
-public sealed interface ReactionType permits ReactionTypeCustomEmoji, ReactionTypeEmoji, ReactionTypePaid {}
+public interface ReactionType {}

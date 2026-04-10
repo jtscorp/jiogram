@@ -44,7 +44,17 @@ class BotTest {
     /**
      * A simple test TelegramMethod implementation.
      */
-    record TestMethod(String value) implements TelegramMethod<String> {
+    static final class TestMethod implements TelegramMethod<String> {
+        private final String value;
+
+        TestMethod(String value) {
+            this.value = value;
+        }
+
+        public String value() {
+            return value;
+        }
+
         @Override
         public String apiMethod() {
             return "testMethod";

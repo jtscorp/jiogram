@@ -1,14 +1,37 @@
 package io.jiogram.methods;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.TelegramMethod;
 import org.jspecify.annotations.Nullable;
 
-public record AnswerPreCheckoutQuery(
-    @JsonProperty("pre_checkout_query_id") String preCheckoutQueryId,
-    @JsonProperty("ok") boolean ok,
-    @JsonProperty("error_message") @Nullable String errorMessage
-) implements TelegramMethod<Boolean> {
+public class AnswerPreCheckoutQuery implements TelegramMethod<Boolean> {
+    @JsonProperty("pre_checkout_query_id") private final String preCheckoutQueryId;
+    @JsonProperty("ok") private final boolean ok;
+    @JsonProperty("error_message") @Nullable private final String errorMessage;
+
+    @JsonCreator
+    public AnswerPreCheckoutQuery(
+            @JsonProperty("pre_checkout_query_id") String preCheckoutQueryId,
+            @JsonProperty("ok") boolean ok,
+            @JsonProperty("error_message") @Nullable String errorMessage
+    ) {
+        this.preCheckoutQueryId = preCheckoutQueryId;
+        this.ok = ok;
+        this.errorMessage = errorMessage;
+    }
+
+    public String preCheckoutQueryId() {
+        return this.preCheckoutQueryId;
+    }
+
+    public boolean ok() {
+        return this.ok;
+    }
+
+    public String errorMessage() {
+        return this.errorMessage;
+    }
 
     @Override
     public String apiMethod() {

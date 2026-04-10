@@ -15,4 +15,4 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     @JsonSubTypes.Type(value = PassportElementErrorTranslationFiles.class, name = "translation_files"),
     @JsonSubTypes.Type(value = PassportElementErrorUnspecified.class, name = "unspecified")
 })
-public sealed interface PassportElementError permits PassportElementErrorDataField, PassportElementErrorFile, PassportElementErrorFiles, PassportElementErrorFrontSide, PassportElementErrorReverseSide, PassportElementErrorSelfie, PassportElementErrorTranslationFile, PassportElementErrorTranslationFiles, PassportElementErrorUnspecified {}
+public interface PassportElementError {}
