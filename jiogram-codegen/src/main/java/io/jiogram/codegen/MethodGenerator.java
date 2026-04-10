@@ -14,12 +14,14 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Generates Java record source files from {@link MethodDefinition} objects.
+ * Generates Java class source files from {@link MethodDefinition} objects.
  * <p>
- * Each generated record implements {@code TelegramMethod<T>} where T is the return type,
+ * Each generated class implements {@code TelegramMethod<T>} where T is the return type,
  * and includes:
  * <ul>
- *   <li>Record components for all method parameters</li>
+ *   <li>Final fields with {@code @JsonProperty} annotations</li>
+ *   <li>A {@code @JsonCreator} constructor</li>
+ *   <li>Record-style accessors (no {@code get} prefix)</li>
  *   <li>{@code apiMethod()} returning the original API method name</li>
  *   <li>{@code apiReturnType()} returning the return type string</li>
  *   <li>A static {@code of()} factory with only required parameters</li>
@@ -76,6 +78,7 @@ public final class MethodGenerator {
 
         Set<String> imports = new TreeSet<>();
         imports.add(JACKSON_ANNOTATION_PACKAGE + ".JsonProperty");
+        imports.add(JACKSON_ANNOTATION_PACKAGE + ".JsonCreator");
 
         // Resolve return type
         TypeName returnType = typeMapper.resolveReturnType(method.returnType());
@@ -85,24 +88,20 @@ public final class MethodGenerator {
         // Build TelegramMethod<ReturnType> import
         imports.add(typesPackage + ".TelegramMethod");
 
-        // Build record components
-        List<String> components = new ArrayList<>();
+        // Collect field metadata
+        record FieldInfo(String annotation, String typeString, String javaName, boolean nullable) {}
+        List<FieldInfo> fields = new ArrayList<>();
         boolean hasOptionalRefField = false;
 
         for (FieldDefinition param : method.parameters()) {
             TypeName javaType = typeMapper.resolve(param.type(), param.required());
             String typeString = resolveTypeString(javaType, imports);
-
-            StringBuilder comp = new StringBuilder();
-            comp.append("    @JsonProperty(\"").append(param.name()).append("\")");
-
-            if (!param.required() && !javaType.isPrimitive()) {
-                comp.append(" @Nullable");
+            String annotation = "@JsonProperty(\"" + param.name() + "\")";
+            boolean nullable = !param.required() && !javaType.isPrimitive();
+            if (nullable) {
                 hasOptionalRefField = true;
             }
-
-            comp.append(" ").append(typeString).append(" ").append(param.javaName());
-            components.add(comp.toString());
+            fields.add(new FieldInfo(annotation, typeString, param.javaName(), nullable));
         }
 
         if (hasOptionalRefField) {
@@ -117,10 +116,56 @@ public final class MethodGenerator {
         }
         sb.append("\n");
 
-        // Record declaration
-        sb.append("public record ").append(method.className()).append("(\n");
-        sb.append(String.join(",\n", components));
-        sb.append("\n) implements TelegramMethod<").append(returnTypeStr).append("> {\n\n");
+        // Class declaration
+        sb.append("public class ").append(method.className())
+                .append(" implements TelegramMethod<").append(returnTypeStr).append("> {\n");
+
+        // Fields
+        for (FieldInfo f : fields) {
+            sb.append("    ").append(f.annotation());
+            if (f.nullable()) {
+                sb.append(" @Nullable");
+            }
+            sb.append(" private final ").append(f.typeString()).append(" ").append(f.javaName()).append(";\n");
+        }
+
+        if (!fields.isEmpty()) {
+            sb.append("\n");
+        }
+
+        // @JsonCreator constructor
+        sb.append("    @JsonCreator\n");
+        sb.append("    public ").append(method.className()).append("(");
+        if (!fields.isEmpty()) {
+            sb.append("\n");
+            List<String> ctorParams = new ArrayList<>();
+            for (FieldInfo f : fields) {
+                StringBuilder param = new StringBuilder("            ");
+                param.append(f.annotation());
+                if (f.nullable()) {
+                    param.append(" @Nullable");
+                }
+                param.append(" ").append(f.typeString()).append(" ").append(f.javaName());
+                ctorParams.add(param.toString());
+            }
+            sb.append(String.join(",\n", ctorParams));
+            sb.append("\n    ");
+        }
+        sb.append(") {\n");
+        for (FieldInfo f : fields) {
+            sb.append("        this.").append(f.javaName()).append(" = ").append(f.javaName()).append(";\n");
+        }
+        sb.append("    }\n");
+
+        // Accessors
+        for (FieldInfo f : fields) {
+            sb.append("\n");
+            sb.append("    public ").append(f.typeString()).append(" ").append(f.javaName()).append("() {\n");
+            sb.append("        return this.").append(f.javaName()).append(";\n");
+            sb.append("    }\n");
+        }
+
+        sb.append("\n");
 
         // apiMethod()
         sb.append("    @Override\n");

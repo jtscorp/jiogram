@@ -14,10 +14,10 @@ class TypeGeneratorTest {
     private final TypeMapper typeMapper = new TypeMapper(TYPES_PKG);
     private final TypeGenerator generator = new TypeGenerator(typeMapper, TYPES_PKG);
 
-    // ---- Simple record (ChatPhoto) ----
+    // ---- Simple POJO class (ChatPhoto) ----
 
     @Test
-    void simpleRecord_generatesRecordWithAllRequiredFields() {
+    void simpleRecord_generatesPojoClassWithAllRequiredFields() {
         TypeDefinition chatPhoto = new TypeDefinition("ChatPhoto", "Represents a chat photo.", List.of(
                 new FieldDefinition("small_file_id", "String", true, "File identifier of small photo"),
                 new FieldDefinition("small_file_unique_id", "String", true, "Unique file identifier of small photo"),
@@ -27,13 +27,17 @@ class TypeGeneratorTest {
 
         String source = generator.generateToString(chatPhoto);
 
-        assertTrue(source.contains("public record ChatPhoto("), "Should be a record");
-        assertTrue(source.contains("@JsonProperty(\"small_file_id\") String smallFileId"), "camelCase field");
-        assertTrue(source.contains("@JsonProperty(\"big_file_id\") String bigFileId"), "camelCase field");
+        assertTrue(source.contains("public class ChatPhoto"), "Should be a class");
+        assertFalse(source.contains("record"), "Should not be a record");
+        assertTrue(source.contains("@JsonProperty(\"small_file_id\") private final String smallFileId"), "field with annotation");
+        assertTrue(source.contains("@JsonProperty(\"big_file_id\") private final String bigFileId"), "field with annotation");
+        assertTrue(source.contains("@JsonCreator"), "Should have @JsonCreator constructor");
+        assertTrue(source.contains("public String smallFileId()"), "Record-style accessor");
+        assertTrue(source.contains("public String bigFileId()"), "Record-style accessor");
         assertFalse(source.contains("@Nullable"), "All fields required, no @Nullable");
     }
 
-    // ---- Record with optional fields (User) ----
+    // ---- POJO class with optional fields (User) ----
 
     @Test
     void recordWithOptionalFields_hasNullableAnnotations() {
@@ -48,41 +52,46 @@ class TypeGeneratorTest {
 
         String source = generator.generateToString(user);
 
-        assertTrue(source.contains("public record User("), "Should be a record");
+        assertTrue(source.contains("public class User"), "Should be a class");
         // Required primitive fields use primitives
-        assertTrue(source.contains("@JsonProperty(\"id\") long id"), "Required Integer -> long");
-        assertTrue(source.contains("@JsonProperty(\"is_bot\") boolean isBot"), "Required Boolean -> boolean");
+        assertTrue(source.contains("@JsonProperty(\"id\") private final long id"), "Required Integer -> long field");
+        assertTrue(source.contains("@JsonProperty(\"is_bot\") private final boolean isBot"), "Required Boolean -> boolean field");
         // Required String
-        assertTrue(source.contains("@JsonProperty(\"first_name\") String firstName"), "Required String");
-        // Optional String gets @Nullable
-        assertTrue(source.contains("@JsonProperty(\"last_name\") @Nullable String lastName"), "Optional String -> @Nullable");
-        assertTrue(source.contains("@JsonProperty(\"username\") @Nullable String username"), "Optional String -> @Nullable");
+        assertTrue(source.contains("@JsonProperty(\"first_name\") private final String firstName"), "Required String field");
+        // Optional String gets @Nullable on field
+        assertTrue(source.contains("@JsonProperty(\"last_name\") @Nullable private final String lastName"), "Optional String -> @Nullable field");
+        assertTrue(source.contains("@JsonProperty(\"username\") @Nullable private final String username"), "Optional String -> @Nullable field");
+        // Accessors
+        assertTrue(source.contains("public long id()"), "Record-style accessor");
+        assertTrue(source.contains("public String firstName()"), "Record-style accessor");
+        assertTrue(source.contains("public String lastName()"), "Record-style accessor for optional");
         // Imports
         assertTrue(source.contains("import org.jspecify.annotations.Nullable;"), "Should import Nullable");
         assertTrue(source.contains("import com.fasterxml.jackson.annotation.JsonProperty;"), "Should import JsonProperty");
+        assertTrue(source.contains("import com.fasterxml.jackson.annotation.JsonCreator;"), "Should import JsonCreator");
     }
 
-    // ---- Sealed interface (ChatMember) ----
+    // ---- Regular interface (ChatMember) — no sealed, no permits ----
 
     @Test
-    void discriminatedUnionParent_generatesSealedInterface() {
+    void discriminatedUnionParent_generatesRegularInterface() {
         TypeDefinition chatMember = new TypeDefinition("ChatMember", "Represents a chat member.", List.of(), "Available types");
 
         String source = generator.generateToString(chatMember);
 
-        assertTrue(source.contains("public sealed interface ChatMember"), "Should be sealed interface");
+        assertTrue(source.contains("public interface ChatMember"), "Should be a regular interface");
+        assertFalse(source.contains("sealed"), "Should NOT be sealed (Java 11 compat)");
+        assertFalse(source.contains("permits"), "Should NOT have permits clause (Java 11 compat)");
         assertTrue(source.contains("@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = \"status\")"),
                 "Should have @JsonTypeInfo with status discriminator");
         assertTrue(source.contains("@JsonSubTypes({"), "Should have @JsonSubTypes");
         assertTrue(source.contains("@JsonSubTypes.Type(value = ChatMemberOwner.class, name = \"creator\")"),
                 "Should list ChatMemberOwner");
-        assertTrue(source.contains("permits"), "Should have permits clause");
-        assertTrue(source.contains("ChatMemberOwner"), "Permits should include ChatMemberOwner");
-        assertTrue(source.contains("ChatMemberBanned"), "Permits should include ChatMemberBanned");
+        assertTrue(source.contains("ChatMemberBanned"), "Should include ChatMemberBanned in @JsonSubTypes");
         assertFalse(source.contains("record"), "Should not be a record");
     }
 
-    // ---- Subtype record (ChatMemberOwner) ----
+    // ---- Subtype POJO class (ChatMemberOwner) implementing parent interface ----
 
     @Test
     void subtypeRecord_implementsParentInterface() {
@@ -95,12 +104,16 @@ class TypeGeneratorTest {
 
         String source = generator.generateToString(chatMemberOwner);
 
-        assertTrue(source.contains("public record ChatMemberOwner("), "Should be a record");
+        assertTrue(source.contains("public class ChatMemberOwner"), "Should be a class");
+        assertFalse(source.contains("record"), "Should not be a record");
         assertTrue(source.contains("implements ChatMember"), "Should implement ChatMember");
-        assertTrue(source.contains("@JsonProperty(\"status\") String status"), "Should have status field");
-        assertTrue(source.contains("@JsonProperty(\"user\") User user"), "Should have user field");
-        assertTrue(source.contains("@JsonProperty(\"is_anonymous\") boolean isAnonymous"), "Required boolean");
-        assertTrue(source.contains("@JsonProperty(\"custom_title\") @Nullable String customTitle"), "Optional -> @Nullable");
+        assertTrue(source.contains("@JsonProperty(\"status\") private final String status"), "Should have status field");
+        assertTrue(source.contains("@JsonProperty(\"user\") private final User user"), "Should have user field");
+        assertTrue(source.contains("@JsonProperty(\"is_anonymous\") private final boolean isAnonymous"), "Required boolean");
+        assertTrue(source.contains("@JsonProperty(\"custom_title\") @Nullable private final String customTitle"), "Optional -> @Nullable field");
+        assertTrue(source.contains("@JsonCreator"), "Should have @JsonCreator constructor");
+        assertTrue(source.contains("public String status()"), "Record-style accessor");
+        assertTrue(source.contains("public String customTitle()"), "Record-style accessor for optional");
     }
 
     // ---- Package declaration ----
@@ -130,16 +143,18 @@ class TypeGeneratorTest {
         assertTrue(source.contains("import java.util.List;"), "Should import java.util.List");
     }
 
-    // ---- Sealed interface with type discriminator ----
+    // ---- Regular interface with type discriminator ----
 
     @Test
-    void messageOrigin_generatesSealedInterfaceWithTypeDiscriminator() {
+    void messageOrigin_generatesInterfaceWithTypeDiscriminator() {
         TypeDefinition messageOrigin = new TypeDefinition("MessageOrigin", "Describes the origin.", List.of(), "Available types");
 
         String source = generator.generateToString(messageOrigin);
 
-        assertTrue(source.contains("public sealed interface MessageOrigin"), "Should be sealed interface");
+        assertTrue(source.contains("public interface MessageOrigin"), "Should be a regular interface");
+        assertFalse(source.contains("sealed"), "Should NOT be sealed (Java 11 compat)");
+        assertFalse(source.contains("permits"), "Should NOT have permits clause");
         assertTrue(source.contains("property = \"type\""), "Should use 'type' discriminator");
-        assertTrue(source.contains("MessageOriginUser"), "Should list subtypes");
+        assertTrue(source.contains("MessageOriginUser"), "Should list subtypes in @JsonSubTypes");
     }
 }

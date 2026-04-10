@@ -17,9 +17,9 @@ import java.util.stream.Collectors;
  * <p>
  * Supports three generation modes:
  * <ul>
- *   <li>Regular type &rarr; Java record</li>
- *   <li>Discriminated union parent &rarr; sealed interface</li>
- *   <li>Discriminated union subtype &rarr; record implementing parent interface</li>
+ *   <li>Regular type &rarr; Java class (POJO with final fields, {@code @JsonCreator} constructor, record-style accessors)</li>
+ *   <li>Discriminated union parent &rarr; interface (with {@code @JsonTypeInfo}/{@code @JsonSubTypes})</li>
+ *   <li>Discriminated union subtype &rarr; Java class implementing parent interface</li>
  * </ul>
  */
 public final class TypeGenerator {
@@ -96,7 +96,7 @@ public final class TypeGenerator {
 
     private String generateRecord(TypeDefinition type) {
         Set<String> imports = new TreeSet<>();
-        List<String> components = buildRecordComponents(type.fields(), imports);
+        List<FieldInfo> fields = buildFieldInfos(type.fields(), imports);
 
         // Collect all interfaces this type should implement
         List<String> interfaces = new ArrayList<>();
@@ -108,6 +108,14 @@ public final class TypeGenerator {
             interfaces.add(additionalIface);
         }
 
+        return buildPojoClass(type.name(), interfaces, fields, imports);
+    }
+
+    /**
+     * Emits a complete POJO class: final fields, {@code @JsonCreator} constructor, record-style accessors.
+     */
+    private String buildPojoClass(String className, List<String> interfaces,
+                                  List<FieldInfo> fields, Set<String> imports) {
         StringBuilder sb = new StringBuilder();
         sb.append("package ").append(basePackage).append(";\n\n");
         for (String imp : imports) {
@@ -116,14 +124,59 @@ public final class TypeGenerator {
         if (!imports.isEmpty()) {
             sb.append("\n");
         }
-        sb.append("public record ").append(type.name()).append("(\n");
-        sb.append(String.join(",\n", components));
-        sb.append("\n)");
+
+        sb.append("public class ").append(className);
         if (!interfaces.isEmpty()) {
             sb.append(" implements ").append(String.join(", ", interfaces));
         }
-        sb.append(" {}\n");
+        sb.append(" {\n");
 
+        // Fields
+        for (FieldInfo f : fields) {
+            sb.append("    ").append(f.annotation());
+            if (f.nullable()) {
+                sb.append(" @Nullable");
+            }
+            sb.append(" private final ").append(f.typeString()).append(" ").append(f.javaName()).append(";\n");
+        }
+
+        if (!fields.isEmpty()) {
+            sb.append("\n");
+        }
+
+        // @JsonCreator constructor
+        sb.append("    @JsonCreator\n");
+        sb.append("    public ").append(className).append("(");
+        if (!fields.isEmpty()) {
+            sb.append("\n");
+            List<String> ctorParams = new ArrayList<>();
+            for (FieldInfo f : fields) {
+                StringBuilder param = new StringBuilder("            ");
+                param.append(f.annotation());
+                if (f.nullable()) {
+                    param.append(" @Nullable");
+                }
+                param.append(" ").append(f.typeString()).append(" ").append(f.javaName());
+                ctorParams.add(param.toString());
+            }
+            sb.append(String.join(",\n", ctorParams));
+            sb.append("\n    ");
+        }
+        sb.append(") {\n");
+        for (FieldInfo f : fields) {
+            sb.append("        this.").append(f.javaName()).append(" = ").append(f.javaName()).append(";\n");
+        }
+        sb.append("    }\n");
+
+        // Accessors
+        for (FieldInfo f : fields) {
+            sb.append("\n");
+            sb.append("    public ").append(f.typeString()).append(" ").append(f.javaName()).append("() {\n");
+            sb.append("        return this.").append(f.javaName()).append(";\n");
+            sb.append("    }\n");
+        }
+
+        sb.append("}\n");
         return sb.toString();
     }
 
@@ -170,18 +223,9 @@ public final class TypeGenerator {
         }
         sb.append("})\n");
 
-        // sealed interface declaration with permits — same deterministic
-        // ordering by discriminator key, so the permits clause matches the
-        // @JsonSubTypes ordering above.
-        sb.append("public sealed interface ").append(type.name());
-
-        String permits = unionInfo.subtypes().entrySet().stream()
-                .sorted(Map.Entry.comparingByKey())
-                .map(Map.Entry::getValue)
-                .collect(Collectors.joining(", "));
-        sb.append(" permits ").append(permits);
-
-        sb.append(" {}\n");
+        // Regular interface — no sealed/permits for Java 11 compatibility.
+        // Subtype discrimination is handled purely by @JsonTypeInfo/@JsonSubTypes.
+        sb.append("public interface ").append(type.name()).append(" {}\n");
 
         return sb.toString();
     }
@@ -210,53 +254,40 @@ public final class TypeGenerator {
         String parentName = UnionRegistry.parentOf(type.name());
 
         Set<String> imports = new TreeSet<>();
-        List<String> components = buildRecordComponents(type.fields(), imports);
+        List<FieldInfo> fields = buildFieldInfos(type.fields(), imports);
 
-        StringBuilder sb = new StringBuilder();
-        sb.append("package ").append(basePackage).append(";\n\n");
-        for (String imp : imports) {
-            sb.append("import ").append(imp).append(";\n");
-        }
-        if (!imports.isEmpty()) {
-            sb.append("\n");
-        }
-        sb.append("public record ").append(type.name()).append("(\n");
-        sb.append(String.join(",\n", components));
-        sb.append("\n) implements ").append(parentName).append(" {}\n");
-
-        return sb.toString();
+        return buildPojoClass(type.name(), List.of(parentName), fields, imports);
     }
 
-    /**
-     * Builds record component strings with annotations, collecting necessary imports.
-     */
-    private List<String> buildRecordComponents(List<FieldDefinition> fields, Set<String> imports) {
-        imports.add(JACKSON_ANNOTATION_PACKAGE + ".JsonProperty");
+    /** Holds parsed data for a single field, used when building POJO classes. */
+    private record FieldInfo(String annotation, String typeString, String javaName, boolean nullable) {}
 
-        List<String> components = new ArrayList<>();
+    /**
+     * Builds {@link FieldInfo} objects for each field, collecting necessary imports.
+     */
+    private List<FieldInfo> buildFieldInfos(List<FieldDefinition> fields, Set<String> imports) {
+        imports.add(JACKSON_ANNOTATION_PACKAGE + ".JsonProperty");
+        imports.add(JACKSON_ANNOTATION_PACKAGE + ".JsonCreator");
+
+        List<FieldInfo> result = new ArrayList<>();
         boolean hasOptionalRefField = false;
 
         for (FieldDefinition field : fields) {
             TypeName javaType = typeMapper.resolve(field.type(), field.required());
             String typeString = resolveTypeString(javaType, imports);
-
-            StringBuilder comp = new StringBuilder();
-            comp.append("    @JsonProperty(\"").append(field.name()).append("\")");
-
-            if (!field.required() && !javaType.isPrimitive()) {
-                comp.append(" @Nullable");
+            String annotation = "@JsonProperty(\"" + field.name() + "\")";
+            boolean nullable = !field.required() && !javaType.isPrimitive();
+            if (nullable) {
                 hasOptionalRefField = true;
             }
-
-            comp.append(" ").append(typeString).append(" ").append(field.javaName());
-            components.add(comp.toString());
+            result.add(new FieldInfo(annotation, typeString, field.javaName(), nullable));
         }
 
         if (hasOptionalRefField) {
             imports.add(NULLABLE_PACKAGE + ".Nullable");
         }
 
-        return components;
+        return result;
     }
 
     /**
