@@ -2,6 +2,7 @@ package io.jiogram.types;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonSerializer;
@@ -10,6 +11,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Represents a Telegram chat identifier, which can be either a numeric ID or a
@@ -17,7 +19,7 @@ import java.io.IOException;
  */
 @JsonSerialize(using = ChatId.Serializer.class)
 @JsonDeserialize(using = ChatId.Deserializer.class)
-public sealed interface ChatId permits ChatId.OfLong, ChatId.OfString {
+public interface ChatId {
 
     /**
      * Creates a ChatId from a numeric ID.
@@ -33,15 +35,69 @@ public sealed interface ChatId permits ChatId.OfLong, ChatId.OfString {
         return new OfString(username);
     }
 
-    record OfLong(long id) implements ChatId {}
-    record OfString(String username) implements ChatId {}
+    final class OfLong implements ChatId {
+        private final long id;
+
+        public OfLong(long id) {
+            this.id = id;
+        }
+
+        public long id() {
+            return id;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof OfLong)) return false;
+            OfLong other = (OfLong) o;
+            return id == other.id;
+        }
+
+        @Override
+        public int hashCode() {
+            return Long.hashCode(id);
+        }
+
+        @Override
+        public String toString() {
+            return "ChatId.OfLong[id=" + id + "]";
+        }
+    }
+
+    final class OfString implements ChatId {
+        private final String username;
+
+        public OfString(String username) {
+            this.username = username;
+        }
+
+        public String username() {
+            return username;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof OfString)) return false;
+            OfString other = (OfString) o;
+            return Objects.equals(username, other.username);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(username);
+        }
+
+        @Override
+        public String toString() {
+            return "ChatId.OfString[username=" + username + "]";
+        }
+    }
 
     final class Serializer extends JsonSerializer<ChatId> {
         @Override
         public void serialize(ChatId value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-            // Traditional instanceof + cast: kept Java 17-compatible (no record
-            // patterns, no pattern instanceof binding). The sealed interface
-            // guarantees exhaustiveness; the trailing else is defensive only.
             if (value instanceof OfLong) {
                 OfLong ol = (OfLong) value;
                 gen.writeNumber(ol.id());
@@ -57,12 +113,14 @@ public sealed interface ChatId permits ChatId.OfLong, ChatId.OfString {
     final class Deserializer extends JsonDeserializer<ChatId> {
         @Override
         public ChatId deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-            return switch (p.currentToken()) {
-                case VALUE_NUMBER_INT -> new OfLong(p.getLongValue());
-                case VALUE_STRING -> new OfString(p.getText());
-                default -> throw ctxt.weirdStringException(p.getText(), ChatId.class,
+            if (p.currentToken() == JsonToken.VALUE_NUMBER_INT) {
+                return new OfLong(p.getLongValue());
+            } else if (p.currentToken() == JsonToken.VALUE_STRING) {
+                return new OfString(p.getText());
+            } else {
+                throw ctxt.weirdStringException(p.getText(), ChatId.class,
                         "Expected number or string for ChatId");
-            };
+            }
         }
     }
 }

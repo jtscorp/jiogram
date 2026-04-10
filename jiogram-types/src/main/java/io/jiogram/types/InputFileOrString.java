@@ -2,6 +2,7 @@ package io.jiogram.types;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonSerializer;
@@ -10,6 +11,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Represents a parameter that can be either an {@link InputFile} or a String
@@ -17,7 +19,7 @@ import java.io.IOException;
  */
 @JsonSerialize(using = InputFileOrString.Serializer.class)
 @JsonDeserialize(using = InputFileOrString.Deserializer.class)
-public sealed interface InputFileOrString permits InputFileOrString.OfInputFile, InputFileOrString.OfString {
+public interface InputFileOrString {
 
     static InputFileOrString of(InputFile file) {
         return new OfInputFile(file);
@@ -27,15 +29,69 @@ public sealed interface InputFileOrString permits InputFileOrString.OfInputFile,
         return new OfString(fileIdOrUrl);
     }
 
-    record OfInputFile(InputFile file) implements InputFileOrString {}
-    record OfString(String value) implements InputFileOrString {}
+    final class OfInputFile implements InputFileOrString {
+        private final InputFile file;
+
+        public OfInputFile(InputFile file) {
+            this.file = file;
+        }
+
+        public InputFile file() {
+            return file;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof OfInputFile)) return false;
+            OfInputFile other = (OfInputFile) o;
+            return Objects.equals(file, other.file);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(file);
+        }
+
+        @Override
+        public String toString() {
+            return "InputFileOrString.OfInputFile[file=" + file + "]";
+        }
+    }
+
+    final class OfString implements InputFileOrString {
+        private final String value;
+
+        public OfString(String value) {
+            this.value = value;
+        }
+
+        public String value() {
+            return value;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof OfString)) return false;
+            OfString other = (OfString) o;
+            return Objects.equals(value, other.value);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(value);
+        }
+
+        @Override
+        public String toString() {
+            return "InputFileOrString.OfString[value=" + value + "]";
+        }
+    }
 
     final class Serializer extends JsonSerializer<InputFileOrString> {
         @Override
         public void serialize(InputFileOrString value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-            // Traditional instanceof + cast: kept Java 17-compatible (no record
-            // patterns, no pattern instanceof binding). The sealed interface
-            // guarantees exhaustiveness; the trailing else is defensive only.
             if (value instanceof OfInputFile) {
                 OfInputFile oi = (OfInputFile) value;
                 gen.writeObject(oi.file());
@@ -51,10 +107,11 @@ public sealed interface InputFileOrString permits InputFileOrString.OfInputFile,
     final class Deserializer extends JsonDeserializer<InputFileOrString> {
         @Override
         public InputFileOrString deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-            return switch (p.currentToken()) {
-                case VALUE_STRING -> new OfString(p.getText());
-                default -> new OfInputFile(ctxt.readValue(p, InputFile.class));
-            };
+            if (p.currentToken() == JsonToken.VALUE_STRING) {
+                return new OfString(p.getText());
+            } else {
+                return new OfInputFile(ctxt.readValue(p, InputFile.class));
+            }
         }
     }
 }
