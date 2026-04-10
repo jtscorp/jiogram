@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.5.3' apply false
+    id 'org.springframework.boot' version '2.7.18' apply false
     id 'io.spring.dependency-management' version '1.1.7' apply false
 }
 
@@ -20,7 +20,7 @@ subprojects {
 
     java {
         toolchain {
-            languageVersion = JavaLanguageVersion.of(17)
+            languageVersion = JavaLanguageVersion.of(11)
         }
         withJavadocJar()
         withSourcesJar()
@@ -36,7 +36,7 @@ subprojects {
 
     tasks.withType(Javadoc) {
         def opts = options as StandardJavadocDocletOptions
-        opts.addStringOption('source', '17')
+        opts.addStringOption('source', '11')
     }
 
     dependencies {
@@ -50,18 +50,16 @@ subprojects {
             mavenJava(MavenPublication) {
                 from components.java
 
-                // Spec §3: every artifact on sb3.x carries a -sb3 suffix to
-                // avoid Maven Central GAV collisions with the future main
-                // (sb4) and sb2.x branches. The starter is special-cased to
-                // 'jiogram-spring-boot-3-starter' per the spec naming.
+                // Every artifact on sb2.x carries a -sb2 suffix to avoid
+                // Maven Central GAV collisions with sb3.x and main (sb4).
                 artifactId = (project.name == 'jiogram-spring-boot-starter')
-                    ? 'jiogram-spring-boot-3-starter'
-                    : "${project.name}-sb3"
+                    ? 'jiogram-spring-boot-2-starter'
+                    : "${project.name}-sb2"
 
                 pom {
                     name = (project.name == 'jiogram-spring-boot-starter')
-                        ? 'jiogram-spring-boot-3-starter'
-                        : "${project.name}-sb3"
+                        ? 'jiogram-spring-boot-2-starter'
+                        : "${project.name}-sb2"
                     description = 'Jiogram - Java Spring Framework for Telegram Bots'
                     url = 'https://github.com/jaxongir/jiogram'
 

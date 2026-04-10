@@ -1,12 +1,19 @@
 plugins {
     id 'java-library'
     id 'io.jiogram.codegen'
+    id 'io.spring.dependency-management'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
+    }
 }
 
 dependencies {
     api project(':jiogram-types')
 
-    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
     implementation 'org.jspecify:jspecify:1.0.0'
 }
 
