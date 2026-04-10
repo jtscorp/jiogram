@@ -111,8 +111,9 @@ public class WebClientTelegramSession implements TelegramSession {
      */
     private <T> JavaType resolveResultType(TelegramMethod<T> method) {
         for (Type iface : method.getClass().getGenericInterfaces()) {
-            if (iface instanceof ParameterizedType pt
-                && pt.getRawType() == TelegramMethod.class) {
+            if (iface instanceof ParameterizedType
+                && ((ParameterizedType) iface).getRawType() == TelegramMethod.class) {
+                ParameterizedType pt = (ParameterizedType) iface;
                 Type actualType = pt.getActualTypeArguments()[0];
                 return objectMapper.getTypeFactory().constructType(actualType);
             }

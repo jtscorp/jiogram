@@ -106,7 +106,8 @@ public class FSMMiddleware implements Middleware {
             CallbackQuery cq = update.callbackQuery();
             userId = cq.from().id();
             // Try to get chatId from the callback query's message
-            if (cq.message() instanceof Message msg) {
+            if (cq.message() instanceof Message) {
+                Message msg = (Message) cq.message();
                 chatId = msg.chat().id();
                 threadId = msg.messageThreadId();
             } else if (cq.message() != null) {
@@ -153,11 +154,17 @@ public class FSMMiddleware implements Middleware {
         }
 
         // Apply strategy
-        return switch (strategy) {
-            case USER_IN_CHAT -> new StorageKey(botId, chatId, userId, null, "default");
-            case CHAT -> new StorageKey(botId, chatId, 0, null, "default");
-            case USER -> new StorageKey(botId, 0, userId, null, "default");
-            case CHAT_TOPIC -> new StorageKey(botId, chatId, userId, threadId, "default");
-        };
+        switch (strategy) {
+            case USER_IN_CHAT:
+                return new StorageKey(botId, chatId, userId, null, "default");
+            case CHAT:
+                return new StorageKey(botId, chatId, 0, null, "default");
+            case USER:
+                return new StorageKey(botId, 0, userId, null, "default");
+            case CHAT_TOPIC:
+                return new StorageKey(botId, chatId, userId, threadId, "default");
+            default:
+                throw new IllegalArgumentException("Unknown strategy: " + strategy);
+        }
     }
 }
