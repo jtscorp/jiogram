@@ -5,11 +5,12 @@ import io.jiogram.fsm.FSMStrategy;
 import io.jiogram.fsm.middleware.FSMMiddleware;
 import io.jiogram.fsm.storage.MemoryStateStorage;
 import io.jiogram.fsm.storage.StateStorage;
-import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * Auto-configuration for FSM (Finite State Machine) support.
@@ -18,7 +19,8 @@ import org.springframework.context.annotation.Bean;
  * <p>
  * Enabled by default; disable with {@code telegram.fsm.enabled=false}.
  */
-@AutoConfiguration(after = JiogramAutoConfiguration.class)
+@Configuration
+@AutoConfigureAfter(JiogramAutoConfiguration.class)
 @ConditionalOnBean(Dispatcher.class)
 @ConditionalOnProperty(prefix = "telegram.fsm", name = "enabled", havingValue = "true", matchIfMissing = true)
 public class FSMAutoConfiguration {

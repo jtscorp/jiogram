@@ -7,11 +7,11 @@ import io.jiogram.handler.HandlerRegistry;
 import io.jiogram.middleware.ErrorMiddleware;
 import io.jiogram.session.TelegramSession;
 import io.jiogram.session.WebClientTelegramSession;
-import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.client.WebClient;
 
 /**
@@ -19,7 +19,7 @@ import org.springframework.web.reactive.function.client.WebClient;
  * Creates {@link Bot}, {@link TelegramSession}, {@link Dispatcher}, and {@link HandlerRegistry}
  * beans when the {@code telegram.token} property is present.
  */
-@AutoConfiguration
+@Configuration
 @EnableConfigurationProperties(JiogramProperties.class)
 @ConditionalOnProperty(prefix = "telegram", name = "token")
 public class JiogramAutoConfiguration {

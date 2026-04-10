@@ -1,0 +1,6 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  io.jiogram.autoconfigure.JiogramAutoConfiguration,\
+  io.jiogram.autoconfigure.RedisStorageAutoConfiguration,\
+  io.jiogram.autoconfigure.FSMAutoConfiguration,\
+  io.jiogram.autoconfigure.PollingAutoConfiguration,\
+  io.jiogram.autoconfigure.WebhookAutoConfiguration

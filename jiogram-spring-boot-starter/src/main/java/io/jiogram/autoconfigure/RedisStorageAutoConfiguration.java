@@ -2,10 +2,11 @@ package io.jiogram.autoconfigure;
 
 import io.jiogram.fsm.storage.RedisStateStorage;
 import io.jiogram.fsm.storage.StateStorage;
-import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.ReactiveStringRedisTemplate;
 
 /**
@@ -14,7 +15,8 @@ import org.springframework.data.redis.core.ReactiveStringRedisTemplate;
  * When active, this replaces the default {@link io.jiogram.fsm.storage.MemoryStateStorage}
  * from {@link FSMAutoConfiguration}.
  */
-@AutoConfiguration(before = FSMAutoConfiguration.class)
+@Configuration
+@AutoConfigureBefore(FSMAutoConfiguration.class)
 @ConditionalOnProperty(prefix = "telegram.fsm", name = "storage", havingValue = "redis")
 @ConditionalOnClass(ReactiveStringRedisTemplate.class)
 public class RedisStorageAutoConfiguration {

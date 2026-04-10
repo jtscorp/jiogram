@@ -1,5 +1,0 @@
-io.jiogram.autoconfigure.JiogramAutoConfiguration
-io.jiogram.autoconfigure.FSMAutoConfiguration
-io.jiogram.autoconfigure.RedisStorageAutoConfiguration
-io.jiogram.autoconfigure.PollingAutoConfiguration
-io.jiogram.autoconfigure.WebhookAutoConfiguration

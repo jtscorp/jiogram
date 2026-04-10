@@ -1,6 +1,7 @@
 package io.jiogram.autoconfigure;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.ConstructorBinding;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.util.List;
@@ -10,25 +11,48 @@ import java.util.List;
  * Bind to the {@code telegram} prefix in application.yml / application.properties.
  */
 @ConfigurationProperties(prefix = "telegram")
-public record JiogramProperties(
+@ConstructorBinding
+public class JiogramProperties {
+
     /** The bot API token (required). */
-    String token,
+    private final String token;
 
     /** The operating mode: POLLING or WEBHOOK. Defaults to POLLING. */
-    @DefaultValue("POLLING") Mode mode,
+    private final Mode mode;
 
     /** Polling configuration. */
-    @DefaultValue PollingProperties polling,
+    private final PollingProperties polling;
 
     /** Webhook configuration. */
-    @DefaultValue WebhookProperties webhook,
+    private final WebhookProperties webhook;
 
     /** Default bot properties applied to outgoing requests. */
-    @DefaultValue DefaultsProperties defaults,
+    private final DefaultsProperties defaults;
 
     /** FSM (Finite State Machine) configuration. */
-    @DefaultValue FsmProperties fsm
-) {
+    private final FsmProperties fsm;
+
+    public JiogramProperties(
+            String token,
+            @DefaultValue("POLLING") Mode mode,
+            @DefaultValue PollingProperties polling,
+            @DefaultValue WebhookProperties webhook,
+            @DefaultValue DefaultsProperties defaults,
+            @DefaultValue FsmProperties fsm) {
+        this.token = token;
+        this.mode = mode;
+        this.polling = polling;
+        this.webhook = webhook;
+        this.defaults = defaults;
+        this.fsm = fsm;
+    }
+
+    public String token() { return token; }
+    public Mode mode() { return mode; }
+    public PollingProperties polling() { return polling; }
+    public WebhookProperties webhook() { return webhook; }
+    public DefaultsProperties defaults() { return defaults; }
+    public FsmProperties fsm() { return fsm; }
 
     public enum Mode {
         POLLING,
@@ -37,57 +61,105 @@ public record JiogramProperties(
 
     /**
      * Polling configuration properties.
-     *
-     * @param timeout        long-polling timeout in seconds
-     * @param backoff        backoff delay in milliseconds on error
-     * @param limit          maximum number of updates per poll
-     * @param allowedUpdates list of update types to receive
      */
-    public record PollingProperties(
-        @DefaultValue("30") int timeout,
-        @DefaultValue("1000") long backoff,
-        @DefaultValue("100") int limit,
-        List<String> allowedUpdates
-    ) {}
+    @ConstructorBinding
+    public static class PollingProperties {
+
+        private final int timeout;
+        private final long backoff;
+        private final int limit;
+        private final List<String> allowedUpdates;
+
+        public PollingProperties(
+                @DefaultValue("30") int timeout,
+                @DefaultValue("1000") long backoff,
+                @DefaultValue("100") int limit,
+                List<String> allowedUpdates) {
+            this.timeout = timeout;
+            this.backoff = backoff;
+            this.limit = limit;
+            this.allowedUpdates = allowedUpdates;
+        }
+
+        public int timeout() { return timeout; }
+        public long backoff() { return backoff; }
+        public int limit() { return limit; }
+        public List<String> allowedUpdates() { return allowedUpdates; }
+    }
 
     /**
      * Webhook configuration properties.
-     *
-     * @param url            the public URL where Telegram sends updates
-     * @param path           the local endpoint path
-     * @param secretToken    the secret token for request validation
-     * @param maxConnections maximum concurrent webhook connections
      */
-    public record WebhookProperties(
-        String url,
-        @DefaultValue("/bot/webhook") String path,
-        String secretToken,
-        @DefaultValue("40") int maxConnections
-    ) {}
+    @ConstructorBinding
+    public static class WebhookProperties {
+
+        private final String url;
+        private final String path;
+        private final String secretToken;
+        private final int maxConnections;
+
+        public WebhookProperties(
+                String url,
+                @DefaultValue("/bot/webhook") String path,
+                String secretToken,
+                @DefaultValue("40") int maxConnections) {
+            this.url = url;
+            this.path = path;
+            this.secretToken = secretToken;
+            this.maxConnections = maxConnections;
+        }
+
+        public String url() { return url; }
+        public String path() { return path; }
+        public String secretToken() { return secretToken; }
+        public int maxConnections() { return maxConnections; }
+    }
 
     /**
      * Default properties applied to all outgoing bot requests.
-     *
-     * @param parseMode      default parse mode (HTML, MarkdownV2)
-     * @param protectContent whether to protect content from forwarding
-     * @param linkPreview    whether to enable link previews
      */
-    public record DefaultsProperties(
-        String parseMode,
-        @DefaultValue("false") boolean protectContent,
-        @DefaultValue("true") boolean linkPreview
-    ) {}
+    @ConstructorBinding
+    public static class DefaultsProperties {
+
+        private final String parseMode;
+        private final boolean protectContent;
+        private final boolean linkPreview;
+
+        public DefaultsProperties(
+                String parseMode,
+                @DefaultValue("false") boolean protectContent,
+                @DefaultValue("true") boolean linkPreview) {
+            this.parseMode = parseMode;
+            this.protectContent = protectContent;
+            this.linkPreview = linkPreview;
+        }
+
+        public String parseMode() { return parseMode; }
+        public boolean protectContent() { return protectContent; }
+        public boolean linkPreview() { return linkPreview; }
+    }
 
     /**
      * FSM configuration properties.
-     *
-     * @param enabled  whether FSM support is enabled
-     * @param strategy the FSM key resolution strategy
-     * @param storage  the storage backend type (memory, redis)
      */
-    public record FsmProperties(
-        @DefaultValue("true") boolean enabled,
-        @DefaultValue("USER_IN_CHAT") String strategy,
-        @DefaultValue("memory") String storage
-    ) {}
+    @ConstructorBinding
+    public static class FsmProperties {
+
+        private final boolean enabled;
+        private final String strategy;
+        private final String storage;
+
+        public FsmProperties(
+                @DefaultValue("true") boolean enabled,
+                @DefaultValue("USER_IN_CHAT") String strategy,
+                @DefaultValue("memory") String storage) {
+            this.enabled = enabled;
+            this.strategy = strategy;
+            this.storage = storage;
+        }
+
+        public boolean enabled() { return enabled; }
+        public String strategy() { return strategy; }
+        public String storage() { return storage; }
+    }
 }
