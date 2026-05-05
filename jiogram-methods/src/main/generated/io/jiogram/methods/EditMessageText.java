@@ -7,6 +7,7 @@ import io.jiogram.types.InlineKeyboardMarkup;
 import io.jiogram.types.LinkPreviewOptions;
 import io.jiogram.types.Message;
 import io.jiogram.types.MessageEntity;
+import io.jiogram.types.ParseMode;
 import io.jiogram.types.TelegramMethod;
 import java.util.List;
 import org.jspecify.annotations.Nullable;
@@ -17,7 +18,7 @@ public class EditMessageText implements TelegramMethod<Message> {
     @JsonProperty("message_id") @Nullable private final Long messageId;
     @JsonProperty("inline_message_id") @Nullable private final String inlineMessageId;
     @JsonProperty("text") private final String text;
-    @JsonProperty("parse_mode") @Nullable private final String parseMode;
+    @JsonProperty("parse_mode") @Nullable private final ParseMode parseMode;
     @JsonProperty("entities") @Nullable private final List<MessageEntity> entities;
     @JsonProperty("link_preview_options") @Nullable private final LinkPreviewOptions linkPreviewOptions;
     @JsonProperty("reply_markup") @Nullable private final InlineKeyboardMarkup replyMarkup;
@@ -29,7 +30,7 @@ public class EditMessageText implements TelegramMethod<Message> {
             @JsonProperty("message_id") @Nullable Long messageId,
             @JsonProperty("inline_message_id") @Nullable String inlineMessageId,
             @JsonProperty("text") String text,
-            @JsonProperty("parse_mode") @Nullable String parseMode,
+            @JsonProperty("parse_mode") @Nullable ParseMode parseMode,
             @JsonProperty("entities") @Nullable List<MessageEntity> entities,
             @JsonProperty("link_preview_options") @Nullable LinkPreviewOptions linkPreviewOptions,
             @JsonProperty("reply_markup") @Nullable InlineKeyboardMarkup replyMarkup
@@ -65,7 +66,7 @@ public class EditMessageText implements TelegramMethod<Message> {
         return this.text;
     }
 
-    public String parseMode() {
+    public ParseMode parseMode() {
         return this.parseMode;
     }
 

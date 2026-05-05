@@ -2,11 +2,12 @@ package io.jiogram.types;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.jiogram.types.ChatMemberType;
 import io.jiogram.types.User;
 import org.jspecify.annotations.Nullable;
 
 public class ChatMemberRestricted implements ChatMember {
-    @JsonProperty("status") private final String status;
+    @JsonProperty("status") private final ChatMemberType status;
     @JsonProperty("tag") @Nullable private final String tag;
     @JsonProperty("user") private final User user;
     @JsonProperty("is_member") private final boolean isMember;
@@ -29,7 +30,7 @@ public class ChatMemberRestricted implements ChatMember {
 
     @JsonCreator
     public ChatMemberRestricted(
-            @JsonProperty("status") String status,
+            @JsonProperty("status") ChatMemberType status,
             @JsonProperty("tag") @Nullable String tag,
             @JsonProperty("user") User user,
             @JsonProperty("is_member") boolean isMember,
@@ -72,7 +73,7 @@ public class ChatMemberRestricted implements ChatMember {
         this.untilDate = untilDate;
     }
 
-    public String status() {
+    public ChatMemberType status() {
         return this.status;
     }
 

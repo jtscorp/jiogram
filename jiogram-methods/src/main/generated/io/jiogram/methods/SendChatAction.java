@@ -2,6 +2,7 @@ package io.jiogram.methods;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.jiogram.types.ChatAction;
 import io.jiogram.types.ChatId;
 import io.jiogram.types.TelegramMethod;
 import org.jspecify.annotations.Nullable;
@@ -10,14 +11,14 @@ public class SendChatAction implements TelegramMethod<Boolean> {
     @JsonProperty("business_connection_id") @Nullable private final String businessConnectionId;
     @JsonProperty("chat_id") private final ChatId chatId;
     @JsonProperty("message_thread_id") @Nullable private final Long messageThreadId;
-    @JsonProperty("action") private final String action;
+    @JsonProperty("action") private final ChatAction action;
 
     @JsonCreator
     public SendChatAction(
             @JsonProperty("business_connection_id") @Nullable String businessConnectionId,
             @JsonProperty("chat_id") ChatId chatId,
             @JsonProperty("message_thread_id") @Nullable Long messageThreadId,
-            @JsonProperty("action") String action
+            @JsonProperty("action") ChatAction action
     ) {
         this.businessConnectionId = businessConnectionId;
         this.chatId = chatId;
@@ -37,7 +38,7 @@ public class SendChatAction implements TelegramMethod<Boolean> {
         return this.messageThreadId;
     }
 
-    public String action() {
+    public ChatAction action() {
         return this.action;
     }
 
@@ -51,7 +52,7 @@ public class SendChatAction implements TelegramMethod<Boolean> {
         return "Boolean";
     }
 
-    public static SendChatAction of(ChatId chatId, String action) {
+    public static SendChatAction of(ChatId chatId, ChatAction action) {
         return new SendChatAction(null, chatId, null, action);
     }
 }

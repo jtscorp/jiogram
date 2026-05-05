@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.5.3'
+    id 'org.springframework.boot' version '2.7.18'
     id 'io.spring.dependency-management' version '1.1.7'
 }
 
@@ -9,14 +9,9 @@ version = '1.0.0'
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(25)
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }
-
-tasks.withType(JavaCompile) {
-    options.compilerArgs.addAll(['--enable-preview'])
-}
-
 repositories {
     mavenCentral()
 }
@@ -24,5 +19,5 @@ repositories {
 dependencies {
     // When building from the Jiogram source tree, use:
     // implementation project(':jiogram-spring-boot-starter')
-    implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-starter:0.1.0'
+    implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-2-starter:0.2.0-SNAPSHOT'
 }

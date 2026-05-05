@@ -2,15 +2,16 @@ package io.jiogram.types;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.jiogram.types.RevenueWithdrawalStateType;
 
 public class RevenueWithdrawalStateSucceeded implements RevenueWithdrawalState {
-    @JsonProperty("type") private final String type;
+    @JsonProperty("type") private final RevenueWithdrawalStateType type;
     @JsonProperty("date") private final long date;
     @JsonProperty("url") private final String url;
 
     @JsonCreator
     public RevenueWithdrawalStateSucceeded(
-            @JsonProperty("type") String type,
+            @JsonProperty("type") RevenueWithdrawalStateType type,
             @JsonProperty("date") long date,
             @JsonProperty("url") String url
     ) {
@@ -19,7 +20,7 @@ public class RevenueWithdrawalStateSucceeded implements RevenueWithdrawalState {
         this.url = url;
     }
 
-    public String type() {
+    public RevenueWithdrawalStateType type() {
         return this.type;
     }
 

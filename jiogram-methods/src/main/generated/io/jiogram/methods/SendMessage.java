@@ -6,6 +6,7 @@ import io.jiogram.types.ChatId;
 import io.jiogram.types.LinkPreviewOptions;
 import io.jiogram.types.Message;
 import io.jiogram.types.MessageEntity;
+import io.jiogram.types.ParseMode;
 import io.jiogram.types.ReplyMarkup;
 import io.jiogram.types.ReplyParameters;
 import io.jiogram.types.SuggestedPostParameters;
@@ -19,7 +20,7 @@ public class SendMessage implements TelegramMethod<Message> {
     @JsonProperty("message_thread_id") @Nullable private final Long messageThreadId;
     @JsonProperty("direct_messages_topic_id") @Nullable private final Long directMessagesTopicId;
     @JsonProperty("text") private final String text;
-    @JsonProperty("parse_mode") @Nullable private final String parseMode;
+    @JsonProperty("parse_mode") @Nullable private final ParseMode parseMode;
     @JsonProperty("entities") @Nullable private final List<MessageEntity> entities;
     @JsonProperty("link_preview_options") @Nullable private final LinkPreviewOptions linkPreviewOptions;
     @JsonProperty("disable_notification") @Nullable private final Boolean disableNotification;
@@ -37,7 +38,7 @@ public class SendMessage implements TelegramMethod<Message> {
             @JsonProperty("message_thread_id") @Nullable Long messageThreadId,
             @JsonProperty("direct_messages_topic_id") @Nullable Long directMessagesTopicId,
             @JsonProperty("text") String text,
-            @JsonProperty("parse_mode") @Nullable String parseMode,
+            @JsonProperty("parse_mode") @Nullable ParseMode parseMode,
             @JsonProperty("entities") @Nullable List<MessageEntity> entities,
             @JsonProperty("link_preview_options") @Nullable LinkPreviewOptions linkPreviewOptions,
             @JsonProperty("disable_notification") @Nullable Boolean disableNotification,
@@ -85,7 +86,7 @@ public class SendMessage implements TelegramMethod<Message> {
         return this.text;
     }
 
-    public String parseMode() {
+    public ParseMode parseMode() {
         return this.parseMode;
     }
 

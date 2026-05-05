@@ -2,18 +2,19 @@ package io.jiogram.types;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.jiogram.types.MenuButtonType;
 
 public class MenuButtonCommands implements MenuButton {
-    @JsonProperty("type") private final String type;
+    @JsonProperty("type") private final MenuButtonType type;
 
     @JsonCreator
     public MenuButtonCommands(
-            @JsonProperty("type") String type
+            @JsonProperty("type") MenuButtonType type
     ) {
         this.type = type;
     }
 
-    public String type() {
+    public MenuButtonType type() {
         return this.type;
     }
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.InputStoryContent;
 import io.jiogram.types.MessageEntity;
+import io.jiogram.types.ParseMode;
 import io.jiogram.types.Story;
 import io.jiogram.types.StoryArea;
 import io.jiogram.types.TelegramMethod;
@@ -15,7 +16,7 @@ public class EditStory implements TelegramMethod<Story> {
     @JsonProperty("story_id") private final long storyId;
     @JsonProperty("content") private final InputStoryContent content;
     @JsonProperty("caption") @Nullable private final String caption;
-    @JsonProperty("parse_mode") @Nullable private final String parseMode;
+    @JsonProperty("parse_mode") @Nullable private final ParseMode parseMode;
     @JsonProperty("caption_entities") @Nullable private final List<MessageEntity> captionEntities;
     @JsonProperty("areas") @Nullable private final List<StoryArea> areas;
 
@@ -25,7 +26,7 @@ public class EditStory implements TelegramMethod<Story> {
             @JsonProperty("story_id") long storyId,
             @JsonProperty("content") InputStoryContent content,
             @JsonProperty("caption") @Nullable String caption,
-            @JsonProperty("parse_mode") @Nullable String parseMode,
+            @JsonProperty("parse_mode") @Nullable ParseMode parseMode,
             @JsonProperty("caption_entities") @Nullable List<MessageEntity> captionEntities,
             @JsonProperty("areas") @Nullable List<StoryArea> areas
     ) {
@@ -54,7 +55,7 @@ public class EditStory implements TelegramMethod<Story> {
         return this.caption;
     }
 
-    public String parseMode() {
+    public ParseMode parseMode() {
         return this.parseMode;
     }
 

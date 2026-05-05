@@ -3,17 +3,18 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.LocationAddress;
+import io.jiogram.types.StoryAreaTypeType;
 import org.jspecify.annotations.Nullable;
 
 public class StoryAreaTypeLocation implements StoryAreaType {
-    @JsonProperty("type") private final String type;
+    @JsonProperty("type") private final StoryAreaTypeType type;
     @JsonProperty("latitude") private final double latitude;
     @JsonProperty("longitude") private final double longitude;
     @JsonProperty("address") @Nullable private final LocationAddress address;
 
     @JsonCreator
     public StoryAreaTypeLocation(
-            @JsonProperty("type") String type,
+            @JsonProperty("type") StoryAreaTypeType type,
             @JsonProperty("latitude") double latitude,
             @JsonProperty("longitude") double longitude,
             @JsonProperty("address") @Nullable LocationAddress address
@@ -24,7 +25,7 @@ public class StoryAreaTypeLocation implements StoryAreaType {
         this.address = address;
     }
 
-    public String type() {
+    public StoryAreaTypeType type() {
         return this.type;
     }
 

@@ -6,6 +6,7 @@ import io.jiogram.types.ChatId;
 import io.jiogram.types.InputFileOrString;
 import io.jiogram.types.Message;
 import io.jiogram.types.MessageEntity;
+import io.jiogram.types.ParseMode;
 import io.jiogram.types.ReplyMarkup;
 import io.jiogram.types.ReplyParameters;
 import io.jiogram.types.SuggestedPostParameters;
@@ -21,7 +22,7 @@ public class SendDocument implements TelegramMethod<Message> {
     @JsonProperty("document") private final InputFileOrString document;
     @JsonProperty("thumbnail") @Nullable private final InputFileOrString thumbnail;
     @JsonProperty("caption") @Nullable private final String caption;
-    @JsonProperty("parse_mode") @Nullable private final String parseMode;
+    @JsonProperty("parse_mode") @Nullable private final ParseMode parseMode;
     @JsonProperty("caption_entities") @Nullable private final List<MessageEntity> captionEntities;
     @JsonProperty("disable_content_type_detection") @Nullable private final Boolean disableContentTypeDetection;
     @JsonProperty("disable_notification") @Nullable private final Boolean disableNotification;
@@ -41,7 +42,7 @@ public class SendDocument implements TelegramMethod<Message> {
             @JsonProperty("document") InputFileOrString document,
             @JsonProperty("thumbnail") @Nullable InputFileOrString thumbnail,
             @JsonProperty("caption") @Nullable String caption,
-            @JsonProperty("parse_mode") @Nullable String parseMode,
+            @JsonProperty("parse_mode") @Nullable ParseMode parseMode,
             @JsonProperty("caption_entities") @Nullable List<MessageEntity> captionEntities,
             @JsonProperty("disable_content_type_detection") @Nullable Boolean disableContentTypeDetection,
             @JsonProperty("disable_notification") @Nullable Boolean disableNotification,
@@ -99,7 +100,7 @@ public class SendDocument implements TelegramMethod<Message> {
         return this.caption;
     }
 
-    public String parseMode() {
+    public ParseMode parseMode() {
         return this.parseMode;
     }
 

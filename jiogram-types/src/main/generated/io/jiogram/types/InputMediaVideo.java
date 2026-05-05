@@ -2,18 +2,20 @@ package io.jiogram.types;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.jiogram.types.InputMediaType;
 import io.jiogram.types.MessageEntity;
+import io.jiogram.types.ParseMode;
 import java.util.List;
 import org.jspecify.annotations.Nullable;
 
 public class InputMediaVideo implements InputMedia {
-    @JsonProperty("type") private final String type;
+    @JsonProperty("type") private final InputMediaType type;
     @JsonProperty("media") private final String media;
     @JsonProperty("thumbnail") @Nullable private final String thumbnail;
     @JsonProperty("cover") @Nullable private final String cover;
     @JsonProperty("start_timestamp") @Nullable private final Long startTimestamp;
     @JsonProperty("caption") @Nullable private final String caption;
-    @JsonProperty("parse_mode") @Nullable private final String parseMode;
+    @JsonProperty("parse_mode") @Nullable private final ParseMode parseMode;
     @JsonProperty("caption_entities") @Nullable private final List<MessageEntity> captionEntities;
     @JsonProperty("show_caption_above_media") @Nullable private final Boolean showCaptionAboveMedia;
     @JsonProperty("width") @Nullable private final Long width;
@@ -24,13 +26,13 @@ public class InputMediaVideo implements InputMedia {
 
     @JsonCreator
     public InputMediaVideo(
-            @JsonProperty("type") String type,
+            @JsonProperty("type") InputMediaType type,
             @JsonProperty("media") String media,
             @JsonProperty("thumbnail") @Nullable String thumbnail,
             @JsonProperty("cover") @Nullable String cover,
             @JsonProperty("start_timestamp") @Nullable Long startTimestamp,
             @JsonProperty("caption") @Nullable String caption,
-            @JsonProperty("parse_mode") @Nullable String parseMode,
+            @JsonProperty("parse_mode") @Nullable ParseMode parseMode,
             @JsonProperty("caption_entities") @Nullable List<MessageEntity> captionEntities,
             @JsonProperty("show_caption_above_media") @Nullable Boolean showCaptionAboveMedia,
             @JsonProperty("width") @Nullable Long width,
@@ -55,7 +57,7 @@ public class InputMediaVideo implements InputMedia {
         this.hasSpoiler = hasSpoiler;
     }
 
-    public String type() {
+    public InputMediaType type() {
         return this.type;
     }
 
@@ -79,7 +81,7 @@ public class InputMediaVideo implements InputMedia {
         return this.caption;
     }
 
-    public String parseMode() {
+    public ParseMode parseMode() {
         return this.parseMode;
     }
 

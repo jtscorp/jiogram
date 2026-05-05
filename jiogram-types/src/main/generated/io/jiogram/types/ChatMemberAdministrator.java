@@ -2,11 +2,12 @@ package io.jiogram.types;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.jiogram.types.ChatMemberType;
 import io.jiogram.types.User;
 import org.jspecify.annotations.Nullable;
 
 public class ChatMemberAdministrator implements ChatMember {
-    @JsonProperty("status") private final String status;
+    @JsonProperty("status") private final ChatMemberType status;
     @JsonProperty("user") private final User user;
     @JsonProperty("can_be_edited") private final boolean canBeEdited;
     @JsonProperty("is_anonymous") private final boolean isAnonymous;
@@ -30,7 +31,7 @@ public class ChatMemberAdministrator implements ChatMember {
 
     @JsonCreator
     public ChatMemberAdministrator(
-            @JsonProperty("status") String status,
+            @JsonProperty("status") ChatMemberType status,
             @JsonProperty("user") User user,
             @JsonProperty("can_be_edited") boolean canBeEdited,
             @JsonProperty("is_anonymous") boolean isAnonymous,
@@ -75,7 +76,7 @@ public class ChatMemberAdministrator implements ChatMember {
         this.customTitle = customTitle;
     }
 
-    public String status() {
+    public ChatMemberType status() {
         return this.status;
     }
 

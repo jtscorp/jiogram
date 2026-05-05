@@ -3,11 +3,12 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.BackgroundFill;
+import io.jiogram.types.BackgroundTypeType;
 import io.jiogram.types.Document;
 import org.jspecify.annotations.Nullable;
 
 public class BackgroundTypePattern implements BackgroundType {
-    @JsonProperty("type") private final String type;
+    @JsonProperty("type") private final BackgroundTypeType type;
     @JsonProperty("document") private final Document document;
     @JsonProperty("fill") private final BackgroundFill fill;
     @JsonProperty("intensity") private final long intensity;
@@ -16,7 +17,7 @@ public class BackgroundTypePattern implements BackgroundType {
 
     @JsonCreator
     public BackgroundTypePattern(
-            @JsonProperty("type") String type,
+            @JsonProperty("type") BackgroundTypeType type,
             @JsonProperty("document") Document document,
             @JsonProperty("fill") BackgroundFill fill,
             @JsonProperty("intensity") long intensity,
@@ -31,7 +32,7 @@ public class BackgroundTypePattern implements BackgroundType {
         this.isMoving = isMoving;
     }
 
-    public String type() {
+    public BackgroundTypeType type() {
         return this.type;
     }
 

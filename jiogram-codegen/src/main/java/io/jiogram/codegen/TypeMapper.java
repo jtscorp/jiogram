@@ -3,6 +3,7 @@ package io.jiogram.codegen;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
+import io.jiogram.codegen.model.FieldDefinition;
 
 import java.util.List;
 import java.util.Objects;
@@ -77,6 +78,45 @@ public final class TypeMapper {
     }
 
     /**
+     * Resolves a field type with knowledge of the owning Telegram type.
+     * The raw schema models many closed value sets as {@code String}; when a
+     * generated enum exists, map those fields to the enum instead.
+     */
+    public TypeName resolveTypeField(String ownerTypeName, FieldDefinition field) {
+        TypeName enumType = resolveEnumField(ownerTypeName, field.name(), field.type());
+        if (enumType != null) {
+            return enumType;
+        }
+        return resolve(field.type(), field.required());
+    }
+
+    /**
+     * Resolves a method parameter type with knowledge of the owning API method.
+     */
+    public TypeName resolveMethodParameter(String methodName, FieldDefinition parameter) {
+        String name = parameter.name();
+        if ("parse_mode".equals(name) || name.endsWith("_parse_mode")) {
+            return ClassName.get(typesPackage, "ParseMode");
+        }
+        if ("allowed_updates".equals(name) && parameter.type().startsWith("Array of ")) {
+            return ParameterizedTypeName.get(
+                ClassName.get(List.class),
+                ClassName.get(typesPackage, "UpdateType")
+            );
+        }
+        if ("sendChatAction".equals(methodName) && "action".equals(name)) {
+            return ClassName.get(typesPackage, "ChatAction");
+        }
+        if ("sendPoll".equals(methodName) && "type".equals(name)) {
+            return ClassName.get(typesPackage, "PollType");
+        }
+        if ("createNewStickerSet".equals(methodName) && "sticker_type".equals(name)) {
+            return ClassName.get(typesPackage, "StickerType");
+        }
+        return resolve(parameter.type(), parameter.required());
+    }
+
+    /**
      * Resolves a return type string. Delegates to {@link #resolve(String, boolean)} with
      * {@code required=false} so return types are always boxed.
      *
@@ -85,6 +125,77 @@ public final class TypeMapper {
      */
     public TypeName resolveReturnType(String returnType) {
         return resolve(returnType, false);
+    }
+
+    private TypeName resolveEnumField(String ownerTypeName, String fieldName, String telegramType) {
+        if ("WebhookInfo".equals(ownerTypeName) && "allowed_updates".equals(fieldName)
+            && telegramType.startsWith("Array of ")) {
+            return ParameterizedTypeName.get(
+                ClassName.get(List.class),
+                ClassName.get(typesPackage, "UpdateType")
+            );
+        }
+
+        if (!"String".equals(telegramType)) {
+            return null;
+        }
+
+        if ("parse_mode".equals(fieldName) || fieldName.endsWith("_parse_mode")) {
+            return ClassName.get(typesPackage, "ParseMode");
+        }
+        if ("Chat".equals(ownerTypeName) && "type".equals(fieldName)) {
+            return ClassName.get(typesPackage, "ChatType");
+        }
+        if ("ChatFullInfo".equals(ownerTypeName) && "type".equals(fieldName)) {
+            return ClassName.get(typesPackage, "ChatType");
+        }
+        if ("MessageEntity".equals(ownerTypeName) && "type".equals(fieldName)) {
+            return ClassName.get(typesPackage, "MessageEntityType");
+        }
+        if ("Poll".equals(ownerTypeName) && "type".equals(fieldName)) {
+            return ClassName.get(typesPackage, "PollType");
+        }
+        if ("KeyboardButtonPollType".equals(ownerTypeName) && "type".equals(fieldName)) {
+            return ClassName.get(typesPackage, "PollType");
+        }
+        if ("Sticker".equals(ownerTypeName) && "type".equals(fieldName)) {
+            return ClassName.get(typesPackage, "StickerType");
+        }
+        if ("StickerSet".equals(ownerTypeName) && "sticker_type".equals(fieldName)) {
+            return ClassName.get(typesPackage, "StickerType");
+        }
+        if ("InlineQuery".equals(ownerTypeName) && "chat_type".equals(fieldName)) {
+            return ClassName.get(typesPackage, "InlineQueryChatType");
+        }
+        if ("TransactionPartnerUser".equals(ownerTypeName) && "transaction_type".equals(fieldName)) {
+            return ClassName.get(typesPackage, "TransactionType");
+        }
+        if (("InlineQueryResultGif".equals(ownerTypeName) || "InlineQueryResultMpeg4Gif".equals(ownerTypeName))
+            && "thumbnail_mime_type".equals(fieldName)) {
+            return ClassName.get(typesPackage, "ThumbnailMimeType");
+        }
+        if ("InlineQueryResultVideo".equals(ownerTypeName) && "mime_type".equals(fieldName)) {
+            return ClassName.get(typesPackage, "VideoMimeType");
+        }
+        if ("InlineQueryResultDocument".equals(ownerTypeName) && "mime_type".equals(fieldName)) {
+            return ClassName.get(typesPackage, "DocumentMimeType");
+        }
+        if ("EncryptedPassportElement".equals(ownerTypeName) && "type".equals(fieldName)) {
+            return ClassName.get(typesPackage, "PassportElementType");
+        }
+        if (ownerTypeName.startsWith("PassportElementError") && "type".equals(fieldName)) {
+            return ClassName.get(typesPackage, "PassportElementType");
+        }
+        String parentName = UnionRegistry.parentOf(ownerTypeName);
+        if (parentName == null || "MaybeInaccessibleMessage".equals(parentName)) {
+            return null;
+        }
+
+        UnionRegistry.UnionInfo unionInfo = UnionRegistry.get(parentName);
+        if (unionInfo != null && unionInfo.discriminator().equals(fieldName)) {
+            return ClassName.get(typesPackage, parentName + "Type");
+        }
+        return null;
     }
 
     private TypeName resolveUnion(String unionType) {

@@ -94,7 +94,7 @@ public final class MethodGenerator {
         boolean hasOptionalRefField = false;
 
         for (FieldDefinition param : method.parameters()) {
-            TypeName javaType = typeMapper.resolve(param.type(), param.required());
+            TypeName javaType = typeMapper.resolveMethodParameter(method.name(), param);
             String typeString = resolveTypeString(javaType, imports);
             String annotation = "@JsonProperty(\"" + param.name() + "\")";
             boolean nullable = !param.required() && !javaType.isPrimitive();
@@ -201,7 +201,7 @@ public final class MethodGenerator {
         // Build parameter list for factory method
         List<String> factoryParams = new ArrayList<>();
         for (FieldDefinition param : requiredParams) {
-            TypeName javaType = typeMapper.resolve(param.type(), param.required());
+            TypeName javaType = typeMapper.resolveMethodParameter(method.name(), param);
             String typeString = resolveTypeString(javaType, imports);
             factoryParams.add(typeString + " " + param.javaName());
         }
@@ -212,7 +212,7 @@ public final class MethodGenerator {
             if (param.required()) {
                 constructorArgs.add(param.javaName());
             } else {
-                TypeName javaType = typeMapper.resolve(param.type(), param.required());
+                TypeName javaType = typeMapper.resolveMethodParameter(method.name(), param);
                 if (javaType.isPrimitive()) {
                     // Primitive defaults
                     constructorArgs.add(defaultPrimitiveValue(javaType));

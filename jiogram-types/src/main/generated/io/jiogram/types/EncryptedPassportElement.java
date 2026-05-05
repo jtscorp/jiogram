@@ -2,12 +2,13 @@ package io.jiogram.types;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.jiogram.types.PassportElementType;
 import io.jiogram.types.PassportFile;
 import java.util.List;
 import org.jspecify.annotations.Nullable;
 
 public class EncryptedPassportElement {
-    @JsonProperty("type") private final String type;
+    @JsonProperty("type") private final PassportElementType type;
     @JsonProperty("data") @Nullable private final String data;
     @JsonProperty("phone_number") @Nullable private final String phoneNumber;
     @JsonProperty("email") @Nullable private final String email;
@@ -20,7 +21,7 @@ public class EncryptedPassportElement {
 
     @JsonCreator
     public EncryptedPassportElement(
-            @JsonProperty("type") String type,
+            @JsonProperty("type") PassportElementType type,
             @JsonProperty("data") @Nullable String data,
             @JsonProperty("phone_number") @Nullable String phoneNumber,
             @JsonProperty("email") @Nullable String email,
@@ -43,7 +44,7 @@ public class EncryptedPassportElement {
         this.hash = hash;
     }
 
-    public String type() {
+    public PassportElementType type() {
         return this.type;
     }
 

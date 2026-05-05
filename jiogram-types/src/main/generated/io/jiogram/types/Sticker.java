@@ -5,12 +5,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.File;
 import io.jiogram.types.MaskPosition;
 import io.jiogram.types.PhotoSize;
+import io.jiogram.types.StickerType;
 import org.jspecify.annotations.Nullable;
 
 public class Sticker {
     @JsonProperty("file_id") private final String fileId;
     @JsonProperty("file_unique_id") private final String fileUniqueId;
-    @JsonProperty("type") private final String type;
+    @JsonProperty("type") private final StickerType type;
     @JsonProperty("width") private final long width;
     @JsonProperty("height") private final long height;
     @JsonProperty("is_animated") private final boolean isAnimated;
@@ -28,7 +29,7 @@ public class Sticker {
     public Sticker(
             @JsonProperty("file_id") String fileId,
             @JsonProperty("file_unique_id") String fileUniqueId,
-            @JsonProperty("type") String type,
+            @JsonProperty("type") StickerType type,
             @JsonProperty("width") long width,
             @JsonProperty("height") long height,
             @JsonProperty("is_animated") boolean isAnimated,
@@ -67,7 +68,7 @@ public class Sticker {
         return this.fileUniqueId;
     }
 
-    public String type() {
+    public StickerType type() {
         return this.type;
     }
 

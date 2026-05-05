@@ -3,11 +3,12 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.InlineKeyboardMarkup;
+import io.jiogram.types.InlineQueryResultType;
 import io.jiogram.types.InputMessageContent;
 import org.jspecify.annotations.Nullable;
 
 public class InlineQueryResultCachedSticker implements InlineQueryResult {
-    @JsonProperty("type") private final String type;
+    @JsonProperty("type") private final InlineQueryResultType type;
     @JsonProperty("id") private final String id;
     @JsonProperty("sticker_file_id") private final String stickerFileId;
     @JsonProperty("reply_markup") @Nullable private final InlineKeyboardMarkup replyMarkup;
@@ -15,7 +16,7 @@ public class InlineQueryResultCachedSticker implements InlineQueryResult {
 
     @JsonCreator
     public InlineQueryResultCachedSticker(
-            @JsonProperty("type") String type,
+            @JsonProperty("type") InlineQueryResultType type,
             @JsonProperty("id") String id,
             @JsonProperty("sticker_file_id") String stickerFileId,
             @JsonProperty("reply_markup") @Nullable InlineKeyboardMarkup replyMarkup,
@@ -28,7 +29,7 @@ public class InlineQueryResultCachedSticker implements InlineQueryResult {
         this.inputMessageContent = inputMessageContent;
     }
 
-    public String type() {
+    public InlineQueryResultType type() {
         return this.type;
     }
 

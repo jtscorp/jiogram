@@ -4,13 +4,14 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.PhotoSize;
 import io.jiogram.types.Sticker;
+import io.jiogram.types.StickerType;
 import java.util.List;
 import org.jspecify.annotations.Nullable;
 
 public class StickerSet {
     @JsonProperty("name") private final String name;
     @JsonProperty("title") private final String title;
-    @JsonProperty("sticker_type") private final String stickerType;
+    @JsonProperty("sticker_type") private final StickerType stickerType;
     @JsonProperty("stickers") private final List<Sticker> stickers;
     @JsonProperty("thumbnail") @Nullable private final PhotoSize thumbnail;
 
@@ -18,7 +19,7 @@ public class StickerSet {
     public StickerSet(
             @JsonProperty("name") String name,
             @JsonProperty("title") String title,
-            @JsonProperty("sticker_type") String stickerType,
+            @JsonProperty("sticker_type") StickerType stickerType,
             @JsonProperty("stickers") List<Sticker> stickers,
             @JsonProperty("thumbnail") @Nullable PhotoSize thumbnail
     ) {
@@ -37,7 +38,7 @@ public class StickerSet {
         return this.title;
     }
 
-    public String stickerType() {
+    public StickerType stickerType() {
         return this.stickerType;
     }
 

@@ -7,13 +7,30 @@ import io.jiogram.fsm.storage.MemoryStateStorage;
 import io.jiogram.fsm.storage.StateStorage;
 import io.jiogram.handler.HandlerRegistry;
 import io.jiogram.session.TelegramSession;
+import io.jiogram.types.TelegramMethod;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+import reactor.core.publisher.Mono;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class JiogramAutoConfigurationTest {
+
+    static class StubTelegramSession implements TelegramSession {
+        TelegramMethod<?> lastMethod;
+
+        @Override
+        public <T> Mono<T> makeRequest(String token, TelegramMethod<T> method) {
+            lastMethod = method;
+            return Mono.empty();
+        }
+
+        @Override
+        public Mono<Void> close() {
+            return Mono.empty();
+        }
+    }
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(
@@ -93,5 +110,21 @@ class JiogramAutoConfigurationTest {
                 assertThat(context).doesNotHaveBean(PollingRunner.class);
                 assertThat(context).hasSingleBean(WebhookController.class);
             });
+    }
+
+    @Test
+    void whenWebhookUrlIsPresent_webhookRegistrarShouldBeCreated() {
+        new ApplicationContextRunner()
+            .withConfiguration(AutoConfigurations.of(
+                JiogramAutoConfiguration.class,
+                WebhookAutoConfiguration.class
+            ))
+            .withBean(TelegramSession.class, StubTelegramSession::new)
+            .withPropertyValues(
+                "telegram.token=123456789:ABCDEFghijklmnop",
+                "telegram.mode=webhook",
+                "telegram.webhook.url=https://example.com/bot/webhook"
+            )
+            .run(context -> assertThat(context).hasSingleBean(WebhookRegistrar.class));
     }
 }

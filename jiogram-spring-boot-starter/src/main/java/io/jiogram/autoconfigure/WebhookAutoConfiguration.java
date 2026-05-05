@@ -22,4 +22,10 @@ public class WebhookAutoConfiguration {
     public WebhookController webhookController(Bot bot, Dispatcher dispatcher, JiogramProperties properties) {
         return new WebhookController(bot, dispatcher, properties);
     }
+
+    @Bean
+    @ConditionalOnProperty(prefix = "telegram.webhook", name = "url")
+    public WebhookRegistrar webhookRegistrar(Bot bot, JiogramProperties properties) {
+        return new WebhookRegistrar(bot, properties);
+    }
 }

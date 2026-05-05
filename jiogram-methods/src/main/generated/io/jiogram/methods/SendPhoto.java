@@ -6,6 +6,7 @@ import io.jiogram.types.ChatId;
 import io.jiogram.types.InputFileOrString;
 import io.jiogram.types.Message;
 import io.jiogram.types.MessageEntity;
+import io.jiogram.types.ParseMode;
 import io.jiogram.types.ReplyMarkup;
 import io.jiogram.types.ReplyParameters;
 import io.jiogram.types.SuggestedPostParameters;
@@ -20,7 +21,7 @@ public class SendPhoto implements TelegramMethod<Message> {
     @JsonProperty("direct_messages_topic_id") @Nullable private final Long directMessagesTopicId;
     @JsonProperty("photo") private final InputFileOrString photo;
     @JsonProperty("caption") @Nullable private final String caption;
-    @JsonProperty("parse_mode") @Nullable private final String parseMode;
+    @JsonProperty("parse_mode") @Nullable private final ParseMode parseMode;
     @JsonProperty("caption_entities") @Nullable private final List<MessageEntity> captionEntities;
     @JsonProperty("show_caption_above_media") @Nullable private final Boolean showCaptionAboveMedia;
     @JsonProperty("has_spoiler") @Nullable private final Boolean hasSpoiler;
@@ -40,7 +41,7 @@ public class SendPhoto implements TelegramMethod<Message> {
             @JsonProperty("direct_messages_topic_id") @Nullable Long directMessagesTopicId,
             @JsonProperty("photo") InputFileOrString photo,
             @JsonProperty("caption") @Nullable String caption,
-            @JsonProperty("parse_mode") @Nullable String parseMode,
+            @JsonProperty("parse_mode") @Nullable ParseMode parseMode,
             @JsonProperty("caption_entities") @Nullable List<MessageEntity> captionEntities,
             @JsonProperty("show_caption_above_media") @Nullable Boolean showCaptionAboveMedia,
             @JsonProperty("has_spoiler") @Nullable Boolean hasSpoiler,
@@ -95,7 +96,7 @@ public class SendPhoto implements TelegramMethod<Message> {
         return this.caption;
     }
 
-    public String parseMode() {
+    public ParseMode parseMode() {
         return this.parseMode;
     }
 

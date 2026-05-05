@@ -3,18 +3,20 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.InlineKeyboardMarkup;
+import io.jiogram.types.InlineQueryResultType;
 import io.jiogram.types.InputMessageContent;
 import io.jiogram.types.MessageEntity;
+import io.jiogram.types.ParseMode;
 import java.util.List;
 import org.jspecify.annotations.Nullable;
 
 public class InlineQueryResultAudio implements InlineQueryResult {
-    @JsonProperty("type") private final String type;
+    @JsonProperty("type") private final InlineQueryResultType type;
     @JsonProperty("id") private final String id;
     @JsonProperty("audio_url") private final String audioUrl;
     @JsonProperty("title") private final String title;
     @JsonProperty("caption") @Nullable private final String caption;
-    @JsonProperty("parse_mode") @Nullable private final String parseMode;
+    @JsonProperty("parse_mode") @Nullable private final ParseMode parseMode;
     @JsonProperty("caption_entities") @Nullable private final List<MessageEntity> captionEntities;
     @JsonProperty("performer") @Nullable private final String performer;
     @JsonProperty("audio_duration") @Nullable private final Long audioDuration;
@@ -23,12 +25,12 @@ public class InlineQueryResultAudio implements InlineQueryResult {
 
     @JsonCreator
     public InlineQueryResultAudio(
-            @JsonProperty("type") String type,
+            @JsonProperty("type") InlineQueryResultType type,
             @JsonProperty("id") String id,
             @JsonProperty("audio_url") String audioUrl,
             @JsonProperty("title") String title,
             @JsonProperty("caption") @Nullable String caption,
-            @JsonProperty("parse_mode") @Nullable String parseMode,
+            @JsonProperty("parse_mode") @Nullable ParseMode parseMode,
             @JsonProperty("caption_entities") @Nullable List<MessageEntity> captionEntities,
             @JsonProperty("performer") @Nullable String performer,
             @JsonProperty("audio_duration") @Nullable Long audioDuration,
@@ -48,7 +50,7 @@ public class InlineQueryResultAudio implements InlineQueryResult {
         this.inputMessageContent = inputMessageContent;
     }
 
-    public String type() {
+    public InlineQueryResultType type() {
         return this.type;
     }
 
@@ -68,7 +70,7 @@ public class InlineQueryResultAudio implements InlineQueryResult {
         return this.caption;
     }
 
-    public String parseMode() {
+    public ParseMode parseMode() {
         return this.parseMode;
     }
 

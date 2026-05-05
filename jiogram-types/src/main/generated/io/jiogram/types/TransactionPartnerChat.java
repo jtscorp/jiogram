@@ -4,16 +4,17 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.Chat;
 import io.jiogram.types.Gift;
+import io.jiogram.types.TransactionPartnerType;
 import org.jspecify.annotations.Nullable;
 
 public class TransactionPartnerChat implements TransactionPartner {
-    @JsonProperty("type") private final String type;
+    @JsonProperty("type") private final TransactionPartnerType type;
     @JsonProperty("chat") private final Chat chat;
     @JsonProperty("gift") @Nullable private final Gift gift;
 
     @JsonCreator
     public TransactionPartnerChat(
-            @JsonProperty("type") String type,
+            @JsonProperty("type") TransactionPartnerType type,
             @JsonProperty("chat") Chat chat,
             @JsonProperty("gift") @Nullable Gift gift
     ) {
@@ -22,7 +23,7 @@ public class TransactionPartnerChat implements TransactionPartner {
         this.gift = gift;
     }
 
-    public String type() {
+    public TransactionPartnerType type() {
         return this.type;
     }
 

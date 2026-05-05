@@ -1,5 +1,6 @@
 package io.jiogram.bot;
 
+import io.jiogram.types.ParseMode;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -7,17 +8,17 @@ import org.jspecify.annotations.Nullable;
  */
 public final class DefaultBotProperties {
 
-    private final @Nullable String parseMode;
+    private final @Nullable ParseMode parseMode;
     private final boolean protectContent;
     private final boolean linkPreview;
 
-    public DefaultBotProperties(@Nullable String parseMode, boolean protectContent, boolean linkPreview) {
+    public DefaultBotProperties(@Nullable ParseMode parseMode, boolean protectContent, boolean linkPreview) {
         this.parseMode = parseMode;
         this.protectContent = protectContent;
         this.linkPreview = linkPreview;
     }
 
-    public @Nullable String parseMode() {
+    public @Nullable ParseMode parseMode() {
         return parseMode;
     }
 

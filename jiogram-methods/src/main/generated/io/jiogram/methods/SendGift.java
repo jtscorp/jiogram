@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.ChatId;
 import io.jiogram.types.MessageEntity;
+import io.jiogram.types.ParseMode;
 import io.jiogram.types.TelegramMethod;
 import java.util.List;
 import org.jspecify.annotations.Nullable;
@@ -14,7 +15,7 @@ public class SendGift implements TelegramMethod<Boolean> {
     @JsonProperty("gift_id") private final String giftId;
     @JsonProperty("pay_for_upgrade") @Nullable private final Boolean payForUpgrade;
     @JsonProperty("text") @Nullable private final String text;
-    @JsonProperty("text_parse_mode") @Nullable private final String textParseMode;
+    @JsonProperty("text_parse_mode") @Nullable private final ParseMode textParseMode;
     @JsonProperty("text_entities") @Nullable private final List<MessageEntity> textEntities;
 
     @JsonCreator
@@ -24,7 +25,7 @@ public class SendGift implements TelegramMethod<Boolean> {
             @JsonProperty("gift_id") String giftId,
             @JsonProperty("pay_for_upgrade") @Nullable Boolean payForUpgrade,
             @JsonProperty("text") @Nullable String text,
-            @JsonProperty("text_parse_mode") @Nullable String textParseMode,
+            @JsonProperty("text_parse_mode") @Nullable ParseMode textParseMode,
             @JsonProperty("text_entities") @Nullable List<MessageEntity> textEntities
     ) {
         this.userId = userId;
@@ -56,7 +57,7 @@ public class SendGift implements TelegramMethod<Boolean> {
         return this.text;
     }
 
-    public String textParseMode() {
+    public ParseMode textParseMode() {
         return this.textParseMode;
     }
 

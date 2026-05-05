@@ -2,10 +2,11 @@ package io.jiogram.types;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.jiogram.types.InputPaidMediaType;
 import org.jspecify.annotations.Nullable;
 
 public class InputPaidMediaVideo implements InputPaidMedia {
-    @JsonProperty("type") private final String type;
+    @JsonProperty("type") private final InputPaidMediaType type;
     @JsonProperty("media") private final String media;
     @JsonProperty("thumbnail") @Nullable private final String thumbnail;
     @JsonProperty("cover") @Nullable private final String cover;
@@ -17,7 +18,7 @@ public class InputPaidMediaVideo implements InputPaidMedia {
 
     @JsonCreator
     public InputPaidMediaVideo(
-            @JsonProperty("type") String type,
+            @JsonProperty("type") InputPaidMediaType type,
             @JsonProperty("media") String media,
             @JsonProperty("thumbnail") @Nullable String thumbnail,
             @JsonProperty("cover") @Nullable String cover,
@@ -38,7 +39,7 @@ public class InputPaidMediaVideo implements InputPaidMedia {
         this.supportsStreaming = supportsStreaming;
     }
 
-    public String type() {
+    public InputPaidMediaType type() {
         return this.type;
     }
 

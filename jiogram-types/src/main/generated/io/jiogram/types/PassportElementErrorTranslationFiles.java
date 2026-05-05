@@ -2,18 +2,20 @@ package io.jiogram.types;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.jiogram.types.PassportElementErrorType;
+import io.jiogram.types.PassportElementType;
 import java.util.List;
 
 public class PassportElementErrorTranslationFiles implements PassportElementError {
-    @JsonProperty("source") private final String source;
-    @JsonProperty("type") private final String type;
+    @JsonProperty("source") private final PassportElementErrorType source;
+    @JsonProperty("type") private final PassportElementType type;
     @JsonProperty("file_hashes") private final List<String> fileHashes;
     @JsonProperty("message") private final String message;
 
     @JsonCreator
     public PassportElementErrorTranslationFiles(
-            @JsonProperty("source") String source,
-            @JsonProperty("type") String type,
+            @JsonProperty("source") PassportElementErrorType source,
+            @JsonProperty("type") PassportElementType type,
             @JsonProperty("file_hashes") List<String> fileHashes,
             @JsonProperty("message") String message
     ) {
@@ -23,11 +25,11 @@ public class PassportElementErrorTranslationFiles implements PassportElementErro
         this.message = message;
     }
 
-    public String source() {
+    public PassportElementErrorType source() {
         return this.source;
     }
 
-    public String type() {
+    public PassportElementType type() {
         return this.type;
     }
 

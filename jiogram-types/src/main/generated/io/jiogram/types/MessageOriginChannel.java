@@ -3,10 +3,11 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.Chat;
+import io.jiogram.types.MessageOriginType;
 import org.jspecify.annotations.Nullable;
 
 public class MessageOriginChannel implements MessageOrigin {
-    @JsonProperty("type") private final String type;
+    @JsonProperty("type") private final MessageOriginType type;
     @JsonProperty("date") private final long date;
     @JsonProperty("chat") private final Chat chat;
     @JsonProperty("message_id") private final long messageId;
@@ -14,7 +15,7 @@ public class MessageOriginChannel implements MessageOrigin {
 
     @JsonCreator
     public MessageOriginChannel(
-            @JsonProperty("type") String type,
+            @JsonProperty("type") MessageOriginType type,
             @JsonProperty("date") long date,
             @JsonProperty("chat") Chat chat,
             @JsonProperty("message_id") long messageId,
@@ -27,7 +28,7 @@ public class MessageOriginChannel implements MessageOrigin {
         this.authorSignature = authorSignature;
     }
 
-    public String type() {
+    public MessageOriginType type() {
         return this.type;
     }
 

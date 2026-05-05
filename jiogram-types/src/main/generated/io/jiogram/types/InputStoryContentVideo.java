@@ -2,10 +2,11 @@ package io.jiogram.types;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.jiogram.types.InputStoryContentType;
 import org.jspecify.annotations.Nullable;
 
 public class InputStoryContentVideo implements InputStoryContent {
-    @JsonProperty("type") private final String type;
+    @JsonProperty("type") private final InputStoryContentType type;
     @JsonProperty("video") private final String video;
     @JsonProperty("duration") @Nullable private final Double duration;
     @JsonProperty("cover_frame_timestamp") @Nullable private final Double coverFrameTimestamp;
@@ -13,7 +14,7 @@ public class InputStoryContentVideo implements InputStoryContent {
 
     @JsonCreator
     public InputStoryContentVideo(
-            @JsonProperty("type") String type,
+            @JsonProperty("type") InputStoryContentType type,
             @JsonProperty("video") String video,
             @JsonProperty("duration") @Nullable Double duration,
             @JsonProperty("cover_frame_timestamp") @Nullable Double coverFrameTimestamp,
@@ -26,7 +27,7 @@ public class InputStoryContentVideo implements InputStoryContent {
         this.isAnimation = isAnimation;
     }
 
-    public String type() {
+    public InputStoryContentType type() {
         return this.type;
     }
 

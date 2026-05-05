@@ -2,11 +2,12 @@ package io.jiogram.types;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.jiogram.types.ChatBoostSourceType;
 import io.jiogram.types.User;
 import org.jspecify.annotations.Nullable;
 
 public class ChatBoostSourceGiveaway implements ChatBoostSource {
-    @JsonProperty("source") private final String source;
+    @JsonProperty("source") private final ChatBoostSourceType source;
     @JsonProperty("giveaway_message_id") private final long giveawayMessageId;
     @JsonProperty("user") @Nullable private final User user;
     @JsonProperty("prize_star_count") @Nullable private final Long prizeStarCount;
@@ -14,7 +15,7 @@ public class ChatBoostSourceGiveaway implements ChatBoostSource {
 
     @JsonCreator
     public ChatBoostSourceGiveaway(
-            @JsonProperty("source") String source,
+            @JsonProperty("source") ChatBoostSourceType source,
             @JsonProperty("giveaway_message_id") long giveawayMessageId,
             @JsonProperty("user") @Nullable User user,
             @JsonProperty("prize_star_count") @Nullable Long prizeStarCount,
@@ -27,7 +28,7 @@ public class ChatBoostSourceGiveaway implements ChatBoostSource {
         this.isUnclaimed = isUnclaimed;
     }
 
-    public String source() {
+    public ChatBoostSourceType source() {
         return this.source;
     }
 

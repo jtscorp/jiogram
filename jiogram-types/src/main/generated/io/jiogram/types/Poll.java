@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.MessageEntity;
 import io.jiogram.types.PollOption;
+import io.jiogram.types.PollType;
 import java.util.List;
 import org.jspecify.annotations.Nullable;
 
@@ -15,7 +16,7 @@ public class Poll {
     @JsonProperty("total_voter_count") private final long totalVoterCount;
     @JsonProperty("is_closed") private final boolean isClosed;
     @JsonProperty("is_anonymous") private final boolean isAnonymous;
-    @JsonProperty("type") private final String type;
+    @JsonProperty("type") private final PollType type;
     @JsonProperty("allows_multiple_answers") private final boolean allowsMultipleAnswers;
     @JsonProperty("allows_revoting") private final boolean allowsRevoting;
     @JsonProperty("correct_option_ids") @Nullable private final List<Long> correctOptionIds;
@@ -35,7 +36,7 @@ public class Poll {
             @JsonProperty("total_voter_count") long totalVoterCount,
             @JsonProperty("is_closed") boolean isClosed,
             @JsonProperty("is_anonymous") boolean isAnonymous,
-            @JsonProperty("type") String type,
+            @JsonProperty("type") PollType type,
             @JsonProperty("allows_multiple_answers") boolean allowsMultipleAnswers,
             @JsonProperty("allows_revoting") boolean allowsRevoting,
             @JsonProperty("correct_option_ids") @Nullable List<Long> correctOptionIds,
@@ -93,7 +94,7 @@ public class Poll {
         return this.isAnonymous;
     }
 
-    public String type() {
+    public PollType type() {
         return this.type;
     }
 

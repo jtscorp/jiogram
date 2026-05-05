@@ -2,12 +2,13 @@ package io.jiogram.types;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.jiogram.types.OwnedGiftType;
 import io.jiogram.types.UniqueGift;
 import io.jiogram.types.User;
 import org.jspecify.annotations.Nullable;
 
 public class OwnedGiftUnique implements OwnedGift {
-    @JsonProperty("type") private final String type;
+    @JsonProperty("type") private final OwnedGiftType type;
     @JsonProperty("gift") private final UniqueGift gift;
     @JsonProperty("owned_gift_id") @Nullable private final String ownedGiftId;
     @JsonProperty("sender_user") @Nullable private final User senderUser;
@@ -19,7 +20,7 @@ public class OwnedGiftUnique implements OwnedGift {
 
     @JsonCreator
     public OwnedGiftUnique(
-            @JsonProperty("type") String type,
+            @JsonProperty("type") OwnedGiftType type,
             @JsonProperty("gift") UniqueGift gift,
             @JsonProperty("owned_gift_id") @Nullable String ownedGiftId,
             @JsonProperty("sender_user") @Nullable User senderUser,
@@ -40,7 +41,7 @@ public class OwnedGiftUnique implements OwnedGift {
         this.nextTransferDate = nextTransferDate;
     }
 
-    public String type() {
+    public OwnedGiftType type() {
         return this.type;
     }
 

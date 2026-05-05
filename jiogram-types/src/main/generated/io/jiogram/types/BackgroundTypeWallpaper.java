@@ -2,11 +2,12 @@ package io.jiogram.types;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.jiogram.types.BackgroundTypeType;
 import io.jiogram.types.Document;
 import org.jspecify.annotations.Nullable;
 
 public class BackgroundTypeWallpaper implements BackgroundType {
-    @JsonProperty("type") private final String type;
+    @JsonProperty("type") private final BackgroundTypeType type;
     @JsonProperty("document") private final Document document;
     @JsonProperty("dark_theme_dimming") private final long darkThemeDimming;
     @JsonProperty("is_blurred") @Nullable private final Boolean isBlurred;
@@ -14,7 +15,7 @@ public class BackgroundTypeWallpaper implements BackgroundType {
 
     @JsonCreator
     public BackgroundTypeWallpaper(
-            @JsonProperty("type") String type,
+            @JsonProperty("type") BackgroundTypeType type,
             @JsonProperty("document") Document document,
             @JsonProperty("dark_theme_dimming") long darkThemeDimming,
             @JsonProperty("is_blurred") @Nullable Boolean isBlurred,
@@ -27,7 +28,7 @@ public class BackgroundTypeWallpaper implements BackgroundType {
         this.isMoving = isMoving;
     }
 
-    public String type() {
+    public BackgroundTypeType type() {
         return this.type;
     }
 

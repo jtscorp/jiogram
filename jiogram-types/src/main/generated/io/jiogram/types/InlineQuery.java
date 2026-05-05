@@ -2,6 +2,7 @@ package io.jiogram.types;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.jiogram.types.InlineQueryChatType;
 import io.jiogram.types.Location;
 import io.jiogram.types.User;
 import org.jspecify.annotations.Nullable;
@@ -11,7 +12,7 @@ public class InlineQuery {
     @JsonProperty("from") private final User from;
     @JsonProperty("query") private final String query;
     @JsonProperty("offset") private final String offset;
-    @JsonProperty("chat_type") @Nullable private final String chatType;
+    @JsonProperty("chat_type") @Nullable private final InlineQueryChatType chatType;
     @JsonProperty("location") @Nullable private final Location location;
 
     @JsonCreator
@@ -20,7 +21,7 @@ public class InlineQuery {
             @JsonProperty("from") User from,
             @JsonProperty("query") String query,
             @JsonProperty("offset") String offset,
-            @JsonProperty("chat_type") @Nullable String chatType,
+            @JsonProperty("chat_type") @Nullable InlineQueryChatType chatType,
             @JsonProperty("location") @Nullable Location location
     ) {
         this.id = id;
@@ -47,7 +48,7 @@ public class InlineQuery {
         return this.offset;
     }
 
-    public String chatType() {
+    public InlineQueryChatType chatType() {
         return this.chatType;
     }
 

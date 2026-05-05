@@ -3,17 +3,18 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.ReactionType;
+import io.jiogram.types.StoryAreaTypeType;
 import org.jspecify.annotations.Nullable;
 
 public class StoryAreaTypeSuggestedReaction implements StoryAreaType {
-    @JsonProperty("type") private final String type;
+    @JsonProperty("type") private final StoryAreaTypeType type;
     @JsonProperty("reaction_type") private final ReactionType reactionType;
     @JsonProperty("is_dark") @Nullable private final Boolean isDark;
     @JsonProperty("is_flipped") @Nullable private final Boolean isFlipped;
 
     @JsonCreator
     public StoryAreaTypeSuggestedReaction(
-            @JsonProperty("type") String type,
+            @JsonProperty("type") StoryAreaTypeType type,
             @JsonProperty("reaction_type") ReactionType reactionType,
             @JsonProperty("is_dark") @Nullable Boolean isDark,
             @JsonProperty("is_flipped") @Nullable Boolean isFlipped
@@ -24,7 +25,7 @@ public class StoryAreaTypeSuggestedReaction implements StoryAreaType {
         this.isFlipped = isFlipped;
     }
 
-    public String type() {
+    public StoryAreaTypeType type() {
         return this.type;
     }
 

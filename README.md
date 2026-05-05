@@ -4,13 +4,13 @@ A Java Spring Boot framework for building Telegram bots, inspired by Python's [a
 
 Jiogram brings the ergonomic, annotation-driven handler model of aiogram to the Java/Spring ecosystem with full reactive support via Project Reactor.
 
-> **This branch (`sb3.x`) targets Spring Boot 3.5.x.**
+> **This branch (`sb2.x`) targets Spring Boot 2.7.x.**
 > For Spring Boot 4.x see the [`main` branch](https://github.com/jaxongir/jiogram/tree/main).
-> For Spring Boot 2.7.x see the [`sb2.x` branch](https://github.com/jaxongir/jiogram/tree/sb2.x).
+> For Spring Boot 3.5.x see the [`sb3.x` branch](https://github.com/jaxongir/jiogram/tree/sb3.x).
 >
 > **Maven coordinates:**
 > ```
-> implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-3-starter:0.2.0-SNAPSHOT'
+> implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-2-starter:0.2.0-SNAPSHOT'
 > ```
 
 ## Quick Start
@@ -20,7 +20,7 @@ Jiogram brings the ergonomic, annotation-driven handler model of aiogram to the 
 ```groovy
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.5.3'
+    id 'org.springframework.boot' version '2.7.18'
     id 'io.spring.dependency-management' version '1.1.7'
 }
 
@@ -31,7 +31,7 @@ java {
 }
 
 dependencies {
-    implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-3-starter:0.2.0-SNAPSHOT'
+    implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-2-starter:0.2.0-SNAPSHOT'
 }
 ```
 
@@ -95,7 +95,7 @@ That's it. Run your Spring Boot app and the bot starts polling for updates autom
 ## Requirements
 
 - **Java 17** or newer
-- **Spring Boot 3.5.x**
+- **Spring Boot 2.7.x**
 - **Project Reactor** (comes with Spring Boot WebFlux)
 
 ## Configuration Reference
@@ -109,7 +109,7 @@ All properties live under the `telegram` prefix. See [docs/configuration.md](doc
 | `telegram.polling.timeout` | `30` | Long-polling timeout in seconds |
 | `telegram.polling.limit` | `100` | Max updates per poll |
 | `telegram.polling.backoff` | `1000` | Error backoff in ms |
-| `telegram.defaults.parse-mode` | `null` | Default parse mode (`HTML`, `MarkdownV2`) |
+| `telegram.defaults.parse-mode` | `null` | Default parse mode (`HTML`, `MARKDOWN`, `MARKDOWN_V2`) |
 | `telegram.fsm.enabled` | `true` | Enable FSM middleware |
 | `telegram.fsm.strategy` | `USER_IN_CHAT` | FSM key strategy |
 | `telegram.fsm.storage` | `memory` | `memory` or `redis` |

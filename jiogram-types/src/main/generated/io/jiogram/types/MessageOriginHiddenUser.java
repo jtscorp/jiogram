@@ -2,15 +2,16 @@ package io.jiogram.types;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.jiogram.types.MessageOriginType;
 
 public class MessageOriginHiddenUser implements MessageOrigin {
-    @JsonProperty("type") private final String type;
+    @JsonProperty("type") private final MessageOriginType type;
     @JsonProperty("date") private final long date;
     @JsonProperty("sender_user_name") private final String senderUserName;
 
     @JsonCreator
     public MessageOriginHiddenUser(
-            @JsonProperty("type") String type,
+            @JsonProperty("type") MessageOriginType type,
             @JsonProperty("date") long date,
             @JsonProperty("sender_user_name") String senderUserName
     ) {
@@ -19,7 +20,7 @@ public class MessageOriginHiddenUser implements MessageOrigin {
         this.senderUserName = senderUserName;
     }
 
-    public String type() {
+    public MessageOriginType type() {
         return this.type;
     }
 

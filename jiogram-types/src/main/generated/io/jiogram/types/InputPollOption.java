@@ -3,18 +3,19 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.MessageEntity;
+import io.jiogram.types.ParseMode;
 import java.util.List;
 import org.jspecify.annotations.Nullable;
 
 public class InputPollOption {
     @JsonProperty("text") private final String text;
-    @JsonProperty("text_parse_mode") @Nullable private final String textParseMode;
+    @JsonProperty("text_parse_mode") @Nullable private final ParseMode textParseMode;
     @JsonProperty("text_entities") @Nullable private final List<MessageEntity> textEntities;
 
     @JsonCreator
     public InputPollOption(
             @JsonProperty("text") String text,
-            @JsonProperty("text_parse_mode") @Nullable String textParseMode,
+            @JsonProperty("text_parse_mode") @Nullable ParseMode textParseMode,
             @JsonProperty("text_entities") @Nullable List<MessageEntity> textEntities
     ) {
         this.text = text;
@@ -26,7 +27,7 @@ public class InputPollOption {
         return this.text;
     }
 
-    public String textParseMode() {
+    public ParseMode textParseMode() {
         return this.textParseMode;
     }
 

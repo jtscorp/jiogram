@@ -2,16 +2,17 @@ package io.jiogram.types;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.jiogram.types.StoryAreaTypeType;
 
 public class StoryAreaTypeWeather implements StoryAreaType {
-    @JsonProperty("type") private final String type;
+    @JsonProperty("type") private final StoryAreaTypeType type;
     @JsonProperty("temperature") private final double temperature;
     @JsonProperty("emoji") private final String emoji;
     @JsonProperty("background_color") private final long backgroundColor;
 
     @JsonCreator
     public StoryAreaTypeWeather(
-            @JsonProperty("type") String type,
+            @JsonProperty("type") StoryAreaTypeType type,
             @JsonProperty("temperature") double temperature,
             @JsonProperty("emoji") String emoji,
             @JsonProperty("background_color") long backgroundColor
@@ -22,7 +23,7 @@ public class StoryAreaTypeWeather implements StoryAreaType {
         this.backgroundColor = backgroundColor;
     }
 
-    public String type() {
+    public StoryAreaTypeType type() {
         return this.type;
     }
 

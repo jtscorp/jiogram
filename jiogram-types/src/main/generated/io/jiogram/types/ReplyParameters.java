@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.ChatId;
 import io.jiogram.types.MessageEntity;
+import io.jiogram.types.ParseMode;
 import java.util.List;
 import org.jspecify.annotations.Nullable;
 
@@ -12,7 +13,7 @@ public class ReplyParameters {
     @JsonProperty("chat_id") @Nullable private final ChatId chatId;
     @JsonProperty("allow_sending_without_reply") @Nullable private final Boolean allowSendingWithoutReply;
     @JsonProperty("quote") @Nullable private final String quote;
-    @JsonProperty("quote_parse_mode") @Nullable private final String quoteParseMode;
+    @JsonProperty("quote_parse_mode") @Nullable private final ParseMode quoteParseMode;
     @JsonProperty("quote_entities") @Nullable private final List<MessageEntity> quoteEntities;
     @JsonProperty("quote_position") @Nullable private final Long quotePosition;
     @JsonProperty("checklist_task_id") @Nullable private final Long checklistTaskId;
@@ -24,7 +25,7 @@ public class ReplyParameters {
             @JsonProperty("chat_id") @Nullable ChatId chatId,
             @JsonProperty("allow_sending_without_reply") @Nullable Boolean allowSendingWithoutReply,
             @JsonProperty("quote") @Nullable String quote,
-            @JsonProperty("quote_parse_mode") @Nullable String quoteParseMode,
+            @JsonProperty("quote_parse_mode") @Nullable ParseMode quoteParseMode,
             @JsonProperty("quote_entities") @Nullable List<MessageEntity> quoteEntities,
             @JsonProperty("quote_position") @Nullable Long quotePosition,
             @JsonProperty("checklist_task_id") @Nullable Long checklistTaskId,
@@ -57,7 +58,7 @@ public class ReplyParameters {
         return this.quote;
     }
 
-    public String quoteParseMode() {
+    public ParseMode quoteParseMode() {
         return this.quoteParseMode;
     }
 

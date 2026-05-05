@@ -96,7 +96,7 @@ public final class TypeGenerator {
 
     private String generateRecord(TypeDefinition type) {
         Set<String> imports = new TreeSet<>();
-        List<FieldInfo> fields = buildFieldInfos(type.fields(), imports);
+        List<FieldInfo> fields = buildFieldInfos(type.name(), type.fields(), imports);
 
         // Collect all interfaces this type should implement
         List<String> interfaces = new ArrayList<>();
@@ -254,7 +254,7 @@ public final class TypeGenerator {
         String parentName = UnionRegistry.parentOf(type.name());
 
         Set<String> imports = new TreeSet<>();
-        List<FieldInfo> fields = buildFieldInfos(type.fields(), imports);
+        List<FieldInfo> fields = buildFieldInfos(type.name(), type.fields(), imports);
 
         return buildPojoClass(type.name(), List.of(parentName), fields, imports);
     }
@@ -265,7 +265,7 @@ public final class TypeGenerator {
     /**
      * Builds {@link FieldInfo} objects for each field, collecting necessary imports.
      */
-    private List<FieldInfo> buildFieldInfos(List<FieldDefinition> fields, Set<String> imports) {
+    private List<FieldInfo> buildFieldInfos(String ownerTypeName, List<FieldDefinition> fields, Set<String> imports) {
         imports.add(JACKSON_ANNOTATION_PACKAGE + ".JsonProperty");
         imports.add(JACKSON_ANNOTATION_PACKAGE + ".JsonCreator");
 
@@ -273,7 +273,7 @@ public final class TypeGenerator {
         boolean hasOptionalRefField = false;
 
         for (FieldDefinition field : fields) {
-            TypeName javaType = typeMapper.resolve(field.type(), field.required());
+            TypeName javaType = typeMapper.resolveTypeField(ownerTypeName, field);
             String typeString = resolveTypeString(javaType, imports);
             String annotation = "@JsonProperty(\"" + field.name() + "\")";
             boolean nullable = !field.required() && !javaType.isPrimitive();

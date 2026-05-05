@@ -2,22 +2,23 @@ package io.jiogram.types;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.jiogram.types.BotCommandScopeType;
 import io.jiogram.types.ChatId;
 
 public class BotCommandScopeChat implements BotCommandScope {
-    @JsonProperty("type") private final String type;
+    @JsonProperty("type") private final BotCommandScopeType type;
     @JsonProperty("chat_id") private final ChatId chatId;
 
     @JsonCreator
     public BotCommandScopeChat(
-            @JsonProperty("type") String type,
+            @JsonProperty("type") BotCommandScopeType type,
             @JsonProperty("chat_id") ChatId chatId
     ) {
         this.type = type;
         this.chatId = chatId;
     }
 
-    public String type() {
+    public BotCommandScopeType type() {
         return this.type;
     }
 

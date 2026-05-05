@@ -3,6 +3,7 @@ package io.jiogram.filter;
 import io.jiogram.dispatcher.UpdateContext;
 import io.jiogram.types.CallbackQuery;
 import io.jiogram.types.Chat;
+import io.jiogram.types.ChatType;
 import io.jiogram.types.Message;
 import io.jiogram.types.User;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,7 @@ class FiltersTest {
     // -- Helper methods --
 
     static Message testMessage(String text) {
-        var chat = new Chat(1L, "private", null, null, null, null, null, null);
+        var chat = new Chat(1L, ChatType.PRIVATE, null, null, null, null, null, null);
         return new Message(
                 1L, null, null, null, null, null, null, null,
                 0L, null, chat, null, null, null, null, null,
@@ -274,7 +275,7 @@ class FiltersTest {
                 .assertNext(result -> {
                     assertInstanceOf(FilterResult.Passed.class, result);
                     var passed = (FilterResult.Passed) result;
-                    assertEquals("waiting_for_name", passed.data().get("state"));
+                    assertTrue(passed.data().isEmpty());
                 })
                 .verifyComplete();
     }

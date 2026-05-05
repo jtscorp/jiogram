@@ -12,6 +12,7 @@ import io.jiogram.types.Chat;
 import io.jiogram.types.ChatLocation;
 import io.jiogram.types.ChatPermissions;
 import io.jiogram.types.ChatPhoto;
+import io.jiogram.types.ChatType;
 import io.jiogram.types.Message;
 import io.jiogram.types.ReactionType;
 import io.jiogram.types.UniqueGiftColors;
@@ -21,7 +22,7 @@ import org.jspecify.annotations.Nullable;
 
 public class ChatFullInfo {
     @JsonProperty("id") private final long id;
-    @JsonProperty("type") private final String type;
+    @JsonProperty("type") private final ChatType type;
     @JsonProperty("title") @Nullable private final String title;
     @JsonProperty("username") @Nullable private final String username;
     @JsonProperty("first_name") @Nullable private final String firstName;
@@ -75,7 +76,7 @@ public class ChatFullInfo {
     @JsonCreator
     public ChatFullInfo(
             @JsonProperty("id") long id,
-            @JsonProperty("type") String type,
+            @JsonProperty("type") ChatType type,
             @JsonProperty("title") @Nullable String title,
             @JsonProperty("username") @Nullable String username,
             @JsonProperty("first_name") @Nullable String firstName,
@@ -183,7 +184,7 @@ public class ChatFullInfo {
         return this.id;
     }
 
-    public String type() {
+    public ChatType type() {
         return this.type;
     }
 

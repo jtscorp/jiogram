@@ -1,5 +1,7 @@
 package io.jiogram.autoconfigure;
 
+import io.jiogram.types.ParseMode;
+import io.jiogram.types.UpdateType;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;
 import org.springframework.boot.context.properties.bind.DefaultValue;
@@ -68,13 +70,13 @@ public class JiogramProperties {
         private final int timeout;
         private final long backoff;
         private final int limit;
-        private final List<String> allowedUpdates;
+        private final List<UpdateType> allowedUpdates;
 
         public PollingProperties(
                 @DefaultValue("30") int timeout,
                 @DefaultValue("1000") long backoff,
                 @DefaultValue("100") int limit,
-                List<String> allowedUpdates) {
+                List<UpdateType> allowedUpdates) {
             this.timeout = timeout;
             this.backoff = backoff;
             this.limit = limit;
@@ -84,7 +86,7 @@ public class JiogramProperties {
         public int timeout() { return timeout; }
         public long backoff() { return backoff; }
         public int limit() { return limit; }
-        public List<String> allowedUpdates() { return allowedUpdates; }
+        public List<UpdateType> allowedUpdates() { return allowedUpdates; }
     }
 
     /**
@@ -121,12 +123,12 @@ public class JiogramProperties {
     @ConstructorBinding
     public static class DefaultsProperties {
 
-        private final String parseMode;
+        private final ParseMode parseMode;
         private final boolean protectContent;
         private final boolean linkPreview;
 
         public DefaultsProperties(
-                String parseMode,
+                ParseMode parseMode,
                 @DefaultValue("false") boolean protectContent,
                 @DefaultValue("true") boolean linkPreview) {
             this.parseMode = parseMode;
@@ -134,7 +136,7 @@ public class JiogramProperties {
             this.linkPreview = linkPreview;
         }
 
-        public String parseMode() { return parseMode; }
+        public ParseMode parseMode() { return parseMode; }
         public boolean protectContent() { return protectContent; }
         public boolean linkPreview() { return linkPreview; }
     }

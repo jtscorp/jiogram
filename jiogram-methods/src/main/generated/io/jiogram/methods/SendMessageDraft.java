@@ -3,6 +3,7 @@ package io.jiogram.methods;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.MessageEntity;
+import io.jiogram.types.ParseMode;
 import io.jiogram.types.TelegramMethod;
 import java.util.List;
 import org.jspecify.annotations.Nullable;
@@ -12,7 +13,7 @@ public class SendMessageDraft implements TelegramMethod<Boolean> {
     @JsonProperty("message_thread_id") @Nullable private final Long messageThreadId;
     @JsonProperty("draft_id") private final long draftId;
     @JsonProperty("text") private final String text;
-    @JsonProperty("parse_mode") @Nullable private final String parseMode;
+    @JsonProperty("parse_mode") @Nullable private final ParseMode parseMode;
     @JsonProperty("entities") @Nullable private final List<MessageEntity> entities;
 
     @JsonCreator
@@ -21,7 +22,7 @@ public class SendMessageDraft implements TelegramMethod<Boolean> {
             @JsonProperty("message_thread_id") @Nullable Long messageThreadId,
             @JsonProperty("draft_id") long draftId,
             @JsonProperty("text") String text,
-            @JsonProperty("parse_mode") @Nullable String parseMode,
+            @JsonProperty("parse_mode") @Nullable ParseMode parseMode,
             @JsonProperty("entities") @Nullable List<MessageEntity> entities
     ) {
         this.chatId = chatId;
@@ -48,7 +49,7 @@ public class SendMessageDraft implements TelegramMethod<Boolean> {
         return this.text;
     }
 
-    public String parseMode() {
+    public ParseMode parseMode() {
         return this.parseMode;
     }
 

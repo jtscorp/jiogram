@@ -3,23 +3,26 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.InlineKeyboardMarkup;
+import io.jiogram.types.InlineQueryResultType;
 import io.jiogram.types.InputMessageContent;
 import io.jiogram.types.MessageEntity;
+import io.jiogram.types.ParseMode;
+import io.jiogram.types.ThumbnailMimeType;
 import java.util.List;
 import org.jspecify.annotations.Nullable;
 
 public class InlineQueryResultMpeg4Gif implements InlineQueryResult {
-    @JsonProperty("type") private final String type;
+    @JsonProperty("type") private final InlineQueryResultType type;
     @JsonProperty("id") private final String id;
     @JsonProperty("mpeg4_url") private final String mpeg4Url;
     @JsonProperty("mpeg4_width") @Nullable private final Long mpeg4Width;
     @JsonProperty("mpeg4_height") @Nullable private final Long mpeg4Height;
     @JsonProperty("mpeg4_duration") @Nullable private final Long mpeg4Duration;
     @JsonProperty("thumbnail_url") private final String thumbnailUrl;
-    @JsonProperty("thumbnail_mime_type") @Nullable private final String thumbnailMimeType;
+    @JsonProperty("thumbnail_mime_type") @Nullable private final ThumbnailMimeType thumbnailMimeType;
     @JsonProperty("title") @Nullable private final String title;
     @JsonProperty("caption") @Nullable private final String caption;
-    @JsonProperty("parse_mode") @Nullable private final String parseMode;
+    @JsonProperty("parse_mode") @Nullable private final ParseMode parseMode;
     @JsonProperty("caption_entities") @Nullable private final List<MessageEntity> captionEntities;
     @JsonProperty("show_caption_above_media") @Nullable private final Boolean showCaptionAboveMedia;
     @JsonProperty("reply_markup") @Nullable private final InlineKeyboardMarkup replyMarkup;
@@ -27,17 +30,17 @@ public class InlineQueryResultMpeg4Gif implements InlineQueryResult {
 
     @JsonCreator
     public InlineQueryResultMpeg4Gif(
-            @JsonProperty("type") String type,
+            @JsonProperty("type") InlineQueryResultType type,
             @JsonProperty("id") String id,
             @JsonProperty("mpeg4_url") String mpeg4Url,
             @JsonProperty("mpeg4_width") @Nullable Long mpeg4Width,
             @JsonProperty("mpeg4_height") @Nullable Long mpeg4Height,
             @JsonProperty("mpeg4_duration") @Nullable Long mpeg4Duration,
             @JsonProperty("thumbnail_url") String thumbnailUrl,
-            @JsonProperty("thumbnail_mime_type") @Nullable String thumbnailMimeType,
+            @JsonProperty("thumbnail_mime_type") @Nullable ThumbnailMimeType thumbnailMimeType,
             @JsonProperty("title") @Nullable String title,
             @JsonProperty("caption") @Nullable String caption,
-            @JsonProperty("parse_mode") @Nullable String parseMode,
+            @JsonProperty("parse_mode") @Nullable ParseMode parseMode,
             @JsonProperty("caption_entities") @Nullable List<MessageEntity> captionEntities,
             @JsonProperty("show_caption_above_media") @Nullable Boolean showCaptionAboveMedia,
             @JsonProperty("reply_markup") @Nullable InlineKeyboardMarkup replyMarkup,
@@ -60,7 +63,7 @@ public class InlineQueryResultMpeg4Gif implements InlineQueryResult {
         this.inputMessageContent = inputMessageContent;
     }
 
-    public String type() {
+    public InlineQueryResultType type() {
         return this.type;
     }
 
@@ -88,7 +91,7 @@ public class InlineQueryResultMpeg4Gif implements InlineQueryResult {
         return this.thumbnailUrl;
     }
 
-    public String thumbnailMimeType() {
+    public ThumbnailMimeType thumbnailMimeType() {
         return this.thumbnailMimeType;
     }
 
@@ -100,7 +103,7 @@ public class InlineQueryResultMpeg4Gif implements InlineQueryResult {
         return this.caption;
     }
 
-    public String parseMode() {
+    public ParseMode parseMode() {
         return this.parseMode;
     }
 

@@ -5,13 +5,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.AffiliateInfo;
 import io.jiogram.types.Gift;
 import io.jiogram.types.PaidMedia;
+import io.jiogram.types.TransactionPartnerType;
+import io.jiogram.types.TransactionType;
 import io.jiogram.types.User;
 import java.util.List;
 import org.jspecify.annotations.Nullable;
 
 public class TransactionPartnerUser implements TransactionPartner {
-    @JsonProperty("type") private final String type;
-    @JsonProperty("transaction_type") private final String transactionType;
+    @JsonProperty("type") private final TransactionPartnerType type;
+    @JsonProperty("transaction_type") private final TransactionType transactionType;
     @JsonProperty("user") private final User user;
     @JsonProperty("affiliate") @Nullable private final AffiliateInfo affiliate;
     @JsonProperty("invoice_payload") @Nullable private final String invoicePayload;
@@ -23,8 +25,8 @@ public class TransactionPartnerUser implements TransactionPartner {
 
     @JsonCreator
     public TransactionPartnerUser(
-            @JsonProperty("type") String type,
-            @JsonProperty("transaction_type") String transactionType,
+            @JsonProperty("type") TransactionPartnerType type,
+            @JsonProperty("transaction_type") TransactionType transactionType,
             @JsonProperty("user") User user,
             @JsonProperty("affiliate") @Nullable AffiliateInfo affiliate,
             @JsonProperty("invoice_payload") @Nullable String invoicePayload,
@@ -46,11 +48,11 @@ public class TransactionPartnerUser implements TransactionPartner {
         this.premiumSubscriptionDuration = premiumSubscriptionDuration;
     }
 
-    public String type() {
+    public TransactionPartnerType type() {
         return this.type;
     }
 
-    public String transactionType() {
+    public TransactionType transactionType() {
         return this.transactionType;
     }
 

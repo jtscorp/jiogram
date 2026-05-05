@@ -2,25 +2,27 @@ package io.jiogram.types;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.jiogram.types.InputMediaType;
 import io.jiogram.types.MessageEntity;
+import io.jiogram.types.ParseMode;
 import java.util.List;
 import org.jspecify.annotations.Nullable;
 
 public class InputMediaPhoto implements InputMedia {
-    @JsonProperty("type") private final String type;
+    @JsonProperty("type") private final InputMediaType type;
     @JsonProperty("media") private final String media;
     @JsonProperty("caption") @Nullable private final String caption;
-    @JsonProperty("parse_mode") @Nullable private final String parseMode;
+    @JsonProperty("parse_mode") @Nullable private final ParseMode parseMode;
     @JsonProperty("caption_entities") @Nullable private final List<MessageEntity> captionEntities;
     @JsonProperty("show_caption_above_media") @Nullable private final Boolean showCaptionAboveMedia;
     @JsonProperty("has_spoiler") @Nullable private final Boolean hasSpoiler;
 
     @JsonCreator
     public InputMediaPhoto(
-            @JsonProperty("type") String type,
+            @JsonProperty("type") InputMediaType type,
             @JsonProperty("media") String media,
             @JsonProperty("caption") @Nullable String caption,
-            @JsonProperty("parse_mode") @Nullable String parseMode,
+            @JsonProperty("parse_mode") @Nullable ParseMode parseMode,
             @JsonProperty("caption_entities") @Nullable List<MessageEntity> captionEntities,
             @JsonProperty("show_caption_above_media") @Nullable Boolean showCaptionAboveMedia,
             @JsonProperty("has_spoiler") @Nullable Boolean hasSpoiler
@@ -34,7 +36,7 @@ public class InputMediaPhoto implements InputMedia {
         this.hasSpoiler = hasSpoiler;
     }
 
-    public String type() {
+    public InputMediaType type() {
         return this.type;
     }
 
@@ -46,7 +48,7 @@ public class InputMediaPhoto implements InputMedia {
         return this.caption;
     }
 
-    public String parseMode() {
+    public ParseMode parseMode() {
         return this.parseMode;
     }
 

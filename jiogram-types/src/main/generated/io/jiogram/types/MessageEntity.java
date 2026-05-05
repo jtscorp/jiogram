@@ -2,11 +2,12 @@ package io.jiogram.types;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.jiogram.types.MessageEntityType;
 import io.jiogram.types.User;
 import org.jspecify.annotations.Nullable;
 
 public class MessageEntity {
-    @JsonProperty("type") private final String type;
+    @JsonProperty("type") private final MessageEntityType type;
     @JsonProperty("offset") private final long offset;
     @JsonProperty("length") private final long length;
     @JsonProperty("url") @Nullable private final String url;
@@ -18,7 +19,7 @@ public class MessageEntity {
 
     @JsonCreator
     public MessageEntity(
-            @JsonProperty("type") String type,
+            @JsonProperty("type") MessageEntityType type,
             @JsonProperty("offset") long offset,
             @JsonProperty("length") long length,
             @JsonProperty("url") @Nullable String url,
@@ -39,7 +40,7 @@ public class MessageEntity {
         this.dateTimeFormat = dateTimeFormat;
     }
 
-    public String type() {
+    public MessageEntityType type() {
         return this.type;
     }
 

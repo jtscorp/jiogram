@@ -2,17 +2,18 @@ package io.jiogram.types;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.jiogram.types.PaidMediaType;
 import org.jspecify.annotations.Nullable;
 
 public class PaidMediaPreview implements PaidMedia {
-    @JsonProperty("type") private final String type;
+    @JsonProperty("type") private final PaidMediaType type;
     @JsonProperty("width") @Nullable private final Long width;
     @JsonProperty("height") @Nullable private final Long height;
     @JsonProperty("duration") @Nullable private final Long duration;
 
     @JsonCreator
     public PaidMediaPreview(
-            @JsonProperty("type") String type,
+            @JsonProperty("type") PaidMediaType type,
             @JsonProperty("width") @Nullable Long width,
             @JsonProperty("height") @Nullable Long height,
             @JsonProperty("duration") @Nullable Long duration
@@ -23,7 +24,7 @@ public class PaidMediaPreview implements PaidMedia {
         this.duration = duration;
     }
 
-    public String type() {
+    public PaidMediaType type() {
         return this.type;
     }
 

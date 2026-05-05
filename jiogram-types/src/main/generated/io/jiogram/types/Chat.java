@@ -2,11 +2,12 @@ package io.jiogram.types;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.jiogram.types.ChatType;
 import org.jspecify.annotations.Nullable;
 
 public class Chat {
     @JsonProperty("id") private final long id;
-    @JsonProperty("type") private final String type;
+    @JsonProperty("type") private final ChatType type;
     @JsonProperty("title") @Nullable private final String title;
     @JsonProperty("username") @Nullable private final String username;
     @JsonProperty("first_name") @Nullable private final String firstName;
@@ -17,7 +18,7 @@ public class Chat {
     @JsonCreator
     public Chat(
             @JsonProperty("id") long id,
-            @JsonProperty("type") String type,
+            @JsonProperty("type") ChatType type,
             @JsonProperty("title") @Nullable String title,
             @JsonProperty("username") @Nullable String username,
             @JsonProperty("first_name") @Nullable String firstName,
@@ -39,7 +40,7 @@ public class Chat {
         return this.id;
     }
 
-    public String type() {
+    public ChatType type() {
         return this.type;
     }
 

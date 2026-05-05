@@ -6,6 +6,8 @@ import io.jiogram.types.ChatId;
 import io.jiogram.types.InputPollOption;
 import io.jiogram.types.Message;
 import io.jiogram.types.MessageEntity;
+import io.jiogram.types.ParseMode;
+import io.jiogram.types.PollType;
 import io.jiogram.types.ReplyMarkup;
 import io.jiogram.types.ReplyParameters;
 import io.jiogram.types.TelegramMethod;
@@ -17,11 +19,11 @@ public class SendPoll implements TelegramMethod<Message> {
     @JsonProperty("chat_id") private final ChatId chatId;
     @JsonProperty("message_thread_id") @Nullable private final Long messageThreadId;
     @JsonProperty("question") private final String question;
-    @JsonProperty("question_parse_mode") @Nullable private final String questionParseMode;
+    @JsonProperty("question_parse_mode") @Nullable private final ParseMode questionParseMode;
     @JsonProperty("question_entities") @Nullable private final List<MessageEntity> questionEntities;
     @JsonProperty("options") private final List<InputPollOption> options;
     @JsonProperty("is_anonymous") @Nullable private final Boolean isAnonymous;
-    @JsonProperty("type") @Nullable private final String type;
+    @JsonProperty("type") @Nullable private final PollType type;
     @JsonProperty("allows_multiple_answers") @Nullable private final Boolean allowsMultipleAnswers;
     @JsonProperty("allows_revoting") @Nullable private final Boolean allowsRevoting;
     @JsonProperty("shuffle_options") @Nullable private final Boolean shuffleOptions;
@@ -29,13 +31,13 @@ public class SendPoll implements TelegramMethod<Message> {
     @JsonProperty("hide_results_until_closes") @Nullable private final Boolean hideResultsUntilCloses;
     @JsonProperty("correct_option_ids") @Nullable private final List<Long> correctOptionIds;
     @JsonProperty("explanation") @Nullable private final String explanation;
-    @JsonProperty("explanation_parse_mode") @Nullable private final String explanationParseMode;
+    @JsonProperty("explanation_parse_mode") @Nullable private final ParseMode explanationParseMode;
     @JsonProperty("explanation_entities") @Nullable private final List<MessageEntity> explanationEntities;
     @JsonProperty("open_period") @Nullable private final Long openPeriod;
     @JsonProperty("close_date") @Nullable private final Long closeDate;
     @JsonProperty("is_closed") @Nullable private final Boolean isClosed;
     @JsonProperty("description") @Nullable private final String description;
-    @JsonProperty("description_parse_mode") @Nullable private final String descriptionParseMode;
+    @JsonProperty("description_parse_mode") @Nullable private final ParseMode descriptionParseMode;
     @JsonProperty("description_entities") @Nullable private final List<MessageEntity> descriptionEntities;
     @JsonProperty("disable_notification") @Nullable private final Boolean disableNotification;
     @JsonProperty("protect_content") @Nullable private final Boolean protectContent;
@@ -50,11 +52,11 @@ public class SendPoll implements TelegramMethod<Message> {
             @JsonProperty("chat_id") ChatId chatId,
             @JsonProperty("message_thread_id") @Nullable Long messageThreadId,
             @JsonProperty("question") String question,
-            @JsonProperty("question_parse_mode") @Nullable String questionParseMode,
+            @JsonProperty("question_parse_mode") @Nullable ParseMode questionParseMode,
             @JsonProperty("question_entities") @Nullable List<MessageEntity> questionEntities,
             @JsonProperty("options") List<InputPollOption> options,
             @JsonProperty("is_anonymous") @Nullable Boolean isAnonymous,
-            @JsonProperty("type") @Nullable String type,
+            @JsonProperty("type") @Nullable PollType type,
             @JsonProperty("allows_multiple_answers") @Nullable Boolean allowsMultipleAnswers,
             @JsonProperty("allows_revoting") @Nullable Boolean allowsRevoting,
             @JsonProperty("shuffle_options") @Nullable Boolean shuffleOptions,
@@ -62,13 +64,13 @@ public class SendPoll implements TelegramMethod<Message> {
             @JsonProperty("hide_results_until_closes") @Nullable Boolean hideResultsUntilCloses,
             @JsonProperty("correct_option_ids") @Nullable List<Long> correctOptionIds,
             @JsonProperty("explanation") @Nullable String explanation,
-            @JsonProperty("explanation_parse_mode") @Nullable String explanationParseMode,
+            @JsonProperty("explanation_parse_mode") @Nullable ParseMode explanationParseMode,
             @JsonProperty("explanation_entities") @Nullable List<MessageEntity> explanationEntities,
             @JsonProperty("open_period") @Nullable Long openPeriod,
             @JsonProperty("close_date") @Nullable Long closeDate,
             @JsonProperty("is_closed") @Nullable Boolean isClosed,
             @JsonProperty("description") @Nullable String description,
-            @JsonProperty("description_parse_mode") @Nullable String descriptionParseMode,
+            @JsonProperty("description_parse_mode") @Nullable ParseMode descriptionParseMode,
             @JsonProperty("description_entities") @Nullable List<MessageEntity> descriptionEntities,
             @JsonProperty("disable_notification") @Nullable Boolean disableNotification,
             @JsonProperty("protect_content") @Nullable Boolean protectContent,
@@ -125,7 +127,7 @@ public class SendPoll implements TelegramMethod<Message> {
         return this.question;
     }
 
-    public String questionParseMode() {
+    public ParseMode questionParseMode() {
         return this.questionParseMode;
     }
 
@@ -141,7 +143,7 @@ public class SendPoll implements TelegramMethod<Message> {
         return this.isAnonymous;
     }
 
-    public String type() {
+    public PollType type() {
         return this.type;
     }
 
@@ -173,7 +175,7 @@ public class SendPoll implements TelegramMethod<Message> {
         return this.explanation;
     }
 
-    public String explanationParseMode() {
+    public ParseMode explanationParseMode() {
         return this.explanationParseMode;
     }
 
@@ -197,7 +199,7 @@ public class SendPoll implements TelegramMethod<Message> {
         return this.description;
     }
 
-    public String descriptionParseMode() {
+    public ParseMode descriptionParseMode() {
         return this.descriptionParseMode;
     }
 

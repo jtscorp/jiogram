@@ -2,18 +2,19 @@ package io.jiogram.types;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.jiogram.types.ChatMemberType;
 import io.jiogram.types.User;
 import org.jspecify.annotations.Nullable;
 
 public class ChatMemberMember implements ChatMember {
-    @JsonProperty("status") private final String status;
+    @JsonProperty("status") private final ChatMemberType status;
     @JsonProperty("tag") @Nullable private final String tag;
     @JsonProperty("user") private final User user;
     @JsonProperty("until_date") @Nullable private final Long untilDate;
 
     @JsonCreator
     public ChatMemberMember(
-            @JsonProperty("status") String status,
+            @JsonProperty("status") ChatMemberType status,
             @JsonProperty("tag") @Nullable String tag,
             @JsonProperty("user") User user,
             @JsonProperty("until_date") @Nullable Long untilDate
@@ -24,7 +25,7 @@ public class ChatMemberMember implements ChatMember {
         this.untilDate = untilDate;
     }
 
-    public String status() {
+    public ChatMemberType status() {
         return this.status;
     }
 

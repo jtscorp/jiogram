@@ -2,6 +2,7 @@ package io.jiogram.types;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.jiogram.types.UpdateType;
 import java.util.List;
 import org.jspecify.annotations.Nullable;
 
@@ -14,7 +15,7 @@ public class WebhookInfo {
     @JsonProperty("last_error_message") @Nullable private final String lastErrorMessage;
     @JsonProperty("last_synchronization_error_date") @Nullable private final Long lastSynchronizationErrorDate;
     @JsonProperty("max_connections") @Nullable private final Long maxConnections;
-    @JsonProperty("allowed_updates") @Nullable private final List<String> allowedUpdates;
+    @JsonProperty("allowed_updates") @Nullable private final List<UpdateType> allowedUpdates;
 
     @JsonCreator
     public WebhookInfo(
@@ -26,7 +27,7 @@ public class WebhookInfo {
             @JsonProperty("last_error_message") @Nullable String lastErrorMessage,
             @JsonProperty("last_synchronization_error_date") @Nullable Long lastSynchronizationErrorDate,
             @JsonProperty("max_connections") @Nullable Long maxConnections,
-            @JsonProperty("allowed_updates") @Nullable List<String> allowedUpdates
+            @JsonProperty("allowed_updates") @Nullable List<UpdateType> allowedUpdates
     ) {
         this.url = url;
         this.hasCustomCertificate = hasCustomCertificate;
@@ -71,7 +72,7 @@ public class WebhookInfo {
         return this.maxConnections;
     }
 
-    public List<String> allowedUpdates() {
+    public List<UpdateType> allowedUpdates() {
         return this.allowedUpdates;
     }
 }
