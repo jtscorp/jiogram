@@ -96,6 +96,12 @@ class EnumGeneratorTest {
         assertEquals("MARKDOWN_V2", EnumGenerator.toConstantName("MarkdownV2"));
     }
 
+    @Test
+    void toConstantName_mimeType() {
+        assertEquals("IMAGE_JPEG", EnumGenerator.toConstantName("image/jpeg"));
+        assertEquals("VIDEO_MP4", EnumGenerator.toConstantName("video/mp4"));
+    }
+
     // ---- EnumExtractor ----
 
     @Test
@@ -162,7 +168,12 @@ class EnumGeneratorTest {
                 "Should extract ChatAction from sendChatAction.action description");
         EnumDefinition chatAction = enums.stream()
                 .filter(e -> "ChatAction".equals(e.name())).findFirst().orElseThrow();
-        assertEquals(List.of("typing", "upload_photo", "record_video"), chatAction.values());
+        assertEquals(List.of(
+                "typing", "upload_photo", "record_video", "upload_video",
+                "record_voice", "upload_voice", "upload_document",
+                "choose_sticker", "find_location", "record_video_note",
+                "upload_video_note"
+        ), chatAction.values());
     }
 
     @Test

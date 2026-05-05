@@ -39,7 +39,7 @@ telegram:
 
   # Default properties applied to all outgoing bot requests
   defaults:
-    # Default parse mode: HTML, MarkdownV2, or null for plain text (default: null)
+    # Default parse mode: HTML, MARKDOWN, MARKDOWN_V2, or null for plain text (default: null)
     parse-mode: HTML
     # Whether to protect content from forwarding by default (default: false)
     protect-content: false
@@ -87,7 +87,7 @@ Only applies when `mode=POLLING`.
 | `timeout` | `int` | `30` | Long-polling timeout in seconds. Telegram holds the connection open for this long. |
 | `backoff` | `long` | `1000` | Initial backoff delay in ms when a polling error occurs. Exponential backoff up to 30s. |
 | `limit` | `int` | `100` | Maximum updates returned per `getUpdates` call. Range: 1-100. |
-| `allowed-updates` | `List<String>` | `null` | Restrict which update types are received. Omit to receive all. |
+| `allowed-updates` | `List<UpdateType>` | `null` | Restrict which update types are received. Omit to receive all. |
 
 ### telegram.webhook
 
@@ -106,7 +106,7 @@ Default values applied to outgoing bot API requests.
 
 | Property | Type | Default | Description |
 |---|---|---|---|
-| `parse-mode` | `String` | `null` | Default parse mode for all outgoing messages (`HTML`, `MarkdownV2`, or `null`). |
+| `parse-mode` | `ParseMode` | `null` | Default parse mode for all outgoing messages (`HTML`, `MARKDOWN`, `MARKDOWN_V2`, or `null`). |
 | `protect-content` | `boolean` | `false` | Protect messages from forwarding and saving by default. |
 | `link-preview` | `boolean` | `true` | Enable link previews in messages by default. |
 

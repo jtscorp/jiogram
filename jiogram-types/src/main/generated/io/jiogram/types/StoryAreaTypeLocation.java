@@ -2,10 +2,11 @@ package io.jiogram.types;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.LocationAddress;
+import io.jiogram.types.StoryAreaTypeType;
 import org.jspecify.annotations.Nullable;
 
 public record StoryAreaTypeLocation(
-    @JsonProperty("type") String type,
+    @JsonProperty("type") StoryAreaTypeType type,
     @JsonProperty("latitude") double latitude,
     @JsonProperty("longitude") double longitude,
     @JsonProperty("address") @Nullable LocationAddress address

@@ -1,11 +1,12 @@
 package io.jiogram.types;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.jiogram.types.ChatMemberType;
 import io.jiogram.types.User;
 import org.jspecify.annotations.Nullable;
 
 public record ChatMemberAdministrator(
-    @JsonProperty("status") String status,
+    @JsonProperty("status") ChatMemberType status,
     @JsonProperty("user") User user,
     @JsonProperty("can_be_edited") boolean canBeEdited,
     @JsonProperty("is_anonymous") boolean isAnonymous,

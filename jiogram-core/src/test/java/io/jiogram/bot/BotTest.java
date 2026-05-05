@@ -1,6 +1,9 @@
 package io.jiogram.bot;
 
 import io.jiogram.session.TelegramSession;
+import io.jiogram.methods.SendMessage;
+import io.jiogram.types.ChatId;
+import io.jiogram.types.ParseMode;
 import io.jiogram.types.TelegramMethod;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -129,11 +132,62 @@ class BotTest {
     @Test
     void customDefaultsAreUsed() {
         var session = new StubTelegramSession();
-        var customDefaults = new DefaultBotProperties("HTML", true, false);
+        var customDefaults = new DefaultBotProperties(ParseMode.HTML, true, false);
         var bot = new Bot("123456789:ABCDEFghijklmnop", session, customDefaults);
-        assertEquals("HTML", bot.defaults().parseMode());
+        assertEquals(ParseMode.HTML, bot.defaults().parseMode());
         assertTrue(bot.defaults().protectContent());
         assertFalse(bot.defaults().linkPreview());
+    }
+
+    @Test
+    void executeAppliesDefaultsToSupportedNullFields() {
+        var session = new StubTelegramSession();
+        var defaults = new DefaultBotProperties(ParseMode.HTML, true, false);
+        var bot = new Bot("123456789:ABCDEFghijklmnop", session, defaults);
+        var method = SendMessage.of(ChatId.of(1L), "hello");
+
+        StepVerifier.create(bot.execute(method))
+            .verifyComplete();
+
+        assertInstanceOf(SendMessage.class, session.lastMethod);
+        var sent = (SendMessage) session.lastMethod;
+        assertNotSame(method, sent);
+        assertEquals(ParseMode.HTML, sent.parseMode());
+        assertTrue(sent.protectContent());
+        assertNotNull(sent.linkPreviewOptions());
+        assertTrue(sent.linkPreviewOptions().isDisabled());
+    }
+
+    @Test
+    void executeDoesNotOverrideExplicitValues() {
+        var session = new StubTelegramSession();
+        var defaults = new DefaultBotProperties(ParseMode.HTML, true, false);
+        var bot = new Bot("123456789:ABCDEFghijklmnop", session, defaults);
+        var method = new SendMessage(
+            null,
+            ChatId.of(1L),
+            null,
+            null,
+            "hello",
+            ParseMode.MARKDOWN_V2,
+            null,
+            null,
+            null,
+            false,
+            null,
+            null,
+            null,
+            null,
+            null
+        );
+
+        StepVerifier.create(bot.execute(method))
+            .verifyComplete();
+
+        assertInstanceOf(SendMessage.class, session.lastMethod);
+        var sent = (SendMessage) session.lastMethod;
+        assertEquals(ParseMode.MARKDOWN_V2, sent.parseMode());
+        assertFalse(sent.protectContent());
     }
 
     @Test

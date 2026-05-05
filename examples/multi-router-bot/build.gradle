@@ -9,12 +9,8 @@ version = '1.0.0'
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(25)
+        languageVersion = JavaLanguageVersion.of(17)
     }
-}
-
-tasks.withType(JavaCompile) {
-    options.compilerArgs.addAll(['--enable-preview'])
 }
 
 repositories {
@@ -24,5 +20,5 @@ repositories {
 dependencies {
     // When building from the Jiogram source tree, use:
     // implementation project(':jiogram-spring-boot-starter')
-    implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-starter:0.1.0'
+    implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-3-starter:0.2.0-SNAPSHOT'
 }

@@ -96,7 +96,7 @@ public final class TypeGenerator {
 
     private String generateRecord(TypeDefinition type) {
         Set<String> imports = new TreeSet<>();
-        List<String> components = buildRecordComponents(type.fields(), imports);
+        List<String> components = buildRecordComponents(type.name(), type.fields(), imports);
 
         // Collect all interfaces this type should implement
         List<String> interfaces = new ArrayList<>();
@@ -210,7 +210,7 @@ public final class TypeGenerator {
         String parentName = UnionRegistry.parentOf(type.name());
 
         Set<String> imports = new TreeSet<>();
-        List<String> components = buildRecordComponents(type.fields(), imports);
+        List<String> components = buildRecordComponents(type.name(), type.fields(), imports);
 
         StringBuilder sb = new StringBuilder();
         sb.append("package ").append(basePackage).append(";\n\n");
@@ -230,14 +230,14 @@ public final class TypeGenerator {
     /**
      * Builds record component strings with annotations, collecting necessary imports.
      */
-    private List<String> buildRecordComponents(List<FieldDefinition> fields, Set<String> imports) {
+    private List<String> buildRecordComponents(String ownerTypeName, List<FieldDefinition> fields, Set<String> imports) {
         imports.add(JACKSON_ANNOTATION_PACKAGE + ".JsonProperty");
 
         List<String> components = new ArrayList<>();
         boolean hasOptionalRefField = false;
 
         for (FieldDefinition field : fields) {
-            TypeName javaType = typeMapper.resolve(field.type(), field.required());
+            TypeName javaType = typeMapper.resolveTypeField(ownerTypeName, field);
             String typeString = resolveTypeString(javaType, imports);
 
             StringBuilder comp = new StringBuilder();

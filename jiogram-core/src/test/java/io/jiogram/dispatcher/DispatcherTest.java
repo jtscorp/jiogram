@@ -5,6 +5,7 @@ import io.jiogram.middleware.Middleware;
 import io.jiogram.session.TelegramSession;
 import io.jiogram.types.CallbackQuery;
 import io.jiogram.types.Chat;
+import io.jiogram.types.ChatType;
 import io.jiogram.types.Message;
 import io.jiogram.types.TelegramMethod;
 import io.jiogram.types.Update;
@@ -34,7 +35,7 @@ class DispatcherTest {
     private static final Bot TEST_BOT = new Bot("123456:ABC", new StubSession());
 
     static Message testMessage(String text) {
-        var chat = new Chat(1L, "private", null, null, null, null, null, null);
+        var chat = new Chat(1L, ChatType.PRIVATE, null, null, null, null, null, null);
         return new Message(
                 1L, null, null, null, null, null, null, null,
                 0L, null, chat, null, null, null, null, null,

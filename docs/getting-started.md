@@ -4,8 +4,8 @@ This guide walks you through creating your first Telegram bot with Jiogram.
 
 ## Prerequisites
 
-- Java 25 (with preview features)
-- Gradle 8.x
+- Java 17 or newer
+- Gradle 8.x or newer
 - A bot token from [@BotFather](https://t.me/BotFather)
 
 ## 1. Create a Spring Boot project
@@ -24,12 +24,8 @@ version = '1.0.0'
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(25)
+        languageVersion = JavaLanguageVersion.of(17)
     }
-}
-
-tasks.withType(JavaCompile) {
-    options.compilerArgs.addAll(['--enable-preview'])
 }
 
 repositories {
@@ -37,7 +33,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-starter:0.1.0'
+    implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-3-starter:0.2.0-SNAPSHOT'
 }
 ```
 

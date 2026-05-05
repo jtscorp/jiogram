@@ -1,11 +1,12 @@
 package io.jiogram.types;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.jiogram.types.MessageEntityType;
 import io.jiogram.types.User;
 import org.jspecify.annotations.Nullable;
 
 public record MessageEntity(
-    @JsonProperty("type") String type,
+    @JsonProperty("type") MessageEntityType type,
     @JsonProperty("offset") long offset,
     @JsonProperty("length") long length,
     @JsonProperty("url") @Nullable String url,

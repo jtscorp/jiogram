@@ -1,5 +1,7 @@
 package io.jiogram.autoconfigure;
 
+import io.jiogram.types.ParseMode;
+import io.jiogram.types.UpdateType;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 
@@ -47,7 +49,7 @@ public record JiogramProperties(
         @DefaultValue("30") int timeout,
         @DefaultValue("1000") long backoff,
         @DefaultValue("100") int limit,
-        List<String> allowedUpdates
+        List<UpdateType> allowedUpdates
     ) {}
 
     /**
@@ -73,7 +75,7 @@ public record JiogramProperties(
      * @param linkPreview    whether to enable link previews
      */
     public record DefaultsProperties(
-        String parseMode,
+        ParseMode parseMode,
         @DefaultValue("false") boolean protectContent,
         @DefaultValue("true") boolean linkPreview
     ) {}

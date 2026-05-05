@@ -11,6 +11,7 @@ import io.jiogram.types.Chat;
 import io.jiogram.types.ChatLocation;
 import io.jiogram.types.ChatPermissions;
 import io.jiogram.types.ChatPhoto;
+import io.jiogram.types.ChatType;
 import io.jiogram.types.Message;
 import io.jiogram.types.ReactionType;
 import io.jiogram.types.UniqueGiftColors;
@@ -20,7 +21,7 @@ import org.jspecify.annotations.Nullable;
 
 public record ChatFullInfo(
     @JsonProperty("id") long id,
-    @JsonProperty("type") String type,
+    @JsonProperty("type") ChatType type,
     @JsonProperty("title") @Nullable String title,
     @JsonProperty("username") @Nullable String username,
     @JsonProperty("first_name") @Nullable String firstName,

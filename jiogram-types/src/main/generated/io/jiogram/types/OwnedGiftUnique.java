@@ -1,12 +1,13 @@
 package io.jiogram.types;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.jiogram.types.OwnedGiftType;
 import io.jiogram.types.UniqueGift;
 import io.jiogram.types.User;
 import org.jspecify.annotations.Nullable;
 
 public record OwnedGiftUnique(
-    @JsonProperty("type") String type,
+    @JsonProperty("type") OwnedGiftType type,
     @JsonProperty("gift") UniqueGift gift,
     @JsonProperty("owned_gift_id") @Nullable String ownedGiftId,
     @JsonProperty("sender_user") @Nullable User senderUser,

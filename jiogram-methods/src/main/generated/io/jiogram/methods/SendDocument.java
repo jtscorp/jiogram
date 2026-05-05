@@ -5,6 +5,7 @@ import io.jiogram.types.ChatId;
 import io.jiogram.types.InputFileOrString;
 import io.jiogram.types.Message;
 import io.jiogram.types.MessageEntity;
+import io.jiogram.types.ParseMode;
 import io.jiogram.types.ReplyMarkup;
 import io.jiogram.types.ReplyParameters;
 import io.jiogram.types.SuggestedPostParameters;
@@ -20,7 +21,7 @@ public record SendDocument(
     @JsonProperty("document") InputFileOrString document,
     @JsonProperty("thumbnail") @Nullable InputFileOrString thumbnail,
     @JsonProperty("caption") @Nullable String caption,
-    @JsonProperty("parse_mode") @Nullable String parseMode,
+    @JsonProperty("parse_mode") @Nullable ParseMode parseMode,
     @JsonProperty("caption_entities") @Nullable List<MessageEntity> captionEntities,
     @JsonProperty("disable_content_type_detection") @Nullable Boolean disableContentTypeDetection,
     @JsonProperty("disable_notification") @Nullable Boolean disableNotification,

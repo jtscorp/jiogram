@@ -4,6 +4,7 @@ import io.jiogram.bot.Bot;
 import io.jiogram.dispatcher.Dispatcher;
 import io.jiogram.methods.GetUpdates;
 import io.jiogram.types.Update;
+import io.jiogram.types.UpdateType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.SmartLifecycle;
@@ -49,7 +50,7 @@ public class PollingRunner implements SmartLifecycle {
             long timeout = polling != null ? polling.timeout() : 30;
             int limit = polling != null ? polling.limit() : 100;
             long backoff = polling != null ? polling.backoff() : 1000;
-            List<String> allowedUpdates = polling != null ? polling.allowedUpdates() : null;
+            List<UpdateType> allowedUpdates = polling != null ? polling.allowedUpdates() : null;
 
             subscription = Flux.defer(() -> {
                     Long currentOffset = offset.get() == 0 ? null : offset.get();

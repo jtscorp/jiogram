@@ -3,12 +3,13 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.Gift;
 import io.jiogram.types.MessageEntity;
+import io.jiogram.types.OwnedGiftType;
 import io.jiogram.types.User;
 import java.util.List;
 import org.jspecify.annotations.Nullable;
 
 public record OwnedGiftRegular(
-    @JsonProperty("type") String type,
+    @JsonProperty("type") OwnedGiftType type,
     @JsonProperty("gift") Gift gift,
     @JsonProperty("owned_gift_id") @Nullable String ownedGiftId,
     @JsonProperty("sender_user") @Nullable User senderUser,

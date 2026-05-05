@@ -138,6 +138,8 @@ public final class EnumGenerator {
      * @return the UPPER_SNAKE_CASE constant name
      */
     static String toConstantName(String value) {
+        value = value.replaceAll("[^A-Za-z0-9_]", "_");
+
         // If already all uppercase/underscore, return as-is
         if (value.matches("[A-Z_0-9]+")) {
             return ensureValidIdentifier(value);
