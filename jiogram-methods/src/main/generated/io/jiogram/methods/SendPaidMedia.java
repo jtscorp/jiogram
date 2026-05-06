@@ -5,6 +5,7 @@ import io.jiogram.types.ChatId;
 import io.jiogram.types.InputPaidMedia;
 import io.jiogram.types.Message;
 import io.jiogram.types.MessageEntity;
+import io.jiogram.types.ParseMode;
 import io.jiogram.types.ReplyMarkup;
 import io.jiogram.types.ReplyParameters;
 import io.jiogram.types.SuggestedPostParameters;
@@ -21,7 +22,7 @@ public record SendPaidMedia(
     @JsonProperty("media") List<InputPaidMedia> media,
     @JsonProperty("payload") @Nullable String payload,
     @JsonProperty("caption") @Nullable String caption,
-    @JsonProperty("parse_mode") @Nullable String parseMode,
+    @JsonProperty("parse_mode") @Nullable ParseMode parseMode,
     @JsonProperty("caption_entities") @Nullable List<MessageEntity> captionEntities,
     @JsonProperty("show_caption_above_media") @Nullable Boolean showCaptionAboveMedia,
     @JsonProperty("disable_notification") @Nullable Boolean disableNotification,

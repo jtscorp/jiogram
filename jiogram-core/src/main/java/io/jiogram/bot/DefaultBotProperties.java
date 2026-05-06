@@ -1,16 +1,17 @@
 package io.jiogram.bot;
 
+import io.jiogram.types.ParseMode;
 import org.jspecify.annotations.Nullable;
 
 /**
  * Default properties applied to outgoing bot requests.
  *
- * @param parseMode      the default parse mode (e.g. "HTML", "MarkdownV2"), or null for none
+ * @param parseMode      the default parse mode, or null for none
  * @param protectContent whether to protect content from forwarding by default
  * @param linkPreview    whether to enable link previews by default
  */
 public record DefaultBotProperties(
-    @Nullable String parseMode,
+    @Nullable ParseMode parseMode,
     boolean protectContent,
     boolean linkPreview
 ) {

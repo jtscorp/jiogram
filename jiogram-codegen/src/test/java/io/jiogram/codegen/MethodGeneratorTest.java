@@ -35,7 +35,8 @@ class MethodGeneratorTest {
         assertTrue(source.contains("implements TelegramMethod<Message>"), "Should implement TelegramMethod<Message>");
         assertTrue(source.contains("@JsonProperty(\"chat_id\") ChatId chatId"), "Required union -> ChatId");
         assertTrue(source.contains("@JsonProperty(\"text\") String text"), "Required String");
-        assertTrue(source.contains("@JsonProperty(\"parse_mode\") @Nullable String parseMode"), "Optional String -> @Nullable");
+        assertTrue(source.contains("@JsonProperty(\"parse_mode\") @Nullable ParseMode parseMode"),
+                "parse_mode -> @Nullable ParseMode");
         assertTrue(source.contains("@JsonProperty(\"disable_notification\") @Nullable Boolean disableNotification"),
                 "Optional Boolean -> @Nullable Boolean");
     }

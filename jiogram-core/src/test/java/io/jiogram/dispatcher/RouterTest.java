@@ -3,6 +3,7 @@ package io.jiogram.dispatcher;
 import io.jiogram.filter.Filter;
 import io.jiogram.filter.FilterResult;
 import io.jiogram.types.Chat;
+import io.jiogram.types.ChatType;
 import io.jiogram.types.Message;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -21,7 +22,7 @@ class RouterTest {
      * Creates a minimal Message for testing. All nullable fields are null.
      */
     static Message testMessage(String text) {
-        var chat = new Chat(1L, "private", null, null, null, null, null, null);
+        var chat = new Chat(1L, ChatType.PRIVATE, null, null, null, null, null, null);
         return new Message(
                 1L, null, null, null, null, null, null, null,
                 0L, null, chat, null, null, null, null, null,

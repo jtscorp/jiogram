@@ -97,7 +97,7 @@ class TypeGeneratorTest {
 
         assertTrue(source.contains("public record ChatMemberOwner("), "Should be a record");
         assertTrue(source.contains("implements ChatMember"), "Should implement ChatMember");
-        assertTrue(source.contains("@JsonProperty(\"status\") String status"), "Should have status field");
+        assertTrue(source.contains("@JsonProperty(\"status\") ChatMemberType status"), "Should have enum status field");
         assertTrue(source.contains("@JsonProperty(\"user\") User user"), "Should have user field");
         assertTrue(source.contains("@JsonProperty(\"is_anonymous\") boolean isAnonymous"), "Required boolean");
         assertTrue(source.contains("@JsonProperty(\"custom_title\") @Nullable String customTitle"), "Optional -> @Nullable");

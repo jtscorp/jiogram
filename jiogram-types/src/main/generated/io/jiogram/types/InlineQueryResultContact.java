@@ -2,11 +2,12 @@ package io.jiogram.types;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.InlineKeyboardMarkup;
+import io.jiogram.types.InlineQueryResultType;
 import io.jiogram.types.InputMessageContent;
 import org.jspecify.annotations.Nullable;
 
 public record InlineQueryResultContact(
-    @JsonProperty("type") String type,
+    @JsonProperty("type") InlineQueryResultType type,
     @JsonProperty("id") String id,
     @JsonProperty("phone_number") String phoneNumber,
     @JsonProperty("first_name") String firstName,

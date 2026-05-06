@@ -1,10 +1,11 @@
 package io.jiogram.types;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.jiogram.types.InputPaidMediaType;
 import org.jspecify.annotations.Nullable;
 
 public record InputPaidMediaVideo(
-    @JsonProperty("type") String type,
+    @JsonProperty("type") InputPaidMediaType type,
     @JsonProperty("media") String media,
     @JsonProperty("thumbnail") @Nullable String thumbnail,
     @JsonProperty("cover") @Nullable String cover,

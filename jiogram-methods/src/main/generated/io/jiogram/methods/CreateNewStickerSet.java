@@ -2,6 +2,7 @@ package io.jiogram.methods;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.InputSticker;
+import io.jiogram.types.StickerType;
 import io.jiogram.types.TelegramMethod;
 import java.util.List;
 import org.jspecify.annotations.Nullable;
@@ -11,7 +12,7 @@ public record CreateNewStickerSet(
     @JsonProperty("name") String name,
     @JsonProperty("title") String title,
     @JsonProperty("stickers") List<InputSticker> stickers,
-    @JsonProperty("sticker_type") @Nullable String stickerType,
+    @JsonProperty("sticker_type") @Nullable StickerType stickerType,
     @JsonProperty("needs_repainting") @Nullable Boolean needsRepainting
 ) implements TelegramMethod<Boolean> {
 

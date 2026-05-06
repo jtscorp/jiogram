@@ -4,7 +4,6 @@ import io.jiogram.types.CallbackQuery;
 import io.jiogram.types.Message;
 import reactor.core.publisher.Mono;
 
-import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -123,7 +122,7 @@ public final class Filters {
         return (event, context) -> {
             Object rawState = context.get("raw_state");
             if (stateName.equals(rawState)) {
-                return Mono.just(FilterResult.passed(Map.of("state", stateName)));
+                return Mono.just(FilterResult.passed());
             }
             return Mono.just(FilterResult.failed());
         };

@@ -5,6 +5,7 @@ import io.jiogram.types.ChatId;
 import io.jiogram.types.InputFileOrString;
 import io.jiogram.types.Message;
 import io.jiogram.types.MessageEntity;
+import io.jiogram.types.ParseMode;
 import io.jiogram.types.ReplyMarkup;
 import io.jiogram.types.ReplyParameters;
 import io.jiogram.types.SuggestedPostParameters;
@@ -19,7 +20,7 @@ public record SendVoice(
     @JsonProperty("direct_messages_topic_id") @Nullable Long directMessagesTopicId,
     @JsonProperty("voice") InputFileOrString voice,
     @JsonProperty("caption") @Nullable String caption,
-    @JsonProperty("parse_mode") @Nullable String parseMode,
+    @JsonProperty("parse_mode") @Nullable ParseMode parseMode,
     @JsonProperty("caption_entities") @Nullable List<MessageEntity> captionEntities,
     @JsonProperty("duration") @Nullable Long duration,
     @JsonProperty("disable_notification") @Nullable Boolean disableNotification,

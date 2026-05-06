@@ -15,7 +15,7 @@ import java.util.Map;
  * {@link ReactiveStringRedisTemplate}. State and data are stored as separate
  * Redis keys with JSON serialization for the data map.
  *
- * <p>Key format: {@code jiogram:fsm:{botId}:{chatId}:{userId}:{part}}
+ * <p>Key format: {@code jiogram:fsm:{botId}:{chatId}:{userId}:{threadId}:{destiny}:{part}}
  * where {@code part} is either "state" or "data".
  */
 public class RedisStateStorage implements StateStorage {
@@ -91,6 +91,12 @@ public class RedisStateStorage implements StateStorage {
      * @return the Redis key string
      */
     private String buildKey(StorageKey key, String part) {
-        return "jiogram:fsm:" + key.botId() + ":" + key.chatId() + ":" + key.userId() + ":" + part;
+        String threadId = key.threadId() != null ? key.threadId().toString() : "-";
+        return "jiogram:fsm:" + key.botId()
+            + ":" + key.chatId()
+            + ":" + key.userId()
+            + ":" + threadId
+            + ":" + key.destiny()
+            + ":" + part;
     }
 }

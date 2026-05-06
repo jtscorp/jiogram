@@ -1,6 +1,7 @@
 package io.jiogram.types;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.jiogram.types.UpdateType;
 import java.util.List;
 import org.jspecify.annotations.Nullable;
 
@@ -13,5 +14,5 @@ public record WebhookInfo(
     @JsonProperty("last_error_message") @Nullable String lastErrorMessage,
     @JsonProperty("last_synchronization_error_date") @Nullable Long lastSynchronizationErrorDate,
     @JsonProperty("max_connections") @Nullable Long maxConnections,
-    @JsonProperty("allowed_updates") @Nullable List<String> allowedUpdates
+    @JsonProperty("allowed_updates") @Nullable List<UpdateType> allowedUpdates
 ) {}

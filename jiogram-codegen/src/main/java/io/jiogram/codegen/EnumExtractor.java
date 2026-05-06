@@ -88,6 +88,42 @@ public final class EnumExtractor {
                 "choose_sticker", "find_location", "record_video_note", "upload_video_note"
         )));
 
+        enums.add(new EnumDefinition("PollType", "Type of poll.", List.of(
+                "regular", "quiz"
+        )));
+
+        enums.add(new EnumDefinition("StickerType", "Type of sticker.", List.of(
+                "regular", "mask", "custom_emoji"
+        )));
+
+        enums.add(new EnumDefinition("InlineQueryChatType", "Type of chat where an inline query was sent.", List.of(
+                "sender", "private", "group", "supergroup", "channel"
+        )));
+
+        enums.add(new EnumDefinition("TransactionType", "Type of transaction with a user.", List.of(
+                "invoice_payment", "paid_media_payment", "gift_purchase",
+                "premium_purchase", "business_account_transfer"
+        )));
+
+        enums.add(new EnumDefinition("ThumbnailMimeType", "Supported thumbnail MIME type.", List.of(
+                "image/jpeg", "image/gif", "video/mp4"
+        )));
+
+        enums.add(new EnumDefinition("VideoMimeType", "Supported video MIME type.", List.of(
+                "text/html", "video/mp4"
+        )));
+
+        enums.add(new EnumDefinition("DocumentMimeType", "Supported document MIME type.", List.of(
+                "application/pdf", "application/zip"
+        )));
+
+        enums.add(new EnumDefinition("PassportElementType", "Telegram Passport element type.", List.of(
+                "personal_details", "passport", "driver_license", "identity_card",
+                "internal_passport", "address", "utility_bill", "bank_statement",
+                "rental_agreement", "passport_registration", "temporary_registration",
+                "phone_number", "email"
+        )));
+
         return enums;
     }
 

@@ -111,7 +111,7 @@ All properties live under the `telegram` prefix. See [docs/configuration.md](doc
 | `telegram.polling.timeout` | `30` | Long-polling timeout in seconds |
 | `telegram.polling.limit` | `100` | Max updates per poll |
 | `telegram.polling.backoff` | `1000` | Error backoff in ms |
-| `telegram.defaults.parse-mode` | `null` | Default parse mode (`HTML`, `MarkdownV2`) |
+| `telegram.defaults.parse-mode` | `null` | Default parse mode (`HTML`, `MARKDOWN`, `MARKDOWN_V2`) |
 | `telegram.fsm.enabled` | `true` | Enable FSM middleware |
 | `telegram.fsm.strategy` | `USER_IN_CHAT` | FSM key strategy |
 | `telegram.fsm.storage` | `memory` | `memory` or `redis` |

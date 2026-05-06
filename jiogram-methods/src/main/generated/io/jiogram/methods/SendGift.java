@@ -3,6 +3,7 @@ package io.jiogram.methods;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.ChatId;
 import io.jiogram.types.MessageEntity;
+import io.jiogram.types.ParseMode;
 import io.jiogram.types.TelegramMethod;
 import java.util.List;
 import org.jspecify.annotations.Nullable;
@@ -13,7 +14,7 @@ public record SendGift(
     @JsonProperty("gift_id") String giftId,
     @JsonProperty("pay_for_upgrade") @Nullable Boolean payForUpgrade,
     @JsonProperty("text") @Nullable String text,
-    @JsonProperty("text_parse_mode") @Nullable String textParseMode,
+    @JsonProperty("text_parse_mode") @Nullable ParseMode textParseMode,
     @JsonProperty("text_entities") @Nullable List<MessageEntity> textEntities
 ) implements TelegramMethod<Boolean> {
 

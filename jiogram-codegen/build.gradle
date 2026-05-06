@@ -25,6 +25,13 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-core:2.18.4'
 
     implementation 'org.jspecify:jspecify:1.0.0'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.13.4'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
 }
 
 gradlePlugin {

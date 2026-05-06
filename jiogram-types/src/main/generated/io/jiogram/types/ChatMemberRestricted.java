@@ -1,11 +1,12 @@
 package io.jiogram.types;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.jiogram.types.ChatMemberType;
 import io.jiogram.types.User;
 import org.jspecify.annotations.Nullable;
 
 public record ChatMemberRestricted(
-    @JsonProperty("status") String status,
+    @JsonProperty("status") ChatMemberType status,
     @JsonProperty("tag") @Nullable String tag,
     @JsonProperty("user") User user,
     @JsonProperty("is_member") boolean isMember,

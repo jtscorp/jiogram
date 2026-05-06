@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.ChatId;
 import io.jiogram.types.MessageEntity;
 import io.jiogram.types.MessageId;
+import io.jiogram.types.ParseMode;
 import io.jiogram.types.ReplyMarkup;
 import io.jiogram.types.ReplyParameters;
 import io.jiogram.types.SuggestedPostParameters;
@@ -19,7 +20,7 @@ public record CopyMessage(
     @JsonProperty("message_id") long messageId,
     @JsonProperty("video_start_timestamp") @Nullable Long videoStartTimestamp,
     @JsonProperty("caption") @Nullable String caption,
-    @JsonProperty("parse_mode") @Nullable String parseMode,
+    @JsonProperty("parse_mode") @Nullable ParseMode parseMode,
     @JsonProperty("caption_entities") @Nullable List<MessageEntity> captionEntities,
     @JsonProperty("show_caption_above_media") @Nullable Boolean showCaptionAboveMedia,
     @JsonProperty("disable_notification") @Nullable Boolean disableNotification,
