@@ -54,7 +54,7 @@ public class RegistrationBot {
     }
 
     @OnMessage
-    @StateFilter("Form.WAITING_FOR_NAME")
+    @StateFilter(FormStates.WAITING_FOR_NAME)
     public Mono<Void> processName(Message message, Bot bot, UpdateContext context) {
         String name = message.text();
         if (name == null || name.isBlank()) {
@@ -75,7 +75,7 @@ public class RegistrationBot {
     }
 
     @OnMessage
-    @StateFilter("Form.WAITING_FOR_AGE")
+    @StateFilter(FormStates.WAITING_FOR_AGE)
     public Mono<Void> processAge(Message message, Bot bot, UpdateContext context) {
         String ageText = message.text();
         if (ageText == null || ageText.isBlank()) {
@@ -119,7 +119,7 @@ public class RegistrationBot {
     }
 
     @OnMessage
-    @StateFilter("Form.CONFIRM")
+    @StateFilter(FormStates.CONFIRM)
     public Mono<Void> processConfirmation(Message message, Bot bot, UpdateContext context) {
         String answer = message.text();
         FSMContext fsm = context.get("state", FSMContext.class);
