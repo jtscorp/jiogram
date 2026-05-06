@@ -81,7 +81,7 @@ public class HandlerRegistry implements BeanPostProcessor {
         // Check for @StateFilter annotation
         StateFilter stateFilter = AnnotationUtils.findAnnotation(method, StateFilter.class);
         if (stateFilter != null) {
-            filters.add(Filters.state(stateFilter.value()));
+            filters.add(Filters.state(stateName(stateFilter)));
         }
 
         HandlerAdapter<Message> adapter = new HandlerAdapter<>(bean, method, Message.class);
@@ -110,7 +110,7 @@ public class HandlerRegistry implements BeanPostProcessor {
         // Check for @StateFilter annotation
         StateFilter stateFilter = AnnotationUtils.findAnnotation(method, StateFilter.class);
         if (stateFilter != null) {
-            filters.add(Filters.state(stateFilter.value()));
+            filters.add(Filters.state(stateName(stateFilter)));
         }
 
         HandlerAdapter<CallbackQuery> adapter = new HandlerAdapter<>(bean, method, CallbackQuery.class);
@@ -131,7 +131,7 @@ public class HandlerRegistry implements BeanPostProcessor {
         // Check for @StateFilter annotation
         StateFilter stateFilter = AnnotationUtils.findAnnotation(method, StateFilter.class);
         if (stateFilter != null) {
-            filters.add(Filters.state(stateFilter.value()));
+            filters.add(Filters.state(stateName(stateFilter)));
         }
 
         HandlerAdapter<InlineQuery> adapter = new HandlerAdapter<>(bean, method, InlineQuery.class);
@@ -151,5 +151,12 @@ public class HandlerRegistry implements BeanPostProcessor {
             return beanClass.getSuperclass();
         }
         return beanClass;
+    }
+
+    private String stateName(StateFilter stateFilter) {
+        if (stateFilter.enumClass() == Void.class) {
+            return stateFilter.value();
+        }
+        return stateFilter.enumClass().getSimpleName() + "." + stateFilter.value();
     }
 }

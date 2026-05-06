@@ -74,7 +74,7 @@ That's it. Run your Spring Boot app and the bot starts polling for updates autom
 - **Built-in filters** -- `Filters.command()`, `Filters.text()`, `Filters.regex()`, `Filters.callbackData()`, `Filters.state()`
 - **Composable filters** -- `.and()`, `.or()`, `.negate()` on any filter
 - **Middleware pipeline** -- intercept and transform updates before they reach handlers
-- **Finite State Machine (FSM)** -- `BotState` enum + `FSMContext` for multi-step conversations
+- **Finite State Machine (FSM)** -- `@FSMStates` enum + `FSMContext` for multi-step conversations
 - **Pluggable FSM storage** -- in-memory (default) or Redis for distributed deployments
 - **Reactive throughout** -- built on Project Reactor (`Mono`/`Flux`), fully non-blocking
 - **Auto-return-value handling** -- return `SendMessage` from a handler and it gets executed automatically
@@ -88,7 +88,7 @@ That's it. Run your Spring Boot app and the bot starts polling for updates autom
 | `jiogram-types` | Generated Java records for all Telegram Bot API types (`Message`, `Update`, `Chat`, etc.) |
 | `jiogram-methods` | Generated Java records for all Telegram Bot API methods (`SendMessage`, `GetUpdates`, etc.) |
 | `jiogram-core` | Dispatcher, Router, Filters, Middleware, Handler infrastructure, `Bot` class |
-| `jiogram-fsm` | Finite State Machine: `BotState`, `FSMContext`, `StateStorage`, `FSMMiddleware` |
+| `jiogram-fsm` | Finite State Machine: `@FSMStates`, `FSMContext`, `StateStorage`, `FSMMiddleware` |
 | `jiogram-spring-boot-starter` | Spring Boot auto-configuration, polling runner, webhook controller |
 | `jiogram-codegen` | Code generator that produces `jiogram-types` and `jiogram-methods` from the Bot API schema |
 

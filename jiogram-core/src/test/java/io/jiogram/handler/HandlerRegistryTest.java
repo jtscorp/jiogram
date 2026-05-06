@@ -101,6 +101,22 @@ class HandlerRegistryTest {
         }
     }
 
+    enum Form {
+        WAITING_FOR_NAME
+    }
+
+    @TelegramController
+    static class EnumClassStateController {
+        final List<String> handled = new ArrayList<>();
+
+        @OnMessage
+        @StateFilter(enumClass = Form.class, value = "WAITING_FOR_NAME")
+        public Mono<Void> onNameInput(Message message, UpdateContext ctx) {
+            handled.add(message.text());
+            return Mono.empty();
+        }
+    }
+
     @TelegramController
     static class VoidReturnController {
         final List<String> handled = new ArrayList<>();
@@ -264,6 +280,20 @@ class HandlerRegistryTest {
         var ctx2 = new UpdateContext(null, null);
         ctx2.put("raw_state", "waiting_for_name");
         StepVerifier.create(router.propagateEvent("message", testMessage("John"), ctx2))
+                .expectNext(true)
+                .verifyComplete();
+
+        assertEquals(List.of("John"), controller.handled);
+    }
+
+    @Test
+    void stateFilterSupportsEnumClassAndValue() {
+        var controller = new EnumClassStateController();
+        registry.postProcessAfterInitialization(controller, "enumClassStateController");
+
+        var ctx = new UpdateContext(null, null);
+        ctx.put("raw_state", "Form.WAITING_FOR_NAME");
+        StepVerifier.create(router.propagateEvent("message", testMessage("John"), ctx))
                 .expectNext(true)
                 .verifyComplete();
 
