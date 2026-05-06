@@ -21,6 +21,10 @@ class FSMContextTest {
         CONFIRM
     }
 
+    enum PlainState {
+        WAITING_FOR_NAME
+    }
+
     @BeforeEach
     void setUp() {
         storage = new MemoryStateStorage();
@@ -29,11 +33,20 @@ class FSMContextTest {
     }
 
     @Test
-    void setState_withBotState_storesFullName() {
+    void setState_withEnumImplementingBotState_storesDeclaringClassAndConstantName() {
         StepVerifier.create(
             fsmContext.setState(TestState.WAITING_FOR_NAME)
                 .then(fsmContext.getState())
         ).expectNext("TestState.WAITING_FOR_NAME")
+         .verifyComplete();
+    }
+
+    @Test
+    void setState_withPlainEnum_storesDeclaringClassAndConstantName() {
+        StepVerifier.create(
+            fsmContext.setState(PlainState.WAITING_FOR_NAME)
+                .then(fsmContext.getState())
+        ).expectNext("PlainState.WAITING_FOR_NAME")
          .verifyComplete();
     }
 

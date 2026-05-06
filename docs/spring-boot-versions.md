@@ -7,7 +7,7 @@ Jiogram is published for three Spring Boot generations from a single repository,
 | Feature | sb2.x | sb3.x | main (sb4) |
 |---|---|---|---|
 | Spring Boot BOM | 2.7.18 | 3.5.x | 4.0.x |
-| Java baseline | 17 | 17 | 17 |
+| Java baseline | 17 | 17 | 25 |
 | Reactor (transitive) | 3.4.x | 3.6.x | 3.7.x |
 | WebFlux | yes | yes | yes |
 | Redis FSM | yes | yes | yes |

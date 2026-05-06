@@ -1,5 +1,6 @@
 package io.jiogram.autoconfigure;
 
+import io.jiogram.fsm.FSMStrategy;
 import io.jiogram.types.ParseMode;
 import io.jiogram.types.UpdateType;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -89,7 +90,7 @@ public record JiogramProperties(
      */
     public record FsmProperties(
         @DefaultValue("true") boolean enabled,
-        @DefaultValue("USER_IN_CHAT") String strategy,
+        @DefaultValue("USER_IN_CHAT") FSMStrategy strategy,
         @DefaultValue("memory") String storage
     ) {}
 }

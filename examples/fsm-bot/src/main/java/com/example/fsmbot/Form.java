@@ -1,12 +1,13 @@
 package com.example.fsmbot;
 
-import io.jiogram.fsm.BotState;
+import io.jiogram.fsm.FSMStates;
 
 /**
  * FSM states for the registration form.
- * Each constant produces a fullName() like "Form.WAITING_FOR_NAME".
+ * @FSMStates generates FormStates constants for annotation filters.
  */
-public enum Form implements BotState {
+@FSMStates
+public enum Form {
     WAITING_FOR_NAME,
     WAITING_FOR_AGE,
     CONFIRM

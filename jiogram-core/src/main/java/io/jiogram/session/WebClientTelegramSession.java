@@ -12,6 +12,7 @@ import reactor.core.publisher.Mono;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.Objects;
 
 /**
  * {@link TelegramSession} implementation that uses Spring's {@link WebClient}
@@ -25,7 +26,8 @@ public class WebClientTelegramSession implements TelegramSession {
     private final ObjectMapper objectMapper;
 
     public WebClientTelegramSession(WebClient webClient) {
-        this(webClient, defaultObjectMapper());
+        WebClient checkedWebClient = Objects.requireNonNull(webClient, "webClient must not be null");
+        this(checkedWebClient, defaultObjectMapper());
     }
 
     /**
@@ -39,8 +41,8 @@ public class WebClientTelegramSession implements TelegramSession {
      * constructor or {@link #defaultObjectMapper()} unless you need custom modules.
      */
     public WebClientTelegramSession(WebClient webClient, ObjectMapper objectMapper) {
-        this.webClient = webClient;
-        this.objectMapper = objectMapper;
+        this.webClient = Objects.requireNonNull(webClient, "webClient must not be null");
+        this.objectMapper = Objects.requireNonNull(objectMapper, "objectMapper must not be null");
     }
 
     /**

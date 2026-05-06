@@ -20,6 +20,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
+import java.util.Objects;
+
 /**
  * Middleware that resolves FSM state from the current update and injects
  * an {@link FSMContext} and the raw state string into the {@link UpdateContext}.
@@ -38,12 +40,13 @@ public class FSMMiddleware implements Middleware {
     private final FSMStrategy strategy;
 
     public FSMMiddleware(StateStorage storage) {
-        this(storage, FSMStrategy.USER_IN_CHAT);
+        StateStorage checkedStorage = Objects.requireNonNull(storage, "storage must not be null");
+        this(checkedStorage, FSMStrategy.USER_IN_CHAT);
     }
 
     public FSMMiddleware(StateStorage storage, FSMStrategy strategy) {
-        this.storage = storage;
-        this.strategy = strategy;
+        this.storage = Objects.requireNonNull(storage, "storage must not be null");
+        this.strategy = Objects.requireNonNull(strategy, "strategy must not be null");
     }
 
     @Override

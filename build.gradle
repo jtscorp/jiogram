@@ -20,7 +20,7 @@ subprojects {
 
     java {
         toolchain {
-            languageVersion = JavaLanguageVersion.of(17)
+            languageVersion = JavaLanguageVersion.of(25)
         }
         withJavadocJar()
         withSourcesJar()
@@ -28,6 +28,7 @@ subprojects {
 
     tasks.withType(JavaCompile) {
         options.encoding = 'UTF-8'
+        options.release.set(25)
     }
 
     tasks.withType(Test) {
@@ -36,7 +37,7 @@ subprojects {
 
     tasks.withType(Javadoc) {
         def opts = options as StandardJavadocDocletOptions
-        opts.addStringOption('source', '17')
+        opts.addStringOption('source', '25')
     }
 
     dependencies {

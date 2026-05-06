@@ -264,29 +264,23 @@ public final class TypeGenerator {
      * collecting necessary imports along the way.
      */
     private String resolveTypeString(TypeName typeName, Set<String> imports) {
-        if (typeName.isPrimitive()) {
-            return typeName.toString();
-        }
-
-        if (typeName instanceof com.squareup.javapoet.ParameterizedTypeName paramType) {
-            // Handle List<X>
-            String rawString = resolveTypeString(paramType.rawType, imports);
-            String args = paramType.typeArguments.stream()
-                    .map(arg -> resolveTypeString(arg, imports))
-                    .collect(Collectors.joining(", "));
-            return rawString + "<" + args + ">";
-        }
-
-        if (typeName instanceof ClassName className) {
-            String fullName = className.packageName() + "." + className.simpleName();
-            // Don't import java.lang classes
-            if (!"java.lang".equals(className.packageName())) {
-                imports.add(fullName);
+        return switch (typeName) {
+            case TypeName primitive when primitive.isPrimitive() -> primitive.toString();
+            case com.squareup.javapoet.ParameterizedTypeName paramType -> {
+                String rawString = resolveTypeString(paramType.rawType, imports);
+                String args = paramType.typeArguments.stream()
+                        .map(arg -> resolveTypeString(arg, imports))
+                        .collect(Collectors.joining(", "));
+                yield rawString + "<" + args + ">";
             }
-            return className.simpleName();
-        }
-
-        // Boxed primitives
-        return typeName.box().toString();
+            case ClassName className -> {
+                String fullName = className.packageName() + "." + className.simpleName();
+                if (!"java.lang".equals(className.packageName())) {
+                    imports.add(fullName);
+                }
+                yield className.simpleName();
+            }
+            default -> typeName.box().toString();
+        };
     }
 }

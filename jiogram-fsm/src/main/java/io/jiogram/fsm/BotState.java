@@ -1,9 +1,12 @@
 package io.jiogram.fsm;
 
 /**
- * Marker interface for state enums used in the FSM (Finite State Machine).
+ * Optional marker interface for state enums used in the FSM (Finite State Machine).
  * Implementing enums get a {@link #fullName()} method that returns a unique
  * string identifier in the format "EnumSimpleName.CONSTANT_NAME".
+ * <p>
+ * New code can also use plain enums with {@link FSMStates} and
+ * {@link FSMContext#setState(Enum)}.
  *
  * <p>Example:
  * <pre>{@code
@@ -24,6 +27,7 @@ public interface BotState {
      * @return the full state name
      */
     default String fullName() {
-        return getClass().getSimpleName() + "." + ((Enum<?>) this).name();
+        Enum<?> state = (Enum<?>) this;
+        return state.getDeclaringClass().getSimpleName() + "." + state.name();
     }
 }

@@ -79,23 +79,14 @@ public class HandlerAdapter<E> implements Handler<E> {
 
     @SuppressWarnings("unchecked")
     private Mono<Void> adaptReturnValue(Object result, UpdateContext context) {
-        if (result == null) {
-            return Mono.empty();
-        }
-
-        if (result instanceof Mono<?> mono) {
-            return mono.flatMap(value -> {
-                if (value instanceof TelegramMethod<?> method) {
-                    return context.bot().execute(method).then();
-                }
-                return Mono.empty();
+        return switch (result) {
+            case null -> Mono.empty();
+            case Mono<?> mono -> mono.flatMap(value -> switch (value) {
+                case TelegramMethod<?> method -> context.bot().execute(method).then();
+                case null, default -> Mono.empty();
             }).then();
-        }
-
-        if (result instanceof TelegramMethod<?> telegramMethod) {
-            return context.bot().execute(telegramMethod).then();
-        }
-
-        return Mono.empty();
+            case TelegramMethod<?> telegramMethod -> context.bot().execute(telegramMethod).then();
+            default -> Mono.empty();
+        };
     }
 }

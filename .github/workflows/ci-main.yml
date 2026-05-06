@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java: [17, 21, 25]
+        java: [25]
 
     steps:
       - name: Checkout
@@ -38,10 +38,10 @@ jobs:
             gradle-main-${{ runner.os }}-
 
       - name: Build
-        run: ./gradlew clean build --no-daemon
+        run: ./gradlew clean build --no-daemon --no-parallel
 
       - name: Verify artifact names
         run: |
-          ./gradlew publishToMavenLocal --no-daemon
+          ./gradlew publishToMavenLocal --no-daemon --no-parallel
           test -f ~/.m2/repository/uz/jtscorp/jiogram/jiogram-types-sb4/0.2.0-SNAPSHOT/jiogram-types-sb4-0.2.0-SNAPSHOT.jar
           test -f ~/.m2/repository/uz/jtscorp/jiogram/jiogram-spring-boot-4-starter/0.2.0-SNAPSHOT/jiogram-spring-boot-4-starter-0.2.0-SNAPSHOT.jar

@@ -9,6 +9,7 @@ import org.springframework.data.redis.core.ReactiveStringRedisTemplate;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Redis-backed implementation of {@link StateStorage} using Spring's
@@ -26,12 +27,13 @@ public class RedisStateStorage implements StateStorage {
     private final ObjectMapper objectMapper;
 
     public RedisStateStorage(ReactiveStringRedisTemplate redis) {
-        this(redis, new ObjectMapper());
+        ReactiveStringRedisTemplate checkedRedis = Objects.requireNonNull(redis, "redis must not be null");
+        this(checkedRedis, new ObjectMapper());
     }
 
     public RedisStateStorage(ReactiveStringRedisTemplate redis, ObjectMapper objectMapper) {
-        this.redis = redis;
-        this.objectMapper = objectMapper;
+        this.redis = Objects.requireNonNull(redis, "redis must not be null");
+        this.objectMapper = Objects.requireNonNull(objectMapper, "objectMapper must not be null");
     }
 
     @Override

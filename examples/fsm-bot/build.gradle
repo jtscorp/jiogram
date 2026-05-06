@@ -9,11 +9,12 @@ version = '1.0.0'
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(25)
     }
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
@@ -21,4 +22,5 @@ dependencies {
     // When building from the Jiogram source tree, use:
     // implementation project(':jiogram-spring-boot-starter')
     implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-4-starter:0.2.0-SNAPSHOT'
+    annotationProcessor 'uz.jtscorp.jiogram:jiogram-fsm-sb4:0.2.0-SNAPSHOT'
 }

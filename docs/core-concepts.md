@@ -282,6 +282,14 @@ router.onMessage()
 public SendMessage handler(Message message) { /* ... */ }
 ```
 
+For enum-based FSM states without generated constants, use `enumClass` so the enum type stays visible at the call site:
+
+```java
+@OnMessage
+@StateFilter(enumClass = FormState.class, value = "IDLE")
+public SendMessage handler(Message message) { /* ... */ }
+```
+
 `@OnCallbackQuery` has built-in `data` and `prefix` attributes:
 
 ```java
@@ -347,19 +355,29 @@ FSM lets you build multi-step conversations where the bot remembers what step ea
 
 ### 1. Define states
 
-Create an enum implementing `BotState`:
+Create an enum and mark it with `@FSMStates`:
 
 ```java
-import io.jiogram.fsm.BotState;
+import io.jiogram.fsm.FSMStates;
 
-public enum FormState implements BotState {
+@FSMStates
+public enum FormState {
     WAITING_FOR_NAME,
     WAITING_FOR_AGE,
     CONFIRM
 }
 ```
 
-Each constant gets a `fullName()` like `"FormState.WAITING_FOR_NAME"`, which is what gets stored and matched.
+Each constant is stored and matched as a state name like `"FormState.WAITING_FOR_NAME"`.
+`@FSMStates` also generates `FormStateStates` constants for annotation use.
+
+Enable the processor in Gradle:
+
+```groovy
+dependencies {
+    annotationProcessor 'uz.jtscorp.jiogram:jiogram-fsm-sb4:0.2.0-SNAPSHOT'
+}
+```
 
 ### 2. Use @StateFilter in handlers
 
@@ -380,7 +398,7 @@ public class RegistrationBot {
     }
 
     @OnMessage
-    @StateFilter("FormState.WAITING_FOR_NAME")
+    @StateFilter(FormStateStates.WAITING_FOR_NAME)
     public Mono<Void> processName(Message message, Bot bot, UpdateContext context) {
         FSMContext fsm = context.get("state", FSMContext.class);
         return fsm.updateData("name", message.text())
@@ -393,7 +411,7 @@ public class RegistrationBot {
     }
 
     @OnMessage
-    @StateFilter("FormState.WAITING_FOR_AGE")
+    @StateFilter(FormStateStates.WAITING_FOR_AGE)
     public Mono<Void> processAge(Message message, Bot bot, UpdateContext context) {
         FSMContext fsm = context.get("state", FSMContext.class);
         return fsm.updateData("age", message.text())
@@ -410,7 +428,7 @@ public class RegistrationBot {
     }
 
     @OnMessage
-    @StateFilter("FormState.CONFIRM")
+    @StateFilter(FormStateStates.CONFIRM)
     public Mono<Void> confirm(Message message, Bot bot, UpdateContext context) {
         FSMContext fsm = context.get("state", FSMContext.class);
         String text = "yes".equalsIgnoreCase(message.text()) ? "Registration complete!" : "Registration cancelled.";
@@ -434,7 +452,7 @@ FSMContext fsm = context.get("state", FSMContext.class);
 
 | Method | Description |
 |---|---|
-| `fsm.setState(BotState state)` | Set the current state using an enum constant |
+| `fsm.setState(Enum<?> state)` | Set the current state using an enum constant |
 | `fsm.setState(String state)` | Set the current state using a raw string |
 | `fsm.getState()` | Get the current state name as `Mono<String>` |
 | `fsm.updateData(String field, Object value)` | Merge a key-value pair into stored data |

@@ -39,17 +39,9 @@ public sealed interface ChatId permits ChatId.OfLong, ChatId.OfString {
     final class Serializer extends JsonSerializer<ChatId> {
         @Override
         public void serialize(ChatId value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-            // Traditional instanceof + cast: kept Java 17-compatible (no record
-            // patterns, no pattern instanceof binding). The sealed interface
-            // guarantees exhaustiveness; the trailing else is defensive only.
-            if (value instanceof OfLong) {
-                OfLong ol = (OfLong) value;
-                gen.writeNumber(ol.id());
-            } else if (value instanceof OfString) {
-                OfString os = (OfString) value;
-                gen.writeString(os.username());
-            } else {
-                throw new IllegalStateException("Unknown ChatId variant: " + value);
+            switch (value) {
+                case OfLong(long id) -> gen.writeNumber(id);
+                case OfString(String username) -> gen.writeString(username);
             }
         }
     }

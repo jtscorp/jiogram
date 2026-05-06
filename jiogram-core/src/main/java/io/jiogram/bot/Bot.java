@@ -9,6 +9,7 @@ import reactor.core.publisher.Mono;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.RecordComponent;
+import java.util.Objects;
 
 /**
  * Represents a Telegram bot with a token, session, and default properties.
@@ -21,17 +22,16 @@ public class Bot {
     private final DefaultBotProperties defaults;
 
     public Bot(String token, TelegramSession session) {
-        this(token, session, DefaultBotProperties.defaults());
+        String checkedToken = requireValidToken(token);
+        TelegramSession checkedSession = Objects.requireNonNull(session, "session must not be null");
+        this(checkedToken, checkedSession, DefaultBotProperties.defaults());
     }
 
     public Bot(String token, TelegramSession session, DefaultBotProperties defaults) {
-        if (token == null || token.isBlank()) {
-            throw new IllegalArgumentException("Bot token must not be null or blank");
-        }
-        this.token = token;
+        this.token = requireValidToken(token);
         this.id = extractBotId(token);
-        this.session = session;
-        this.defaults = defaults;
+        this.session = Objects.requireNonNull(session, "session must not be null");
+        this.defaults = Objects.requireNonNull(defaults, "defaults must not be null");
     }
 
     /**
@@ -83,6 +83,13 @@ public class Bot {
                 "Invalid bot token format: prefix before colon is not a valid number", e
             );
         }
+    }
+
+    private static String requireValidToken(String token) {
+        if (token == null || token.isBlank()) {
+            throw new IllegalArgumentException("Bot token must not be null or blank");
+        }
+        return token;
     }
 
     @SuppressWarnings("unchecked")

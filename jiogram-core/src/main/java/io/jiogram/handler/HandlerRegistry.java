@@ -81,7 +81,7 @@ public class HandlerRegistry implements BeanPostProcessor {
         // Check for @StateFilter annotation
         StateFilter stateFilter = AnnotationUtils.findAnnotation(method, StateFilter.class);
         if (stateFilter != null) {
-            filters.add(Filters.state(stateFilter.value()));
+            filters.add(Filters.state(resolveStateName(stateFilter)));
         }
 
         HandlerAdapter<Message> adapter = new HandlerAdapter<>(bean, method, Message.class);
@@ -110,7 +110,7 @@ public class HandlerRegistry implements BeanPostProcessor {
         // Check for @StateFilter annotation
         StateFilter stateFilter = AnnotationUtils.findAnnotation(method, StateFilter.class);
         if (stateFilter != null) {
-            filters.add(Filters.state(stateFilter.value()));
+            filters.add(Filters.state(resolveStateName(stateFilter)));
         }
 
         HandlerAdapter<CallbackQuery> adapter = new HandlerAdapter<>(bean, method, CallbackQuery.class);
@@ -131,7 +131,7 @@ public class HandlerRegistry implements BeanPostProcessor {
         // Check for @StateFilter annotation
         StateFilter stateFilter = AnnotationUtils.findAnnotation(method, StateFilter.class);
         if (stateFilter != null) {
-            filters.add(Filters.state(stateFilter.value()));
+            filters.add(Filters.state(resolveStateName(stateFilter)));
         }
 
         HandlerAdapter<InlineQuery> adapter = new HandlerAdapter<>(bean, method, InlineQuery.class);
@@ -151,5 +151,20 @@ public class HandlerRegistry implements BeanPostProcessor {
             return beanClass.getSuperclass();
         }
         return beanClass;
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    private String resolveStateName(StateFilter stateFilter) {
+        if (stateFilter.enumClass() == StateFilter.NoState.class) {
+            return stateFilter.value();
+        }
+
+        if (stateFilter.value().isBlank()) {
+            throw new IllegalArgumentException("@StateFilter enum value must not be blank");
+        }
+
+        Class enumClass = stateFilter.enumClass().asSubclass(Enum.class);
+        Enum<?> state = Enum.valueOf(enumClass, stateFilter.value());
+        return state.getDeclaringClass().getSimpleName() + "." + state.name();
     }
 }

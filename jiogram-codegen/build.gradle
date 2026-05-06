@@ -9,12 +9,13 @@ repositories {
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(25)
     }
 }
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
+    options.release.set(25)
 }
 
 dependencies {

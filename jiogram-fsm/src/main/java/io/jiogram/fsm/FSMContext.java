@@ -22,14 +22,14 @@ public class FSMContext {
     }
 
     /**
-     * Sets the current state using a {@link BotState} enum constant.
-     * Stores the {@link BotState#fullName()} as the state string.
+     * Sets the current state using any enum constant.
+     * Stores a name in the format {@code EnumSimpleName.CONSTANT_NAME}.
      *
      * @param state the state to set
      * @return a Mono that completes when the state has been persisted
      */
-    public Mono<Void> setState(BotState state) {
-        return storage.setState(key, state.fullName());
+    public Mono<Void> setState(Enum<?> state) {
+        return storage.setState(key, state.getDeclaringClass().getSimpleName() + "." + state.name());
     }
 
     /**

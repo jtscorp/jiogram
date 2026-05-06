@@ -46,19 +46,19 @@ With (e.g. for Spring Boot 3.5):
 implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-3-starter:0.2.0'
 ```
 
-### 4. Lower your Java toolchain to 17 (if needed)
+### 4. Set the Java toolchain for your target branch
 
-If you previously inherited Java 25 from jiogram 0.1.0's preview-feature requirement, you can now drop your toolchain to Java 17:
+The Spring Boot 4 starter on `main` targets Java 25:
 
 ```groovy
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(25)
     }
 }
 ```
 
-Java 17, 21, and 25 are all supported.
+The Spring Boot 2.7 and 3.5 branches keep their lower Java baseline; use the version documented on the branch you consume.
 
 ### 5. Build and test
 

@@ -35,14 +35,9 @@ public class FSMAutoConfiguration {
             Dispatcher dispatcher,
             JiogramProperties properties) {
 
-        FSMStrategy strategy = FSMStrategy.USER_IN_CHAT;
-        if (properties.fsm() != null && properties.fsm().strategy() != null) {
-            try {
-                strategy = FSMStrategy.valueOf(properties.fsm().strategy());
-            } catch (IllegalArgumentException ignored) {
-                // fall back to default
-            }
-        }
+        FSMStrategy strategy = properties.fsm() != null && properties.fsm().strategy() != null
+                ? properties.fsm().strategy()
+                : FSMStrategy.USER_IN_CHAT;
 
         FSMMiddleware middleware = new FSMMiddleware(stateStorage, strategy);
         dispatcher.addOuterMiddleware(middleware);

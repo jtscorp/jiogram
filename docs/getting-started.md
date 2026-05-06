@@ -4,7 +4,7 @@ This guide walks you through creating your first Telegram bot with Jiogram.
 
 ## Prerequisites
 
-- Java 17 or newer
+- Java 25 or newer
 - Gradle 8.x or newer
 - A bot token from [@BotFather](https://t.me/BotFather)
 
@@ -24,7 +24,7 @@ version = '1.0.0'
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(25)
     }
 }
 
