@@ -38,6 +38,7 @@ subprojects {
     tasks.withType(Javadoc) {
         def opts = options as StandardJavadocDocletOptions
         opts.addStringOption('source', '11')
+        opts.addBooleanOption('Xdoclint:all,-missing', true)
         options.encoding = 'UTF-8'
     }
 
@@ -97,7 +98,7 @@ subprojects {
     }
 
     signing {
-        required { !version.toString().endsWith('SNAPSHOT') }
+        required = { !version.toString().endsWith('SNAPSHOT') }
         if (!version.toString().endsWith('SNAPSHOT')) {
             useGpgCmd()
             sign publishing.publications.mavenJava
