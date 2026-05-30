@@ -12,6 +12,12 @@ telegram:
   # Operating mode: POLLING or WEBHOOK (default: POLLING)
   mode: POLLING
 
+  # Telegram Bot API endpoint configuration
+  api:
+    # Base URL for the Bot API server (default: https://api.telegram.org)
+    # Use http://localhost:8081 when running a local Bot API server.
+    base-url: https://api.telegram.org
+
   # Polling configuration (only used when mode=POLLING)
   polling:
     # Long-polling timeout in seconds (default: 30)
@@ -78,6 +84,14 @@ Controls how the bot receives updates from Telegram.
 | `POLLING` | Long-polling via `getUpdates`. Default. No public URL needed. |
 | `WEBHOOK` | Telegram pushes updates to your server. Requires a public HTTPS URL. |
 
+### telegram.api
+
+Configures the Bot API server endpoint used for outgoing requests.
+
+| Property | Type | Default | Description |
+|---|---|---|---|
+| `base-url` | `String` | `https://api.telegram.org` | Base URL of the Telegram Bot API server. Set to a local server URL such as `http://localhost:8081` for self-hosted Bot API deployments. |
+
 ### telegram.polling
 
 Only applies when `mode=POLLING`.
@@ -128,6 +142,7 @@ Spring Boot supports environment variable binding. Property names map to environ
 |---|---|
 | `telegram.token` | `TELEGRAM_TOKEN` |
 | `telegram.mode` | `TELEGRAM_MODE` |
+| `telegram.api.base-url` | `TELEGRAM_API_BASE_URL` |
 | `telegram.polling.timeout` | `TELEGRAM_POLLING_TIMEOUT` |
 | `telegram.fsm.strategy` | `TELEGRAM_FSM_STRATEGY` |
 | `telegram.webhook.secret-token` | `TELEGRAM_WEBHOOK_SECRET_TOKEN` |

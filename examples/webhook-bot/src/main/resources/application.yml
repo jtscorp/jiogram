@@ -1,0 +1,10 @@
+server:
+  port: ${PORT:8080}
+
+telegram:
+  token: ${BOT_TOKEN}
+  mode: WEBHOOK
+  webhook:
+    url: ${WEBHOOK_URL}
+    path: ${WEBHOOK_PATH:/bot/webhook}
+    secret-token: ${WEBHOOK_SECRET:}

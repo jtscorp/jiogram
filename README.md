@@ -108,6 +108,7 @@ All properties live under the `telegram` prefix. See [docs/configuration.md](doc
 |---|---|---|
 | `telegram.token` | *(required)* | Bot API token from @BotFather |
 | `telegram.mode` | `POLLING` | `POLLING` or `WEBHOOK` |
+| `telegram.api.base-url` | `https://api.telegram.org` | Telegram Bot API endpoint; set to a local Bot API server URL when self-hosting |
 | `telegram.polling.timeout` | `30` | Long-polling timeout in seconds |
 | `telegram.polling.limit` | `100` | Max updates per poll |
 | `telegram.polling.backoff` | `1000` | Error backoff in ms |
@@ -131,6 +132,18 @@ All properties live under the `telegram` prefix. See [docs/configuration.md](doc
 | [FSM Bot](examples/fsm-bot/) | Multi-step registration form using FSM |
 | [Multi-Router Bot](examples/multi-router-bot/) | Splitting handlers across multiple controller classes |
 | [Programmatic Bot](examples/programmatic-bot/) | Using the programmatic (non-annotation) router API |
+| [Inline Bot](examples/inline-bot/) | Answers inline queries with article results |
+| [Webhook Bot](examples/webhook-bot/) | Runs the same echo handler in webhook mode |
+| [Broadcast Bot](examples/broadcast-bot/) | Sends a message to a configured list of users with basic error handling |
+| [Media Group Bot](examples/media-group-bot/) | Sends a photo album with `sendMediaGroup` |
+| [Regexp Bot](examples/regexp-bot/) | Uses regex filters for item commands and deep-link payloads |
+| [Language Bot](examples/language-bot/) | Reads the user's Telegram language code |
+| [Proxy Bot](examples/proxy-bot/) | Configures Jiogram's `WebClient` to use an HTTP/SOCKS5 proxy |
+| [I18n Bot](examples/i18n-bot/) | Uses Spring `MessageSource` for localized replies |
+| [Throttling Bot](examples/throttling-bot/) | Adds antiflood behavior through middleware |
+| [Payments Bot](examples/payments-bot/) | Sends invoices and handles shipping/pre-checkout updates |
+| [Local Server Bot](examples/local-server-bot/) | Uses a configurable Bot API base URL for a local Bot API server |
+| [Updates Bot](examples/updates-bot/) | Demonstrates update-specific handlers for polls, reactions, chat members, business events, boosts, paid media, and managed bots |
 
 ## License
 

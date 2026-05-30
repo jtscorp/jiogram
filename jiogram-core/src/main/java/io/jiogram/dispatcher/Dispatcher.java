@@ -85,6 +85,7 @@ public class Dispatcher extends Router {
         if (update.chatBoost() != null) return "chat_boost";
         if (update.removedChatBoost() != null) return "removed_chat_boost";
         if (update.purchasedPaidMedia() != null) return "purchased_paid_media";
+        if (update.managedBot() != null) return "managed_bot";
         return null;
     }
 
@@ -115,6 +116,7 @@ public class Dispatcher extends Router {
         if (update.chatBoost() != null) return update.chatBoost();
         if (update.removedChatBoost() != null) return update.removedChatBoost();
         if (update.purchasedPaidMedia() != null) return update.purchasedPaidMedia();
+        if (update.managedBot() != null) return update.managedBot();
         return null;
     }
 }

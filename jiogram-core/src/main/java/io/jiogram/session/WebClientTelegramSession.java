@@ -20,14 +20,19 @@ import java.util.Objects;
  */
 public class WebClientTelegramSession implements TelegramSession {
 
-    private static final String BASE_URL = "https://api.telegram.org";
+    public static final String DEFAULT_BASE_URL = "https://api.telegram.org";
 
     private final WebClient webClient;
     private final ObjectMapper objectMapper;
+    private final String baseUrl;
 
     public WebClientTelegramSession(WebClient webClient) {
         WebClient checkedWebClient = Objects.requireNonNull(webClient, "webClient must not be null");
-        this(checkedWebClient, defaultObjectMapper());
+        this(checkedWebClient, defaultObjectMapper(), DEFAULT_BASE_URL);
+    }
+
+    public WebClientTelegramSession(WebClient webClient, String baseUrl) {
+        this(webClient, defaultObjectMapper(), baseUrl);
     }
 
     /**
@@ -41,8 +46,13 @@ public class WebClientTelegramSession implements TelegramSession {
      * constructor or {@link #defaultObjectMapper()} unless you need custom modules.
      */
     public WebClientTelegramSession(WebClient webClient, ObjectMapper objectMapper) {
+        this(webClient, objectMapper, DEFAULT_BASE_URL);
+    }
+
+    public WebClientTelegramSession(WebClient webClient, ObjectMapper objectMapper, String baseUrl) {
         this.webClient = Objects.requireNonNull(webClient, "webClient must not be null");
         this.objectMapper = Objects.requireNonNull(objectMapper, "objectMapper must not be null");
+        this.baseUrl = normalizeBaseUrl(baseUrl);
     }
 
     /**
@@ -58,7 +68,7 @@ public class WebClientTelegramSession implements TelegramSession {
 
     @Override
     public <T> Mono<T> makeRequest(String token, TelegramMethod<T> method) {
-        String url = BASE_URL + "/bot" + token + "/" + method.apiMethod();
+        String url = baseUrl + "/bot" + token + "/" + method.apiMethod();
 
         JavaType resultType = resolveResultType(method);
         JavaType responseType = objectMapper.getTypeFactory()
@@ -123,5 +133,16 @@ public class WebClientTelegramSession implements TelegramSession {
         throw new IllegalArgumentException(
             "Cannot resolve return type for method: " + method.getClass().getName()
         );
+    }
+
+    private static String normalizeBaseUrl(String baseUrl) {
+        if (baseUrl == null || baseUrl.isBlank()) {
+            return DEFAULT_BASE_URL;
+        }
+        String trimmed = baseUrl.trim();
+        while (trimmed.endsWith("/")) {
+            trimmed = trimmed.substring(0, trimmed.length() - 1);
+        }
+        return trimmed;
     }
 }

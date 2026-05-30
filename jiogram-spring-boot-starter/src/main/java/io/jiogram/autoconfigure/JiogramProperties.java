@@ -26,6 +26,9 @@ public record JiogramProperties(
     /** Webhook configuration. */
     @DefaultValue WebhookProperties webhook,
 
+    /** Telegram Bot API endpoint configuration. */
+    @DefaultValue ApiProperties api,
+
     /** Default bot properties applied to outgoing requests. */
     @DefaultValue DefaultsProperties defaults,
 
@@ -66,6 +69,15 @@ public record JiogramProperties(
         @DefaultValue("/bot/webhook") String path,
         String secretToken,
         @DefaultValue("40") int maxConnections
+    ) {}
+
+    /**
+     * Telegram Bot API endpoint configuration.
+     *
+     * @param baseUrl base URL of the Bot API server
+     */
+    public record ApiProperties(
+        @DefaultValue("https://api.telegram.org") String baseUrl
     ) {}
 
     /**

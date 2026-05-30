@@ -32,11 +32,12 @@ public class JiogramAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public TelegramSession telegramSession(WebClient telegramWebClient) {
+    public TelegramSession telegramSession(WebClient telegramWebClient, JiogramProperties properties) {
         // Intentionally does NOT depend on the application's shared ObjectMapper.
         // The Telegram Bot API rejects null-valued optional parameters, so this
         // session uses its own NON_NULL-configured ObjectMapper internally.
-        return new WebClientTelegramSession(telegramWebClient);
+        String baseUrl = properties.api() != null ? properties.api().baseUrl() : null;
+        return new WebClientTelegramSession(telegramWebClient, baseUrl);
     }
 
     @Bean

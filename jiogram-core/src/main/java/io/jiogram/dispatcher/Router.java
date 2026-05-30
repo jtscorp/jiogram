@@ -1,12 +1,23 @@
 package io.jiogram.dispatcher;
 
 import io.jiogram.types.CallbackQuery;
+import io.jiogram.types.BusinessConnection;
+import io.jiogram.types.BusinessMessagesDeleted;
+import io.jiogram.types.ChatBoostRemoved;
+import io.jiogram.types.ChatBoostUpdated;
 import io.jiogram.types.ChatJoinRequest;
 import io.jiogram.types.ChatMemberUpdated;
+import io.jiogram.types.ChosenInlineResult;
 import io.jiogram.types.InlineQuery;
+import io.jiogram.types.ManagedBotUpdated;
 import io.jiogram.types.Message;
+import io.jiogram.types.MessageReactionCountUpdated;
+import io.jiogram.types.MessageReactionUpdated;
+import io.jiogram.types.PaidMediaPurchased;
 import io.jiogram.types.Poll;
 import io.jiogram.types.PollAnswer;
+import io.jiogram.types.PreCheckoutQuery;
+import io.jiogram.types.ShippingQuery;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -40,13 +51,26 @@ public class Router {
         observers.put("edited_message", new EventObserver<Message>("edited_message"));
         observers.put("channel_post", new EventObserver<Message>("channel_post"));
         observers.put("edited_channel_post", new EventObserver<Message>("edited_channel_post"));
+        observers.put("business_connection", new EventObserver<BusinessConnection>("business_connection"));
+        observers.put("business_message", new EventObserver<Message>("business_message"));
+        observers.put("edited_business_message", new EventObserver<Message>("edited_business_message"));
+        observers.put("deleted_business_messages", new EventObserver<BusinessMessagesDeleted>("deleted_business_messages"));
+        observers.put("message_reaction", new EventObserver<MessageReactionUpdated>("message_reaction"));
+        observers.put("message_reaction_count", new EventObserver<MessageReactionCountUpdated>("message_reaction_count"));
         observers.put("callback_query", new EventObserver<CallbackQuery>("callback_query"));
         observers.put("inline_query", new EventObserver<InlineQuery>("inline_query"));
+        observers.put("chosen_inline_result", new EventObserver<ChosenInlineResult>("chosen_inline_result"));
+        observers.put("shipping_query", new EventObserver<ShippingQuery>("shipping_query"));
+        observers.put("pre_checkout_query", new EventObserver<PreCheckoutQuery>("pre_checkout_query"));
+        observers.put("purchased_paid_media", new EventObserver<PaidMediaPurchased>("purchased_paid_media"));
         observers.put("poll", new EventObserver<Poll>("poll"));
         observers.put("poll_answer", new EventObserver<PollAnswer>("poll_answer"));
         observers.put("my_chat_member", new EventObserver<ChatMemberUpdated>("my_chat_member"));
         observers.put("chat_member", new EventObserver<ChatMemberUpdated>("chat_member"));
         observers.put("chat_join_request", new EventObserver<ChatJoinRequest>("chat_join_request"));
+        observers.put("chat_boost", new EventObserver<ChatBoostUpdated>("chat_boost"));
+        observers.put("removed_chat_boost", new EventObserver<ChatBoostRemoved>("removed_chat_boost"));
+        observers.put("managed_bot", new EventObserver<ManagedBotUpdated>("managed_bot"));
     }
 
     /**
@@ -92,6 +116,78 @@ public class Router {
         return new HandlerBuilder<>(editedChannelPostObserver());
     }
 
+    public HandlerBuilder<BusinessConnection> onBusinessConnection() {
+        return new HandlerBuilder<>(businessConnectionObserver());
+    }
+
+    public HandlerBuilder<Message> onBusinessMessage() {
+        return new HandlerBuilder<>(businessMessageObserver());
+    }
+
+    public HandlerBuilder<Message> onEditedBusinessMessage() {
+        return new HandlerBuilder<>(editedBusinessMessageObserver());
+    }
+
+    public HandlerBuilder<BusinessMessagesDeleted> onDeletedBusinessMessages() {
+        return new HandlerBuilder<>(deletedBusinessMessagesObserver());
+    }
+
+    public HandlerBuilder<MessageReactionUpdated> onMessageReaction() {
+        return new HandlerBuilder<>(messageReactionObserver());
+    }
+
+    public HandlerBuilder<MessageReactionCountUpdated> onMessageReactionCount() {
+        return new HandlerBuilder<>(messageReactionCountObserver());
+    }
+
+    public HandlerBuilder<ChosenInlineResult> onChosenInlineResult() {
+        return new HandlerBuilder<>(chosenInlineResultObserver());
+    }
+
+    public HandlerBuilder<ShippingQuery> onShippingQuery() {
+        return new HandlerBuilder<>(shippingQueryObserver());
+    }
+
+    public HandlerBuilder<PreCheckoutQuery> onPreCheckoutQuery() {
+        return new HandlerBuilder<>(preCheckoutQueryObserver());
+    }
+
+    public HandlerBuilder<PaidMediaPurchased> onPurchasedPaidMedia() {
+        return new HandlerBuilder<>(purchasedPaidMediaObserver());
+    }
+
+    public HandlerBuilder<Poll> onPoll() {
+        return new HandlerBuilder<>(pollObserver());
+    }
+
+    public HandlerBuilder<PollAnswer> onPollAnswer() {
+        return new HandlerBuilder<>(pollAnswerObserver());
+    }
+
+    public HandlerBuilder<ChatMemberUpdated> onMyChatMember() {
+        return new HandlerBuilder<>(myChatMemberObserver());
+    }
+
+    public HandlerBuilder<ChatMemberUpdated> onChatMember() {
+        return new HandlerBuilder<>(chatMemberObserver());
+    }
+
+    public HandlerBuilder<ChatJoinRequest> onChatJoinRequest() {
+        return new HandlerBuilder<>(chatJoinRequestObserver());
+    }
+
+    public HandlerBuilder<ChatBoostUpdated> onChatBoost() {
+        return new HandlerBuilder<>(chatBoostObserver());
+    }
+
+    public HandlerBuilder<ChatBoostRemoved> onRemovedChatBoost() {
+        return new HandlerBuilder<>(removedChatBoostObserver());
+    }
+
+    public HandlerBuilder<ManagedBotUpdated> onManagedBot() {
+        return new HandlerBuilder<>(managedBotObserver());
+    }
+
     // -- Direct observer access --
 
     @SuppressWarnings("unchecked")
@@ -115,6 +211,36 @@ public class Router {
     }
 
     @SuppressWarnings("unchecked")
+    public EventObserver<BusinessConnection> businessConnectionObserver() {
+        return (EventObserver<BusinessConnection>) observers.get("business_connection");
+    }
+
+    @SuppressWarnings("unchecked")
+    public EventObserver<Message> businessMessageObserver() {
+        return (EventObserver<Message>) observers.get("business_message");
+    }
+
+    @SuppressWarnings("unchecked")
+    public EventObserver<Message> editedBusinessMessageObserver() {
+        return (EventObserver<Message>) observers.get("edited_business_message");
+    }
+
+    @SuppressWarnings("unchecked")
+    public EventObserver<BusinessMessagesDeleted> deletedBusinessMessagesObserver() {
+        return (EventObserver<BusinessMessagesDeleted>) observers.get("deleted_business_messages");
+    }
+
+    @SuppressWarnings("unchecked")
+    public EventObserver<MessageReactionUpdated> messageReactionObserver() {
+        return (EventObserver<MessageReactionUpdated>) observers.get("message_reaction");
+    }
+
+    @SuppressWarnings("unchecked")
+    public EventObserver<MessageReactionCountUpdated> messageReactionCountObserver() {
+        return (EventObserver<MessageReactionCountUpdated>) observers.get("message_reaction_count");
+    }
+
+    @SuppressWarnings("unchecked")
     public EventObserver<CallbackQuery> callbackQueryObserver() {
         return (EventObserver<CallbackQuery>) observers.get("callback_query");
     }
@@ -122,6 +248,26 @@ public class Router {
     @SuppressWarnings("unchecked")
     public EventObserver<InlineQuery> inlineQueryObserver() {
         return (EventObserver<InlineQuery>) observers.get("inline_query");
+    }
+
+    @SuppressWarnings("unchecked")
+    public EventObserver<ChosenInlineResult> chosenInlineResultObserver() {
+        return (EventObserver<ChosenInlineResult>) observers.get("chosen_inline_result");
+    }
+
+    @SuppressWarnings("unchecked")
+    public EventObserver<ShippingQuery> shippingQueryObserver() {
+        return (EventObserver<ShippingQuery>) observers.get("shipping_query");
+    }
+
+    @SuppressWarnings("unchecked")
+    public EventObserver<PreCheckoutQuery> preCheckoutQueryObserver() {
+        return (EventObserver<PreCheckoutQuery>) observers.get("pre_checkout_query");
+    }
+
+    @SuppressWarnings("unchecked")
+    public EventObserver<PaidMediaPurchased> purchasedPaidMediaObserver() {
+        return (EventObserver<PaidMediaPurchased>) observers.get("purchased_paid_media");
     }
 
     @SuppressWarnings("unchecked")
@@ -147,6 +293,21 @@ public class Router {
     @SuppressWarnings("unchecked")
     public EventObserver<ChatJoinRequest> chatJoinRequestObserver() {
         return (EventObserver<ChatJoinRequest>) observers.get("chat_join_request");
+    }
+
+    @SuppressWarnings("unchecked")
+    public EventObserver<ChatBoostUpdated> chatBoostObserver() {
+        return (EventObserver<ChatBoostUpdated>) observers.get("chat_boost");
+    }
+
+    @SuppressWarnings("unchecked")
+    public EventObserver<ChatBoostRemoved> removedChatBoostObserver() {
+        return (EventObserver<ChatBoostRemoved>) observers.get("removed_chat_boost");
+    }
+
+    @SuppressWarnings("unchecked")
+    public EventObserver<ManagedBotUpdated> managedBotObserver() {
+        return (EventObserver<ManagedBotUpdated>) observers.get("managed_bot");
     }
 
     /**
