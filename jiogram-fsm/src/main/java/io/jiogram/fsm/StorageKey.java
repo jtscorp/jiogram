@@ -4,21 +4,32 @@ import org.jspecify.annotations.Nullable;
 
 /**
  * Identifies a unique FSM storage entry. Combines bot, chat, and user identifiers
- * with optional thread and destiny qualifiers for fine-grained state isolation.
+ * with optional thread, business connection and destiny qualifiers for fine-grained
+ * state isolation.
  *
- * @param botId    the bot's numeric ID
- * @param chatId   the chat ID (may be 0 for user-only strategies)
- * @param userId   the user ID (may be 0 for chat-only strategies)
- * @param threadId optional forum thread ID for topic-based isolation
- * @param destiny  a namespace qualifier, defaults to "default"
+ * @param botId                the bot's numeric ID
+ * @param chatId               the chat ID (may be 0 for user-only strategies)
+ * @param userId               the user ID (may be 0 for chat-only strategies)
+ * @param threadId             optional forum thread ID for topic-based isolation
+ * @param destiny              a namespace qualifier, defaults to "default"
+ * @param businessConnectionId the business connection the update came through, or null; keeps a
+ *                             customer's state separate per business account they write to
  */
 public record StorageKey(
     long botId,
     long chatId,
     long userId,
     @Nullable Long threadId,
-    String destiny
+    String destiny,
+    @Nullable String businessConnectionId
 ) {
+
+    /**
+     * Constructor without a business connection.
+     */
+    public StorageKey(long botId, long chatId, long userId, @Nullable Long threadId, String destiny) {
+        this(botId, chatId, userId, threadId, destiny, null);
+    }
 
     /**
      * Convenience constructor with threadId=null and destiny="default".

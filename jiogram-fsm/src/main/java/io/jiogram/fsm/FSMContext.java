@@ -1,9 +1,12 @@
 package io.jiogram.fsm;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jiogram.fsm.storage.StateStorage;
+import org.jspecify.annotations.Nullable;
 import reactor.core.publisher.Mono;
 
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -12,6 +15,11 @@ import java.util.Map;
  * convenient methods for state transitions and data management.
  */
 public class FSMContext {
+
+    /** Converts JSON-shaped stored values back to the requested type (see {@link #getValue}). */
+    private static final ObjectMapper VALUE_MAPPER = new ObjectMapper()
+        .findAndRegisterModules()
+        .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
     private final StateStorage storage;
     private final StorageKey key;
@@ -78,23 +86,32 @@ public class FSMContext {
      * @param value the value to store
      * @return a Mono that completes when the data has been persisted
      */
-    public Mono<Void> updateData(String field, Object value) {
-        return storage.getData(key)
-            .defaultIfEmpty(Map.of())
-            .flatMap(existing -> {
-                var updated = new HashMap<>(existing);
-                updated.put(field, value);
-                return storage.setData(key, updated);
-            });
+    public Mono<Void> updateData(String field, @Nullable Object value) {
+        return storage.updateData(key, Collections.singletonMap(field, value));
     }
 
     /**
-     * Retrieves a single value from the stored data, casting it to the specified type.
+     * Merges several key-value pairs into the existing data in one atomic update.
+     *
+     * @param fields the fields to set
+     * @return a Mono that completes when the data has been persisted
+     */
+    public Mono<Void> updateData(Map<String, Object> fields) {
+        return storage.updateData(key, fields);
+    }
+
+    /**
+     * Retrieves a single value from the stored data as the given type.
+     * <p>
+     * Storages that serialize data (e.g. Redis) return JSON-shaped values: a {@code long}
+     * may come back as an {@code Integer} and a record as a {@code Map}. Such values are
+     * converted to {@code type} with Jackson.
      *
      * @param field the data field name
      * @param type  the expected value type
      * @param <T>   the value type
-     * @return a Mono emitting the value, or empty if the field does not exist
+     * @return a Mono emitting the value, or empty if the field does not exist; an
+     *         {@link IllegalArgumentException} if the value cannot be converted
      */
     public <T> Mono<T> getValue(String field, Class<T> type) {
         return storage.getData(key)
@@ -104,7 +121,10 @@ public class FSMContext {
                 if (value == null) {
                     return Mono.empty();
                 }
-                return Mono.just(type.cast(value));
+                if (type.isInstance(value)) {
+                    return Mono.just(type.cast(value));
+                }
+                return Mono.fromCallable(() -> VALUE_MAPPER.convertValue(value, type));
             });
     }
 
@@ -114,8 +134,7 @@ public class FSMContext {
      * @return a Mono that completes when state and data have been cleared
      */
     public Mono<Void> clear() {
-        return storage.setState(key, null)
-            .then(storage.setData(key, Map.of()));
+        return storage.clear(key);
     }
 
     /**

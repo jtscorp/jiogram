@@ -25,4 +25,8 @@ dependencies {
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.projectreactor:reactor-test'
+    // RedisStateStorageTest runs against a real Redis; skipped when Docker is unavailable.
+    testImplementation 'org.springframework.data:spring-data-redis'
+    testImplementation 'io.lettuce:lettuce-core'
+    testImplementation 'org.testcontainers:testcontainers-junit-jupiter'
 }

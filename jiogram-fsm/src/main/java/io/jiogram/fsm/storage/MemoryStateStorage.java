@@ -4,6 +4,8 @@ import io.jiogram.fsm.StorageKey;
 import org.jspecify.annotations.Nullable;
 import reactor.core.publisher.Mono;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -43,9 +45,32 @@ public class MemoryStateStorage implements StateStorage {
         return Mono.fromRunnable(() ->
             store.compute(key, (k, existing) -> {
                 String state = existing != null ? existing.state() : null;
-                return new StateRecord(state, Map.copyOf(data));
+                return new StateRecord(state, copyOf(data));
             })
         );
+    }
+
+    @Override
+    public Mono<Void> updateData(StorageKey key, Map<String, Object> fields) {
+        // compute() runs atomically per key, so concurrent updates cannot lose fields.
+        return Mono.fromRunnable(() ->
+            store.compute(key, (k, existing) -> {
+                Map<String, Object> merged = new HashMap<>(existing != null ? existing.data() : Map.of());
+                merged.putAll(fields);
+                return new StateRecord(existing != null ? existing.state() : null, copyOf(merged));
+            })
+        );
+    }
+
+    @Override
+    public Mono<Void> clear(StorageKey key) {
+        // Remove the entry rather than storing an empty one, so the map does not grow per user.
+        return Mono.fromRunnable(() -> store.remove(key));
+    }
+
+    /** Unmodifiable copy that, unlike Map.copyOf, allows null values. */
+    private static Map<String, Object> copyOf(Map<String, Object> data) {
+        return Collections.unmodifiableMap(new HashMap<>(data));
     }
 
     @Override

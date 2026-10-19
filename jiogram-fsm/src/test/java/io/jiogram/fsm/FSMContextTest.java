@@ -3,9 +3,13 @@ package io.jiogram.fsm;
 import io.jiogram.fsm.storage.MemoryStateStorage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -134,5 +138,41 @@ class FSMContextTest {
     @Test
     void key_returnsStorageKey() {
         assertEquals(key, fsmContext.key());
+    }
+
+    record Address(String city, long zip) {}
+
+    @Test
+    void getValue_convertsJsonShapedValues() {
+        // What a serializing storage hands back: an Integer for a long, a Map for a record.
+        StepVerifier.create(
+            fsmContext.setData(Map.of("messageId", 42, "address", Map.of("city", "Tashkent", "zip", 100000)))
+                .then(fsmContext.getValue("messageId", Long.class)
+                    .zipWith(fsmContext.getValue("address", Address.class)))
+        ).assertNext(values -> {
+            assertEquals(42L, values.getT1());
+            assertEquals(new Address("Tashkent", 100000), values.getT2());
+        }).verifyComplete();
+    }
+
+    @Test
+    void updateData_acceptsNullValue() {
+        StepVerifier.create(
+            fsmContext.updateData("optional", null).then(fsmContext.getData())
+        ).assertNext(data -> {
+            assertTrue(data.containsKey("optional"));
+            assertNull(data.get("optional"));
+        }).verifyComplete();
+    }
+
+    @Test
+    void updateData_concurrentUpdatesOfOneKey_loseNoFields() {
+        List<Mono<Void>> updates = IntStream.range(0, 200)
+            .mapToObj(i -> fsmContext.updateData("field" + i, i).subscribeOn(Schedulers.parallel()))
+            .toList();
+
+        StepVerifier.create(Mono.when(updates).then(fsmContext.getData()))
+            .assertNext(data -> assertEquals(200, data.size()))
+            .verifyComplete();
     }
 }

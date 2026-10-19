@@ -85,6 +85,7 @@ public class FSMMiddleware implements Middleware {
         long chatId = 0;
         long userId = 0;
         Long threadId = null;
+        String businessConnectionId = null;
 
         // Extract chatId and userId from different update types
         if (update.message() != null) {
@@ -112,6 +113,7 @@ public class FSMMiddleware implements Middleware {
             if (cq.message() instanceof Message msg) {
                 chatId = msg.chat().id();
                 threadId = msg.messageThreadId();
+                businessConnectionId = msg.businessConnectionId();
             } else if (cq.message() != null) {
                 // InaccessibleMessage also has chat()
                 chatId = ((io.jiogram.types.InaccessibleMessage) cq.message()).chat().id();
@@ -147,20 +149,22 @@ public class FSMMiddleware implements Middleware {
             Message msg = update.businessMessage();
             chatId = msg.chat().id();
             userId = msg.from() != null ? msg.from().id() : 0;
+            businessConnectionId = msg.businessConnectionId();
         } else if (update.editedBusinessMessage() != null) {
             Message msg = update.editedBusinessMessage();
             chatId = msg.chat().id();
             userId = msg.from() != null ? msg.from().id() : 0;
+            businessConnectionId = msg.businessConnectionId();
         } else {
             return null;
         }
 
         // Apply strategy
         return switch (strategy) {
-            case USER_IN_CHAT -> new StorageKey(botId, chatId, userId, null, "default");
-            case CHAT -> new StorageKey(botId, chatId, 0, null, "default");
-            case USER -> new StorageKey(botId, 0, userId, null, "default");
-            case CHAT_TOPIC -> new StorageKey(botId, chatId, userId, threadId, "default");
+            case USER_IN_CHAT -> new StorageKey(botId, chatId, userId, null, "default", businessConnectionId);
+            case CHAT -> new StorageKey(botId, chatId, 0, null, "default", businessConnectionId);
+            case USER -> new StorageKey(botId, 0, userId, null, "default", businessConnectionId);
+            case CHAT_TOPIC -> new StorageKey(botId, chatId, userId, threadId, "default", businessConnectionId);
         };
     }
 }
