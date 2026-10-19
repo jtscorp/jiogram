@@ -75,7 +75,10 @@ public class WebClientTelegramSession implements TelegramSession {
      */
     public static ObjectMapper defaultObjectMapper() {
         return new ObjectMapper()
-            .setSerializationInclusion(JsonInclude.Include.NON_NULL)
+            // Same as the deprecated setSerializationInclusion(NON_NULL): only null property
+            // values are skipped; nulls inside maps and collections are kept.
+            .setDefaultPropertyInclusion(
+                JsonInclude.Value.construct(JsonInclude.Include.NON_NULL, JsonInclude.Include.USE_DEFAULTS))
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
