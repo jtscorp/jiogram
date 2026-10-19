@@ -38,7 +38,8 @@ telegram:
     url: "https://example.com/bot/webhook"
     # Local endpoint path (default: /bot/webhook)
     path: /bot/webhook
-    # Secret token for validating incoming requests (optional but recommended)
+    # Secret token Telegram sends with every update; required unless `url` is set
+    # (then a random one is generated and registered via setWebhook)
     secret-token: "your-secret-token"
     # Maximum number of concurrent webhook connections (default: 40)
     max-connections: 40
@@ -111,7 +112,7 @@ Only applies when `mode=WEBHOOK`.
 |---|---|---|---|
 | `url` | `String` | `null` | The public HTTPS URL Telegram will POST updates to. |
 | `path` | `String` | `/bot/webhook` | The local endpoint path that receives webhook POSTs. |
-| `secret-token` | `String` | `null` | If set, Jiogram validates the `X-Telegram-Bot-Api-Secret-Token` header on incoming requests. |
+| `secret-token` | `String` | `null` | Value Telegram must send in the `X-Telegram-Bot-Api-Secret-Token` header; requests without it are rejected with 401. If unset and `url` is set, a random token is generated and registered via `setWebhook`; if both are unset, startup fails. |
 | `max-connections` | `int` | `40` | Max simultaneous connections Telegram will use to deliver updates. |
 
 ### telegram.defaults

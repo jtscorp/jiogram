@@ -7,6 +7,7 @@ import io.jiogram.handler.HandlerRegistry;
 import io.jiogram.middleware.ErrorMiddleware;
 import io.jiogram.session.TelegramSession;
 import io.jiogram.session.WebClientTelegramSession;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -26,18 +27,19 @@ public class JiogramAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public WebClient telegramWebClient() {
-        return WebClient.builder().build();
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public TelegramSession telegramSession(WebClient telegramWebClient, JiogramProperties properties) {
+    public TelegramSession telegramSession(
+            ObjectProvider<WebClient.Builder> webClientBuilder, JiogramProperties properties) {
+        // The WebClient is built here rather than exposed as a bean, so the application's own
+        // WebClient beans are neither replaced by nor injected into the Telegram session.
+        // Boot's WebClient.Builder (when present) carries the app's codec/connector customizers.
+        // To customize the HTTP client further, define your own TelegramSession bean.
+        //
         // Intentionally does NOT depend on the application's shared ObjectMapper.
         // The Telegram Bot API rejects null-valued optional parameters, so this
         // session uses its own NON_NULL-configured ObjectMapper internally.
+        WebClient webClient = webClientBuilder.getIfAvailable(WebClient::builder).build();
         String baseUrl = properties.api() != null ? properties.api().baseUrl() : null;
-        return new WebClientTelegramSession(telegramWebClient, baseUrl);
+        return new WebClientTelegramSession(webClient, baseUrl);
     }
 
     @Bean

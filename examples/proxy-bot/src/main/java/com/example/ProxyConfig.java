@@ -1,5 +1,7 @@
 package com.example;
 
+import io.jiogram.session.TelegramSession;
+import io.jiogram.session.WebClientTelegramSession;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,11 +12,21 @@ import reactor.netty.transport.ProxyProvider;
 
 import java.net.URI;
 
+/**
+ * Routes Telegram API calls through a proxy by providing the {@link TelegramSession} bean;
+ * the auto-configured session then backs off. Other WebClients in the app are unaffected.
+ */
 @Configuration
 public class ProxyConfig {
 
     @Bean
-    public WebClient telegramWebClient(@Value("${telegram.proxy.url:}") String proxyUrl) {
+    public TelegramSession telegramSession(
+            @Value("${telegram.proxy.url:}") String proxyUrl,
+            @Value("${telegram.api.base-url:" + WebClientTelegramSession.DEFAULT_BASE_URL + "}") String baseUrl) {
+        return new WebClientTelegramSession(proxiedWebClient(proxyUrl), baseUrl);
+    }
+
+    private static WebClient proxiedWebClient(String proxyUrl) {
         if (proxyUrl == null || proxyUrl.isBlank()) {
             return WebClient.builder().build();
         }

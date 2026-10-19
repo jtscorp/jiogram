@@ -20,12 +20,14 @@ public class WebhookRegistrar implements SmartLifecycle {
 
     private final Bot bot;
     private final JiogramProperties properties;
+    private final String secretToken;
     private final AtomicBoolean running = new AtomicBoolean(false);
     private volatile Disposable registration;
 
-    public WebhookRegistrar(Bot bot, JiogramProperties properties) {
+    public WebhookRegistrar(Bot bot, JiogramProperties properties, String secretToken) {
         this.bot = bot;
         this.properties = properties;
+        this.secretToken = secretToken;
     }
 
     @Override
@@ -52,7 +54,7 @@ public class WebhookRegistrar implements SmartLifecycle {
             (long) webhook.maxConnections(),
             allowedUpdates,
             null,
-            webhook.secretToken()
+            secretToken
         );
 
         registration = bot.execute(request)

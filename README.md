@@ -138,7 +138,7 @@ All properties live under the `telegram` prefix. See [docs/configuration.md](doc
 | [Media Group Bot](examples/media-group-bot/) | Sends a photo album with `sendMediaGroup` |
 | [Regexp Bot](examples/regexp-bot/) | Uses regex filters for item commands and deep-link payloads |
 | [Language Bot](examples/language-bot/) | Reads the user's Telegram language code |
-| [Proxy Bot](examples/proxy-bot/) | Configures Jiogram's `WebClient` to use an HTTP/SOCKS5 proxy |
+| [Proxy Bot](examples/proxy-bot/) | Provides a `TelegramSession` bean that uses an HTTP/SOCKS5 proxy |
 | [I18n Bot](examples/i18n-bot/) | Uses Spring `MessageSource` for localized replies |
 | [Throttling Bot](examples/throttling-bot/) | Adds antiflood behavior through middleware |
 | [Payments Bot](examples/payments-bot/) | Sends invoices and handles shipping/pre-checkout updates |
