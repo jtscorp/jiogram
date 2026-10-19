@@ -69,7 +69,9 @@ public class JiogramAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public HandlerRegistry handlerRegistry(Dispatcher dispatcher) {
-        return new HandlerRegistry(dispatcher);
+    public HandlerRegistry handlerRegistry(Dispatcher dispatcher, JiogramProperties properties) {
+        return properties.handlers().virtualThreads()
+            ? HandlerRegistry.withVirtualThreads(dispatcher)
+            : new HandlerRegistry(dispatcher);
     }
 }

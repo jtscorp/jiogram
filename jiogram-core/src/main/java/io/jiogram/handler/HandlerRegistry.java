@@ -23,10 +23,12 @@ import io.jiogram.types.Poll;
 import io.jiogram.types.PollAnswer;
 import io.jiogram.types.PreCheckoutQuery;
 import io.jiogram.types.ShippingQuery;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.SmartInitializingSingleton;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.core.MethodIntrospector;
@@ -35,6 +37,8 @@ import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.annotation.OrderUtils;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -43,6 +47,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.Executors;
 import java.util.function.Function;
 
 /**
@@ -60,7 +66,7 @@ import java.util.function.Function;
  *   <li>controller class name, then method name</li>
  * </ol>
  */
-public class HandlerRegistry implements BeanPostProcessor, SmartInitializingSingleton {
+public class HandlerRegistry implements BeanPostProcessor, SmartInitializingSingleton, DisposableBean {
 
     private static final Logger log = LoggerFactory.getLogger(HandlerRegistry.class);
 
@@ -101,11 +107,48 @@ public class HandlerRegistry implements BeanPostProcessor, SmartInitializingSing
     );
 
     private final Router router;
+    private final @Nullable Scheduler handlerScheduler;
+    private final boolean ownsScheduler;
     private final List<Registration<?>> pending = new ArrayList<>();
     private boolean singletonsInstantiated;
 
+    /**
+     * Creates a registry whose handler methods run on the thread that delivers the update.
+     * Handler code must then not block.
+     */
     public HandlerRegistry(Router router) {
+        this(router, null, false);
+    }
+
+    /**
+     * Creates a registry whose handler methods run on the given scheduler. The caller keeps
+     * ownership of the scheduler and disposes it.
+     */
+    public HandlerRegistry(Router router, Scheduler handlerScheduler) {
+        this(router, Objects.requireNonNull(handlerScheduler, "handlerScheduler must not be null"), false);
+    }
+
+    private HandlerRegistry(Router router, @Nullable Scheduler handlerScheduler, boolean ownsScheduler) {
         this.router = router;
+        this.handlerScheduler = handlerScheduler;
+        this.ownsScheduler = ownsScheduler;
+    }
+
+    /**
+     * Creates a registry whose handler methods each run on a new virtual thread, so they may
+     * block freely. The registry disposes its scheduler when the container destroys it.
+     */
+    public static HandlerRegistry withVirtualThreads(Router router) {
+        Scheduler scheduler = Schedulers.fromExecutorService(
+                Executors.newVirtualThreadPerTaskExecutor(), "jiogram-handler");
+        return new HandlerRegistry(router, scheduler, true);
+    }
+
+    @Override
+    public void destroy() {
+        if (ownsScheduler && handlerScheduler != null) {
+            handlerScheduler.dispose();
+        }
     }
 
     @Override
@@ -128,7 +171,7 @@ public class HandlerRegistry implements BeanPostProcessor, SmartInitializingSing
 
         List<Registration<?>> found = new ArrayList<>();
         handlerMethods.forEach((method, bindings) -> bindings.forEach(binding ->
-                found.add(binding.registration(router, bean, targetClass, method, classOrder))));
+                found.add(binding.registration(router, bean, targetClass, method, classOrder, handlerScheduler))));
 
         synchronized (pending) {
             if (singletonsInstantiated) {
@@ -159,7 +202,8 @@ public class HandlerRegistry implements BeanPostProcessor, SmartInitializingSing
             Function<Router, EventObserver<E>> observer,
             boolean supportsCommand) {
 
-        Registration<E> registration(Router router, Object bean, Class<?> targetClass, Method method, int classOrder) {
+        Registration<E> registration(Router router, Object bean, Class<?> targetClass, Method method, int classOrder,
+                                     @Nullable Scheduler scheduler) {
             List<Filter<E>> filters = new ArrayList<>();
             if (supportsCommand) {
                 Command command = AnnotatedElementUtils.findMergedAnnotation(method, Command.class);
@@ -189,7 +233,7 @@ public class HandlerRegistry implements BeanPostProcessor, SmartInitializingSing
 
             return new Registration<>(
                     observer.apply(router),
-                    new HandlerAdapter<>(bean, invocable, eventType),
+                    new HandlerAdapter<>(bean, invocable, eventType, scheduler),
                     List.copyOf(filters),
                     methodOrder != null ? methodOrder.value() : classOrder,
                     sortKey,

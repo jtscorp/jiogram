@@ -487,6 +487,36 @@ class HandlerRegistryTest {
         assertEquals(List.of("late"), lateController.handled);
     }
 
+    // -- Virtual threads --
+
+    @TelegramController
+    static class BlockingController {
+        final List<Boolean> ranOnVirtualThread = new ArrayList<>();
+
+        @OnMessage
+        public void onMessage(Message message) {
+            // Blocking is allowed here; on a Netty event-loop thread block() would throw.
+            Mono.delay(java.time.Duration.ofMillis(10)).block();
+            ranOnVirtualThread.add(Thread.currentThread().isVirtual());
+        }
+    }
+
+    @Test
+    void withVirtualThreads_runsBlockingHandlersOnVirtualThreads() {
+        var virtualRegistry = HandlerRegistry.withVirtualThreads(router);
+        var controller = new BlockingController();
+        try {
+            virtualRegistry.postProcessAfterInitialization(controller, "blocking");
+            virtualRegistry.afterSingletonsInstantiated();
+
+            dispatch(testMessage("x"));
+
+            assertEquals(List.of(true), controller.ranOnVirtualThread);
+        } finally {
+            virtualRegistry.destroy();
+        }
+    }
+
     private void dispatch(Message message) {
         StepVerifier.create(router.propagateEvent("message", message, new UpdateContext(null, null)))
                 .expectNextCount(1)

@@ -1,0 +1,108 @@
+package io.jiogram.autoconfigure;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jiogram.bot.Bot;
+import io.jiogram.dispatcher.Dispatcher;
+import io.jiogram.methods.GetUpdates;
+import io.jiogram.session.TelegramSession;
+import io.jiogram.session.WebClientTelegramSession;
+import io.jiogram.types.TelegramMethod;
+import io.jiogram.types.Update;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
+
+import java.time.Duration;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
+
+class PollingRunnerTest {
+
+    private static final ObjectMapper MAPPER = WebClientTelegramSession.defaultObjectMapper();
+
+    private final List<GetUpdates> requests = new CopyOnWriteArrayList<>();
+    private final List<String> handled = new CopyOnWriteArrayList<>();
+    private PollingRunner runner;
+
+    @AfterEach
+    void stop() {
+        if (runner != null) {
+            runner.stop();
+        }
+    }
+
+    @Test
+    void chatsRunInParallel_butUpdatesOfOneChatKeepTheirOrder() throws Exception {
+        // Batch order: chat 1 (slow), chat 2, chat 1 again.
+        List<Update> batch = List.of(message(1, 100, "A1"), message(2, 200, "B1"), message(3, 100, "A2"));
+        Dispatcher dispatcher = new Dispatcher();
+        dispatcher.onMessage().handle((message, context) -> "A1".equals(message.text())
+            ? Mono.delay(Duration.ofMillis(300)).then(Mono.fromRunnable(() -> handled.add("A1")))
+            : Mono.fromRunnable(() -> handled.add(message.text())));
+
+        runner = new PollingRunner(botServing(batch), dispatcher, properties(32));
+        runner.start();
+
+        await().atMost(Duration.ofSeconds(5)).until(() -> handled.size() == 3);
+        // B1 did not wait for the slow A1; A2 still ran after A1.
+        assertThat(handled).containsExactly("B1", "A1", "A2");
+        // The next poll confirms the whole batch.
+        await().atMost(Duration.ofSeconds(5)).until(() -> requests.size() >= 2);
+        assertThat(requests.get(1).offset()).isEqualTo(4L);
+    }
+
+    @Test
+    void sequenceKey_groupsByChatOrActingUser() throws Exception {
+        Update callbackInGroup = update("""
+            {"update_id": 1, "callback_query": {"id": "q", "from": {"id": 7, "is_bot": false, "first_name": "U"},
+             "chat_instance": "c", "message": {"message_id": 1, "chat": {"id": -100, "type": "group", "title": "G"},
+             "date": 1775538971}}}""");
+        Update inlineQuery = update("""
+            {"update_id": 2, "inline_query": {"id": "i", "from": {"id": 7, "is_bot": false, "first_name": "U"},
+             "query": "q", "offset": ""}}""");
+        Update poll = update("""
+            {"update_id": 3, "poll": {"id": "p", "question": "?", "options": [], "total_voter_count": 0,
+             "is_closed": false, "is_anonymous": true, "type": "regular", "allows_multiple_answers": false}}""");
+
+        assertThat(PollingRunner.sequenceKey(callbackInGroup)).isEqualTo(-100L);
+        assertThat(PollingRunner.sequenceKey(inlineQuery)).isEqualTo(7L);
+        assertThat(PollingRunner.sequenceKey(poll)).isEqualTo("update:3");
+    }
+
+    private Bot botServing(List<Update> firstBatch) {
+        AtomicInteger calls = new AtomicInteger();
+        return new Bot("123:abc", new TelegramSession() {
+            @Override
+            @SuppressWarnings("unchecked")
+            public <T> Mono<T> makeRequest(String token, TelegramMethod<T> method) {
+                requests.add((GetUpdates) method);
+                return calls.getAndIncrement() == 0 ? (Mono<T>) Mono.just(firstBatch) : Mono.never();
+            }
+
+            @Override
+            public Mono<Void> close() {
+                return Mono.empty();
+            }
+        });
+    }
+
+    private static JiogramProperties properties(int concurrency) {
+        return new JiogramProperties("123:abc", JiogramProperties.Mode.POLLING,
+            new JiogramProperties.PollingProperties(0, 10, 100, null, concurrency),
+            null, null, null, null, null);
+    }
+
+    private static Update message(long updateId, long chatId, String text) throws Exception {
+        return update("""
+            {"update_id": %d, "message": {"message_id": %d, "chat": {"id": %d, "type": "private"},
+             "date": 1775538971, "text": "%s"}}""".formatted(updateId, updateId, chatId, text));
+    }
+
+    private static Update update(String json) throws Exception {
+        return MAPPER.readValue(json, Update.class);
+    }
+}

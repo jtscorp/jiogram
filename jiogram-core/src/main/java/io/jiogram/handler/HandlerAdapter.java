@@ -3,7 +3,9 @@ package io.jiogram.handler;
 import io.jiogram.bot.Bot;
 import io.jiogram.dispatcher.UpdateContext;
 import io.jiogram.types.TelegramMethod;
+import org.jspecify.annotations.Nullable;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -36,17 +38,32 @@ public class HandlerAdapter<E> implements Handler<E> {
     private final Object bean;
     private final Method method;
     private final ArgumentSource[] argumentSources;
+    private final @Nullable Scheduler scheduler;
 
     /**
+     * Creates an adapter that invokes the method on the subscribing thread.
+     *
      * @throws IllegalStateException if a parameter is not the event, {@link Bot} or {@link UpdateContext},
      *                               so a mistyped handler fails at startup instead of receiving null
      */
     public HandlerAdapter(Object bean, Method method, Class<E> eventType) {
+        this(bean, method, eventType, null);
+    }
+
+    /**
+     * Creates an adapter that invokes the method on the given scheduler, so handler code may
+     * block (JDBC, blocking HTTP clients, {@code Mono.block()}) without stalling the event loop.
+     *
+     * @param scheduler where to invoke the method, or null to invoke it on the subscribing thread
+     * @throws IllegalStateException if a parameter is not the event, {@link Bot} or {@link UpdateContext}
+     */
+    public HandlerAdapter(Object bean, Method method, Class<E> eventType, @Nullable Scheduler scheduler) {
         this.bean = bean;
         this.method = method;
         this.argumentSources = Arrays.stream(method.getParameters())
                 .map(parameter -> argumentSource(method, parameter, eventType))
                 .toArray(ArgumentSource[]::new);
+        this.scheduler = scheduler;
         this.method.setAccessible(true);
     }
 
@@ -67,8 +84,14 @@ public class HandlerAdapter<E> implements Handler<E> {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public Mono<Void> handle(E event, UpdateContext context) {
+        if (scheduler == null) {
+            return invoke(event, context);
+        }
+        return Mono.defer(() -> invoke(event, context)).subscribeOn(scheduler);
+    }
+
+    private Mono<Void> invoke(E event, UpdateContext context) {
         try {
             Object[] args = resolveArguments(event, context);
             Object result = method.invoke(bean, args);

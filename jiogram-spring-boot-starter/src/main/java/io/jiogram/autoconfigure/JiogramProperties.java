@@ -33,7 +33,10 @@ public record JiogramProperties(
     @DefaultValue DefaultsProperties defaults,
 
     /** FSM (Finite State Machine) configuration. */
-    @DefaultValue FsmProperties fsm
+    @DefaultValue FsmProperties fsm,
+
+    /** Handler execution configuration. */
+    @DefaultValue HandlersProperties handlers
 ) {
 
     public enum Mode {
@@ -48,12 +51,15 @@ public record JiogramProperties(
      * @param backoff        backoff delay in milliseconds on error
      * @param limit          maximum number of updates per poll
      * @param allowedUpdates list of update types to receive
+     * @param concurrency    how many chats of one batch are processed in parallel; updates of
+     *                       the same chat are always processed one after another, in order
      */
     public record PollingProperties(
         @DefaultValue("30") int timeout,
         @DefaultValue("1000") long backoff,
         @DefaultValue("100") int limit,
-        List<UpdateType> allowedUpdates
+        List<UpdateType> allowedUpdates,
+        @DefaultValue("32") int concurrency
     ) {}
 
     /**
@@ -104,5 +110,15 @@ public record JiogramProperties(
         @DefaultValue("true") boolean enabled,
         @DefaultValue("USER_IN_CHAT") FSMStrategy strategy,
         @DefaultValue("memory") String storage
+    ) {}
+
+    /**
+     * Handler execution configuration.
+     *
+     * @param virtualThreads whether annotated handler methods run on virtual threads (so they may
+     *                       block); when false they run on the thread that delivered the update
+     */
+    public record HandlersProperties(
+        @DefaultValue("true") boolean virtualThreads
     ) {}
 }

@@ -31,6 +31,8 @@ telegram:
       - message
       - callback_query
       - inline_query
+    # Chats processed in parallel per batch; one chat's updates stay in order (default: 32)
+    concurrency: 32
 
   # Webhook configuration (only used when mode=WEBHOOK)
   webhook:
@@ -61,6 +63,11 @@ telegram:
     strategy: USER_IN_CHAT
     # Storage backend: memory or redis (default: memory)
     storage: memory
+
+  # Handler execution
+  handlers:
+    # Run annotated handler methods on virtual threads, so they may block (default: true)
+    virtual-threads: true
 ```
 
 ## Property Details
@@ -103,6 +110,7 @@ Only applies when `mode=POLLING`.
 | `backoff` | `long` | `1000` | Initial backoff delay in ms when a polling error occurs. Exponential backoff up to 30s. |
 | `limit` | `int` | `100` | Maximum updates returned per `getUpdates` call. Range: 1-100. |
 | `allowed-updates` | `List<UpdateType>` | `null` | Restrict which update types are received. Omit to receive all. |
+| `concurrency` | `int` | `32` | How many chats of one batch are processed in parallel. Updates of the same chat (or, for inline queries and similar, the same user) always run one after another, in order. The next `getUpdates` call waits for the batch to finish. |
 
 ### telegram.webhook
 
@@ -134,6 +142,12 @@ Configuration for the Finite State Machine subsystem.
 | `enabled` | `boolean` | `true` | When `true`, the `FSMMiddleware` is registered on the dispatcher. Set to `false` to disable FSM. |
 | `strategy` | `String` | `USER_IN_CHAT` | How the storage key is resolved. One of: `USER_IN_CHAT`, `CHAT`, `USER`, `CHAT_TOPIC`. |
 | `storage` | `String` | `memory` | Storage backend. `memory` uses an in-memory `ConcurrentHashMap`. `redis` uses Spring Data Redis (requires `spring-boot-starter-data-redis` on classpath). |
+
+### telegram.handlers
+
+| Property | Type | Default | Description |
+|---|---|---|---|
+| `virtual-threads` | `boolean` | `true` | Run each annotated handler method (`@OnMessage`, ...) on a virtual thread, so it may call blocking code (JDBC, blocking HTTP clients, `Mono.block()`). When `false`, handlers run on the Netty event loop and must not block. Handlers registered programmatically with `router.onMessage().handle(...)` are not affected. |
 
 ## Environment Variables
 
