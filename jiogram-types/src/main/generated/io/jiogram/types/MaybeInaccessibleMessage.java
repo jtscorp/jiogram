@@ -1,11 +1,8 @@
 package io.jiogram.types;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "date")
-@JsonSubTypes({
-    @JsonSubTypes.Type(value = InaccessibleMessage.class, name = "0"),
-    @JsonSubTypes.Type(value = Message.class, name = "nonzero")
-})
+@JsonTypeInfo(use = JsonTypeInfo.Id.CUSTOM, property = "date", include = JsonTypeInfo.As.EXISTING_PROPERTY, visible = true)
+@JsonTypeIdResolver(MaybeInaccessibleMessageTypeIdResolver.class)
 public sealed interface MaybeInaccessibleMessage permits InaccessibleMessage, Message {}
