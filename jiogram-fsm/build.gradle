@@ -1,13 +1,6 @@
 plugins {
     id 'java-library'
     id 'org.springframework.boot' apply false
-    id 'io.spring.dependency-management'
-}
-
-dependencyManagement {
-    imports {
-        mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
-    }
 }
 
 dependencies {
@@ -20,8 +13,8 @@ dependencies {
     // Optional Redis support for distributed state storage
     compileOnly 'org.springframework.data:spring-data-redis'
     compileOnly 'io.lettuce:lettuce-core'
-    // Pinned to ${jacksonVersion} (same rationale as jiogram-core).
-    compileOnly "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+    // Jackson 2 (same rationale as jiogram-core); used by FSMContext and RedisStateStorage.
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.projectreactor:reactor-test'

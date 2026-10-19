@@ -1,13 +1,6 @@
 plugins {
     id 'java-library'
     id 'org.springframework.boot' apply false
-    id 'io.spring.dependency-management'
-}
-
-dependencyManagement {
-    imports {
-        mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
-    }
 }
 
 dependencies {
@@ -20,12 +13,12 @@ dependencies {
     implementation 'io.projectreactor.netty:reactor-netty-http'
     implementation 'org.slf4j:slf4j-api'
 
-    // Pinned to ${jacksonVersion} to stay on Jackson 2 even when Spring
-    // Boot 4 swaps its default JSON library to Jackson 3 (tools.jackson).
-    // jiogram never goes through Spring's Jackson auto-configuration —
+    // Jackson 2 (com.fasterxml), version from the Spring Boot BOM — not the
+    // Jackson 3 (tools.jackson) that Spring Boot 4 uses by default. jiogram
+    // never goes through Spring's Jackson auto-configuration —
     // WebClientTelegramSession constructs its own ObjectMapper — so we
     // are unaffected by the Spring-side switch.
-    api "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+    api 'com.fasterxml.jackson.core:jackson-databind'
     implementation 'org.jspecify:jspecify:1.0.0'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

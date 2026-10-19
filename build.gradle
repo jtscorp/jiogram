@@ -17,6 +17,15 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'maven-publish'
     apply plugin: 'signing'
+    apply plugin: 'io.spring.dependency-management'
+
+    // One BOM for every module: Jackson 2, Reactor, Spring and JUnit versions all come
+    // from Spring Boot, so tests run against the versions consumers get at runtime.
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
+        }
+    }
 
     java {
         toolchain {
@@ -42,7 +51,6 @@ subprojects {
     }
 
     dependencies {
-        testImplementation platform("org.junit:junit-bom:${junitVersion}")
         testImplementation 'org.junit.jupiter:junit-jupiter'
         testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     }
@@ -51,6 +59,18 @@ subprojects {
         publications {
             mavenJava(MavenPublication) {
                 from components.java
+
+                // BOM-managed dependencies are declared without a version; write the resolved
+                // versions into the published POM and Gradle module metadata, so consumers
+                // that do not import the Spring Boot BOM can still resolve them.
+                versionMapping {
+                    usage('java-api') {
+                        fromResolutionOf('runtimeClasspath')
+                    }
+                    usage('java-runtime') {
+                        fromResolutionResult()
+                    }
+                }
 
                 // Spec §3: every artifact on main (Spring Boot 4) carries
                 // a -sb4 suffix to avoid Maven Central GAV collisions with

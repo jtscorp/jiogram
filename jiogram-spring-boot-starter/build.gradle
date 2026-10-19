@@ -1,13 +1,6 @@
 plugins {
     id 'java-library'
     id 'org.springframework.boot' apply false
-    id 'io.spring.dependency-management'
-}
-
-dependencyManagement {
-    imports {
-        mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
-    }
 }
 
 dependencies {
