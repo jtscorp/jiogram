@@ -1,6 +1,7 @@
 package io.jiogram.types;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.jiogram.types.InputFileOrString;
 import io.jiogram.types.InputMediaType;
 import io.jiogram.types.MessageEntity;
 import io.jiogram.types.ParseMode;
@@ -9,7 +10,7 @@ import org.jspecify.annotations.Nullable;
 
 public record InputMediaPhoto(
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) InputMediaType type,
-    @JsonProperty("media") String media,
+    @JsonProperty("media") InputFileOrString media,
     @JsonProperty("caption") @Nullable String caption,
     @JsonProperty("parse_mode") @Nullable ParseMode parseMode,
     @JsonProperty("caption_entities") @Nullable List<MessageEntity> captionEntities,

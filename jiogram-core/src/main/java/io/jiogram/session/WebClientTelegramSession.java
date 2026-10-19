@@ -4,14 +4,26 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jiogram.types.InputFile;
 import io.jiogram.types.TelegramMethod;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.MediaType;
+import org.springframework.http.client.MultipartBodyBuilder;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.nio.file.Path;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -74,17 +86,24 @@ public class WebClientTelegramSession implements TelegramSession {
         JavaType responseType = objectMapper.getTypeFactory()
             .constructParametricType(TelegramApiResponse.class, resultType);
 
-        byte[] body;
+        // InputFile values serialize as "attach://<name>" and register themselves here;
+        // when any were found the request goes out as multipart instead of JSON.
+        InputFile.Attachments attachments = new InputFile.Attachments();
+        WebClient.RequestHeadersSpec<?> request;
         try {
-            body = objectMapper.writeValueAsBytes(method);
-        } catch (JsonProcessingException e) {
+            byte[] json = objectMapper.writer()
+                .withAttribute(InputFile.Attachments.ATTRIBUTE, attachments)
+                .writeValueAsBytes(method);
+            WebClient.RequestBodySpec post = webClient.post().uri(url);
+            request = attachments.isEmpty()
+                ? post.contentType(MediaType.APPLICATION_JSON).bodyValue(json)
+                : post.contentType(MediaType.MULTIPART_FORM_DATA)
+                    .body(BodyInserters.fromMultipartData(multipartBody(json, attachments)));
+        } catch (IOException e) {
             return Mono.error(e);
         }
 
-        return webClient.post()
-            .uri(url)
-            .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(body)
+        return request
             .exchangeToMono(clientResponse -> clientResponse.bodyToMono(String.class)
                 .defaultIfEmpty("")
                 .flatMap(responseBody -> {
@@ -109,6 +128,28 @@ public class WebClientTelegramSession implements TelegramSession {
                         : "Unknown error";
                     return Mono.error(new TelegramApiException(errorCode, description));
                 }));
+    }
+
+    /**
+     * Turns the serialized request into form fields (scalars as-is, objects and arrays as
+     * JSON text, as the Bot API expects) plus one part per attached file.
+     */
+    private MultiValueMap<String, HttpEntity<?>> multipartBody(byte[] json, InputFile.Attachments attachments)
+            throws IOException {
+        MultipartBodyBuilder builder = new MultipartBodyBuilder();
+        for (Map.Entry<String, JsonNode> field : objectMapper.readTree(json).properties()) {
+            JsonNode value = field.getValue();
+            builder.part(field.getKey(), value.isValueNode() ? value.asText() : value.toString());
+        }
+        for (Map.Entry<String, InputFile> file : attachments.files().entrySet()) {
+            Resource content = switch (file.getValue()) {
+                case InputFile.FromPath(Path path, var _) -> new FileSystemResource(path);
+                case InputFile.FromBytes(var _, byte[] bytes) -> new ByteArrayResource(bytes);
+            };
+            builder.part(file.getKey(), content, MediaType.APPLICATION_OCTET_STREAM)
+                .filename(file.getValue().filename());
+        }
+        return builder.build();
     }
 
     @Override

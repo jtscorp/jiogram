@@ -9,6 +9,7 @@ import io.jiogram.methods.SendMediaGroup;
 import io.jiogram.methods.SendMessage;
 import io.jiogram.types.ChatAction;
 import io.jiogram.types.ChatId;
+import io.jiogram.types.InputFileOrString;
 import io.jiogram.types.InputMedia;
 import io.jiogram.types.InputMediaPhoto;
 import io.jiogram.types.InputMediaType;
@@ -28,7 +29,7 @@ public class MediaGroupBot {
         List<InputMedia> media = List.of(
             new InputMediaPhoto(
                 InputMediaType.PHOTO,
-                "https://picsum.photos/id/1025/800/500",
+                InputFileOrString.of("https://picsum.photos/id/1025/800/500"),
                 "Photo from URL",
                 null,
                 null,
@@ -37,7 +38,7 @@ public class MediaGroupBot {
             ),
             new InputMediaPhoto(
                 InputMediaType.PHOTO,
-                "https://picsum.photos/id/1062/800/500",
+                InputFileOrString.of("https://picsum.photos/id/1062/800/500"),
                 "Another photo",
                 null,
                 null,

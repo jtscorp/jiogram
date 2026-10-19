@@ -22,6 +22,11 @@ import java.util.Set;
  */
 public abstract class GenerateApiTask extends DefaultTask {
 
+    /**
+     * Schema types implemented by hand in jiogram-types (the schema has no usable shape for them).
+     */
+    private static final Set<String> HAND_WRITTEN_TYPES = Set.of("InputFile");
+
     @InputFile
     public abstract RegularFileProperty getSchemaFile();
 
@@ -56,6 +61,9 @@ public abstract class GenerateApiTask extends DefaultTask {
         if (targets.contains("types")) {
             TypeGenerator typeGenerator = new TypeGenerator(typeMapper, basePackage);
             for (var type : schema.types()) {
+                if (HAND_WRITTEN_TYPES.contains(type.name())) {
+                    continue;
+                }
                 typeGenerator.generate(type, outputDir);
                 typeCount++;
             }
