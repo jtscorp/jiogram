@@ -12,6 +12,8 @@ import java.util.Set;
  * <p>
  * Extracts the command name (without @botname suffix) and any arguments,
  * passing them as "command" and "command_args" in the filter result data map.
+ * A command addressed to a bot ({@code /start@SomeBot}) only matches when that is this
+ * bot's username (fetched once via {@link io.jiogram.bot.Bot#me()}).
  */
 public class CommandFilter implements Filter<Message> {
 
@@ -44,15 +46,24 @@ public class CommandFilter implements Filter<Message> {
         // Strip @botname suffix if present
         int atIndex = fullCommand.indexOf('@');
         String command = atIndex >= 0 ? fullCommand.substring(0, atIndex) : fullCommand;
+        String mention = atIndex >= 0 ? fullCommand.substring(atIndex + 1) : null;
 
         // If specific commands were given, check for match
         if (!commands.isEmpty() && !commands.contains(command)) {
             return Mono.just(FilterResult.failed());
         }
 
-        return Mono.just(FilterResult.passed(Map.of(
+        FilterResult passed = FilterResult.passed(Map.of(
                 "command", command,
                 "command_args", args
-        )));
+        ));
+        if (mention == null || context.bot() == null) {
+            return Mono.just(passed);
+        }
+        // "/start@OtherBot" in a group is addressed to another bot (usernames are case-insensitive).
+        // If getMe fails the mention cannot be checked; accept rather than drop the command.
+        return context.bot().me()
+                .map(me -> mention.equalsIgnoreCase(me.username()) ? passed : FilterResult.failed())
+                .onErrorReturn(passed);
     }
 }

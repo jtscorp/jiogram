@@ -83,6 +83,12 @@ telegram:
   token: ${BOT_TOKEN}
 ```
 
+The Bot API puts the token in the request URL (`/bot<token>/sendMessage`). Jiogram keeps it out of
+its own log messages and of `JiogramProperties.toString()`, but the HTTP client's DEBUG logging
+prints full request URLs. Do not enable DEBUG for
+`org.springframework.web.reactive.function.client.ExchangeFunctions` or `reactor.netty.http.client`
+in production.
+
 ### telegram.mode
 
 Controls how the bot receives updates from Telegram.

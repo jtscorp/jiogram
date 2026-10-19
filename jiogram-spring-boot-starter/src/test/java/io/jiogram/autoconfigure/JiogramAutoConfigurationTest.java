@@ -159,6 +159,19 @@ class JiogramAutoConfigurationTest {
             });
     }
 
+    @Test
+    void propertiesToString_masksTokenAndWebhookSecret() {
+        contextRunner
+            .withPropertyValues(
+                "telegram.token=123456789:ABCDEFghijklmnop",
+                "telegram.webhook.secret-token=very_secret")
+            .run(context -> {
+                String text = context.getBean(JiogramProperties.class).toString();
+                assertThat(text).doesNotContain("ABCDEFghijklmnop").doesNotContain("very_secret");
+                assertThat(text).contains("token=****").contains("secretToken=****");
+            });
+    }
+
     @TelegramController
     static class PingController {
         @OnMessage

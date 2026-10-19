@@ -130,4 +130,22 @@ class MiddlewareChainTest {
 
         assertTrue((Boolean) context.get("modified"));
     }
+
+    @Test
+    void retryingTheRestOfTheChain_runsEveryLaterMiddlewareAgain() {
+        var executed = new ArrayList<String>();
+        // A lazy second call, as a retry operator would make; the old mutable index skipped "inner" here.
+        Middleware retrying = (event, ctx, chain) ->
+                chain.next(event, ctx).then(Mono.defer(() -> chain.next(event, ctx)));
+        Middleware inner = (event, ctx, chain) -> {
+            executed.add("inner");
+            return chain.next(event, ctx);
+        };
+        var chain = new MiddlewareChain(List.of(retrying, inner),
+                Mono.fromRunnable(() -> executed.add("final")));
+
+        StepVerifier.create(chain.next("event", DUMMY_CONTEXT)).verifyComplete();
+
+        assertEquals(List.of("inner", "final", "inner", "final"), executed);
+    }
 }

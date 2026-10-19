@@ -1,14 +1,17 @@
 package io.jiogram.bot;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.jiogram.methods.GetMe;
 import io.jiogram.session.TelegramSession;
 import io.jiogram.types.LinkPreviewOptions;
 import io.jiogram.types.ParseMode;
 import io.jiogram.types.TelegramMethod;
+import io.jiogram.types.User;
 import reactor.core.publisher.Mono;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.RecordComponent;
+import java.time.Duration;
 import java.util.Objects;
 
 /**
@@ -20,6 +23,9 @@ public class Bot {
     private final long id;
     private final TelegramSession session;
     private final DefaultBotProperties defaults;
+    // A successful getMe is cached for the bot's lifetime; errors are not, so the next call retries.
+    private final Mono<User> me = Mono.defer(() -> execute(new GetMe()))
+        .cache(user -> Duration.ofMillis(Long.MAX_VALUE), error -> Duration.ZERO, () -> Duration.ZERO);
 
     public Bot(String token, TelegramSession session) {
         String checkedToken = requireValidToken(token);
@@ -43,6 +49,13 @@ public class Bot {
      */
     public <T> Mono<T> execute(TelegramMethod<T> method) {
         return session.makeRequest(token, applyDefaults(method));
+    }
+
+    /**
+     * Returns the bot's own user (from {@code getMe}), fetched on first use and then cached.
+     */
+    public Mono<User> me() {
+        return me;
     }
 
     public String token() {

@@ -39,6 +39,18 @@ public record JiogramProperties(
     @DefaultValue HandlersProperties handlers
 ) {
 
+    /** Keeps the bot token out of logs and error messages. */
+    @Override
+    public String toString() {
+        return "JiogramProperties[token=" + mask(token) + ", mode=" + mode + ", polling=" + polling
+            + ", webhook=" + webhook + ", api=" + api + ", defaults=" + defaults + ", fsm=" + fsm
+            + ", handlers=" + handlers + "]";
+    }
+
+    private static String mask(String secret) {
+        return secret == null ? "null" : "****";
+    }
+
     public enum Mode {
         POLLING,
         WEBHOOK
@@ -75,7 +87,14 @@ public record JiogramProperties(
         @DefaultValue("/bot/webhook") String path,
         String secretToken,
         @DefaultValue("40") int maxConnections
-    ) {}
+    ) {
+        /** Keeps the webhook secret out of logs and error messages. */
+        @Override
+        public String toString() {
+            return "WebhookProperties[url=" + url + ", path=" + path + ", secretToken=" + mask(secretToken)
+                + ", maxConnections=" + maxConnections + "]";
+        }
+    }
 
     /**
      * Telegram Bot API endpoint configuration.
