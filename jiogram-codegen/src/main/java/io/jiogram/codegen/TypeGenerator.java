@@ -187,7 +187,7 @@ public final class TypeGenerator {
             for (int i = 0; i < entries.size(); i++) {
                 Map.Entry<String, String> entry = entries.get(i);
                 sb.append("    @JsonSubTypes.Type(value = ").append(entry.getValue()).append(".class, name = \"")
-                        .append(entry.getKey()).append("\")");
+                        .append(UnionRegistry.wireName(type.name(), entry.getKey())).append("\")");
                 if (i < entries.size() - 1) {
                     sb.append(",");
                 }

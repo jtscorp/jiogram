@@ -31,6 +31,8 @@ public final class UnionRegistry {
         }
     }
 
+    private static final String CACHED_KEY_PREFIX = "cached_";
+
     private static final Map<String, UnionInfo> UNIONS = new LinkedHashMap<>();
     private static final Map<String, String> SUBTYPE_TO_PARENT = new HashMap<>();
 
@@ -117,8 +119,8 @@ public final class UnionRegistry {
 
         // 11. InlineQueryResult — discriminator: "type"
         // Note: Some discriminator values (photo, gif, etc.) map to multiple subtypes
-        // (regular and cached variants). We register all subtypes here; the code generator
-        // will need additional logic to distinguish regular vs cached variants.
+        // (regular and cached variants). Cached variants are keyed "cached_<type>" to keep
+        // the keys unique; wireName() maps them back to the value sent to Telegram.
         Map<String, String> inlineQueryResultSubtypes = new LinkedHashMap<>();
         inlineQueryResultSubtypes.put("article", "InlineQueryResultArticle");
         inlineQueryResultSubtypes.put("photo", "InlineQueryResultPhoto");
@@ -133,7 +135,7 @@ public final class UnionRegistry {
         inlineQueryResultSubtypes.put("contact", "InlineQueryResultContact");
         inlineQueryResultSubtypes.put("game", "InlineQueryResultGame");
         inlineQueryResultSubtypes.put("sticker", "InlineQueryResultCachedSticker");
-        // Cached variants registered with "cached_" prefix to avoid key collisions
+        // Cached variants keyed with "cached_" prefix to avoid key collisions (see wireName)
         inlineQueryResultSubtypes.put("cached_photo", "InlineQueryResultCachedPhoto");
         inlineQueryResultSubtypes.put("cached_gif", "InlineQueryResultCachedGif");
         inlineQueryResultSubtypes.put("cached_mpeg4_gif", "InlineQueryResultCachedMpeg4Gif");
@@ -271,6 +273,23 @@ public final class UnionRegistry {
      */
     public static Map<String, UnionInfo> all() {
         return Collections.unmodifiableMap(UNIONS);
+    }
+
+    /**
+     * Returns the discriminator value Telegram uses on the wire for a registry key. They differ
+     * only for InlineQueryResult: a result and its cached variant share one {@code type} (e.g.
+     * {@code "photo"} for both InlineQueryResultPhoto and InlineQueryResultCachedPhoto), so the
+     * cached variants are keyed {@code "cached_<type>"} here to keep the keys unique.
+     *
+     * @param parentType the union parent type name
+     * @param key        a key of that union's {@link UnionInfo#subtypes()}
+     * @return the value of the discriminator field in JSON
+     */
+    public static String wireName(String parentType, String key) {
+        if ("InlineQueryResult".equals(parentType) && key.startsWith(CACHED_KEY_PREFIX)) {
+            return key.substring(CACHED_KEY_PREFIX.length());
+        }
+        return key;
     }
 
     private static void register(String parentType, String discriminator, Map<String, String> subtypes) {

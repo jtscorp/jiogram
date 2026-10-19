@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jiogram.types.InputFile;
 import io.jiogram.types.TelegramMethod;
+import org.jspecify.annotations.Nullable;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -83,8 +84,9 @@ public class WebClientTelegramSession implements TelegramSession {
         String url = baseUrl + "/bot" + token + "/" + method.apiMethod();
 
         JavaType resultType = resolveResultType(method);
+        // The result is bound in a second step, see readResult().
         JavaType responseType = objectMapper.getTypeFactory()
-            .constructParametricType(TelegramApiResponse.class, resultType);
+            .constructParametricType(TelegramApiResponse.class, JsonNode.class);
 
         // InputFile values serialize as "attach://<name>" and register themselves here;
         // when any were found the request goes out as multipart instead of JSON.
@@ -107,7 +109,7 @@ public class WebClientTelegramSession implements TelegramSession {
             .exchangeToMono(clientResponse -> clientResponse.bodyToMono(String.class)
                 .defaultIfEmpty("")
                 .flatMap(responseBody -> {
-                    TelegramApiResponse<T> response;
+                    TelegramApiResponse<JsonNode> response;
                     try {
                         response = objectMapper.readValue(responseBody, responseType);
                     } catch (JsonProcessingException e) {
@@ -120,7 +122,7 @@ public class WebClientTelegramSession implements TelegramSession {
                         ));
                     }
                     if (response.ok()) {
-                        return Mono.justOrEmpty(response.result());
+                        return readResult(response.result(), resultType);
                     }
                     int errorCode = response.errorCode() != null ? response.errorCode() : -1;
                     String description = response.description() != null
@@ -128,6 +130,29 @@ public class WebClientTelegramSession implements TelegramSession {
                         : "Unknown error";
                     return Mono.error(new TelegramApiException(errorCode, description));
                 }));
+    }
+
+    /**
+     * Binds a successful result to the method's return type. Methods documented as returning
+     * "Message or True" (editMessageText, editMessageCaption, stopMessageLiveLocation, setGameScore,
+     * ...) return {@code true} instead of the message when they target an inline message; that
+     * completes the Mono empty rather than failing to bind {@code true} to a Message.
+     */
+    private <T> Mono<T> readResult(@Nullable JsonNode result, JavaType resultType) {
+        if (result == null || result.isNull()) {
+            return Mono.empty();
+        }
+        if (result.isBoolean() && resultType.getRawClass() != Boolean.class) {
+            return Mono.empty();
+        }
+        try {
+            // Assigned first: passed inline, readValue's type would be inferred as Optional.
+            T value = objectMapper.readerFor(resultType).readValue(result);
+            return Mono.justOrEmpty(value);
+        } catch (IOException e) {
+            return Mono.error(new TelegramApiException(-1,
+                "Cannot read Telegram API result as " + resultType.toCanonical() + ": " + e.getMessage()));
+        }
     }
 
     /**

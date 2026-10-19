@@ -175,6 +175,14 @@ class UnionRegistryTest {
     }
 
     @Test
+    void wireName_mapsCachedInlineResultsToTelegramsTypeValue() {
+        assertEquals("photo", UnionRegistry.wireName("InlineQueryResult", "cached_photo"));
+        assertEquals("mpeg4_gif", UnionRegistry.wireName("InlineQueryResult", "cached_mpeg4_gif"));
+        assertEquals("photo", UnionRegistry.wireName("InlineQueryResult", "photo"));
+        assertEquals("cached_x", UnionRegistry.wireName("ChatMember", "cached_x"), "Only InlineQueryResult is remapped");
+    }
+
+    @Test
     void transactionPartner_hasAllSubtypes() {
         UnionInfo info = UnionRegistry.get("TransactionPartner");
         assertNotNull(info);

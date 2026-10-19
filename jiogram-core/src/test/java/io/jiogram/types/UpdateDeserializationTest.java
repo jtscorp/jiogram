@@ -158,6 +158,17 @@ class UpdateDeserializationTest {
     }
 
     @Test
+    void cachedInlineResult_usesTelegramsTypeValue() throws Exception {
+        InlineQueryResult cached = new InlineQueryResultCachedPhoto(
+                null, "r1", "AgADfileid", null, null, null, null, null, null, null, null);
+
+        JsonNode written = mapper.readTree(mapper.writerFor(InlineQueryResult.class).writeValueAsString(cached));
+
+        assertEquals("photo", written.get("type").asText());
+        assertEquals("AgADfileid", written.get("photo_file_id").asText());
+    }
+
+    @Test
     void getUpdatesResponse_withUnknownChatType_doesNotFailTheBatch() throws Exception {
         String json = """
                 {

@@ -1,6 +1,7 @@
 package io.jiogram.session;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
+import io.jiogram.methods.EditMessageText;
 import io.jiogram.methods.GetMe;
 import io.jiogram.methods.SendMediaGroup;
 import io.jiogram.methods.SendPhoto;
@@ -18,6 +19,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import reactor.netty.DisposableServer;
 import reactor.netty.http.server.HttpServer;
+import reactor.test.StepVerifier;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -97,6 +99,24 @@ class WebClientTelegramSessionTest {
         assertTrue(sentBody.contains("{\"type\":\"photo\",\"media\":\"AgADBAAD\",\"caption\":\"remote\"}"), sentBody);
         assertTrue(sentBody.contains("name=\"file0\"; filename=\"dog.png\""), sentBody);
         assertTrue(sentBody.contains("fake-png-bytes"), sentBody);
+    }
+
+    @Test
+    void messageOrTrueMethod_onInlineMessage_completesEmpty() {
+        WebClientTelegramSession session = sessionRespondingWith("true");
+
+        StepVerifier.create(session.makeRequest(TOKEN, EditMessageText.of("edited")))
+                .expectComplete()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    void messageOrTrueMethod_onRegularMessage_returnsTheMessage() {
+        WebClientTelegramSession session = sessionRespondingWith(MESSAGE_JSON);
+
+        Message edited = session.makeRequest(TOKEN, EditMessageText.of("edited")).block(Duration.ofSeconds(10));
+
+        assertEquals(1L, edited.messageId());
     }
 
     @Test
