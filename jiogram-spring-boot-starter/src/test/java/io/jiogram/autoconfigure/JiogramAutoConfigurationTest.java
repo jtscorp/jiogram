@@ -1,5 +1,7 @@
 package io.jiogram.autoconfigure;
 
+import io.jiogram.annotation.OnMessage;
+import io.jiogram.annotation.TelegramController;
 import io.jiogram.bot.Bot;
 import io.jiogram.dispatcher.Dispatcher;
 import io.jiogram.fsm.middleware.FSMMiddleware;
@@ -8,6 +10,7 @@ import io.jiogram.fsm.storage.StateStorage;
 import io.jiogram.handler.HandlerRegistry;
 import io.jiogram.methods.SetWebhook;
 import io.jiogram.session.TelegramSession;
+import io.jiogram.types.Message;
 import io.jiogram.types.TelegramMethod;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -154,6 +157,21 @@ class JiogramAutoConfigurationTest {
                 assertThat(session.lastMethod).isInstanceOfSatisfying(SetWebhook.class,
                     setWebhook -> assertThat(setWebhook.secretToken()).isEqualTo(generated));
             });
+    }
+
+    @TelegramController
+    static class PingController {
+        @OnMessage
+        public void onMessage(Message message) {
+        }
+    }
+
+    @Test
+    void telegramControllerHandlers_areRegisteredWhenContextStarts() {
+        contextRunner
+            .withBean(PingController.class)
+            .withPropertyValues("telegram.token=123456789:ABCDEFghijklmnop")
+            .run(context -> assertThat(context.getBean(Dispatcher.class).messageObserver().hasHandlers()).isTrue());
     }
 
     @Test

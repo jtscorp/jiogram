@@ -8,6 +8,7 @@ import reactor.core.publisher.Mono;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.util.Arrays;
 
 /**
  * Adapts an annotated controller method into a {@link Handler}.
@@ -30,15 +31,39 @@ import java.lang.reflect.Parameter;
  */
 public class HandlerAdapter<E> implements Handler<E> {
 
+    private enum ArgumentSource { EVENT, BOT, CONTEXT }
+
     private final Object bean;
     private final Method method;
-    private final Class<E> eventType;
+    private final ArgumentSource[] argumentSources;
 
+    /**
+     * @throws IllegalStateException if a parameter is not the event, {@link Bot} or {@link UpdateContext},
+     *                               so a mistyped handler fails at startup instead of receiving null
+     */
     public HandlerAdapter(Object bean, Method method, Class<E> eventType) {
         this.bean = bean;
         this.method = method;
-        this.eventType = eventType;
+        this.argumentSources = Arrays.stream(method.getParameters())
+                .map(parameter -> argumentSource(method, parameter, eventType))
+                .toArray(ArgumentSource[]::new);
         this.method.setAccessible(true);
+    }
+
+    private static ArgumentSource argumentSource(Method method, Parameter parameter, Class<?> eventType) {
+        Class<?> type = parameter.getType();
+        if (type.isAssignableFrom(eventType)) {
+            return ArgumentSource.EVENT;
+        }
+        if (type.isAssignableFrom(Bot.class)) {
+            return ArgumentSource.BOT;
+        }
+        if (type.isAssignableFrom(UpdateContext.class)) {
+            return ArgumentSource.CONTEXT;
+        }
+        throw new IllegalStateException("Unsupported parameter '" + parameter.getType().getSimpleName() + " "
+                + parameter.getName() + "' in handler " + method.getDeclaringClass().getName() + "#"
+                + method.getName() + ": expected " + eventType.getSimpleName() + ", Bot or UpdateContext");
     }
 
     @Override
@@ -56,24 +81,14 @@ public class HandlerAdapter<E> implements Handler<E> {
     }
 
     private Object[] resolveArguments(E event, UpdateContext context) {
-        Parameter[] params = method.getParameters();
-        Object[] args = new Object[params.length];
-
-        for (int i = 0; i < params.length; i++) {
-            Class<?> paramType = params[i].getType();
-
-            if (eventType.isAssignableFrom(paramType)) {
-                args[i] = event;
-            } else if (Bot.class.isAssignableFrom(paramType)) {
-                args[i] = context.bot();
-            } else if (UpdateContext.class.isAssignableFrom(paramType)) {
-                args[i] = context;
-            } else {
-                // Unknown parameter type, pass null
-                args[i] = null;
-            }
+        Object[] args = new Object[argumentSources.length];
+        for (int i = 0; i < argumentSources.length; i++) {
+            args[i] = switch (argumentSources[i]) {
+                case EVENT -> event;
+                case BOT -> context.bot();
+                case CONTEXT -> context;
+            };
         }
-
         return args;
     }
 
