@@ -5,7 +5,9 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum MaybeInaccessibleMessageType {
     _0("0"),
-    NONZERO("nonzero");
+    NONZERO("nonzero"),
+    /** A value unknown to this library version; {@link #value()} returns {@code null}. */
+    UNKNOWN(null);
 
     private final String value;
 
@@ -21,10 +23,10 @@ public enum MaybeInaccessibleMessageType {
     @JsonCreator
     public static MaybeInaccessibleMessageType fromValue(String value) {
         for (MaybeInaccessibleMessageType e : values()) {
-            if (e.value.equals(value)) {
+            if (e.value != null && e.value.equals(value)) {
                 return e;
             }
         }
-        throw new IllegalArgumentException("Unknown MaybeInaccessibleMessageType: " + value);
+        return UNKNOWN;
     }
 }

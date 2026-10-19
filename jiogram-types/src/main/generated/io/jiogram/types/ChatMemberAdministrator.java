@@ -6,7 +6,7 @@ import io.jiogram.types.User;
 import org.jspecify.annotations.Nullable;
 
 public record ChatMemberAdministrator(
-    @JsonProperty("status") ChatMemberType status,
+    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY) ChatMemberType status,
     @JsonProperty("user") User user,
     @JsonProperty("can_be_edited") boolean canBeEdited,
     @JsonProperty("is_anonymous") boolean isAnonymous,

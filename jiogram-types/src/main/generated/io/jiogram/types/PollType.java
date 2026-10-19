@@ -5,7 +5,9 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum PollType {
     REGULAR("regular"),
-    QUIZ("quiz");
+    QUIZ("quiz"),
+    /** A value unknown to this library version; {@link #value()} returns {@code null}. */
+    UNKNOWN(null);
 
     private final String value;
 
@@ -21,10 +23,10 @@ public enum PollType {
     @JsonCreator
     public static PollType fromValue(String value) {
         for (PollType e : values()) {
-            if (e.value.equals(value)) {
+            if (e.value != null && e.value.equals(value)) {
                 return e;
             }
         }
-        throw new IllegalArgumentException("Unknown PollType: " + value);
+        return UNKNOWN;
     }
 }

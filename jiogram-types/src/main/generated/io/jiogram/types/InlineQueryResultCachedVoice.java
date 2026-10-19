@@ -10,7 +10,7 @@ import java.util.List;
 import org.jspecify.annotations.Nullable;
 
 public record InlineQueryResultCachedVoice(
-    @JsonProperty("type") InlineQueryResultType type,
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) InlineQueryResultType type,
     @JsonProperty("id") String id,
     @JsonProperty("voice_file_id") String voiceFileId,
     @JsonProperty("title") String title,

@@ -9,7 +9,7 @@ import java.util.List;
 import org.jspecify.annotations.Nullable;
 
 public record OwnedGiftRegular(
-    @JsonProperty("type") OwnedGiftType type,
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) OwnedGiftType type,
     @JsonProperty("gift") Gift gift,
     @JsonProperty("owned_gift_id") @Nullable String ownedGiftId,
     @JsonProperty("sender_user") @Nullable User senderUser,

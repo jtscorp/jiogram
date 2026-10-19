@@ -10,7 +10,7 @@ import java.util.List;
 import org.jspecify.annotations.Nullable;
 
 public record InlineQueryResultPhoto(
-    @JsonProperty("type") InlineQueryResultType type,
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) InlineQueryResultType type,
     @JsonProperty("id") String id,
     @JsonProperty("photo_url") String photoUrl,
     @JsonProperty("thumbnail_url") String thumbnailUrl,

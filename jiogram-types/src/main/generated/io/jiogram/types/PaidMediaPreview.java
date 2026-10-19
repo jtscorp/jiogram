@@ -5,7 +5,7 @@ import io.jiogram.types.PaidMediaType;
 import org.jspecify.annotations.Nullable;
 
 public record PaidMediaPreview(
-    @JsonProperty("type") PaidMediaType type,
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) PaidMediaType type,
     @JsonProperty("width") @Nullable Long width,
     @JsonProperty("height") @Nullable Long height,
     @JsonProperty("duration") @Nullable Long duration

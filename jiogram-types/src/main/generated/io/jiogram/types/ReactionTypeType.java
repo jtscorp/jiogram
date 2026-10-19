@@ -6,7 +6,9 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum ReactionTypeType {
     CUSTOM_EMOJI("custom_emoji"),
     EMOJI("emoji"),
-    PAID("paid");
+    PAID("paid"),
+    /** A value unknown to this library version; {@link #value()} returns {@code null}. */
+    UNKNOWN(null);
 
     private final String value;
 
@@ -22,10 +24,10 @@ public enum ReactionTypeType {
     @JsonCreator
     public static ReactionTypeType fromValue(String value) {
         for (ReactionTypeType e : values()) {
-            if (e.value.equals(value)) {
+            if (e.value != null && e.value.equals(value)) {
                 return e;
             }
         }
-        throw new IllegalArgumentException("Unknown ReactionTypeType: " + value);
+        return UNKNOWN;
     }
 }

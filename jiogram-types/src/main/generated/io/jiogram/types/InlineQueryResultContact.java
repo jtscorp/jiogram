@@ -7,7 +7,7 @@ import io.jiogram.types.InputMessageContent;
 import org.jspecify.annotations.Nullable;
 
 public record InlineQueryResultContact(
-    @JsonProperty("type") InlineQueryResultType type,
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) InlineQueryResultType type,
     @JsonProperty("id") String id,
     @JsonProperty("phone_number") String phoneNumber,
     @JsonProperty("first_name") String firstName,

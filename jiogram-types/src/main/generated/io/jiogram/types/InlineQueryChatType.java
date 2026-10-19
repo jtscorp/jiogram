@@ -8,7 +8,9 @@ public enum InlineQueryChatType {
     PRIVATE("private"),
     GROUP("group"),
     SUPERGROUP("supergroup"),
-    CHANNEL("channel");
+    CHANNEL("channel"),
+    /** A value unknown to this library version; {@link #value()} returns {@code null}. */
+    UNKNOWN(null);
 
     private final String value;
 
@@ -24,10 +26,10 @@ public enum InlineQueryChatType {
     @JsonCreator
     public static InlineQueryChatType fromValue(String value) {
         for (InlineQueryChatType e : values()) {
-            if (e.value.equals(value)) {
+            if (e.value != null && e.value.equals(value)) {
                 return e;
             }
         }
-        throw new IllegalArgumentException("Unknown InlineQueryChatType: " + value);
+        return UNKNOWN;
     }
 }

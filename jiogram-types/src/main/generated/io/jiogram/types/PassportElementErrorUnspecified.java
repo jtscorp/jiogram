@@ -5,7 +5,7 @@ import io.jiogram.types.PassportElementErrorType;
 import io.jiogram.types.PassportElementType;
 
 public record PassportElementErrorUnspecified(
-    @JsonProperty("source") PassportElementErrorType source,
+    @JsonProperty(value = "source", access = JsonProperty.Access.WRITE_ONLY) PassportElementErrorType source,
     @JsonProperty("type") PassportElementType type,
     @JsonProperty("element_hash") String elementHash,
     @JsonProperty("message") String message

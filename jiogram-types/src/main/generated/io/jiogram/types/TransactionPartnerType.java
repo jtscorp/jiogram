@@ -10,7 +10,9 @@ public enum TransactionPartnerType {
     OTHER("other"),
     TELEGRAM_ADS("telegram_ads"),
     TELEGRAM_API("telegram_api"),
-    USER("user");
+    USER("user"),
+    /** A value unknown to this library version; {@link #value()} returns {@code null}. */
+    UNKNOWN(null);
 
     private final String value;
 
@@ -26,10 +28,10 @@ public enum TransactionPartnerType {
     @JsonCreator
     public static TransactionPartnerType fromValue(String value) {
         for (TransactionPartnerType e : values()) {
-            if (e.value.equals(value)) {
+            if (e.value != null && e.value.equals(value)) {
                 return e;
             }
         }
-        throw new IllegalArgumentException("Unknown TransactionPartnerType: " + value);
+        return UNKNOWN;
     }
 }

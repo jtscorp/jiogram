@@ -23,7 +23,9 @@ public enum MessageEntityType {
     TEXT_LINK("text_link"),
     TEXT_MENTION("text_mention"),
     CUSTOM_EMOJI("custom_emoji"),
-    DATE_TIME("date_time");
+    DATE_TIME("date_time"),
+    /** A value unknown to this library version; {@link #value()} returns {@code null}. */
+    UNKNOWN(null);
 
     private final String value;
 
@@ -39,10 +41,10 @@ public enum MessageEntityType {
     @JsonCreator
     public static MessageEntityType fromValue(String value) {
         for (MessageEntityType e : values()) {
-            if (e.value.equals(value)) {
+            if (e.value != null && e.value.equals(value)) {
                 return e;
             }
         }
-        throw new IllegalArgumentException("Unknown MessageEntityType: " + value);
+        return UNKNOWN;
     }
 }

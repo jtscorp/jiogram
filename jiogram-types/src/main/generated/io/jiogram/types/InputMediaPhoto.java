@@ -8,7 +8,7 @@ import java.util.List;
 import org.jspecify.annotations.Nullable;
 
 public record InputMediaPhoto(
-    @JsonProperty("type") InputMediaType type,
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) InputMediaType type,
     @JsonProperty("media") String media,
     @JsonProperty("caption") @Nullable String caption,
     @JsonProperty("parse_mode") @Nullable ParseMode parseMode,

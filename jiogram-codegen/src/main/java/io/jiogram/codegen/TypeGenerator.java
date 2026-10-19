@@ -75,6 +75,11 @@ public final class TypeGenerator {
         Path packageDir = outputDir.toPath().resolve(basePackage.replace('.', '/'));
         Files.createDirectories(packageDir);
         Files.writeString(packageDir.resolve(type.name() + ".java"), source);
+
+        if (UnionRegistry.isDiscriminatedUnion(type.name()) && hasUnknownVariant(UnionRegistry.get(type.name()))) {
+            Files.writeString(packageDir.resolve(unknownVariantName(type.name()) + ".java"),
+                    generateUnknownVariant(type.name()));
+        }
     }
 
     /**
@@ -97,7 +102,7 @@ public final class TypeGenerator {
 
     private String generateRecord(TypeDefinition type) {
         Set<String> imports = new TreeSet<>();
-        List<String> components = buildRecordComponents(type.name(), type.fields(), imports);
+        List<String> components = buildRecordComponents(type.name(), type.fields(), null, imports);
 
         // Collect all interfaces this type should implement
         List<String> interfaces = new ArrayList<>();
@@ -138,11 +143,7 @@ public final class TypeGenerator {
             return generatePlainInterface(type);
         }
 
-        // Detect value-based discriminators (e.g. MaybeInaccessibleMessage's
-        // "date == 0" pattern). These cannot be expressed with @JsonSubTypes
-        // because Jackson does exact string matching on discriminator values;
-        // a hand-written TypeIdResolver bridges the gap.
-        boolean isValueBasedDiscriminator = unionInfo.subtypes().containsKey("nonzero");
+        boolean isValueBasedDiscriminator = isValueBasedDiscriminator(unionInfo);
 
         Set<String> imports = new TreeSet<>();
         imports.add(JACKSON_ANNOTATION_PACKAGE + ".JsonTypeInfo");
@@ -168,9 +169,13 @@ public final class TypeGenerator {
                     .append("\", include = JsonTypeInfo.As.EXISTING_PROPERTY, visible = true)\n");
             sb.append("@JsonTypeIdResolver(").append(type.name()).append("TypeIdResolver.class)\n");
         } else {
-            // @JsonTypeInfo
+            // @JsonTypeInfo — visible so subtypes (and the Unknown fallback) receive
+            // the discriminator value; unrecognised values fall back to defaultImpl
+            // instead of failing the whole update.
             sb.append("@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = \"")
-                    .append(unionInfo.discriminator()).append("\")\n");
+                    .append(unionInfo.discriminator())
+                    .append("\", visible = true, defaultImpl = ")
+                    .append(unknownVariantName(type.name())).append(".class)\n");
 
             // @JsonSubTypes — entries are sorted alphabetically by discriminator
             // value to keep generated output deterministic across JVM runs (the
@@ -200,6 +205,9 @@ public final class TypeGenerator {
                 .sorted(Map.Entry.comparingByKey())
                 .map(Map.Entry::getValue)
                 .collect(Collectors.joining(", "));
+        if (!isValueBasedDiscriminator) {
+            permits += ", " + unknownVariantName(type.name());
+        }
         sb.append(" permits ").append(permits);
 
         sb.append(" {}\n");
@@ -229,9 +237,15 @@ public final class TypeGenerator {
 
     private String generateSubtypeRecord(TypeDefinition type) {
         String parentName = UnionRegistry.parentOf(type.name());
+        UnionRegistry.UnionInfo parentInfo = UnionRegistry.get(parentName);
+
+        // The discriminator is read into the component (the union is visible = true)
+        // but never written from it: Jackson already writes the type id for the
+        // concrete class, so serializing the component too would duplicate the key.
+        String writeOnlyField = isValueBasedDiscriminator(parentInfo) ? null : parentInfo.discriminator();
 
         Set<String> imports = new TreeSet<>();
-        List<String> components = buildRecordComponents(type.name(), type.fields(), imports);
+        List<String> components = buildRecordComponents(type.name(), type.fields(), writeOnlyField, imports);
 
         StringBuilder sb = new StringBuilder();
         sb.append("package ").append(basePackage).append(";\n\n");
@@ -249,9 +263,75 @@ public final class TypeGenerator {
     }
 
     /**
-     * Builds record component strings with annotations, collecting necessary imports.
+     * Generates the fallback record for a discriminated union: it holds the raw
+     * discriminator value plus every other field, and serializes back to the
+     * original JSON shape via {@code UnknownVariant.Serializer}.
      */
-    private List<String> buildRecordComponents(String ownerTypeName, List<FieldDefinition> fields, Set<String> imports) {
+    String generateUnknownVariant(String parentName) {
+        String discriminator = UnionRegistry.get(parentName).discriminator();
+        String name = unknownVariantName(parentName);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("package ").append(basePackage).append(";\n\n");
+        sb.append("import ").append(JACKSON_ANNOTATION_PACKAGE).append(".JsonAnySetter;\n");
+        sb.append("import ").append(JACKSON_ANNOTATION_PACKAGE).append(".JsonProperty;\n");
+        sb.append("import ").append(JACKSON_DATABIND_ANNOTATION_PACKAGE).append(".JsonSerialize;\n");
+        sb.append("import java.util.Collections;\n");
+        sb.append("import java.util.LinkedHashMap;\n");
+        sb.append("import java.util.Map;\n");
+        sb.append("import ").append(NULLABLE_PACKAGE).append(".Nullable;\n\n");
+        sb.append("/**\n");
+        sb.append(" * A {@link ").append(parentName).append("} variant unknown to this library version.\n");
+        sb.append(" * Holds the raw {@code ").append(discriminator)
+                .append("} value and all other fields as they were received.\n");
+        sb.append(" */\n");
+        sb.append("@JsonSerialize(using = UnknownVariant.Serializer.class)\n");
+        sb.append("public record ").append(name).append("(\n");
+        sb.append("    @JsonProperty(\"").append(discriminator).append("\") @Nullable String ")
+                .append(discriminator).append(",\n");
+        sb.append("    @JsonAnySetter Map<String, Object> data\n");
+        sb.append(") implements ").append(parentName).append(", UnknownVariant {\n\n");
+        sb.append("    public ").append(name).append(" {\n");
+        sb.append("        data = data == null ? Map.of() : Collections.unmodifiableMap(new LinkedHashMap<>(data));\n");
+        sb.append("    }\n\n");
+        sb.append("    @Override\n");
+        sb.append("    public String discriminatorName() {\n");
+        sb.append("        return \"").append(discriminator).append("\";\n");
+        sb.append("    }\n\n");
+        sb.append("    @Override\n");
+        sb.append("    public @Nullable String discriminatorValue() {\n");
+        sb.append("        return ").append(discriminator).append(";\n");
+        sb.append("    }\n");
+        sb.append("}\n");
+
+        return sb.toString();
+    }
+
+    static String unknownVariantName(String parentName) {
+        return parentName + "Unknown";
+    }
+
+    private static boolean hasUnknownVariant(UnionRegistry.UnionInfo unionInfo) {
+        return !unionInfo.subtypes().isEmpty() && !isValueBasedDiscriminator(unionInfo);
+    }
+
+    /**
+     * Detects value-based discriminators (e.g. MaybeInaccessibleMessage's "date == 0"
+     * pattern). These cannot be expressed with @JsonSubTypes because Jackson does exact
+     * string matching on discriminator values; a hand-written TypeIdResolver bridges the gap.
+     */
+    private static boolean isValueBasedDiscriminator(UnionRegistry.UnionInfo unionInfo) {
+        return unionInfo.subtypes().containsKey("nonzero");
+    }
+
+    /**
+     * Builds record component strings with annotations, collecting necessary imports.
+     *
+     * @param writeOnlyField JSON name of a field to mark {@code WRITE_ONLY} (the union
+     *                       discriminator of a subtype), or {@code null}
+     */
+    private List<String> buildRecordComponents(
+            String ownerTypeName, List<FieldDefinition> fields, String writeOnlyField, Set<String> imports) {
         imports.add(JACKSON_ANNOTATION_PACKAGE + ".JsonProperty");
 
         List<String> components = new ArrayList<>();
@@ -262,7 +342,12 @@ public final class TypeGenerator {
             String typeString = resolveTypeString(javaType, imports);
 
             StringBuilder comp = new StringBuilder();
-            comp.append("    @JsonProperty(\"").append(field.name()).append("\")");
+            if (field.name().equals(writeOnlyField)) {
+                comp.append("    @JsonProperty(value = \"").append(field.name())
+                        .append("\", access = JsonProperty.Access.WRITE_ONLY)");
+            } else {
+                comp.append("    @JsonProperty(\"").append(field.name()).append("\")");
+            }
 
             if (!field.required() && !javaType.isPrimitive()) {
                 comp.append(" @Nullable");

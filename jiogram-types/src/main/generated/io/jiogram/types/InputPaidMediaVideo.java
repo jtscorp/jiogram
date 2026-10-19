@@ -5,7 +5,7 @@ import io.jiogram.types.InputPaidMediaType;
 import org.jspecify.annotations.Nullable;
 
 public record InputPaidMediaVideo(
-    @JsonProperty("type") InputPaidMediaType type,
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) InputPaidMediaType type,
     @JsonProperty("media") String media,
     @JsonProperty("thumbnail") @Nullable String thumbnail,
     @JsonProperty("cover") @Nullable String cover,

@@ -6,7 +6,7 @@ import io.jiogram.types.User;
 import org.jspecify.annotations.Nullable;
 
 public record ChatBoostSourceGiveaway(
-    @JsonProperty("source") ChatBoostSourceType source,
+    @JsonProperty(value = "source", access = JsonProperty.Access.WRITE_ONLY) ChatBoostSourceType source,
     @JsonProperty("giveaway_message_id") long giveawayMessageId,
     @JsonProperty("user") @Nullable User user,
     @JsonProperty("prize_star_count") @Nullable Long prizeStarCount,

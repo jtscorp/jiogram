@@ -31,7 +31,9 @@ public enum ContentType {
     SUPERGROUP_CHAT_CREATED("supergroup_chat_created"),
     CHANNEL_CHAT_CREATED("channel_chat_created"),
     PINNED_MESSAGE("pinned_message"),
-    WEB_APP_DATA("web_app_data");
+    WEB_APP_DATA("web_app_data"),
+    /** A value unknown to this library version; {@link #value()} returns {@code null}. */
+    UNKNOWN(null);
 
     private final String value;
 
@@ -47,10 +49,10 @@ public enum ContentType {
     @JsonCreator
     public static ContentType fromValue(String value) {
         for (ContentType e : values()) {
-            if (e.value.equals(value)) {
+            if (e.value != null && e.value.equals(value)) {
                 return e;
             }
         }
-        throw new IllegalArgumentException("Unknown ContentType: " + value);
+        return UNKNOWN;
     }
 }

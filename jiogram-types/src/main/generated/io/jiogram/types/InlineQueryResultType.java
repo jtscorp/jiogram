@@ -23,7 +23,9 @@ public enum InlineQueryResultType {
     STICKER("sticker"),
     VENUE("venue"),
     VIDEO("video"),
-    VOICE("voice");
+    VOICE("voice"),
+    /** A value unknown to this library version; {@link #value()} returns {@code null}. */
+    UNKNOWN(null);
 
     private final String value;
 
@@ -39,10 +41,10 @@ public enum InlineQueryResultType {
     @JsonCreator
     public static InlineQueryResultType fromValue(String value) {
         for (InlineQueryResultType e : values()) {
-            if (e.value.equals(value)) {
+            if (e.value != null && e.value.equals(value)) {
                 return e;
             }
         }
-        throw new IllegalArgumentException("Unknown InlineQueryResultType: " + value);
+        return UNKNOWN;
     }
 }

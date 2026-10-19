@@ -3,7 +3,7 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", visible = true, defaultImpl = InlineQueryResultUnknown.class)
 @JsonSubTypes({
     @JsonSubTypes.Type(value = InlineQueryResultArticle.class, name = "article"),
     @JsonSubTypes.Type(value = InlineQueryResultAudio.class, name = "audio"),
@@ -26,4 +26,4 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     @JsonSubTypes.Type(value = InlineQueryResultVideo.class, name = "video"),
     @JsonSubTypes.Type(value = InlineQueryResultVoice.class, name = "voice")
 })
-public sealed interface InlineQueryResult permits InlineQueryResultArticle, InlineQueryResultAudio, InlineQueryResultCachedAudio, InlineQueryResultCachedDocument, InlineQueryResultCachedGif, InlineQueryResultCachedMpeg4Gif, InlineQueryResultCachedPhoto, InlineQueryResultCachedVideo, InlineQueryResultCachedVoice, InlineQueryResultContact, InlineQueryResultDocument, InlineQueryResultGame, InlineQueryResultGif, InlineQueryResultLocation, InlineQueryResultMpeg4Gif, InlineQueryResultPhoto, InlineQueryResultCachedSticker, InlineQueryResultVenue, InlineQueryResultVideo, InlineQueryResultVoice {}
+public sealed interface InlineQueryResult permits InlineQueryResultArticle, InlineQueryResultAudio, InlineQueryResultCachedAudio, InlineQueryResultCachedDocument, InlineQueryResultCachedGif, InlineQueryResultCachedMpeg4Gif, InlineQueryResultCachedPhoto, InlineQueryResultCachedVideo, InlineQueryResultCachedVoice, InlineQueryResultContact, InlineQueryResultDocument, InlineQueryResultGame, InlineQueryResultGif, InlineQueryResultLocation, InlineQueryResultMpeg4Gif, InlineQueryResultPhoto, InlineQueryResultCachedSticker, InlineQueryResultVenue, InlineQueryResultVideo, InlineQueryResultVoice, InlineQueryResultUnknown {}

@@ -5,7 +5,9 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum DocumentMimeType {
     APPLICATION_PDF("application/pdf"),
-    APPLICATION_ZIP("application/zip");
+    APPLICATION_ZIP("application/zip"),
+    /** A value unknown to this library version; {@link #value()} returns {@code null}. */
+    UNKNOWN(null);
 
     private final String value;
 
@@ -21,10 +23,10 @@ public enum DocumentMimeType {
     @JsonCreator
     public static DocumentMimeType fromValue(String value) {
         for (DocumentMimeType e : values()) {
-            if (e.value.equals(value)) {
+            if (e.value != null && e.value.equals(value)) {
                 return e;
             }
         }
-        throw new IllegalArgumentException("Unknown DocumentMimeType: " + value);
+        return UNKNOWN;
     }
 }

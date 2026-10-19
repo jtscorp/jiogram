@@ -3,7 +3,7 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "source")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "source", visible = true, defaultImpl = PassportElementErrorUnknown.class)
 @JsonSubTypes({
     @JsonSubTypes.Type(value = PassportElementErrorDataField.class, name = "data"),
     @JsonSubTypes.Type(value = PassportElementErrorFile.class, name = "file"),
@@ -15,4 +15,4 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     @JsonSubTypes.Type(value = PassportElementErrorTranslationFiles.class, name = "translation_files"),
     @JsonSubTypes.Type(value = PassportElementErrorUnspecified.class, name = "unspecified")
 })
-public sealed interface PassportElementError permits PassportElementErrorDataField, PassportElementErrorFile, PassportElementErrorFiles, PassportElementErrorFrontSide, PassportElementErrorReverseSide, PassportElementErrorSelfie, PassportElementErrorTranslationFile, PassportElementErrorTranslationFiles, PassportElementErrorUnspecified {}
+public sealed interface PassportElementError permits PassportElementErrorDataField, PassportElementErrorFile, PassportElementErrorFiles, PassportElementErrorFrontSide, PassportElementErrorReverseSide, PassportElementErrorSelfie, PassportElementErrorTranslationFile, PassportElementErrorTranslationFiles, PassportElementErrorUnspecified, PassportElementErrorUnknown {}

@@ -3,7 +3,7 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "status")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "status", visible = true, defaultImpl = ChatMemberUnknown.class)
 @JsonSubTypes({
     @JsonSubTypes.Type(value = ChatMemberAdministrator.class, name = "administrator"),
     @JsonSubTypes.Type(value = ChatMemberOwner.class, name = "creator"),
@@ -12,4 +12,4 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     @JsonSubTypes.Type(value = ChatMemberMember.class, name = "member"),
     @JsonSubTypes.Type(value = ChatMemberRestricted.class, name = "restricted")
 })
-public sealed interface ChatMember permits ChatMemberAdministrator, ChatMemberOwner, ChatMemberBanned, ChatMemberLeft, ChatMemberMember, ChatMemberRestricted {}
+public sealed interface ChatMember permits ChatMemberAdministrator, ChatMemberOwner, ChatMemberBanned, ChatMemberLeft, ChatMemberMember, ChatMemberRestricted, ChatMemberUnknown {}

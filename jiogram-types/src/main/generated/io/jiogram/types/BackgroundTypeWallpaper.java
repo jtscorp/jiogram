@@ -6,7 +6,7 @@ import io.jiogram.types.Document;
 import org.jspecify.annotations.Nullable;
 
 public record BackgroundTypeWallpaper(
-    @JsonProperty("type") BackgroundTypeType type,
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) BackgroundTypeType type,
     @JsonProperty("document") Document document,
     @JsonProperty("dark_theme_dimming") long darkThemeDimming,
     @JsonProperty("is_blurred") @Nullable Boolean isBlurred,

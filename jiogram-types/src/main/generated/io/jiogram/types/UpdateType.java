@@ -27,7 +27,9 @@ public enum UpdateType {
     CHAT_JOIN_REQUEST("chat_join_request"),
     CHAT_BOOST("chat_boost"),
     REMOVED_CHAT_BOOST("removed_chat_boost"),
-    MANAGED_BOT("managed_bot");
+    MANAGED_BOT("managed_bot"),
+    /** A value unknown to this library version; {@link #value()} returns {@code null}. */
+    UNKNOWN(null);
 
     private final String value;
 
@@ -43,10 +45,10 @@ public enum UpdateType {
     @JsonCreator
     public static UpdateType fromValue(String value) {
         for (UpdateType e : values()) {
-            if (e.value.equals(value)) {
+            if (e.value != null && e.value.equals(value)) {
                 return e;
             }
         }
-        throw new IllegalArgumentException("Unknown UpdateType: " + value);
+        return UNKNOWN;
     }
 }

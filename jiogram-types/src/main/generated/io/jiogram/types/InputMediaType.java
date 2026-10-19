@@ -8,7 +8,9 @@ public enum InputMediaType {
     AUDIO("audio"),
     DOCUMENT("document"),
     PHOTO("photo"),
-    VIDEO("video");
+    VIDEO("video"),
+    /** A value unknown to this library version; {@link #value()} returns {@code null}. */
+    UNKNOWN(null);
 
     private final String value;
 
@@ -24,10 +26,10 @@ public enum InputMediaType {
     @JsonCreator
     public static InputMediaType fromValue(String value) {
         for (InputMediaType e : values()) {
-            if (e.value.equals(value)) {
+            if (e.value != null && e.value.equals(value)) {
                 return e;
             }
         }
-        throw new IllegalArgumentException("Unknown InputMediaType: " + value);
+        return UNKNOWN;
     }
 }

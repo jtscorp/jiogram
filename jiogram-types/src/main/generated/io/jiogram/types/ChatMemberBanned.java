@@ -5,7 +5,7 @@ import io.jiogram.types.ChatMemberType;
 import io.jiogram.types.User;
 
 public record ChatMemberBanned(
-    @JsonProperty("status") ChatMemberType status,
+    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY) ChatMemberType status,
     @JsonProperty("user") User user,
     @JsonProperty("until_date") long untilDate
 ) implements ChatMember {}

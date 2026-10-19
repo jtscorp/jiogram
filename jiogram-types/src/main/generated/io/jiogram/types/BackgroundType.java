@@ -3,11 +3,11 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", visible = true, defaultImpl = BackgroundTypeUnknown.class)
 @JsonSubTypes({
     @JsonSubTypes.Type(value = BackgroundTypeChatTheme.class, name = "chat_theme"),
     @JsonSubTypes.Type(value = BackgroundTypeFill.class, name = "fill"),
     @JsonSubTypes.Type(value = BackgroundTypePattern.class, name = "pattern"),
     @JsonSubTypes.Type(value = BackgroundTypeWallpaper.class, name = "wallpaper")
 })
-public sealed interface BackgroundType permits BackgroundTypeChatTheme, BackgroundTypeFill, BackgroundTypePattern, BackgroundTypeWallpaper {}
+public sealed interface BackgroundType permits BackgroundTypeChatTheme, BackgroundTypeFill, BackgroundTypePattern, BackgroundTypeWallpaper, BackgroundTypeUnknown {}

@@ -6,7 +6,9 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum ChatBoostSourceType {
     GIFT_CODE("gift_code"),
     GIVEAWAY("giveaway"),
-    PREMIUM("premium");
+    PREMIUM("premium"),
+    /** A value unknown to this library version; {@link #value()} returns {@code null}. */
+    UNKNOWN(null);
 
     private final String value;
 
@@ -22,10 +24,10 @@ public enum ChatBoostSourceType {
     @JsonCreator
     public static ChatBoostSourceType fromValue(String value) {
         for (ChatBoostSourceType e : values()) {
-            if (e.value.equals(value)) {
+            if (e.value != null && e.value.equals(value)) {
                 return e;
             }
         }
-        throw new IllegalArgumentException("Unknown ChatBoostSourceType: " + value);
+        return UNKNOWN;
     }
 }

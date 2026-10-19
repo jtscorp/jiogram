@@ -6,7 +6,7 @@ import io.jiogram.types.InlineQueryResultType;
 import org.jspecify.annotations.Nullable;
 
 public record InlineQueryResultGame(
-    @JsonProperty("type") InlineQueryResultType type,
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) InlineQueryResultType type,
     @JsonProperty("id") String id,
     @JsonProperty("game_short_name") String gameShortName,
     @JsonProperty("reply_markup") @Nullable InlineKeyboardMarkup replyMarkup

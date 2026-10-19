@@ -4,5 +4,5 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.ReactionTypeType;
 
 public record ReactionTypePaid(
-    @JsonProperty("type") ReactionTypeType type
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) ReactionTypeType type
 ) implements ReactionType {}

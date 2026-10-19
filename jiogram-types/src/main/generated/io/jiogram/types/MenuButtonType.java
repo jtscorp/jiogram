@@ -6,7 +6,9 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum MenuButtonType {
     COMMANDS("commands"),
     DEFAULT("default"),
-    WEB_APP("web_app");
+    WEB_APP("web_app"),
+    /** A value unknown to this library version; {@link #value()} returns {@code null}. */
+    UNKNOWN(null);
 
     private final String value;
 
@@ -22,10 +24,10 @@ public enum MenuButtonType {
     @JsonCreator
     public static MenuButtonType fromValue(String value) {
         for (MenuButtonType e : values()) {
-            if (e.value.equals(value)) {
+            if (e.value != null && e.value.equals(value)) {
                 return e;
             }
         }
-        throw new IllegalArgumentException("Unknown MenuButtonType: " + value);
+        return UNKNOWN;
     }
 }

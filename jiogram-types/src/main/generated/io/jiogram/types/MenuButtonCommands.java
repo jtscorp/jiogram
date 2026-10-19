@@ -4,5 +4,5 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.MenuButtonType;
 
 public record MenuButtonCommands(
-    @JsonProperty("type") MenuButtonType type
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) MenuButtonType type
 ) implements MenuButton {}

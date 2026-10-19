@@ -6,7 +6,7 @@ import io.jiogram.types.User;
 import org.jspecify.annotations.Nullable;
 
 public record TransactionPartnerAffiliateProgram(
-    @JsonProperty("type") TransactionPartnerType type,
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) TransactionPartnerType type,
     @JsonProperty("sponsor_user") @Nullable User sponsorUser,
     @JsonProperty("commission_per_mille") long commissionPerMille
 ) implements TransactionPartner {}

@@ -11,7 +11,7 @@ import java.util.List;
 import org.jspecify.annotations.Nullable;
 
 public record TransactionPartnerUser(
-    @JsonProperty("type") TransactionPartnerType type,
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) TransactionPartnerType type,
     @JsonProperty("transaction_type") TransactionType transactionType,
     @JsonProperty("user") User user,
     @JsonProperty("affiliate") @Nullable AffiliateInfo affiliate,

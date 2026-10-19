@@ -5,7 +5,7 @@ import io.jiogram.types.MenuButtonType;
 import io.jiogram.types.WebAppInfo;
 
 public record MenuButtonWebApp(
-    @JsonProperty("type") MenuButtonType type,
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) MenuButtonType type,
     @JsonProperty("text") String text,
     @JsonProperty("web_app") WebAppInfo webApp
 ) implements MenuButton {}

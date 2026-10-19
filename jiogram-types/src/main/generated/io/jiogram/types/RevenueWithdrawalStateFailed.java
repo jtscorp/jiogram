@@ -4,5 +4,5 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.RevenueWithdrawalStateType;
 
 public record RevenueWithdrawalStateFailed(
-    @JsonProperty("type") RevenueWithdrawalStateType type
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) RevenueWithdrawalStateType type
 ) implements RevenueWithdrawalState {}

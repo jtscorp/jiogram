@@ -5,6 +5,6 @@ import io.jiogram.types.PaidMediaType;
 import io.jiogram.types.Video;
 
 public record PaidMediaVideo(
-    @JsonProperty("type") PaidMediaType type,
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) PaidMediaType type,
     @JsonProperty("video") Video video
 ) implements PaidMedia {}

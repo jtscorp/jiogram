@@ -7,7 +7,7 @@ import io.jiogram.types.Document;
 import org.jspecify.annotations.Nullable;
 
 public record BackgroundTypePattern(
-    @JsonProperty("type") BackgroundTypeType type,
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) BackgroundTypeType type,
     @JsonProperty("document") Document document,
     @JsonProperty("fill") BackgroundFill fill,
     @JsonProperty("intensity") long intensity,

@@ -6,7 +6,9 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum RevenueWithdrawalStateType {
     FAILED("failed"),
     PENDING("pending"),
-    SUCCEEDED("succeeded");
+    SUCCEEDED("succeeded"),
+    /** A value unknown to this library version; {@link #value()} returns {@code null}. */
+    UNKNOWN(null);
 
     private final String value;
 
@@ -22,10 +24,10 @@ public enum RevenueWithdrawalStateType {
     @JsonCreator
     public static RevenueWithdrawalStateType fromValue(String value) {
         for (RevenueWithdrawalStateType e : values()) {
-            if (e.value.equals(value)) {
+            if (e.value != null && e.value.equals(value)) {
                 return e;
             }
         }
-        throw new IllegalArgumentException("Unknown RevenueWithdrawalStateType: " + value);
+        return UNKNOWN;
     }
 }

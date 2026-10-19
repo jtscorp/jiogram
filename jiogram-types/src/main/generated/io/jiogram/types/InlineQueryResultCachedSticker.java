@@ -7,7 +7,7 @@ import io.jiogram.types.InputMessageContent;
 import org.jspecify.annotations.Nullable;
 
 public record InlineQueryResultCachedSticker(
-    @JsonProperty("type") InlineQueryResultType type,
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) InlineQueryResultType type,
     @JsonProperty("id") String id,
     @JsonProperty("sticker_file_id") String stickerFileId,
     @JsonProperty("reply_markup") @Nullable InlineKeyboardMarkup replyMarkup,

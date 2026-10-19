@@ -7,7 +7,9 @@ public enum BackgroundTypeType {
     CHAT_THEME("chat_theme"),
     FILL("fill"),
     PATTERN("pattern"),
-    WALLPAPER("wallpaper");
+    WALLPAPER("wallpaper"),
+    /** A value unknown to this library version; {@link #value()} returns {@code null}. */
+    UNKNOWN(null);
 
     private final String value;
 
@@ -23,10 +25,10 @@ public enum BackgroundTypeType {
     @JsonCreator
     public static BackgroundTypeType fromValue(String value) {
         for (BackgroundTypeType e : values()) {
-            if (e.value.equals(value)) {
+            if (e.value != null && e.value.equals(value)) {
                 return e;
             }
         }
-        throw new IllegalArgumentException("Unknown BackgroundTypeType: " + value);
+        return UNKNOWN;
     }
 }

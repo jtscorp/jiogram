@@ -4,6 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.InputStoryContentType;
 
 public record InputStoryContentPhoto(
-    @JsonProperty("type") InputStoryContentType type,
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) InputStoryContentType type,
     @JsonProperty("photo") String photo
 ) implements InputStoryContent {}

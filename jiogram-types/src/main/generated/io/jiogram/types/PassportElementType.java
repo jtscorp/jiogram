@@ -16,7 +16,9 @@ public enum PassportElementType {
     PASSPORT_REGISTRATION("passport_registration"),
     TEMPORARY_REGISTRATION("temporary_registration"),
     PHONE_NUMBER("phone_number"),
-    EMAIL("email");
+    EMAIL("email"),
+    /** A value unknown to this library version; {@link #value()} returns {@code null}. */
+    UNKNOWN(null);
 
     private final String value;
 
@@ -32,10 +34,10 @@ public enum PassportElementType {
     @JsonCreator
     public static PassportElementType fromValue(String value) {
         for (PassportElementType e : values()) {
-            if (e.value.equals(value)) {
+            if (e.value != null && e.value.equals(value)) {
                 return e;
             }
         }
-        throw new IllegalArgumentException("Unknown PassportElementType: " + value);
+        return UNKNOWN;
     }
 }

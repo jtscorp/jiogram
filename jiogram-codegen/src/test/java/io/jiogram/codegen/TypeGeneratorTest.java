@@ -71,15 +71,39 @@ class TypeGeneratorTest {
         String source = generator.generateToString(chatMember);
 
         assertTrue(source.contains("public sealed interface ChatMember"), "Should be sealed interface");
-        assertTrue(source.contains("@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = \"status\")"),
-                "Should have @JsonTypeInfo with status discriminator");
+        assertTrue(source.contains("@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = \"status\", "
+                        + "visible = true, defaultImpl = ChatMemberUnknown.class)"),
+                "Should have @JsonTypeInfo with status discriminator and Unknown fallback");
         assertTrue(source.contains("@JsonSubTypes({"), "Should have @JsonSubTypes");
         assertTrue(source.contains("@JsonSubTypes.Type(value = ChatMemberOwner.class, name = \"creator\")"),
                 "Should list ChatMemberOwner");
         assertTrue(source.contains("permits"), "Should have permits clause");
         assertTrue(source.contains("ChatMemberOwner"), "Permits should include ChatMemberOwner");
         assertTrue(source.contains("ChatMemberBanned"), "Permits should include ChatMemberBanned");
+        assertTrue(source.contains(", ChatMemberUnknown {}"), "Permits should end with the Unknown fallback");
         assertFalse(source.contains("record"), "Should not be a record");
+    }
+
+    @Test
+    void valueBasedUnionParent_hasNoUnknownFallback() {
+        TypeDefinition maybe = new TypeDefinition("MaybeInaccessibleMessage", "Message or inaccessible.", List.of(), "Available types");
+
+        String source = generator.generateToString(maybe);
+
+        assertTrue(source.contains("@JsonTypeIdResolver(MaybeInaccessibleMessageTypeIdResolver.class)"));
+        assertFalse(source.contains("Unknown"), "Value-based union should not get an Unknown variant");
+    }
+
+    @Test
+    void unknownVariant_holdsRawDiscriminatorAndData() {
+        String source = generator.generateUnknownVariant("ChatMember");
+
+        assertTrue(source.contains("@JsonSerialize(using = UnknownVariant.Serializer.class)"));
+        assertTrue(source.contains("public record ChatMemberUnknown("), "Should be a record");
+        assertTrue(source.contains("@JsonProperty(\"status\") @Nullable String status"), "Raw discriminator as String");
+        assertTrue(source.contains("@JsonAnySetter Map<String, Object> data"), "Remaining fields in data");
+        assertTrue(source.contains("implements ChatMember, UnknownVariant"));
+        assertTrue(source.contains("return \"status\";"), "discriminatorName() returns the JSON name");
     }
 
     // ---- Subtype record (ChatMemberOwner) ----
@@ -97,7 +121,8 @@ class TypeGeneratorTest {
 
         assertTrue(source.contains("public record ChatMemberOwner("), "Should be a record");
         assertTrue(source.contains("implements ChatMember"), "Should implement ChatMember");
-        assertTrue(source.contains("@JsonProperty(\"status\") ChatMemberType status"), "Should have enum status field");
+        assertTrue(source.contains("@JsonProperty(value = \"status\", access = JsonProperty.Access.WRITE_ONLY) ChatMemberType status"),
+                "Discriminator is a write-only enum field (Jackson writes the type id itself)");
         assertTrue(source.contains("@JsonProperty(\"user\") User user"), "Should have user field");
         assertTrue(source.contains("@JsonProperty(\"is_anonymous\") boolean isAnonymous"), "Required boolean");
         assertTrue(source.contains("@JsonProperty(\"custom_title\") @Nullable String customTitle"), "Optional -> @Nullable");

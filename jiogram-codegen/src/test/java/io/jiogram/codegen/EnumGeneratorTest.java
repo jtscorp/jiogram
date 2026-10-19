@@ -48,6 +48,24 @@ class EnumGeneratorTest {
     }
 
     @Test
+    void enum_fallsBackToUnknownInsteadOfThrowing() {
+        EnumDefinition enumDef = new EnumDefinition("TestEnum", "Test.", List.of("foo", "bar"));
+        String source = generator.generateToString(enumDef);
+
+        assertTrue(source.contains("BAR(\"bar\"),"), "Last real constant is followed by UNKNOWN");
+        assertTrue(source.contains("UNKNOWN(null);"), "Should have UNKNOWN constant");
+        assertTrue(source.contains("return UNKNOWN;"), "fromValue() should fall back to UNKNOWN");
+        assertFalse(source.contains("throw"), "fromValue() should not throw");
+    }
+
+    @Test
+    void enum_withValueClashingWithUnknown_fails() {
+        EnumDefinition enumDef = new EnumDefinition("TestEnum", "Test.", List.of("foo", "unknown"));
+
+        assertThrows(IllegalStateException.class, () -> generator.generateToString(enumDef));
+    }
+
+    @Test
     void enum_hasCorrectImports() {
         EnumDefinition enumDef = new EnumDefinition("TestEnum", "Test.", List.of("foo"));
         String source = generator.generateToString(enumDef);
