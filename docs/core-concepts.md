@@ -470,7 +470,12 @@ The `FSMStrategy` determines how the storage key is resolved:
 | `USER_IN_CHAT` (default) | Each user has their own state per chat |
 | `CHAT` | All users in a chat share the same state |
 | `USER` | User has the same state across all chats |
-| `CHAT_TOPIC` | State is isolated per forum thread |
+| `USER_IN_TOPIC` | Each user has their own state per forum topic |
+| `CHAT_TOPIC` | All users in a forum topic share the same state |
+
+Outside forum topics the topic strategies behave like `USER_IN_CHAT` / `CHAT`. Per-user strategies
+skip FSM for updates that have no user (channel posts, reaction counts, boosts): `context.get("state")`
+is then `null`. Updates sent through a business connection get a separate state per connection.
 
 Configure in `application.yml`:
 

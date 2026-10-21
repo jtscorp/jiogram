@@ -59,7 +59,7 @@ telegram:
   fsm:
     # Enable or disable FSM support (default: true)
     enabled: true
-    # Key resolution strategy: USER_IN_CHAT, CHAT, USER, CHAT_TOPIC (default: USER_IN_CHAT)
+    # Key resolution strategy: USER_IN_CHAT, CHAT, USER, USER_IN_TOPIC, CHAT_TOPIC (default: USER_IN_CHAT)
     strategy: USER_IN_CHAT
     # Storage backend: memory or redis (default: memory)
     storage: memory
@@ -146,7 +146,7 @@ Configuration for the Finite State Machine subsystem.
 | Property | Type | Default | Description |
 |---|---|---|---|
 | `enabled` | `boolean` | `true` | When `true`, the `FSMMiddleware` is registered on the dispatcher. Set to `false` to disable FSM. |
-| `strategy` | `String` | `USER_IN_CHAT` | How the storage key is resolved. One of: `USER_IN_CHAT`, `CHAT`, `USER`, `CHAT_TOPIC`. |
+| `strategy` | `String` | `USER_IN_CHAT` | How the storage key is resolved. One of: `USER_IN_CHAT`, `CHAT`, `USER`, `USER_IN_TOPIC`, `CHAT_TOPIC`. See [core concepts](core-concepts.md#4-fsm-strategy). |
 | `storage` | `String` | `memory` | Storage backend. `memory` uses an in-memory `ConcurrentHashMap`. `redis` uses Spring Data Redis (requires `spring-boot-starter-data-redis` on classpath). |
 
 ### telegram.handlers
