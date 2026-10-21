@@ -9,5 +9,6 @@ include(
     'jiogram-methods',
     'jiogram-core',
     'jiogram-fsm',
+    'jiogram-fsm-processor',
     'jiogram-spring-boot-starter'
 )

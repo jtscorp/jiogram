@@ -89,6 +89,7 @@ That's it. Run your Spring Boot app and the bot starts polling for updates autom
 | `jiogram-methods` | Generated Java records for all Telegram Bot API methods (`SendMessage`, `GetUpdates`, etc.) |
 | `jiogram-core` | Dispatcher, Router, Filters, Middleware, Handler infrastructure, `Bot` class |
 | `jiogram-fsm` | Finite State Machine: `@FSMStates`, `BotState`, `FSMContext`, `StateStorage`, `FSMMiddleware` |
+| `jiogram-fsm-processor` | Annotation processor generating `<Enum>States` constants for `@FSMStates` enums (use as `annotationProcessor`) |
 | `jiogram-spring-boot-starter` | Spring Boot auto-configuration, polling runner, webhook controller |
 | `jiogram-codegen` | Code generator that produces `jiogram-types` and `jiogram-methods` from the Bot API schema |
 

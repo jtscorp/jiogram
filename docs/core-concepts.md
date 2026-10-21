@@ -371,11 +371,12 @@ public enum FormState {
 Each constant is stored and matched as a state name like `"FormState.WAITING_FOR_NAME"`.
 `@FSMStates` also generates `FormStateStates` constants for annotation use.
 
-Enable the processor in Gradle:
+Enable the processor in Gradle. It is a separate artifact without dependencies (`@FSMStates`
+itself comes with `jiogram-fsm`):
 
 ```groovy
 dependencies {
-    annotationProcessor 'uz.jtscorp.jiogram:jiogram-fsm-sb4:0.2.0-SNAPSHOT'
+    annotationProcessor 'uz.jtscorp.jiogram:jiogram-fsm-processor-sb4:0.2.0-SNAPSHOT'
 }
 ```
 

@@ -1,7 +1,5 @@
 package io.jiogram.fsm.processor;
 
-import io.jiogram.fsm.FSMStates;
-
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.Generated;
@@ -21,7 +19,12 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Generates {@code <EnumName>States} constants for enums annotated with {@link FSMStates}.
+ * Generates {@code <EnumName>States} constants for enums annotated with
+ * {@code io.jiogram.fsm.FSMStates}.
+ * <p>
+ * Shipped as its own artifact without dependencies, so adding it to the
+ * {@code annotationProcessor} path pulls nothing else in. It refers to the annotation only by
+ * name; the annotation itself lives in jiogram-fsm.
  */
 @SupportedAnnotationTypes("io.jiogram.fsm.FSMStates")
 public final class FSMStatesProcessor extends AbstractProcessor {
@@ -37,17 +40,20 @@ public final class FSMStatesProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        for (Element element : roundEnv.getElementsAnnotatedWith(FSMStates.class)) {
-            if (!(element instanceof TypeElement typeElement)) {
-                continue;
-            }
+        // Only io.jiogram.fsm.FSMStates is supported, so `annotations` holds at most that one.
+        for (TypeElement annotation : annotations) {
+            for (Element element : roundEnv.getElementsAnnotatedWith(annotation)) {
+                if (!(element instanceof TypeElement typeElement)) {
+                    continue;
+                }
 
-            if (typeElement.getKind() != ElementKind.ENUM) {
-                error(typeElement, "@FSMStates can only be used on enum types");
-                continue;
-            }
+                if (typeElement.getKind() != ElementKind.ENUM) {
+                    error(typeElement, "@FSMStates can only be used on enum types");
+                    continue;
+                }
 
-            generate(typeElement);
+                generate(typeElement);
+            }
         }
         return false;
     }
