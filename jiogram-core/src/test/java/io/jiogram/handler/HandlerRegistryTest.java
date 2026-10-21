@@ -310,7 +310,7 @@ class HandlerRegistryTest {
         assertTrue(controller.handled.isEmpty());
 
         var ctx2 = new UpdateContext(null, null);
-        ctx2.put("raw_state", "Form.WAITING_FOR_NAME");
+        ctx2.put("raw_state", "HandlerRegistryTest.Form.WAITING_FOR_NAME");
         StepVerifier.create(router.propagateEvent("message", testMessage("John"), ctx2))
                 .expectNext(true)
                 .verifyComplete();
@@ -515,6 +515,42 @@ class HandlerRegistryTest {
         } finally {
             virtualRegistry.destroy();
         }
+    }
+
+    // -- State names --
+
+    enum CustomNamed implements io.jiogram.filter.NamedState {
+        STEP;
+
+        @Override
+        public String fullName() {
+            return "wizard:" + name();
+        }
+    }
+
+    @TelegramController
+    static class CustomStateController {
+        final List<String> handled = new ArrayList<>();
+
+        @OnMessage
+        @StateFilter(enumClass = CustomNamed.class, value = "STEP")
+        public void onStep(Message message) {
+            handled.add(message.text());
+        }
+    }
+
+    @Test
+    void enumStateFilter_usesOverriddenFullName() {
+        var controller = new CustomStateController();
+        register(controller);
+
+        var ctx = new UpdateContext(null, null);
+        ctx.put("raw_state", "wizard:STEP");
+        StepVerifier.create(router.propagateEvent("message", testMessage("go"), ctx))
+                .expectNext(true)
+                .verifyComplete();
+
+        assertEquals(List.of("go"), controller.handled);
     }
 
     private void dispatch(Message message) {

@@ -5,6 +5,7 @@ import io.jiogram.dispatcher.EventObserver;
 import io.jiogram.dispatcher.Router;
 import io.jiogram.filter.Filter;
 import io.jiogram.filter.Filters;
+import io.jiogram.filter.NamedState;
 import io.jiogram.types.BusinessConnection;
 import io.jiogram.types.BusinessMessagesDeleted;
 import io.jiogram.types.CallbackQuery;
@@ -276,6 +277,6 @@ public class HandlerRegistry implements BeanPostProcessor, SmartInitializingSing
 
         Class enumClass = stateFilter.enumClass().asSubclass(Enum.class);
         Enum<?> state = Enum.valueOf(enumClass, stateFilter.value());
-        return state.getDeclaringClass().getSimpleName() + "." + state.name();
+        return NamedState.nameOf(state);
     }
 }

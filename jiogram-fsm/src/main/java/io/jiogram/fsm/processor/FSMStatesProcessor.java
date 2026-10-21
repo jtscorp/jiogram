@@ -46,11 +46,14 @@ public final class FSMStatesProcessor extends AbstractProcessor {
     }
 
     private void generate(TypeElement enumType) {
-        String enumName = enumType.getSimpleName().toString();
-        String generatedName = enumName + "States";
         Elements elements = processingEnv.getElementUtils();
         PackageElement packageElement = elements.getPackageOf(enumType);
         String packageName = packageElement.isUnnamed() ? "" : packageElement.getQualifiedName().toString();
+        // Same rule as NamedState.qualifiedName: the type name relative to its package, so a nested
+        // OrderFlow.State yields "OrderFlow.State.CONFIRM" and the class OrderFlowStateStates.
+        String qualifiedType = enumType.getQualifiedName().toString();
+        String enumName = packageName.isEmpty() ? qualifiedType : qualifiedType.substring(packageName.length() + 1);
+        String generatedName = enumName.replace(".", "") + "States";
         String qualifiedName = packageName.isEmpty() ? generatedName : packageName + "." + generatedName;
         List<? extends Element> constants = enumType.getEnclosedElements().stream()
                 .filter(element -> element.getKind() == ElementKind.ENUM_CONSTANT)

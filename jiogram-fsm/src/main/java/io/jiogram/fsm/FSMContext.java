@@ -2,6 +2,7 @@ package io.jiogram.fsm;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jiogram.filter.NamedState;
 import io.jiogram.fsm.storage.StateStorage;
 import org.jspecify.annotations.Nullable;
 import reactor.core.publisher.Mono;
@@ -30,14 +31,15 @@ public class FSMContext {
     }
 
     /**
-     * Sets the current state using any enum constant.
-     * Stores a name in the format {@code EnumSimpleName.CONSTANT_NAME}.
+     * Sets the current state using any enum constant, stored under
+     * {@link NamedState#nameOf(Enum)} (e.g. {@code Form.WAITING_FOR_NAME}, or
+     * {@code OrderFlow.State.CONFIRM} for a nested enum).
      *
      * @param state the state to set
      * @return a Mono that completes when the state has been persisted
      */
     public Mono<Void> setState(Enum<?> state) {
-        return storage.setState(key, state.getDeclaringClass().getSimpleName() + "." + state.name());
+        return storage.setState(key, NamedState.nameOf(state));
     }
 
     /**

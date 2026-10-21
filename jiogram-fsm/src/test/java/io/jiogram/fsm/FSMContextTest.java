@@ -41,7 +41,7 @@ class FSMContextTest {
         StepVerifier.create(
             fsmContext.setState(TestState.WAITING_FOR_NAME)
                 .then(fsmContext.getState())
-        ).expectNext("TestState.WAITING_FOR_NAME")
+        ).expectNext("FSMContextTest.TestState.WAITING_FOR_NAME")
          .verifyComplete();
     }
 
@@ -50,7 +50,7 @@ class FSMContextTest {
         StepVerifier.create(
             fsmContext.setState(PlainState.WAITING_FOR_NAME)
                 .then(fsmContext.getState())
-        ).expectNext("PlainState.WAITING_FOR_NAME")
+        ).expectNext("FSMContextTest.PlainState.WAITING_FOR_NAME")
          .verifyComplete();
     }
 
@@ -173,6 +173,43 @@ class FSMContextTest {
 
         StepVerifier.create(Mono.when(updates).then(fsmContext.getData()))
             .assertNext(data -> assertEquals(200, data.size()))
+            .verifyComplete();
+    }
+
+    static class OrderFlow {
+        enum State { CONFIRM }
+    }
+
+    static class PaymentFlow {
+        enum State { CONFIRM }
+    }
+
+    @Test
+    void nestedEnumsWithTheSameName_getDistinctStateNames() {
+        StepVerifier.create(
+            fsmContext.setState(OrderFlow.State.CONFIRM).then(fsmContext.getState())
+                .zipWith(new FSMContext(storage, new StorageKey(1L, 2L, 3L))
+                    .setState(PaymentFlow.State.CONFIRM)
+                    .then(storage.getState(new StorageKey(1L, 2L, 3L))))
+        ).assertNext(names -> {
+            assertEquals("FSMContextTest.OrderFlow.State.CONFIRM", names.getT1());
+            assertEquals("FSMContextTest.PaymentFlow.State.CONFIRM", names.getT2());
+        }).verifyComplete();
+    }
+
+    enum CustomNamedState implements BotState {
+        STEP;
+
+        @Override
+        public String fullName() {
+            return "wizard:" + name();
+        }
+    }
+
+    @Test
+    void setState_honoursOverriddenFullName() {
+        StepVerifier.create(fsmContext.setState(CustomNamedState.STEP).then(fsmContext.getState()))
+            .expectNext("wizard:STEP")
             .verifyComplete();
     }
 }
