@@ -7,7 +7,6 @@ import javax.annotation.processing.Filer;
 import javax.annotation.processing.Generated;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
@@ -25,8 +24,16 @@ import java.util.Set;
  * Generates {@code <EnumName>States} constants for enums annotated with {@link FSMStates}.
  */
 @SupportedAnnotationTypes("io.jiogram.fsm.FSMStates")
-@SupportedSourceVersion(SourceVersion.RELEASE_25)
 public final class FSMStatesProcessor extends AbstractProcessor {
+
+    /**
+     * Supports whatever release the compiler runs on (it only reads enum constants), so newer
+     * JDKs do not warn about an unsupported source version.
+     */
+    @Override
+    public SourceVersion getSupportedSourceVersion() {
+        return SourceVersion.latestSupported();
+    }
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
