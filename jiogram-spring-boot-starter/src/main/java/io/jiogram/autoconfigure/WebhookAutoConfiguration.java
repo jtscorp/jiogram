@@ -7,8 +7,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnNotWebApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import java.security.SecureRandom;
 import java.util.Base64;
@@ -21,6 +24,9 @@ import java.util.Base64;
  * {@code telegram.webhook.secret-token} is not set but {@code telegram.webhook.url} is, a random
  * token is generated and registered with {@code setWebhook}. Without either, startup fails:
  * an unauthenticated endpoint would accept forged updates from anyone.
+ * <p>
+ * The starter brings no web server; webhook mode needs one from the application (e.g.
+ * {@code spring-boot-starter-webflux} or {@code spring-boot-starter-web}). Without it startup fails.
  */
 @AutoConfiguration(after = JiogramAutoConfiguration.class)
 @ConditionalOnBean(Bot.class)
@@ -58,6 +64,7 @@ public class WebhookAutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnWebApplication
     public WebhookController webhookController(Bot bot, Dispatcher dispatcher, WebhookSecretToken secretToken) {
         return new WebhookController(bot, dispatcher, secretToken.value());
     }
@@ -66,6 +73,19 @@ public class WebhookAutoConfiguration {
     @ConditionalOnProperty(prefix = "telegram.webhook", name = "url")
     public WebhookRegistrar webhookRegistrar(Bot bot, JiogramProperties properties, WebhookSecretToken secretToken) {
         return new WebhookRegistrar(bot, properties, secretToken.value());
+    }
+
+    /**
+     * Fails startup instead of silently receiving nothing when there is no server for the webhook.
+     */
+    @Configuration(proxyBeanMethods = false)
+    @ConditionalOnNotWebApplication
+    static class WebServerRequired {
+        WebServerRequired() {
+            throw new IllegalStateException(
+                "telegram.mode=webhook needs a web server to receive updates, but this is not a web "
+                    + "application. Add spring-boot-starter-webflux (or spring-boot-starter-web).");
+        }
     }
 
     /**

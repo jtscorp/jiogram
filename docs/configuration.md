@@ -98,6 +98,10 @@ Controls how the bot receives updates from Telegram.
 | `POLLING` | Long-polling via `getUpdates`. Default. No public URL needed. |
 | `WEBHOOK` | Telegram pushes updates to your server. Requires a public HTTPS URL. |
 
+The starter does not include a web server, so a polling bot opens no HTTP port. Webhook mode needs
+one: add `spring-boot-starter-webflux` (or `spring-boot-starter-web`) to the application, otherwise
+startup fails with a message saying so.
+
 ### telegram.api
 
 Configures the Bot API server endpoint used for outgoing requests.

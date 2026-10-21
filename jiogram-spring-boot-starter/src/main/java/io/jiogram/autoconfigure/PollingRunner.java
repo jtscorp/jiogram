@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -40,6 +41,7 @@ public class PollingRunner implements SmartLifecycle {
     private final AtomicBoolean running = new AtomicBoolean(false);
     private final AtomicLong offset = new AtomicLong(0);
     private volatile Disposable subscription;
+    private volatile CountDownLatch stopped;
 
     public PollingRunner(Bot bot, Dispatcher dispatcher, JiogramProperties properties) {
         this.bot = bot;
@@ -82,7 +84,25 @@ public class PollingRunner implements SmartLifecycle {
                     )
                     .filter(throwable -> running.get()))
                 .subscribe();
+
+            keepJvmAlive();
         }
+    }
+
+    /**
+     * Polling runs on Reactor's daemon threads, so an application without a web server would
+     * exit right after startup. A non-daemon thread waits until {@link #stop()}.
+     */
+    private void keepJvmAlive() {
+        CountDownLatch latch = new CountDownLatch(1);
+        stopped = latch;
+        Thread.ofPlatform().name("jiogram-polling-keep-alive").daemon(false).start(() -> {
+            try {
+                latch.await();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        });
     }
 
     /**
@@ -174,6 +194,10 @@ public class PollingRunner implements SmartLifecycle {
             if (subscription != null) {
                 subscription.dispose();
                 subscription = null;
+            }
+            if (stopped != null) {
+                stopped.countDown();
+                stopped = null;
             }
         }
     }

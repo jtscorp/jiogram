@@ -15,6 +15,7 @@ import io.jiogram.types.TelegramMethod;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+import org.springframework.boot.test.context.runner.ReactiveWebApplicationContextRunner;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
@@ -101,7 +102,7 @@ class JiogramAutoConfigurationTest {
 
     @Test
     void whenWebhookMode_pollingRunnerShouldNotBeCreated() {
-        new ApplicationContextRunner()
+        new ReactiveWebApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(
                 JiogramAutoConfiguration.class,
                 PollingAutoConfiguration.class,
@@ -122,7 +123,7 @@ class JiogramAutoConfigurationTest {
 
     @Test
     void whenWebhookModeHasNeitherUrlNorSecret_startupFails() {
-        new ApplicationContextRunner()
+        new ReactiveWebApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(
                 JiogramAutoConfiguration.class,
                 WebhookAutoConfiguration.class
@@ -138,7 +139,7 @@ class JiogramAutoConfigurationTest {
 
     @Test
     void whenWebhookUrlIsSetWithoutSecret_generatedSecretIsRegisteredWithTelegram() {
-        new ApplicationContextRunner()
+        new ReactiveWebApplicationContextRunner()
             .withBean(TelegramSession.class, StubTelegramSession::new)
             .withConfiguration(AutoConfigurations.of(
                 JiogramAutoConfiguration.class,
@@ -201,8 +202,25 @@ class JiogramAutoConfigurationTest {
     }
 
     @Test
-    void whenWebhookUrlIsPresent_webhookRegistrarShouldBeCreated() {
+    void whenWebhookModeRunsWithoutAWebServer_startupFailsWithAHint() {
         new ApplicationContextRunner()
+            .withConfiguration(AutoConfigurations.of(
+                JiogramAutoConfiguration.class,
+                WebhookAutoConfiguration.class
+            ))
+            .withPropertyValues(
+                "telegram.token=123456789:ABCDEFghijklmnop",
+                "telegram.mode=webhook",
+                "telegram.webhook.secret-token=configured_secret"
+            )
+            .run(context -> assertThat(context).getFailure()
+                .rootCause()
+                .hasMessageContaining("spring-boot-starter-webflux"));
+    }
+
+    @Test
+    void whenWebhookUrlIsPresent_webhookRegistrarShouldBeCreated() {
+        new ReactiveWebApplicationContextRunner()
             .withBean(TelegramSession.class, StubTelegramSession::new)
             .withConfiguration(AutoConfigurations.of(
                 JiogramAutoConfiguration.class,
