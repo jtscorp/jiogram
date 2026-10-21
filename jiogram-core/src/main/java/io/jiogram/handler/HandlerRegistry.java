@@ -62,8 +62,10 @@ import java.util.function.Function;
  * first handler whose filters pass wins, in this order:
  * <ol>
  *   <li>{@link Order @Order} on the method, else on the controller class (lower first)</li>
- *   <li>handlers with filters ({@link Command}, {@link StateFilter}, callback data) before
- *       catch-all handlers without any</li>
+ *   <li>{@link Command} handlers, then handlers with other filters ({@link StateFilter},
+ *       callback data), then catch-all handlers without any. So a command still works while a
+ *       state handler waits for plain text, e.g. {@code /cancel} or {@code /register} sent
+ *       while a form expects a name is not swallowed as the name.</li>
  *   <li>controller class name, then method name</li>
  * </ol>
  */
@@ -73,8 +75,13 @@ public class HandlerRegistry implements BeanPostProcessor, SmartInitializingSing
 
     private static final Comparator<Registration<?>> MATCHING_ORDER = Comparator
             .comparingInt((Registration<?> r) -> r.order())
-            .thenComparing(r -> r.filters().isEmpty())
+            .thenComparingInt(Registration::specificity)
             .thenComparing(Registration::sortKey);
+
+    /** {@link Registration#specificity()} ranks: lower is tried first within one @Order. */
+    private static final int COMMAND = 0;
+    private static final int FILTERED = 1;
+    private static final int CATCH_ALL = 2;
 
     /**
      * Handler annotations and the observer each one registers on. Message-like events also
@@ -206,11 +213,9 @@ public class HandlerRegistry implements BeanPostProcessor, SmartInitializingSing
         Registration<E> registration(Router router, Object bean, Class<?> targetClass, Method method, int classOrder,
                                      @Nullable Scheduler scheduler) {
             List<Filter<E>> filters = new ArrayList<>();
-            if (supportsCommand) {
-                Command command = AnnotatedElementUtils.findMergedAnnotation(method, Command.class);
-                if (command != null) {
-                    filters.add(castFilter(Filters.command(command.value())));
-                }
+            Command command = supportsCommand ? AnnotatedElementUtils.findMergedAnnotation(method, Command.class) : null;
+            if (command != null) {
+                filters.add(castFilter(Filters.command(command.value())));
             }
             if (annotation == OnCallbackQuery.class) {
                 OnCallbackQuery onCallback = AnnotatedElementUtils.findMergedAnnotation(method, OnCallbackQuery.class);
@@ -237,6 +242,7 @@ public class HandlerRegistry implements BeanPostProcessor, SmartInitializingSing
                     new HandlerAdapter<>(bean, invocable, eventType, scheduler),
                     List.copyOf(filters),
                     methodOrder != null ? methodOrder.value() : classOrder,
+                    command != null ? COMMAND : filters.isEmpty() ? CATCH_ALL : FILTERED,
                     sortKey,
                     annotation.getSimpleName());
         }
@@ -255,6 +261,7 @@ public class HandlerRegistry implements BeanPostProcessor, SmartInitializingSing
             Handler<E> handler,
             List<Filter<E>> filters,
             int order,
+            int specificity,
             String sortKey,
             String annotationName) {
 

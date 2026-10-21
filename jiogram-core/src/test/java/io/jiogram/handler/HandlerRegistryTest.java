@@ -348,6 +348,43 @@ class HandlerRegistryTest {
 
     // -- Matching order --
 
+    @TelegramController
+    static class FormController {
+        final List<String> handled = new ArrayList<>();
+
+        // Sorts before startRegistration by name, so only the command rank keeps /register a command.
+        @OnMessage
+        @StateFilter("Form.NAME")
+        public void processName(Message message) {
+            handled.add("name:" + message.text());
+        }
+
+        @OnMessage
+        @Command("register")
+        public void startRegistration(Message message) {
+            handled.add("register");
+        }
+    }
+
+    @Test
+    void commandHandler_winsOverStateHandler_whileTheStateWaitsForText() {
+        var controller = new FormController();
+        register(controller);
+
+        var ctx = new UpdateContext(null, null);
+        ctx.put("raw_state", "Form.NAME");
+        StepVerifier.create(router.propagateEvent("message", testMessage("/register"), ctx))
+                .expectNext(true)
+                .verifyComplete();
+        var ctx2 = new UpdateContext(null, null);
+        ctx2.put("raw_state", "Form.NAME");
+        StepVerifier.create(router.propagateEvent("message", testMessage("Ali"), ctx2))
+                .expectNext(true)
+                .verifyComplete();
+
+        assertEquals(List.of("register", "name:Ali"), controller.handled);
+    }
+
     @Test
     void catchAllHandlerRunsAfterFilteredHandlers_regardlessOfBeanCreationOrder() {
         var catchAll = new SimpleMessageController();
