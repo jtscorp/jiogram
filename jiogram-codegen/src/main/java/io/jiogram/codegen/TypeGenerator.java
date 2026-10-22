@@ -102,7 +102,8 @@ public final class TypeGenerator {
 
     private String generateRecord(TypeDefinition type) {
         Set<String> imports = new TreeSet<>();
-        List<String> components = buildRecordComponents(type.name(), type.fields(), null, imports);
+        List<Withers.Component> witherComponents = new ArrayList<>();
+        List<String> components = buildRecordComponents(type.name(), type.fields(), null, imports, witherComponents);
 
         // Collect all interfaces this type should implement
         List<String> interfaces = new ArrayList<>();
@@ -129,7 +130,7 @@ public final class TypeGenerator {
         if (!interfaces.isEmpty()) {
             sb.append(" implements ").append(String.join(", ", interfaces));
         }
-        sb.append(" {}\n");
+        sb.append(recordBody(type.name(), witherComponents));
 
         return sb.toString();
     }
@@ -217,6 +218,11 @@ public final class TypeGenerator {
         return sb.toString();
     }
 
+    private static String recordBody(String recordName, List<Withers.Component> witherComponents) {
+        String withers = Withers.render(recordName, witherComponents);
+        return withers.isEmpty() ? " {}\n" : " {\n" + withers + "}\n";
+    }
+
     private String generatePlainInterface(TypeDefinition type) {
         StringBuilder sb = new StringBuilder();
         sb.append("package ").append(basePackage).append(";\n\n");
@@ -248,7 +254,9 @@ public final class TypeGenerator {
         String writeOnlyField = isValueBasedDiscriminator(parentInfo) ? null : parentInfo.discriminator();
 
         Set<String> imports = new TreeSet<>();
-        List<String> components = buildRecordComponents(type.name(), type.fields(), writeOnlyField, imports);
+        List<Withers.Component> witherComponents = new ArrayList<>();
+        List<String> components = buildRecordComponents(type.name(), type.fields(), writeOnlyField, imports,
+                witherComponents);
 
         StringBuilder sb = new StringBuilder();
         sb.append("package ").append(basePackage).append(";\n\n");
@@ -261,7 +269,7 @@ public final class TypeGenerator {
         sb.append(Javadoc.render(type.description(), type.fields(), type.name()));
         sb.append("public record ").append(type.name()).append("(\n");
         sb.append(String.join(",\n", components));
-        sb.append("\n) implements ").append(parentName).append(" {}\n");
+        sb.append("\n) implements ").append(parentName).append(recordBody(type.name(), witherComponents));
 
         return sb.toString();
     }
@@ -334,8 +342,12 @@ public final class TypeGenerator {
      * @param writeOnlyField JSON name of a field to mark {@code WRITE_ONLY} (the union
      *                       discriminator of a subtype), or {@code null}
      */
-    private List<String> buildRecordComponents(
-            String ownerTypeName, List<FieldDefinition> fields, String writeOnlyField, Set<String> imports) {
+    /**
+     * Returns the source of each record component and adds to {@code witherComponents} what
+     * {@link Withers} needs to know about them.
+     */
+    private List<String> buildRecordComponents(String ownerTypeName, List<FieldDefinition> fields,
+            String writeOnlyField, Set<String> imports, List<Withers.Component> witherComponents) {
         imports.add(JACKSON_ANNOTATION_PACKAGE + ".JsonProperty");
 
         List<String> components = new ArrayList<>();
@@ -353,13 +365,17 @@ public final class TypeGenerator {
                 comp.append("    @JsonProperty(\"").append(field.name()).append("\")");
             }
 
-            if (!field.required() && !javaType.isPrimitive()) {
+            boolean nullable = !field.required() && !javaType.isPrimitive();
+            if (nullable) {
                 comp.append(" @Nullable");
                 hasOptionalRefField = true;
             }
 
             comp.append(" ").append(typeString).append(" ").append(field.javaName());
             components.add(comp.toString());
+            // A subtype's discriminator is fixed by its class; changing it would make no sense.
+            witherComponents.add(new Withers.Component(field.javaName(), typeString, nullable,
+                    !field.name().equals(writeOnlyField)));
         }
 
         if (hasOptionalRefField) {

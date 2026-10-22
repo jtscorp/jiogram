@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
  *   <li>A static {@code of()} factory with only required parameters</li>
  *   <li>For sending methods, static {@code answer(Message, ...)} and {@code reply(Message, ...)}
  *       factories that target the chat (and topic) of a received message</li>
+ *   <li>A {@code withX(...)} method per parameter returning a copy with that value replaced</li>
  * </ul>
  */
 public final class MethodGenerator {
@@ -89,6 +90,7 @@ public final class MethodGenerator {
 
         // Build record components
         List<String> components = new ArrayList<>();
+        List<Withers.Component> witherComponents = new ArrayList<>();
         boolean hasOptionalRefField = false;
 
         for (FieldDefinition param : method.parameters()) {
@@ -98,13 +100,15 @@ public final class MethodGenerator {
             StringBuilder comp = new StringBuilder();
             comp.append("    @JsonProperty(\"").append(param.name()).append("\")");
 
-            if (!param.required() && !javaType.isPrimitive()) {
+            boolean nullable = !param.required() && !javaType.isPrimitive();
+            if (nullable) {
                 comp.append(" @Nullable");
                 hasOptionalRefField = true;
             }
 
             comp.append(" ").append(typeString).append(" ").append(param.javaName());
             components.add(comp.toString());
+            witherComponents.add(new Withers.Component(param.javaName(), typeString, nullable, true));
         }
 
         if (hasOptionalRefField) {
@@ -152,6 +156,7 @@ public final class MethodGenerator {
             generateStaticFactory(sb, method, requiredParams, imports);
         }
         sb.append(answerFactories);
+        sb.append(Withers.render(method.className(), witherComponents));
 
         sb.append("}\n");
 
