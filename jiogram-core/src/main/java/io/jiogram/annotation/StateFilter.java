@@ -15,17 +15,21 @@ public @interface StateFilter {
 
     /**
      * The state name to match against the current FSM state.
-     * When {@link #enumClass()} is set, this is the enum constant name.
-     *
-     * @return the state name or enum constant name
+     * <p>
+     * When {@link #enumClass()} is set, this value is interpreted as the enum
+     * constant name. Otherwise it is interpreted as the full state name.
      */
-    String value();
+    String value() default "";
 
     /**
-     * Optional enum class used to build a state name as
-     * {@code EnumSimpleName.CONSTANT_NAME}.
-     *
-     * @return the enum class, or {@link Void} when raw string matching is used
+     * Optional enum class that owns the FSM state constant.
      */
-    Class<?> enumClass() default Void.class;
+    Class<? extends Enum<?>> enumClass() default NoState.class;
+
+    /**
+     * Sentinel used as the default for {@link #enumClass()}.
+     */
+    enum NoState {
+        NONE
+    }
 }

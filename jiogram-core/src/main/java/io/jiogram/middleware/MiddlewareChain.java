@@ -9,12 +9,16 @@ import java.util.List;
  * Executes a chain of middlewares, followed by a final handler.
  * Each call to {@link #next(Object, UpdateContext)} advances to the next middleware,
  * or invokes the final handler if all middlewares have been called.
+ * <p>
+ * The chain is immutable: every middleware receives a chain positioned after itself, so
+ * calling {@code next} again (e.g. from a retry, or lazily inside {@code Mono.defer}) runs
+ * the rest of the pipeline again instead of skipping middlewares.
  */
 public class MiddlewareChain {
 
     private final List<Middleware> middlewares;
     private final Mono<Void> finalHandler;
-    private int index;
+    private final int position;
 
     /**
      * Creates a new middleware chain.
@@ -23,9 +27,13 @@ public class MiddlewareChain {
      * @param finalHandler the final handler to invoke after all middlewares
      */
     public MiddlewareChain(List<Middleware> middlewares, Mono<Void> finalHandler) {
-        this.middlewares = List.copyOf(middlewares);
+        this(List.copyOf(middlewares), finalHandler, 0);
+    }
+
+    private MiddlewareChain(List<Middleware> middlewares, Mono<Void> finalHandler, int position) {
+        this.middlewares = middlewares;
         this.finalHandler = finalHandler;
-        this.index = 0;
+        this.position = position;
     }
 
     /**
@@ -36,10 +44,9 @@ public class MiddlewareChain {
      * @return a Mono that completes when the rest of the chain is done
      */
     public Mono<Void> next(Object event, UpdateContext context) {
-        if (index < middlewares.size()) {
-            Middleware middleware = middlewares.get(index);
-            index++;
-            return middleware.process(event, context, this);
+        if (position < middlewares.size()) {
+            Middleware middleware = middlewares.get(position);
+            return middleware.process(event, context, new MiddlewareChain(middlewares, finalHandler, position + 1));
         }
         return finalHandler;
     }

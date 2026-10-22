@@ -1,12 +1,23 @@
 package io.jiogram.dispatcher;
 
 import io.jiogram.types.CallbackQuery;
+import io.jiogram.types.BusinessConnection;
+import io.jiogram.types.BusinessMessagesDeleted;
+import io.jiogram.types.ChatBoostRemoved;
+import io.jiogram.types.ChatBoostUpdated;
 import io.jiogram.types.ChatJoinRequest;
 import io.jiogram.types.ChatMemberUpdated;
+import io.jiogram.types.ChosenInlineResult;
 import io.jiogram.types.InlineQuery;
+import io.jiogram.types.ManagedBotUpdated;
 import io.jiogram.types.Message;
+import io.jiogram.types.MessageReactionCountUpdated;
+import io.jiogram.types.MessageReactionUpdated;
+import io.jiogram.types.PaidMediaPurchased;
 import io.jiogram.types.Poll;
 import io.jiogram.types.PollAnswer;
+import io.jiogram.types.PreCheckoutQuery;
+import io.jiogram.types.ShippingQuery;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -35,18 +46,9 @@ public class Router {
         this.subRouters = new CopyOnWriteArrayList<>();
         this.observers = new ConcurrentHashMap<>();
 
-        // Register all standard Telegram event type observers
-        observers.put("message", new EventObserver<Message>("message"));
-        observers.put("edited_message", new EventObserver<Message>("edited_message"));
-        observers.put("channel_post", new EventObserver<Message>("channel_post"));
-        observers.put("edited_channel_post", new EventObserver<Message>("edited_channel_post"));
-        observers.put("callback_query", new EventObserver<CallbackQuery>("callback_query"));
-        observers.put("inline_query", new EventObserver<InlineQuery>("inline_query"));
-        observers.put("poll", new EventObserver<Poll>("poll"));
-        observers.put("poll_answer", new EventObserver<PollAnswer>("poll_answer"));
-        observers.put("my_chat_member", new EventObserver<ChatMemberUpdated>("my_chat_member"));
-        observers.put("chat_member", new EventObserver<ChatMemberUpdated>("chat_member"));
-        observers.put("chat_join_request", new EventObserver<ChatJoinRequest>("chat_join_request"));
+        for (EventType type : EventType.values()) {
+            observers.put(type.apiName(), new EventObserver<>(type.apiName()));
+        }
     }
 
     /**
@@ -92,61 +94,198 @@ public class Router {
         return new HandlerBuilder<>(editedChannelPostObserver());
     }
 
+    public HandlerBuilder<BusinessConnection> onBusinessConnection() {
+        return new HandlerBuilder<>(businessConnectionObserver());
+    }
+
+    public HandlerBuilder<Message> onBusinessMessage() {
+        return new HandlerBuilder<>(businessMessageObserver());
+    }
+
+    public HandlerBuilder<Message> onEditedBusinessMessage() {
+        return new HandlerBuilder<>(editedBusinessMessageObserver());
+    }
+
+    public HandlerBuilder<BusinessMessagesDeleted> onDeletedBusinessMessages() {
+        return new HandlerBuilder<>(deletedBusinessMessagesObserver());
+    }
+
+    public HandlerBuilder<MessageReactionUpdated> onMessageReaction() {
+        return new HandlerBuilder<>(messageReactionObserver());
+    }
+
+    public HandlerBuilder<MessageReactionCountUpdated> onMessageReactionCount() {
+        return new HandlerBuilder<>(messageReactionCountObserver());
+    }
+
+    public HandlerBuilder<ChosenInlineResult> onChosenInlineResult() {
+        return new HandlerBuilder<>(chosenInlineResultObserver());
+    }
+
+    public HandlerBuilder<ShippingQuery> onShippingQuery() {
+        return new HandlerBuilder<>(shippingQueryObserver());
+    }
+
+    public HandlerBuilder<PreCheckoutQuery> onPreCheckoutQuery() {
+        return new HandlerBuilder<>(preCheckoutQueryObserver());
+    }
+
+    public HandlerBuilder<PaidMediaPurchased> onPurchasedPaidMedia() {
+        return new HandlerBuilder<>(purchasedPaidMediaObserver());
+    }
+
+    public HandlerBuilder<Poll> onPoll() {
+        return new HandlerBuilder<>(pollObserver());
+    }
+
+    public HandlerBuilder<PollAnswer> onPollAnswer() {
+        return new HandlerBuilder<>(pollAnswerObserver());
+    }
+
+    public HandlerBuilder<ChatMemberUpdated> onMyChatMember() {
+        return new HandlerBuilder<>(myChatMemberObserver());
+    }
+
+    public HandlerBuilder<ChatMemberUpdated> onChatMember() {
+        return new HandlerBuilder<>(chatMemberObserver());
+    }
+
+    public HandlerBuilder<ChatJoinRequest> onChatJoinRequest() {
+        return new HandlerBuilder<>(chatJoinRequestObserver());
+    }
+
+    public HandlerBuilder<ChatBoostUpdated> onChatBoost() {
+        return new HandlerBuilder<>(chatBoostObserver());
+    }
+
+    public HandlerBuilder<ChatBoostRemoved> onRemovedChatBoost() {
+        return new HandlerBuilder<>(removedChatBoostObserver());
+    }
+
+    public HandlerBuilder<ManagedBotUpdated> onManagedBot() {
+        return new HandlerBuilder<>(managedBotObserver());
+    }
+
     // -- Direct observer access --
 
     @SuppressWarnings("unchecked")
     public EventObserver<Message> messageObserver() {
-        return (EventObserver<Message>) observers.get("message");
+        return (EventObserver<Message>) observer(EventType.MESSAGE);
     }
 
     @SuppressWarnings("unchecked")
     public EventObserver<Message> editedMessageObserver() {
-        return (EventObserver<Message>) observers.get("edited_message");
+        return (EventObserver<Message>) observer(EventType.EDITED_MESSAGE);
     }
 
     @SuppressWarnings("unchecked")
     public EventObserver<Message> channelPostObserver() {
-        return (EventObserver<Message>) observers.get("channel_post");
+        return (EventObserver<Message>) observer(EventType.CHANNEL_POST);
     }
 
     @SuppressWarnings("unchecked")
     public EventObserver<Message> editedChannelPostObserver() {
-        return (EventObserver<Message>) observers.get("edited_channel_post");
+        return (EventObserver<Message>) observer(EventType.EDITED_CHANNEL_POST);
+    }
+
+    @SuppressWarnings("unchecked")
+    public EventObserver<BusinessConnection> businessConnectionObserver() {
+        return (EventObserver<BusinessConnection>) observer(EventType.BUSINESS_CONNECTION);
+    }
+
+    @SuppressWarnings("unchecked")
+    public EventObserver<Message> businessMessageObserver() {
+        return (EventObserver<Message>) observer(EventType.BUSINESS_MESSAGE);
+    }
+
+    @SuppressWarnings("unchecked")
+    public EventObserver<Message> editedBusinessMessageObserver() {
+        return (EventObserver<Message>) observer(EventType.EDITED_BUSINESS_MESSAGE);
+    }
+
+    @SuppressWarnings("unchecked")
+    public EventObserver<BusinessMessagesDeleted> deletedBusinessMessagesObserver() {
+        return (EventObserver<BusinessMessagesDeleted>) observer(EventType.DELETED_BUSINESS_MESSAGES);
+    }
+
+    @SuppressWarnings("unchecked")
+    public EventObserver<MessageReactionUpdated> messageReactionObserver() {
+        return (EventObserver<MessageReactionUpdated>) observer(EventType.MESSAGE_REACTION);
+    }
+
+    @SuppressWarnings("unchecked")
+    public EventObserver<MessageReactionCountUpdated> messageReactionCountObserver() {
+        return (EventObserver<MessageReactionCountUpdated>) observer(EventType.MESSAGE_REACTION_COUNT);
     }
 
     @SuppressWarnings("unchecked")
     public EventObserver<CallbackQuery> callbackQueryObserver() {
-        return (EventObserver<CallbackQuery>) observers.get("callback_query");
+        return (EventObserver<CallbackQuery>) observer(EventType.CALLBACK_QUERY);
     }
 
     @SuppressWarnings("unchecked")
     public EventObserver<InlineQuery> inlineQueryObserver() {
-        return (EventObserver<InlineQuery>) observers.get("inline_query");
+        return (EventObserver<InlineQuery>) observer(EventType.INLINE_QUERY);
+    }
+
+    @SuppressWarnings("unchecked")
+    public EventObserver<ChosenInlineResult> chosenInlineResultObserver() {
+        return (EventObserver<ChosenInlineResult>) observer(EventType.CHOSEN_INLINE_RESULT);
+    }
+
+    @SuppressWarnings("unchecked")
+    public EventObserver<ShippingQuery> shippingQueryObserver() {
+        return (EventObserver<ShippingQuery>) observer(EventType.SHIPPING_QUERY);
+    }
+
+    @SuppressWarnings("unchecked")
+    public EventObserver<PreCheckoutQuery> preCheckoutQueryObserver() {
+        return (EventObserver<PreCheckoutQuery>) observer(EventType.PRE_CHECKOUT_QUERY);
+    }
+
+    @SuppressWarnings("unchecked")
+    public EventObserver<PaidMediaPurchased> purchasedPaidMediaObserver() {
+        return (EventObserver<PaidMediaPurchased>) observer(EventType.PURCHASED_PAID_MEDIA);
     }
 
     @SuppressWarnings("unchecked")
     public EventObserver<Poll> pollObserver() {
-        return (EventObserver<Poll>) observers.get("poll");
+        return (EventObserver<Poll>) observer(EventType.POLL);
     }
 
     @SuppressWarnings("unchecked")
     public EventObserver<PollAnswer> pollAnswerObserver() {
-        return (EventObserver<PollAnswer>) observers.get("poll_answer");
+        return (EventObserver<PollAnswer>) observer(EventType.POLL_ANSWER);
     }
 
     @SuppressWarnings("unchecked")
     public EventObserver<ChatMemberUpdated> myChatMemberObserver() {
-        return (EventObserver<ChatMemberUpdated>) observers.get("my_chat_member");
+        return (EventObserver<ChatMemberUpdated>) observer(EventType.MY_CHAT_MEMBER);
     }
 
     @SuppressWarnings("unchecked")
     public EventObserver<ChatMemberUpdated> chatMemberObserver() {
-        return (EventObserver<ChatMemberUpdated>) observers.get("chat_member");
+        return (EventObserver<ChatMemberUpdated>) observer(EventType.CHAT_MEMBER);
     }
 
     @SuppressWarnings("unchecked")
     public EventObserver<ChatJoinRequest> chatJoinRequestObserver() {
-        return (EventObserver<ChatJoinRequest>) observers.get("chat_join_request");
+        return (EventObserver<ChatJoinRequest>) observer(EventType.CHAT_JOIN_REQUEST);
+    }
+
+    @SuppressWarnings("unchecked")
+    public EventObserver<ChatBoostUpdated> chatBoostObserver() {
+        return (EventObserver<ChatBoostUpdated>) observer(EventType.CHAT_BOOST);
+    }
+
+    @SuppressWarnings("unchecked")
+    public EventObserver<ChatBoostRemoved> removedChatBoostObserver() {
+        return (EventObserver<ChatBoostRemoved>) observer(EventType.REMOVED_CHAT_BOOST);
+    }
+
+    @SuppressWarnings("unchecked")
+    public EventObserver<ManagedBotUpdated> managedBotObserver() {
+        return (EventObserver<ManagedBotUpdated>) observer(EventType.MANAGED_BOT);
     }
 
     /**
@@ -154,6 +293,13 @@ public class Router {
      */
     public EventObserver<?> observer(String eventType) {
         return observers.get(eventType);
+    }
+
+    /**
+     * The observer of the given event type.
+     */
+    public EventObserver<?> observer(EventType eventType) {
+        return observers.get(eventType.apiName());
     }
 
     /**
