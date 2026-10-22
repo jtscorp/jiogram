@@ -85,7 +85,6 @@ import io.jiogram.annotation.Command;
 import io.jiogram.annotation.OnMessage;
 import io.jiogram.annotation.TelegramController;
 import io.jiogram.methods.SendMessage;
-import io.jiogram.types.ChatId;
 import io.jiogram.types.Message;
 
 @TelegramController
@@ -95,8 +94,8 @@ public class MyBot {
     @OnMessage
     @Command("start")
     public SendMessage start(Message message) {
-        return SendMessage.of(
-            ChatId.of(message.chat().id()),
+        return SendMessage.answer(
+            message,
             "Hello! I am your first Jiogram bot."
         );
     }
@@ -105,8 +104,8 @@ public class MyBot {
     @OnMessage
     @Command("help")
     public SendMessage help(Message message) {
-        return SendMessage.of(
-            ChatId.of(message.chat().id()),
+        return SendMessage.answer(
+            message,
             "Available commands:\n/start - Start the bot\n/help - Show this help"
         );
     }
@@ -118,8 +117,8 @@ public class MyBot {
         if (text == null) {
             return null; // Ignore non-text messages
         }
-        return SendMessage.of(
-            ChatId.of(message.chat().id()),
+        return SendMessage.answer(
+            message,
             "You said: " + text
         );
     }
