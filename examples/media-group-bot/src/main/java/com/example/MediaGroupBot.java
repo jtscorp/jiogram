@@ -13,7 +13,6 @@ import io.jiogram.types.InputFile;
 import io.jiogram.types.InputFileOrString;
 import io.jiogram.types.InputMedia;
 import io.jiogram.types.InputMediaPhoto;
-import io.jiogram.types.InputMediaType;
 import io.jiogram.types.Message;
 import reactor.core.publisher.Mono;
 
@@ -35,24 +34,10 @@ public class MediaGroupBot {
     @Command("start")
     public Mono<Void> start(Message message, Bot bot) {
         List<InputMedia> media = List.of(
-            new InputMediaPhoto(
-                InputMediaType.PHOTO,
-                InputFileOrString.of("https://picsum.photos/id/1025/800/500"),
-                "Photo from URL",
-                null,
-                null,
-                null,
-                null
-            ),
-            new InputMediaPhoto(
-                InputMediaType.PHOTO,
-                InputFileOrString.of("https://picsum.photos/id/1062/800/500"),
-                "Another photo",
-                null,
-                null,
-                null,
-                null
-            )
+            InputMediaPhoto.of(InputFileOrString.of("https://picsum.photos/id/1025/800/500"))
+                .withCaption("Photo from URL"),
+            InputMediaPhoto.of(InputFileOrString.of("https://picsum.photos/id/1062/800/500"))
+                .withCaption("Another photo")
         );
 
         // answer(message, ...) sends to the message's chat, and into its forum topic in a group.
@@ -73,21 +58,16 @@ public class MediaGroupBot {
     @Command("upload")
     public Mono<Void> upload(Message message, Bot bot) throws IOException {
         List<InputMedia> album = List.of(
-            new InputMediaPhoto(InputMediaType.PHOTO,
-                InputFileOrString.of(InputFile.fromBytes("red.png", square(new Color(0xE5, 0x39, 0x35)))),
-                "<b>Red</b>, uploaded from memory", null, null, null, null),
-            new InputMediaPhoto(InputMediaType.PHOTO,
-                InputFileOrString.of(InputFile.fromBytes("blue.png", square(new Color(0x1E, 0x88, 0xE5)))),
-                "<i>Blue</i>, uploaded from memory", null, null, null, null)
+            InputMediaPhoto.of(InputFileOrString.of(InputFile.fromBytes("red.png", square(new Color(0xE5, 0x39, 0x35)))))
+                .withCaption("<b>Red</b>, uploaded from memory"),
+            InputMediaPhoto.of(InputFileOrString.of(InputFile.fromBytes("blue.png", square(new Color(0x1E, 0x88, 0xE5)))))
+                .withCaption("<i>Blue</i>, uploaded from memory")
         );
 
         Path report = Files.createTempFile("jiogram-report-", ".txt");
         Files.writeString(report, "Uploaded by jiogram from " + report.getFileName() + "\n");
-        // answer() decides where the document goes; the full constructor adds the caption.
-        SendDocument target = SendDocument.answer(message, InputFileOrString.of(InputFile.fromPath(report)));
-        SendDocument document = new SendDocument(target.businessConnectionId(), target.chatId(),
-            target.messageThreadId(), target.directMessagesTopicId(), target.document(), null,
-            "<b>A file from disk</b>", null, null, null, null, null, null, null, null, null, null);
+        SendDocument document = SendDocument.answer(message, InputFileOrString.of(InputFile.fromPath(report)))
+            .withCaption("<b>A file from disk</b>");
 
         return bot.execute(SendMediaGroup.answer(message, album))
             .then(bot.execute(document))

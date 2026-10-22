@@ -7,7 +7,6 @@ import io.jiogram.methods.AnswerInlineQuery;
 import io.jiogram.types.InlineQuery;
 import io.jiogram.types.InlineQueryResult;
 import io.jiogram.types.InlineQueryResultArticle;
-import io.jiogram.types.InlineQueryResultType;
 import io.jiogram.types.InputTextMessageContent;
 import reactor.core.publisher.Mono;
 
@@ -26,28 +25,13 @@ public class InlineBot {
             ? "echo"
             : inlineQuery.query();
 
-        var content = new InputTextMessageContent(text, null, null, null);
-        InlineQueryResult item = new InlineQueryResultArticle(
-            InlineQueryResultType.ARTICLE,
-            stableId(text),
-            "Result: " + text,
-            content,
-            null,
-            null,
-            "Send this text to the chat",
-            null,
-            null,
-            null
-        );
+        InlineQueryResult item = InlineQueryResultArticle
+            .of(stableId(text), "Result: " + text, InputTextMessageContent.of(text))
+            .withDescription("Send this text to the chat");
 
-        var answer = new AnswerInlineQuery(
-            inlineQuery.id(),
-            List.of(item),
-            1L,
-            true,
-            null,
-            null
-        );
+        var answer = AnswerInlineQuery.of(inlineQuery.id(), List.of(item))
+            .withCacheTime(1L)
+            .withIsPersonal(true);
 
         return bot.execute(answer).then();
     }
