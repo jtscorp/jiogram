@@ -25,8 +25,8 @@ public class CommandBot {
     @OnMessage
     @Command("start")
     public SendMessage onStart(Message message) {
-        return SendMessage.of(
-            ChatId.of(message.chat().id()),
+        return SendMessage.answer(
+            message,
             "Welcome! Use /help to see available commands."
         );
     }
@@ -39,8 +39,8 @@ public class CommandBot {
             /start - Start the bot
             /help - Show this help message
             /settings - Open settings menu""";
-        return SendMessage.of(
-            ChatId.of(message.chat().id()),
+        return SendMessage.answer(
+            message,
             helpText
         );
     }

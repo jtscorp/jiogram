@@ -7,17 +7,28 @@ The `Bot` class wraps a Telegram bot token and a `TelegramSession` for making AP
 ```java
 import io.jiogram.bot.Bot;
 import io.jiogram.methods.SendMessage;
-import io.jiogram.types.ChatId;
 
 // In a handler, Bot is injected automatically:
 @OnMessage
 public Mono<Void> greet(Message message, Bot bot) {
-    return bot.execute(SendMessage.of(
-        ChatId.of(message.chat().id()),
-        "Hello!"
-    )).then();
+    return bot.execute(SendMessage.answer(message, "Hello!")).then();
 }
 ```
+
+### Answering a message
+
+Every method that sends into a chat (`SendMessage`, `SendPhoto`, `SendMediaGroup`, `SendPoll`,
+`CopyMessage`, `SendChatAction`, ...) has two factories that work out where the answer goes from
+the received message, like aiogram's `message.answer()` and `message.reply()`:
+
+```java
+SendMessage.answer(message, "Hi");       // to the message's chat
+SendPhoto.reply(message, photo);         // the same, as a reply to the message
+```
+
+They fill in the chat, the forum topic (only when the message is a topic message), the business
+connection and the direct messages topic. With `SendMessage.of(ChatId.of(chatId), text)` instead,
+an answer in a forum group lands in the General topic.
 
 With Spring Boot auto-configuration, the `Bot` bean is created from your `telegram.token` property. You can also inject it anywhere:
 
@@ -505,15 +516,13 @@ Jiogram automatically handles the return value of handler methods:
 // Return a TelegramMethod -> auto-executed via bot.execute()
 @OnMessage
 public SendMessage echo(Message message) {
-    return SendMessage.of(ChatId.of(message.chat().id()), message.text());
+    return SendMessage.answer(message, message.text());
 }
 
 // Return Mono<Void> -> subscribed directly
 @OnMessage
 public Mono<Void> manual(Message message, Bot bot) {
-    return bot.execute(SendMessage.of(
-        ChatId.of(message.chat().id()), "Hi"
-    )).then();
+    return bot.execute(SendMessage.answer(message, "Hi")).then();
 }
 
 // Return void -> no-op
@@ -526,6 +535,6 @@ public void logOnly(Message message) {
 @OnMessage
 public SendMessage conditional(Message message) {
     if (message.text() == null) return null;
-    return SendMessage.of(ChatId.of(message.chat().id()), message.text());
+    return SendMessage.answer(message, message.text());
 }
 ```

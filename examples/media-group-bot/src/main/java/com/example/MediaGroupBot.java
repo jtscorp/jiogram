@@ -9,7 +9,6 @@ import io.jiogram.methods.SendDocument;
 import io.jiogram.methods.SendMediaGroup;
 import io.jiogram.methods.SendMessage;
 import io.jiogram.types.ChatAction;
-import io.jiogram.types.ChatId;
 import io.jiogram.types.InputFile;
 import io.jiogram.types.InputFileOrString;
 import io.jiogram.types.InputMedia;
@@ -35,7 +34,6 @@ public class MediaGroupBot {
     @OnMessage
     @Command("start")
     public Mono<Void> start(Message message, Bot bot) {
-        ChatId chatId = ChatId.of(message.chat().id());
         List<InputMedia> media = List.of(
             new InputMediaPhoto(
                 InputMediaType.PHOTO,
@@ -57,10 +55,11 @@ public class MediaGroupBot {
             )
         );
 
-        return bot.execute(SendMessage.of(chatId, "Sending a media group..."))
-            .then(bot.execute(SendChatAction.of(chatId, ChatAction.UPLOAD_PHOTO)))
+        // answer(message, ...) sends to the message's chat, and into its forum topic in a group.
+        return bot.execute(SendMessage.answer(message, "Sending a media group..."))
+            .then(bot.execute(SendChatAction.answer(message, ChatAction.UPLOAD_PHOTO)))
             .then(Mono.delay(Duration.ofSeconds(1)))
-            .then(bot.execute(SendMediaGroup.of(chatId, media)))
+            .then(bot.execute(SendMediaGroup.answer(message, media)))
             .then();
     }
 
@@ -73,7 +72,6 @@ public class MediaGroupBot {
     @OnMessage
     @Command("upload")
     public Mono<Void> upload(Message message, Bot bot) throws IOException {
-        ChatId chatId = ChatId.of(message.chat().id());
         List<InputMedia> album = List.of(
             new InputMediaPhoto(InputMediaType.PHOTO,
                 InputFileOrString.of(InputFile.fromBytes("red.png", square(new Color(0xE5, 0x39, 0x35)))),
@@ -85,11 +83,13 @@ public class MediaGroupBot {
 
         Path report = Files.createTempFile("jiogram-report-", ".txt");
         Files.writeString(report, "Uploaded by jiogram from " + report.getFileName() + "\n");
-        SendDocument document = new SendDocument(null, chatId, null, null,
-            InputFileOrString.of(InputFile.fromPath(report)), null, "<b>A file from disk</b>",
-            null, null, null, null, null, null, null, null, null, null);
+        // answer() decides where the document goes; the full constructor adds the caption.
+        SendDocument target = SendDocument.answer(message, InputFileOrString.of(InputFile.fromPath(report)));
+        SendDocument document = new SendDocument(target.businessConnectionId(), target.chatId(),
+            target.messageThreadId(), target.directMessagesTopicId(), target.document(), null,
+            "<b>A file from disk</b>", null, null, null, null, null, null, null, null, null, null);
 
-        return bot.execute(SendMediaGroup.of(chatId, album))
+        return bot.execute(SendMediaGroup.answer(message, album))
             .then(bot.execute(document))
             .doFinally(signal -> report.toFile().delete())
             .then();
