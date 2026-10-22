@@ -40,8 +40,10 @@ public class JiogramAutoConfiguration {
         // The Telegram Bot API rejects null-valued optional parameters, so this
         // session uses its own NON_NULL-configured ObjectMapper internally.
         WebClient webClient = webClientBuilder.getIfAvailable(WebClient::builder).build();
-        String baseUrl = properties.api() != null ? properties.api().baseUrl() : null;
-        return new WebClientTelegramSession(webClient, baseUrl);
+        JiogramProperties.ApiProperties api = properties.api();
+        return new WebClientTelegramSession(webClient, WebClientTelegramSession.defaultObjectMapper(),
+            api != null ? api.baseUrl() : null,
+            api != null ? api.requestTimeout() : WebClientTelegramSession.DEFAULT_REQUEST_TIMEOUT);
     }
 
     @Bean

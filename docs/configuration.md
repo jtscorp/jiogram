@@ -17,6 +17,8 @@ telegram:
     # Base URL for the Bot API server (default: https://api.telegram.org)
     # Use http://localhost:8081 when running a local Bot API server.
     base-url: https://api.telegram.org
+    # How long to wait for a response; getUpdates adds its polling timeout (default: 60s)
+    request-timeout: 60s
 
   # Polling configuration (only used when mode=POLLING)
   polling:
@@ -111,6 +113,7 @@ Configures the Bot API server endpoint used for outgoing requests.
 | Property | Type | Default | Description |
 |---|---|---|---|
 | `base-url` | `String` | `https://api.telegram.org` | Base URL of the Telegram Bot API server. Set to a local server URL such as `http://localhost:8081` for self-hosted Bot API deployments. |
+| `request-timeout` | `Duration` | `60s` | How long to wait for a response before the request fails with a `TimeoutException`. `getUpdates` gets its long-polling `timeout` on top. Raise it for large uploads on slow links. Applies to the auto-configured session only. |
 
 ### telegram.polling
 

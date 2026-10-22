@@ -103,10 +103,13 @@ public record JiogramProperties(
     /**
      * Telegram Bot API endpoint configuration.
      *
-     * @param baseUrl base URL of the Bot API server
+     * @param baseUrl        base URL of the Bot API server
+     * @param requestTimeout how long to wait for a response to a request; {@code getUpdates}
+     *                       gets its long-polling timeout on top
      */
     public record ApiProperties(
-        @DefaultValue("https://api.telegram.org") String baseUrl
+        @DefaultValue("https://api.telegram.org") String baseUrl,
+        @DefaultValue("60s") Duration requestTimeout
     ) {}
 
     /**

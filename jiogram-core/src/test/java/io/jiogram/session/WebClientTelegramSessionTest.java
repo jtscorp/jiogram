@@ -3,6 +3,7 @@ package io.jiogram.session;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import io.jiogram.methods.EditMessageText;
 import io.jiogram.methods.GetMe;
+import io.jiogram.methods.GetUpdates;
 import io.jiogram.methods.SendMediaGroup;
 import io.jiogram.methods.SendPhoto;
 import io.jiogram.types.ChatId;
@@ -11,6 +12,7 @@ import io.jiogram.types.InputFileOrString;
 import io.jiogram.types.InputMedia;
 import io.jiogram.types.InputMediaPhoto;
 import io.jiogram.types.Message;
+import io.jiogram.types.Update;
 import io.jiogram.types.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -26,9 +28,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -120,6 +124,40 @@ class WebClientTelegramSessionTest {
     }
 
     @Test
+    void requestWithoutAResponseInTime_failsWithATimeout() {
+        String baseUrl = serverRespondingWith("{\"id\": 123, \"is_bot\": true, \"first_name\": \"Bot\"}",
+                Duration.ofSeconds(3));
+        var session = new WebClientTelegramSession(WebClient.create(),
+                WebClientTelegramSession.defaultObjectMapper(), baseUrl, Duration.ofMillis(300));
+
+        StepVerifier.create(session.makeRequest(TOKEN, new GetMe()))
+                .expectErrorSatisfies(error -> {
+                    assertInstanceOf(TimeoutException.class, error);
+                    assertTrue(error.getMessage().contains("getMe"), error.getMessage());
+                })
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    void longPoll_getsItsPollingTimeoutOnTopOfTheRequestTimeout() {
+        // Answered after 1.2s: later than the 300ms request timeout, within 300ms + the 2s long poll.
+        String baseUrl = serverRespondingWith("[]", Duration.ofMillis(1200));
+        var session = new WebClientTelegramSession(WebClient.create(),
+                WebClientTelegramSession.defaultObjectMapper(), baseUrl, Duration.ofMillis(300));
+
+        List<Update> updates = session.makeRequest(TOKEN, new GetUpdates(null, null, 2L, null))
+                .block(Duration.ofSeconds(10));
+
+        assertEquals(List.of(), updates);
+    }
+
+    @Test
+    void nonPositiveRequestTimeout_isRejected() {
+        assertThrows(IllegalArgumentException.class, () -> new WebClientTelegramSession(WebClient.create(),
+                WebClientTelegramSession.defaultObjectMapper(), null, Duration.ZERO));
+    }
+
+    @Test
     void inputFile_cannotBeSerializedOutsideASession() {
         var upload = SendPhoto.of(ChatId.of(42), InputFileOrString.of(InputFile.fromBytes("a.jpg", new byte[1])));
 
@@ -128,10 +166,16 @@ class WebClientTelegramSessionTest {
     }
 
     private WebClientTelegramSession sessionRespondingWith(String resultJson) {
+        return new WebClientTelegramSession(WebClient.create(), serverRespondingWith(resultJson, Duration.ZERO));
+    }
+
+    /** Starts the stand-in Bot API server and returns its base URL. */
+    private String serverRespondingWith(String resultJson, Duration delay) {
         server = HttpServer.create()
                 .port(0)
                 .handle((request, response) -> request.receive().aggregate().asString(StandardCharsets.UTF_8)
                         .defaultIfEmpty("")
+                        .delayElement(delay)
                         .flatMap(received -> {
                             contentType.set(request.requestHeaders().get("Content-Type"));
                             body.set(received);
@@ -140,7 +184,7 @@ class WebClientTelegramSessionTest {
                                     .then();
                         }))
                 .bindNow();
-        return new WebClientTelegramSession(WebClient.create(), "http://localhost:" + server.port());
+        return "http://localhost:" + server.port();
     }
 
     private static void assertPart(String multipartBody, String name, String value) {

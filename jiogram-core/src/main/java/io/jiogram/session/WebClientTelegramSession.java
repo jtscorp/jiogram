@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jiogram.methods.GetUpdates;
 import io.jiogram.types.InputFile;
 import io.jiogram.types.TelegramMethod;
 import org.jspecify.annotations.Nullable;
@@ -24,8 +25,10 @@ import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.file.Path;
+import java.time.Duration;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.TimeoutException;
 
 /**
  * {@link TelegramSession} implementation that uses Spring's {@link WebClient}
@@ -35,9 +38,13 @@ public class WebClientTelegramSession implements TelegramSession {
 
     public static final String DEFAULT_BASE_URL = "https://api.telegram.org";
 
+    /** Same default as aiogram's session timeout. */
+    public static final Duration DEFAULT_REQUEST_TIMEOUT = Duration.ofSeconds(60);
+
     private final WebClient webClient;
     private final ObjectMapper objectMapper;
     private final String baseUrl;
+    private final Duration requestTimeout;
 
     public WebClientTelegramSession(WebClient webClient) {
         WebClient checkedWebClient = Objects.requireNonNull(webClient, "webClient must not be null");
@@ -63,9 +70,23 @@ public class WebClientTelegramSession implements TelegramSession {
     }
 
     public WebClientTelegramSession(WebClient webClient, ObjectMapper objectMapper, String baseUrl) {
+        this(webClient, objectMapper, baseUrl, DEFAULT_REQUEST_TIMEOUT);
+    }
+
+    /**
+     * @param requestTimeout how long to wait for a response before failing the request with a
+     *                       {@link TimeoutException}; {@code getUpdates} gets its long-polling
+     *                       timeout on top
+     */
+    public WebClientTelegramSession(WebClient webClient, ObjectMapper objectMapper, String baseUrl,
+                                    Duration requestTimeout) {
         this.webClient = Objects.requireNonNull(webClient, "webClient must not be null");
         this.objectMapper = Objects.requireNonNull(objectMapper, "objectMapper must not be null");
         this.baseUrl = normalizeBaseUrl(baseUrl);
+        this.requestTimeout = Objects.requireNonNull(requestTimeout, "requestTimeout must not be null");
+        if (requestTimeout.isNegative() || requestTimeout.isZero()) {
+            throw new IllegalArgumentException("requestTimeout must be positive, got " + requestTimeout);
+        }
     }
 
     /**
@@ -87,6 +108,7 @@ public class WebClientTelegramSession implements TelegramSession {
         String url = baseUrl + "/bot" + token + "/" + method.apiMethod();
 
         JavaType resultType = resolveResultType(method);
+        Duration timeout = timeoutFor(method);
         // The result is bound in a second step, see readResult().
         JavaType responseType = objectMapper.getTypeFactory()
             .constructParametricType(TelegramApiResponse.class, JsonNode.class);
@@ -109,7 +131,7 @@ public class WebClientTelegramSession implements TelegramSession {
         }
 
         return request
-            .exchangeToMono(clientResponse -> clientResponse.bodyToMono(String.class)
+            .<T>exchangeToMono(clientResponse -> clientResponse.bodyToMono(String.class)
                 .defaultIfEmpty("")
                 .flatMap(responseBody -> {
                     TelegramApiResponse<JsonNode> response;
@@ -132,7 +154,17 @@ public class WebClientTelegramSession implements TelegramSession {
                         ? response.description()
                         : "Unknown error";
                     return Mono.error(new TelegramApiException(errorCode, description));
-                }));
+                }))
+            .timeout(timeout, Mono.error(() -> new TimeoutException(
+                "No response from the Telegram Bot API to " + method.apiMethod() + " within " + timeout)));
+    }
+
+    /** A long poll is answered only after its own timeout, so that is added to the request timeout. */
+    private Duration timeoutFor(TelegramMethod<?> method) {
+        if (method instanceof GetUpdates getUpdates && getUpdates.timeout() != null) {
+            return requestTimeout.plusSeconds(getUpdates.timeout());
+        }
+        return requestTimeout;
     }
 
     /**
