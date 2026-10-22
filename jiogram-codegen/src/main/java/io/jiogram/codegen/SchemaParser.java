@@ -3,13 +3,16 @@ package io.jiogram.codegen;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jiogram.codegen.model.*;
+import org.jspecify.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Parses the Telegram Bot API schema JSON file into an {@link ApiSchema} model.
@@ -57,6 +60,11 @@ public final class SchemaParser {
             // "Returns X"  (last resort — single word after Returns, anywhere in text)
             Pattern.compile("[Rr]eturns (\\w+)")
     );
+
+    private static final String ARRAY_OF = "Array of ";
+
+    /** Return types that are not schema types; "True" is normalized to Boolean. */
+    private static final Set<String> SCALAR_RETURN_TYPES = Set.of("Boolean", "Integer", "Int", "String", "Float");
 
     private SchemaParser() {
     }
@@ -140,7 +148,37 @@ public final class SchemaParser {
             }
         }
 
+        requireKnownReturnTypes(allMethods,
+                allTypes.stream().map(TypeDefinition::name).collect(Collectors.toSet()));
         return new ApiSchema(apiVersion, allTypes, allMethods, allEnums);
+    }
+
+    /**
+     * Fails when a method's return type could not be read from its description or names a type
+     * the schema does not define. Guessing (e.g. falling back to Boolean) would generate a method
+     * whose responses cannot be read.
+     */
+    static void requireKnownReturnTypes(List<MethodDefinition> methods, Set<String> typeNames) {
+        List<String> problems = methods.stream()
+                .filter(method -> !isKnownType(method.returnType(), typeNames))
+                .map(method -> method.name() + " -> "
+                        + (method.returnType() == null ? "<not found>" : "'" + method.returnType() + "'"))
+                .toList();
+        if (!problems.isEmpty()) {
+            throw new IllegalStateException("Cannot determine the return type of " + problems.size()
+                    + " method(s) from the schema description; extend SchemaParser.RETURN_TYPE_PATTERNS: "
+                    + problems);
+        }
+    }
+
+    private static boolean isKnownType(@Nullable String type, Set<String> typeNames) {
+        if (type == null) {
+            return false;
+        }
+        if (type.startsWith(ARRAY_OF)) {
+            return isKnownType(type.substring(ARRAY_OF.length()), typeNames);
+        }
+        return SCALAR_RETURN_TYPES.contains(type) || typeNames.contains(type);
     }
 
     private static List<FieldDefinition> parseAnnotations(JsonNode annotations) {
@@ -172,9 +210,9 @@ public final class SchemaParser {
      * </ul>
      *
      * @param description the method description text
-     * @return the extracted return type, or "Boolean" if no pattern matches
+     * @return the extracted return type, or {@code null} if no pattern matches
      */
-    static String extractReturnType(String description) {
+    static @Nullable String extractReturnType(String description) {
         for (Pattern pattern : RETURN_TYPE_PATTERNS) {
             Matcher matcher = pattern.matcher(description);
             if (matcher.find()) {
@@ -190,7 +228,6 @@ public final class SchemaParser {
                 return result;
             }
         }
-        // Default fallback — most methods that don't match return True/Boolean
-        return "Boolean";
+        return null;
     }
 }
