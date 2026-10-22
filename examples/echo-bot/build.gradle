@@ -3,7 +3,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.7'
 }
 
-group = 'com.example'
+group = 'uz.example'
 version = '1.0.0'
 
 java {
@@ -18,7 +18,7 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 application {
-    mainClass = 'com.example.echobot.Application'
+    mainClass = 'uz.example.echobot.Application'
 }
 
 // Spring Boot 2.7's Gradle plugin does not run on Gradle 9; the BOM is imported directly.
