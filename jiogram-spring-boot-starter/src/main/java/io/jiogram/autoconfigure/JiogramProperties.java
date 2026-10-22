@@ -1,10 +1,12 @@
 package io.jiogram.autoconfigure;
 
+import io.jiogram.fsm.FSMStrategy;
 import io.jiogram.types.ParseMode;
 import io.jiogram.types.UpdateType;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 
+import java.time.Duration;
 import java.util.List;
 
 /**
@@ -25,12 +27,30 @@ public record JiogramProperties(
     /** Webhook configuration. */
     @DefaultValue WebhookProperties webhook,
 
+    /** Telegram Bot API endpoint configuration. */
+    @DefaultValue ApiProperties api,
+
     /** Default bot properties applied to outgoing requests. */
     @DefaultValue DefaultsProperties defaults,
 
     /** FSM (Finite State Machine) configuration. */
-    @DefaultValue FsmProperties fsm
+    @DefaultValue FsmProperties fsm,
+
+    /** Handler execution configuration. */
+    @DefaultValue HandlersProperties handlers
 ) {
+
+    /** Keeps the bot token out of logs and error messages. */
+    @Override
+    public String toString() {
+        return "JiogramProperties[token=" + mask(token) + ", mode=" + mode + ", polling=" + polling
+            + ", webhook=" + webhook + ", api=" + api + ", defaults=" + defaults + ", fsm=" + fsm
+            + ", handlers=" + handlers + "]";
+    }
+
+    private static String mask(String secret) {
+        return secret == null ? "null" : "****";
+    }
 
     public enum Mode {
         POLLING,
@@ -44,12 +64,18 @@ public record JiogramProperties(
      * @param backoff        backoff delay in milliseconds on error
      * @param limit          maximum number of updates per poll
      * @param allowedUpdates list of update types to receive
+     * @param concurrency    how many chats of one batch are processed in parallel; updates of
+     *                       the same chat are always processed one after another, in order
+     * @param shutdownTimeout how long stopping waits for the batch being processed to finish
+     *                        before cancelling it
      */
     public record PollingProperties(
         @DefaultValue("30") int timeout,
         @DefaultValue("1000") long backoff,
         @DefaultValue("100") int limit,
-        List<UpdateType> allowedUpdates
+        List<UpdateType> allowedUpdates,
+        @DefaultValue("32") int concurrency,
+        @DefaultValue("10s") Duration shutdownTimeout
     ) {}
 
     /**
@@ -65,6 +91,25 @@ public record JiogramProperties(
         @DefaultValue("/bot/webhook") String path,
         String secretToken,
         @DefaultValue("40") int maxConnections
+    ) {
+        /** Keeps the webhook secret out of logs and error messages. */
+        @Override
+        public String toString() {
+            return "WebhookProperties[url=" + url + ", path=" + path + ", secretToken=" + mask(secretToken)
+                + ", maxConnections=" + maxConnections + "]";
+        }
+    }
+
+    /**
+     * Telegram Bot API endpoint configuration.
+     *
+     * @param baseUrl        base URL of the Bot API server
+     * @param requestTimeout how long to wait for a response to a request; {@code getUpdates}
+     *                       gets its long-polling timeout on top
+     */
+    public record ApiProperties(
+        @DefaultValue("https://api.telegram.org") String baseUrl,
+        @DefaultValue("60s") Duration requestTimeout
     ) {}
 
     /**
@@ -86,10 +131,35 @@ public record JiogramProperties(
      * @param enabled  whether FSM support is enabled
      * @param strategy the FSM key resolution strategy
      * @param storage  the storage backend type (memory, redis)
+     * @param redis    settings of the Redis storage
      */
     public record FsmProperties(
         @DefaultValue("true") boolean enabled,
-        @DefaultValue("USER_IN_CHAT") String strategy,
-        @DefaultValue("memory") String storage
+        @DefaultValue("USER_IN_CHAT") FSMStrategy strategy,
+        @DefaultValue("memory") String storage,
+        @DefaultValue RedisProperties redis
+    ) {}
+
+    /**
+     * Redis FSM storage settings, used when {@code telegram.fsm.storage=redis}.
+     *
+     * @param keyPrefix first segment(s) of every key
+     * @param stateTtl  how long a state lives after it last changed; unset for no expiry
+     * @param dataTtl   how long data lives after it last changed; unset for no expiry
+     */
+    public record RedisProperties(
+        @DefaultValue("jiogram:fsm") String keyPrefix,
+        Duration stateTtl,
+        Duration dataTtl
+    ) {}
+
+    /**
+     * Handler execution configuration.
+     *
+     * @param virtualThreads whether annotated handler methods run on virtual threads (so they may
+     *                       block); when false they run on the thread that delivered the update
+     */
+    public record HandlersProperties(
+        @DefaultValue("true") boolean virtualThreads
     ) {}
 }
