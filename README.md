@@ -165,7 +165,7 @@ Barcha sozlamalar `telegram` prefiksi ostida. To'liq ro'yxat: [docs/uz/configura
 
 ### Litsenziya
 
-Hozircha belgilanmagan.
+[MIT](LICENSE)
 
 ***
 
@@ -328,4 +328,4 @@ All properties live under the `telegram` prefix. See [docs/configuration.md](doc
 
 ### License
 
-TBD
+[MIT](LICENSE)

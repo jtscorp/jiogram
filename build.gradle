@@ -4,6 +4,10 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.7' apply false
 }
 
+// The Spring Boot generation this branch builds for: every artifact carries it as a suffix
+// (jiogram-core-sb4, jiogram-spring-boot-4-starter), so the branches never collide on Maven Central.
+def bootGeneration = '4'
+
 allprojects {
     group = findProperty('group')
     version = findProperty('version')
@@ -72,18 +76,12 @@ subprojects {
                     }
                 }
 
-                // Spec §3: every artifact on main (Spring Boot 4) carries
-                // a -sb4 suffix to avoid Maven Central GAV collisions with
-                // the sb3.x and sb2.x branches. The starter is special-cased
-                // to 'jiogram-spring-boot-4-starter' per the spec naming.
                 artifactId = (project.name == 'jiogram-spring-boot-starter')
-                    ? 'jiogram-spring-boot-4-starter'
-                    : "${project.name}-sb4"
+                    ? "jiogram-spring-boot-${bootGeneration}-starter"
+                    : "${project.name}-sb${bootGeneration}"
 
                 pom {
-                    name = (project.name == 'jiogram-spring-boot-starter')
-                        ? 'jiogram-spring-boot-4-starter'
-                        : "${project.name}-sb4"
+                    name = artifactId
                     description = 'Jiogram - Java Spring Framework for Telegram Bots'
                     url = 'https://github.com/jtscorp/jiogram'
 
@@ -96,8 +94,10 @@ subprojects {
 
                     developers {
                         developer {
-                            id = 'jaxongir'
-                            name = 'Jaxongir'
+                            id = 'jtscorp'
+                            name = 'Jaxongir Maxamadjonov'
+                            email = 'jtscorp@mail.ru'
+                            url = 'https://github.com/jtscorp'
                         }
                     }
 
@@ -110,19 +110,119 @@ subprojects {
             }
         }
 
+        // All modules go into one Maven-layout directory, zipped by centralBundle.
         repositories {
             maven {
                 name = 'staging'
-                url = layout.buildDirectory.dir('staging-deploy').get().asFile.toURI()
+                url = rootProject.layout.buildDirectory.dir('staging-deploy').get().asFile.toURI()
             }
         }
     }
 
+    tasks.matching { it.name == 'publishMavenJavaPublicationToStagingRepository' }.configureEach {
+        dependsOn rootProject.tasks.named('cleanStaging')
+    }
+
+    // Releases are signed: with the key in signingKey / signingPassword when given (CI),
+    // otherwise with the local gpg and signing.gnupg.keyName.
     signing {
         required = { !version.toString().endsWith('SNAPSHOT') }
         if (!version.toString().endsWith('SNAPSHOT')) {
-            useGpgCmd()
+            if (findProperty('signingKey')) {
+                useInMemoryPgpKeys(findProperty('signingKey'), findProperty('signingPassword'))
+            } else {
+                useGpgCmd()
+            }
             sign publishing.publications.mavenJava
         }
+    }
+}
+
+// ---- Maven Central ----
+//
+// ./gradlew publishToCentral builds and signs every module, zips them as one bundle and uploads it
+// to the Central Portal as a USER_MANAGED deployment: after the Portal's checks pass, publish it at
+// https://central.sonatype.com/publishing/deployments. Needs centralPortalUsername and
+// centralPortalPassword (a Portal user token) in ~/.gradle/gradle.properties.
+
+def stagingDir = layout.buildDirectory.dir('staging-deploy')
+
+tasks.register('cleanStaging', Delete) {
+    delete stagingDir
+}
+
+tasks.register('centralBundle', Zip) {
+    group = 'publishing'
+    description = 'Zips the signed artifacts of every module as a Maven Central Portal bundle.'
+    dependsOn subprojects.collect { "${it.path}:publishMavenJavaPublicationToStagingRepository" }
+    from(stagingDir) {
+        // Central keeps its own metadata.
+        exclude '**/maven-metadata.xml*'
+    }
+    archiveFileName = "jiogram-sb${bootGeneration}-${version}-bundle.zip"
+    destinationDirectory = layout.buildDirectory.dir('central')
+    doFirst {
+        if (version.toString().endsWith('SNAPSHOT')) {
+            throw new GradleException("Central does not take SNAPSHOT versions; set a release version first (now ${version}).")
+        }
+    }
+}
+
+tasks.register('publishToCentral') {
+    group = 'publishing'
+    description = 'Uploads the centralBundle to the Maven Central Portal and waits for its checks.'
+    dependsOn 'centralBundle'
+    def bundle = tasks.named('centralBundle').flatMap { it.archiveFile }
+    doLast {
+        def user = findProperty('centralPortalUsername') ?: System.getenv('CENTRAL_PORTAL_USERNAME')
+        def password = findProperty('centralPortalPassword') ?: System.getenv('CENTRAL_PORTAL_PASSWORD')
+        if (!user || !password) {
+            throw new GradleException('Set centralPortalUsername and centralPortalPassword (a Central Portal '
+                + 'user token) in ~/.gradle/gradle.properties.')
+        }
+        def file = bundle.get().asFile
+        def auth = 'Bearer ' + "${user}:${password}".getBytes('UTF-8').encodeBase64().toString()
+        def api = 'https://central.sonatype.com/api/v1/publisher'
+        def http = java.net.http.HttpClient.newHttpClient()
+
+        def boundary = UUID.randomUUID().toString()
+        def body = new ByteArrayOutputStream()
+        body << ("--${boundary}\r\nContent-Disposition: form-data; name=\"bundle\"; filename=\"${file.name}\"\r\n"
+            + 'Content-Type: application/octet-stream\r\n\r\n').getBytes('UTF-8')
+        body << file.bytes
+        body << "\r\n--${boundary}--\r\n".getBytes('UTF-8')
+        def name = URLEncoder.encode("jiogram-sb${bootGeneration} ${version}", 'UTF-8')
+        def upload = java.net.http.HttpRequest.newBuilder(
+                URI.create("${api}/upload?name=${name}&publishingType=USER_MANAGED"))
+            .header('Authorization', auth)
+            .header('Content-Type', "multipart/form-data; boundary=${boundary}")
+            .POST(java.net.http.HttpRequest.BodyPublishers.ofByteArray(body.toByteArray()))
+            .build()
+        def response = http.send(upload, java.net.http.HttpResponse.BodyHandlers.ofString())
+        if (response.statusCode() != 201) {
+            throw new GradleException("Upload of ${file.name} failed: HTTP ${response.statusCode()} ${response.body()}")
+        }
+        def deploymentId = response.body().trim()
+        logger.lifecycle("Uploaded ${file.name} as deployment ${deploymentId}; waiting for the Portal's checks...")
+
+        def status = java.net.http.HttpRequest.newBuilder(URI.create("${api}/status?id=${deploymentId}"))
+            .header('Authorization', auth)
+            .POST(java.net.http.HttpRequest.BodyPublishers.noBody())
+            .build()
+        for (int attempt = 0; attempt < 60; attempt++) {
+            def state = new groovy.json.JsonSlurper().parseText(
+                http.send(status, java.net.http.HttpResponse.BodyHandlers.ofString()).body())
+            if (state.deploymentState == 'FAILED') {
+                throw new GradleException("Central rejected deployment ${deploymentId}: ${state.errors}")
+            }
+            if (state.deploymentState in ['VALIDATED', 'PUBLISHING', 'PUBLISHED']) {
+                logger.lifecycle("Deployment ${deploymentId} is ${state.deploymentState}. Publish it at "
+                    + 'https://central.sonatype.com/publishing/deployments')
+                return
+            }
+            Thread.sleep(5000)
+        }
+        logger.lifecycle("Deployment ${deploymentId} is still being checked; follow it at "
+            + 'https://central.sonatype.com/publishing/deployments')
     }
 }
