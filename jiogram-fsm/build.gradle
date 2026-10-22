@@ -1,13 +1,6 @@
 plugins {
     id 'java-library'
     id 'org.springframework.boot' apply false
-    id 'io.spring.dependency-management'
-}
-
-dependencyManagement {
-    imports {
-        mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
-    }
 }
 
 dependencies {
@@ -20,8 +13,27 @@ dependencies {
     // Optional Redis support for distributed state storage
     compileOnly 'org.springframework.data:spring-data-redis'
     compileOnly 'io.lettuce:lettuce-core'
-    compileOnly 'com.fasterxml.jackson.core:jackson-databind'
+    // Jackson 2 (same rationale as jiogram-core); used by FSMContext and RedisStateStorage.
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.projectreactor:reactor-test'
+    // RedisStateStorageTest runs against a real Redis; skipped when Docker is unavailable.
+    testImplementation 'org.springframework.data:spring-data-redis'
+    testImplementation 'io.lettuce:lettuce-core'
+    testImplementation 'org.testcontainers:junit-jupiter'
+    // RedisStateStorageTest waits for key expiry; spring-boot-starter-test 2.7 does not bring
+    // Awaitility in (3.x does), but the Spring Boot 2.7 BOM manages its version.
+    testImplementation 'org.awaitility:awaitility'
+}
+
+// Spring Boot 2.7 does not manage Testcontainers; 1.21.4 works with Docker Engine 29
+// (minimum API 1.44), older 1.x releases skip the Redis tests as "no Docker".
+dependencyManagement {
+    dependencies {
+        dependencySet(group: 'org.testcontainers', version: '1.21.4') {
+            entry 'testcontainers'
+            entry 'junit-jupiter'
+        }
+    }
 }

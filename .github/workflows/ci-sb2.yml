@@ -15,7 +15,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java: [11, 17]
+        # Gradle 9 needs Java 17 to run; the code is compiled for Java 11 (options.release).
+        java: [17, 21]
 
     steps:
       - name: Checkout
@@ -38,10 +39,22 @@ jobs:
             gradle-sb2-${{ runner.os }}-
 
       - name: Build
-        run: ./gradlew clean build --no-daemon
+        run: ./gradlew clean build --no-daemon --no-parallel
 
       - name: Verify artifact names
         run: |
-          ./gradlew publishToMavenLocal --no-daemon
-          test -f ~/.m2/repository/uz/jtscorp/jiogram/jiogram-types-sb2/0.2.0-SNAPSHOT/jiogram-types-sb2-0.2.0-SNAPSHOT.jar
-          test -f ~/.m2/repository/uz/jtscorp/jiogram/jiogram-spring-boot-2-starter/0.2.0-SNAPSHOT/jiogram-spring-boot-2-starter-0.2.0-SNAPSHOT.jar
+          ./gradlew publishToMavenLocal --no-daemon --no-parallel
+          VERSION=$(./gradlew -q properties --property version --no-daemon | awk '/^version:/ {print $2}')
+          test -n "$VERSION"
+          test -f ~/.m2/repository/uz/jtscorp/jiogram/jiogram-types-sb2/$VERSION/jiogram-types-sb2-$VERSION.jar
+          test -f ~/.m2/repository/uz/jtscorp/jiogram/jiogram-spring-boot-2-starter/$VERSION/jiogram-spring-boot-2-starter-$VERSION.jar
+
+      # The examples are separate builds that consume the starter from mavenLocal (published above).
+      # They are the only real users of the FSM annotation processor and catch API breakage.
+      - name: Compile examples
+        run: |
+          for example in examples/*/; do
+            echo "::group::$example"
+            ./gradlew -p "$example" compileJava --no-daemon
+            echo "::endgroup::"
+          done

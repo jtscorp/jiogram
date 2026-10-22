@@ -17,6 +17,15 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'maven-publish'
     apply plugin: 'signing'
+    apply plugin: 'io.spring.dependency-management'
+
+    // One BOM for every module: Jackson 2, Reactor, Spring and JUnit versions all come
+    // from Spring Boot, so tests run against the versions consumers get at runtime.
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
+        }
+    }
 
     java {
         toolchain {
@@ -28,7 +37,7 @@ subprojects {
 
     tasks.withType(JavaCompile) {
         options.encoding = 'UTF-8'
-        options.release = 11
+        options.release.set(11)
     }
 
     tasks.withType(Test) {
@@ -39,11 +48,9 @@ subprojects {
         def opts = options as StandardJavadocDocletOptions
         opts.addStringOption('source', '11')
         opts.addBooleanOption('Xdoclint:all,-missing', true)
-        options.encoding = 'UTF-8'
     }
 
     dependencies {
-        testImplementation platform("org.junit:junit-bom:${junitVersion}")
         testImplementation 'org.junit.jupiter:junit-jupiter'
         testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     }
@@ -53,8 +60,21 @@ subprojects {
             mavenJava(MavenPublication) {
                 from components.java
 
-                // Every artifact on sb2.x carries a -sb2 suffix to avoid
-                // Maven Central GAV collisions with sb3.x and main (sb4).
+                // BOM-managed dependencies are declared without a version; write the resolved
+                // versions into the published POM and Gradle module metadata, so consumers
+                // that do not import the Spring Boot BOM can still resolve them.
+                versionMapping {
+                    usage('java-api') {
+                        fromResolutionOf('runtimeClasspath')
+                    }
+                    usage('java-runtime') {
+                        fromResolutionResult()
+                    }
+                }
+
+                // Every artifact on sb2.x (Spring Boot 2.7) carries a -sb2 suffix
+                // to avoid Maven Central GAV collisions with sb3.x and main (sb4).
+                // The starter is named 'jiogram-spring-boot-2-starter'.
                 artifactId = (project.name == 'jiogram-spring-boot-starter')
                     ? 'jiogram-spring-boot-2-starter'
                     : "${project.name}-sb2"

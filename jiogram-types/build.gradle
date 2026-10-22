@@ -1,18 +1,14 @@
 plugins {
     id 'java-library'
     id 'io.jiogram.codegen'
-    id 'io.spring.dependency-management'
-}
-
-dependencyManagement {
-    imports {
-        mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
-    }
 }
 
 dependencies {
     api 'com.fasterxml.jackson.core:jackson-annotations'
-    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    // jackson-databind is exposed as `api` because generated types reference
+    // `com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver` (used by
+    // MaybeInaccessibleMessage). Consumers need it on the runtime classpath.
+    api 'com.fasterxml.jackson.core:jackson-databind'
     implementation 'org.jspecify:jspecify:1.0.0'
 }
 
