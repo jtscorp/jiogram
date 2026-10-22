@@ -1,2 +1,5 @@
 telegram:
   token: ${BOT_TOKEN}
+  defaults:
+    # Applied to every caption left without a parse mode, including each photo of an album.
+    parse-mode: HTML

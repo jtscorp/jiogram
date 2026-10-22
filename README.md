@@ -136,7 +136,7 @@ All properties live under the `telegram` prefix. See [docs/configuration.md](doc
 | [Inline Bot](examples/inline-bot/) | Answers inline queries with article results |
 | [Webhook Bot](examples/webhook-bot/) | Runs the same echo handler in webhook mode |
 | [Broadcast Bot](examples/broadcast-bot/) | Sends a message to a configured list of users with basic error handling |
-| [Media Group Bot](examples/media-group-bot/) | Sends a photo album with `sendMediaGroup` |
+| [Media Group Bot](examples/media-group-bot/) | Sends a photo album from URLs (`/start`) and uploads files from memory and disk (`/upload`) |
 | [Regexp Bot](examples/regexp-bot/) | Uses regex filters for item commands and deep-link payloads |
 | [Language Bot](examples/language-bot/) | Reads the user's Telegram language code |
 | [Proxy Bot](examples/proxy-bot/) | Provides a `TelegramSession` bean that uses an HTTP/SOCKS5 proxy |
