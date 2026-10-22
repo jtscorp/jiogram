@@ -1,5 +1,6 @@
 package io.jiogram.codegen;
 
+import com.squareup.javapoet.TypeName;
 import io.jiogram.codegen.model.ApiSchema;
 import io.jiogram.codegen.model.EnumDefinition;
 
@@ -15,12 +16,21 @@ import org.gradle.api.tasks.TaskAction;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 /**
  * Gradle task that generates Java source files from the Telegram Bot API schema.
  */
 public abstract class GenerateApiTask extends DefaultTask {
+
+    static {
+        // JavaPoet's TypeName and its subclass ClassName initialize each other. When two of these
+        // tasks (jiogram-types and jiogram-methods) start in parallel, one thread can begin with
+        // TypeName and the other with ClassName and deadlock on the class initialization locks.
+        // Initializing TypeName here, once, on the thread that loads this class avoids that.
+        Objects.requireNonNull(TypeName.OBJECT);
+    }
 
     /**
      * Schema types implemented by hand in jiogram-types (the schema has no usable shape for them).
