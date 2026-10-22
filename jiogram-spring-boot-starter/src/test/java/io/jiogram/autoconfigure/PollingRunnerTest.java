@@ -135,6 +135,8 @@ class PollingRunnerTest {
              "message_id": 1, "date": 1775538971, "reactions": []}}""");
         Update unknown = update("""
             {"update_id": 6, "some_future_update": {"id": 1}}""");
+        Update voteWithoutVoter = update("""
+            {"update_id": 7, "poll_answer": {"poll_id": "p", "option_ids": [0]}}""");
 
         assertThat(PollingRunner.sequenceKey(callbackInGroup)).isEqualTo(-100L);
         assertThat(PollingRunner.sequenceKey(inlineQuery)).isEqualTo(7L);
@@ -142,6 +144,9 @@ class PollingRunnerTest {
         assertThat(PollingRunner.sequenceKey(anonymousVote)).isEqualTo(-200L);
         assertThat(PollingRunner.sequenceKey(reactionCount)).isEqualTo(-300L);
         assertThat(PollingRunner.sequenceKey(unknown)).isEqualTo("update:6");
+        // Neither user nor voter chat: an independent key, not a NullPointerException that would
+        // fail the batch and stop polling at that offset.
+        assertThat(PollingRunner.sequenceKey(voteWithoutVoter)).isEqualTo("update:7");
     }
 
     private Bot botServing(List<Update> firstBatch) {
