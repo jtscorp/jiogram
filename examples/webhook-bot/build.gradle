@@ -34,7 +34,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-2-starter:0.2.0'
+    implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-2-starter:0.2.1-SNAPSHOT'
     // Webhook mode receives updates over HTTP; the starter itself brings no web server.
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
 }
