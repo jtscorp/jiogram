@@ -117,4 +117,19 @@ public record SendPoll(
     public static SendPoll of(ChatId chatId, String question, List<InputPollOption> options) {
         return new SendPoll(null, chatId, null, question, null, null, options, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
     }
+
+    /**
+     * Sends to the chat of {@code message}, and to its forum topic, business connection or direct
+     * messages topic when it came from one.
+     */
+    public static SendPoll answer(Message message, String question, List<InputPollOption> options) {
+        return new SendPoll(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), question, null, null, options, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+    }
+
+    /**
+     * Like {@code answer}, as a reply to {@code message}.
+     */
+    public static SendPoll reply(Message message, String question, List<InputPollOption> options) {
+        return new SendPoll(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), question, null, null, options, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, ReplyTarget.replyTo(message), null);
+    }
 }

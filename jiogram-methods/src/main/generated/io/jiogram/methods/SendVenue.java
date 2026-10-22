@@ -81,4 +81,19 @@ public record SendVenue(
     public static SendVenue of(ChatId chatId, double latitude, double longitude, String title, String address) {
         return new SendVenue(null, chatId, null, null, latitude, longitude, title, address, null, null, null, null, null, null, null, null, null, null, null);
     }
+
+    /**
+     * Sends to the chat of {@code message}, and to its forum topic, business connection or direct
+     * messages topic when it came from one.
+     */
+    public static SendVenue answer(Message message, double latitude, double longitude, String title, String address) {
+        return new SendVenue(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), latitude, longitude, title, address, null, null, null, null, null, null, null, null, null, null, null);
+    }
+
+    /**
+     * Like {@code answer}, as a reply to {@code message}.
+     */
+    public static SendVenue reply(Message message, double latitude, double longitude, String title, String address) {
+        return new SendVenue(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), latitude, longitude, title, address, null, null, null, null, null, null, null, null, null, ReplyTarget.replyTo(message), null);
+    }
 }

@@ -3,6 +3,7 @@ package io.jiogram.methods;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.ChatAction;
 import io.jiogram.types.ChatId;
+import io.jiogram.types.Message;
 import io.jiogram.types.TelegramMethod;
 import org.jspecify.annotations.Nullable;
 
@@ -50,5 +51,13 @@ public record SendChatAction(
 
     public static SendChatAction of(ChatId chatId, ChatAction action) {
         return new SendChatAction(null, chatId, null, action);
+    }
+
+    /**
+     * Sends to the chat of {@code message}, and to its forum topic, business connection or direct
+     * messages topic when it came from one.
+     */
+    public static SendChatAction answer(Message message, ChatAction action) {
+        return new SendChatAction(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), action);
     }
 }

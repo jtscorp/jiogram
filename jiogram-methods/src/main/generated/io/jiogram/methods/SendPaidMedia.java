@@ -85,4 +85,19 @@ public record SendPaidMedia(
     public static SendPaidMedia of(ChatId chatId, long starCount, List<InputPaidMedia> media) {
         return new SendPaidMedia(null, chatId, null, null, starCount, media, null, null, null, null, null, null, null, null, null, null, null);
     }
+
+    /**
+     * Sends to the chat of {@code message}, and to its forum topic, business connection or direct
+     * messages topic when it came from one.
+     */
+    public static SendPaidMedia answer(Message message, long starCount, List<InputPaidMedia> media) {
+        return new SendPaidMedia(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), starCount, media, null, null, null, null, null, null, null, null, null, null, null);
+    }
+
+    /**
+     * Like {@code answer}, as a reply to {@code message}.
+     */
+    public static SendPaidMedia reply(Message message, long starCount, List<InputPaidMedia> media) {
+        return new SendPaidMedia(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), starCount, media, null, null, null, null, null, null, null, null, null, ReplyTarget.replyTo(message), null);
+    }
 }

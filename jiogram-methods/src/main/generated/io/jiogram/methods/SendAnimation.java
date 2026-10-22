@@ -101,4 +101,19 @@ public record SendAnimation(
     public static SendAnimation of(ChatId chatId, InputFileOrString animation) {
         return new SendAnimation(null, chatId, null, null, animation, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
     }
+
+    /**
+     * Sends to the chat of {@code message}, and to its forum topic, business connection or direct
+     * messages topic when it came from one.
+     */
+    public static SendAnimation answer(Message message, InputFileOrString animation) {
+        return new SendAnimation(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), animation, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+    }
+
+    /**
+     * Like {@code answer}, as a reply to {@code message}.
+     */
+    public static SendAnimation reply(Message message, InputFileOrString animation) {
+        return new SendAnimation(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), animation, null, null, null, null, null, null, null, null, null, null, null, null, null, null, ReplyTarget.replyTo(message), null);
+    }
 }

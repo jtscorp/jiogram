@@ -1,6 +1,7 @@
 package io.jiogram.methods;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.jiogram.types.Message;
 import io.jiogram.types.MessageEntity;
 import io.jiogram.types.ParseMode;
 import io.jiogram.types.TelegramMethod;
@@ -43,5 +44,13 @@ public record SendMessageDraft(
 
     public static SendMessageDraft of(long chatId, long draftId, String text) {
         return new SendMessageDraft(chatId, null, draftId, text, null, null);
+    }
+
+    /**
+     * Sends to the chat of {@code message}, and to its forum topic, business connection or direct
+     * messages topic when it came from one.
+     */
+    public static SendMessageDraft answer(Message message, long draftId, String text) {
+        return new SendMessageDraft(message.chat().id(), ReplyTarget.messageThreadId(message), draftId, text, null, null);
     }
 }

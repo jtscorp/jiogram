@@ -81,4 +81,19 @@ public record SendVideoNote(
     public static SendVideoNote of(ChatId chatId, InputFileOrString videoNote) {
         return new SendVideoNote(null, chatId, null, null, videoNote, null, null, null, null, null, null, null, null, null, null);
     }
+
+    /**
+     * Sends to the chat of {@code message}, and to its forum topic, business connection or direct
+     * messages topic when it came from one.
+     */
+    public static SendVideoNote answer(Message message, InputFileOrString videoNote) {
+        return new SendVideoNote(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), videoNote, null, null, null, null, null, null, null, null, null, null);
+    }
+
+    /**
+     * Like {@code answer}, as a reply to {@code message}.
+     */
+    public static SendVideoNote reply(Message message, InputFileOrString videoNote) {
+        return new SendVideoNote(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), videoNote, null, null, null, null, null, null, null, null, ReplyTarget.replyTo(message), null);
+    }
 }

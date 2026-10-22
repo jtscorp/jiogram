@@ -98,4 +98,19 @@ public record SendAudio(
     public static SendAudio of(ChatId chatId, InputFileOrString audio) {
         return new SendAudio(null, chatId, null, null, audio, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
     }
+
+    /**
+     * Sends to the chat of {@code message}, and to its forum topic, business connection or direct
+     * messages topic when it came from one.
+     */
+    public static SendAudio answer(Message message, InputFileOrString audio) {
+        return new SendAudio(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), audio, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+    }
+
+    /**
+     * Like {@code answer}, as a reply to {@code message}.
+     */
+    public static SendAudio reply(Message message, InputFileOrString audio) {
+        return new SendAudio(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), audio, null, null, null, null, null, null, null, null, null, null, null, null, ReplyTarget.replyTo(message), null);
+    }
 }

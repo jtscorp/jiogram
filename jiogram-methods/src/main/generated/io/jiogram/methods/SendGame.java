@@ -57,4 +57,19 @@ public record SendGame(
     public static SendGame of(long chatId, String gameShortName) {
         return new SendGame(null, chatId, null, gameShortName, null, null, null, null, null, null);
     }
+
+    /**
+     * Sends to the chat of {@code message}, and to its forum topic, business connection or direct
+     * messages topic when it came from one.
+     */
+    public static SendGame answer(Message message, String gameShortName) {
+        return new SendGame(ReplyTarget.businessConnectionId(message), message.chat().id(), ReplyTarget.messageThreadId(message), gameShortName, null, null, null, null, null, null);
+    }
+
+    /**
+     * Like {@code answer}, as a reply to {@code message}.
+     */
+    public static SendGame reply(Message message, String gameShortName) {
+        return new SendGame(ReplyTarget.businessConnectionId(message), message.chat().id(), ReplyTarget.messageThreadId(message), gameShortName, null, null, null, null, ReplyTarget.replyTo(message), null);
+    }
 }

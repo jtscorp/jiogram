@@ -92,4 +92,19 @@ public record SendDocument(
     public static SendDocument of(ChatId chatId, InputFileOrString document) {
         return new SendDocument(null, chatId, null, null, document, null, null, null, null, null, null, null, null, null, null, null, null);
     }
+
+    /**
+     * Sends to the chat of {@code message}, and to its forum topic, business connection or direct
+     * messages topic when it came from one.
+     */
+    public static SendDocument answer(Message message, InputFileOrString document) {
+        return new SendDocument(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), document, null, null, null, null, null, null, null, null, null, null, null, null);
+    }
+
+    /**
+     * Like {@code answer}, as a reply to {@code message}.
+     */
+    public static SendDocument reply(Message message, InputFileOrString document) {
+        return new SendDocument(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), document, null, null, null, null, null, null, null, null, null, null, ReplyTarget.replyTo(message), null);
+    }
 }

@@ -69,4 +69,19 @@ public record SendDice(
     public static SendDice of(ChatId chatId) {
         return new SendDice(null, chatId, null, null, null, null, null, null, null, null, null, null);
     }
+
+    /**
+     * Sends to the chat of {@code message}, and to its forum topic, business connection or direct
+     * messages topic when it came from one.
+     */
+    public static SendDice answer(Message message) {
+        return new SendDice(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), null, null, null, null, null, null, null, null);
+    }
+
+    /**
+     * Like {@code answer}, as a reply to {@code message}.
+     */
+    public static SendDice reply(Message message) {
+        return new SendDice(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), null, null, null, null, null, null, ReplyTarget.replyTo(message), null);
+    }
 }

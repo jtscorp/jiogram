@@ -72,4 +72,19 @@ public record SendContact(
     public static SendContact of(ChatId chatId, String phoneNumber, String firstName) {
         return new SendContact(null, chatId, null, null, phoneNumber, firstName, null, null, null, null, null, null, null, null, null);
     }
+
+    /**
+     * Sends to the chat of {@code message}, and to its forum topic, business connection or direct
+     * messages topic when it came from one.
+     */
+    public static SendContact answer(Message message, String phoneNumber, String firstName) {
+        return new SendContact(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), phoneNumber, firstName, null, null, null, null, null, null, null, null, null);
+    }
+
+    /**
+     * Like {@code answer}, as a reply to {@code message}.
+     */
+    public static SendContact reply(Message message, String phoneNumber, String firstName) {
+        return new SendContact(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), phoneNumber, firstName, null, null, null, null, null, null, null, ReplyTarget.replyTo(message), null);
+    }
 }

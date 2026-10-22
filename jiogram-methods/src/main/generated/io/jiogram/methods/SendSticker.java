@@ -74,4 +74,19 @@ public record SendSticker(
     public static SendSticker of(ChatId chatId, InputFileOrString sticker) {
         return new SendSticker(null, chatId, null, null, sticker, null, null, null, null, null, null, null, null);
     }
+
+    /**
+     * Sends to the chat of {@code message}, and to its forum topic, business connection or direct
+     * messages topic when it came from one.
+     */
+    public static SendSticker answer(Message message, InputFileOrString sticker) {
+        return new SendSticker(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), sticker, null, null, null, null, null, null, null, null);
+    }
+
+    /**
+     * Like {@code answer}, as a reply to {@code message}.
+     */
+    public static SendSticker reply(Message message, InputFileOrString sticker) {
+        return new SendSticker(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), sticker, null, null, null, null, null, null, ReplyTarget.replyTo(message), null);
+    }
 }

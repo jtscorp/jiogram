@@ -87,4 +87,19 @@ public record SendVoice(
     public static SendVoice of(ChatId chatId, InputFileOrString voice) {
         return new SendVoice(null, chatId, null, null, voice, null, null, null, null, null, null, null, null, null, null, null);
     }
+
+    /**
+     * Sends to the chat of {@code message}, and to its forum topic, business connection or direct
+     * messages topic when it came from one.
+     */
+    public static SendVoice answer(Message message, InputFileOrString voice) {
+        return new SendVoice(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), voice, null, null, null, null, null, null, null, null, null, null, null);
+    }
+
+    /**
+     * Like {@code answer}, as a reply to {@code message}.
+     */
+    public static SendVoice reply(Message message, InputFileOrString voice) {
+        return new SendVoice(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), voice, null, null, null, null, null, null, null, null, null, ReplyTarget.replyTo(message), null);
+    }
 }

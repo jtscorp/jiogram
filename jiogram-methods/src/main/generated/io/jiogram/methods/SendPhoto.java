@@ -87,4 +87,19 @@ public record SendPhoto(
     public static SendPhoto of(ChatId chatId, InputFileOrString photo) {
         return new SendPhoto(null, chatId, null, null, photo, null, null, null, null, null, null, null, null, null, null, null, null);
     }
+
+    /**
+     * Sends to the chat of {@code message}, and to its forum topic, business connection or direct
+     * messages topic when it came from one.
+     */
+    public static SendPhoto answer(Message message, InputFileOrString photo) {
+        return new SendPhoto(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), photo, null, null, null, null, null, null, null, null, null, null, null, null);
+    }
+
+    /**
+     * Like {@code answer}, as a reply to {@code message}.
+     */
+    public static SendPhoto reply(Message message, InputFileOrString photo) {
+        return new SendPhoto(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), photo, null, null, null, null, null, null, null, null, null, null, ReplyTarget.replyTo(message), null);
+    }
 }

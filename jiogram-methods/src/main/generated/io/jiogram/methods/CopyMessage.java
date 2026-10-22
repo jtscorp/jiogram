@@ -2,6 +2,7 @@ package io.jiogram.methods;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.ChatId;
+import io.jiogram.types.Message;
 import io.jiogram.types.MessageEntity;
 import io.jiogram.types.MessageId;
 import io.jiogram.types.ParseMode;
@@ -86,5 +87,20 @@ public record CopyMessage(
 
     public static CopyMessage of(ChatId chatId, ChatId fromChatId, long messageId) {
         return new CopyMessage(chatId, null, null, fromChatId, messageId, null, null, null, null, null, null, null, null, null, null, null, null);
+    }
+
+    /**
+     * Sends to the chat of {@code message}, and to its forum topic, business connection or direct
+     * messages topic when it came from one.
+     */
+    public static CopyMessage answer(Message message, ChatId fromChatId, long messageId) {
+        return new CopyMessage(ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), fromChatId, messageId, null, null, null, null, null, null, null, null, null, null, null, null);
+    }
+
+    /**
+     * Like {@code answer}, as a reply to {@code message}.
+     */
+    public static CopyMessage reply(Message message, ChatId fromChatId, long messageId) {
+        return new CopyMessage(ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), fromChatId, messageId, null, null, null, null, null, null, null, null, null, null, ReplyTarget.replyTo(message), null);
     }
 }

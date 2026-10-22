@@ -80,4 +80,19 @@ public record SendLocation(
     public static SendLocation of(ChatId chatId, double latitude, double longitude) {
         return new SendLocation(null, chatId, null, null, latitude, longitude, null, null, null, null, null, null, null, null, null, null, null);
     }
+
+    /**
+     * Sends to the chat of {@code message}, and to its forum topic, business connection or direct
+     * messages topic when it came from one.
+     */
+    public static SendLocation answer(Message message, double latitude, double longitude) {
+        return new SendLocation(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), latitude, longitude, null, null, null, null, null, null, null, null, null, null, null);
+    }
+
+    /**
+     * Like {@code answer}, as a reply to {@code message}.
+     */
+    public static SendLocation reply(Message message, double latitude, double longitude) {
+        return new SendLocation(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), latitude, longitude, null, null, null, null, null, null, null, null, null, ReplyTarget.replyTo(message), null);
+    }
 }

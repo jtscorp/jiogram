@@ -60,4 +60,19 @@ public record SendMediaGroup(
     public static SendMediaGroup of(ChatId chatId, List<InputMedia> media) {
         return new SendMediaGroup(null, chatId, null, null, media, null, null, null, null, null);
     }
+
+    /**
+     * Sends to the chat of {@code message}, and to its forum topic, business connection or direct
+     * messages topic when it came from one.
+     */
+    public static SendMediaGroup answer(Message message, List<InputMedia> media) {
+        return new SendMediaGroup(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), media, null, null, null, null, null);
+    }
+
+    /**
+     * Like {@code answer}, as a reply to {@code message}.
+     */
+    public static SendMediaGroup reply(Message message, List<InputMedia> media) {
+        return new SendMediaGroup(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), media, null, null, null, null, ReplyTarget.replyTo(message));
+    }
 }

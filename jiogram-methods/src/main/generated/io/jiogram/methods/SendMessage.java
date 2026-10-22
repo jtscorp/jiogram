@@ -78,4 +78,19 @@ public record SendMessage(
     public static SendMessage of(ChatId chatId, String text) {
         return new SendMessage(null, chatId, null, null, text, null, null, null, null, null, null, null, null, null, null);
     }
+
+    /**
+     * Sends to the chat of {@code message}, and to its forum topic, business connection or direct
+     * messages topic when it came from one.
+     */
+    public static SendMessage answer(Message message, String text) {
+        return new SendMessage(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), text, null, null, null, null, null, null, null, null, null, null);
+    }
+
+    /**
+     * Like {@code answer}, as a reply to {@code message}.
+     */
+    public static SendMessage reply(Message message, String text) {
+        return new SendMessage(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), text, null, null, null, null, null, null, null, null, ReplyTarget.replyTo(message), null);
+    }
 }
