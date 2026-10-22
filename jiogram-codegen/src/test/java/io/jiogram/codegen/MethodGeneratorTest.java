@@ -204,4 +204,82 @@ class MethodGeneratorTest {
         assertTrue(source.contains("implements TelegramMethod<Boolean>"),
                 "Boolean return type -> TelegramMethod<Boolean>");
     }
+
+    // ---- answer(Message, ...) / reply(Message, ...) ----
+
+    @Test
+    void sendingMethod_getsAnswerAndReplyFactoriesTargetingTheMessage() {
+        MethodDefinition sendMessage = new MethodDefinition("sendMessage", "",
+                List.of(
+                        new FieldDefinition("business_connection_id", "String", false, ""),
+                        new FieldDefinition("chat_id", "Integer or String", true, ""),
+                        new FieldDefinition("message_thread_id", "Integer", false, ""),
+                        new FieldDefinition("direct_messages_topic_id", "Integer", false, ""),
+                        new FieldDefinition("text", "String", true, ""),
+                        new FieldDefinition("disable_notification", "Boolean", false, ""),
+                        new FieldDefinition("reply_parameters", "ReplyParameters", false, "")
+                ),
+                "Message", "Available methods");
+
+        String source = generator.generateToString(sendMessage);
+
+        assertTrue(source.contains("""
+                    public static SendMessage answer(Message message, String text) {
+                        return new SendMessage(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), \
+                ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), text, null, null);
+                    }
+                """), source);
+        assertTrue(source.contains("""
+                    public static SendMessage reply(Message message, String text) {
+                        return new SendMessage(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), \
+                ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), text, null, \
+                ReplyTarget.replyTo(message));
+                    }
+                """), source);
+        assertTrue(source.contains("import io.jiogram.types.Message;"), source);
+    }
+
+    @Test
+    void sendingMethodWithoutReplyParameters_getsOnlyAnswer() {
+        MethodDefinition sendChatAction = new MethodDefinition("sendChatAction", "",
+                List.of(
+                        new FieldDefinition("chat_id", "Integer or String", true, ""),
+                        new FieldDefinition("message_thread_id", "Integer", false, ""),
+                        new FieldDefinition("action", "String", true, "")
+                ),
+                "Boolean", "Available methods");
+
+        String source = generator.generateToString(sendChatAction);
+
+        assertTrue(source.contains("public static SendChatAction answer(Message message, ChatAction action)"), source);
+        assertFalse(source.contains(" reply("), source);
+        // Message is imported for the factory although the method does not return one.
+        assertTrue(source.contains("import io.jiogram.types.Message;"), source);
+    }
+
+    @Test
+    void numericChatId_isTakenFromTheChatDirectly() {
+        MethodDefinition sendGame = new MethodDefinition("sendGame", "",
+                List.of(
+                        new FieldDefinition("chat_id", "Integer", true, ""),
+                        new FieldDefinition("message_thread_id", "Integer", false, ""),
+                        new FieldDefinition("game_short_name", "String", true, "")
+                ),
+                "Message", "Available methods");
+
+        assertTrue(generator.generateToString(sendGame).contains(
+                "return new SendGame(message.chat().id(), ReplyTarget.messageThreadId(message), gameShortName);"));
+    }
+
+    @Test
+    void methodsThatDoNotSendIntoAChat_getNoAnswerFactory() {
+        MethodDefinition closeTopic = new MethodDefinition("closeForumTopic", "",
+                List.of(
+                        new FieldDefinition("chat_id", "Integer or String", true, ""),
+                        new FieldDefinition("message_thread_id", "Integer", true, "")
+                ),
+                "Boolean", "Available methods");
+
+        assertFalse(generator.generateToString(closeTopic).contains("answer("));
+    }
 }

@@ -23,6 +23,8 @@ import java.util.stream.Collectors;
  *   <li>{@code apiMethod()} returning the original API method name</li>
  *   <li>{@code apiReturnType()} returning the return type string</li>
  *   <li>A static {@code of()} factory with only required parameters</li>
+ *   <li>For sending methods, static {@code answer(Message, ...)} and {@code reply(Message, ...)}
+ *       factories that target the chat (and topic) of a received message</li>
  * </ul>
  */
 public final class MethodGenerator {
@@ -109,6 +111,9 @@ public final class MethodGenerator {
             imports.add(NULLABLE_PACKAGE + ".Nullable");
         }
 
+        // Built before the imports are written: it may add some.
+        String answerFactories = answerFactories(method, imports);
+
         // Build the source
         StringBuilder sb = new StringBuilder();
         sb.append("package ").append(methodsPackage).append(";\n\n");
@@ -146,6 +151,7 @@ public final class MethodGenerator {
             sb.append("\n");
             generateStaticFactory(sb, method, requiredParams, imports);
         }
+        sb.append(answerFactories);
 
         sb.append("}\n");
 
@@ -184,6 +190,82 @@ public final class MethodGenerator {
         sb.append("        return new ").append(method.className()).append("(");
         sb.append(String.join(", ", constructorArgs));
         sb.append(");\n");
+        sb.append("    }\n");
+    }
+
+    /**
+     * For methods that send something into a chat, factories that answer a received message the
+     * way aiogram's {@code Message.answer()} / {@code reply()} do: {@code answer(Message, ...)}
+     * fills in the chat, forum topic, business connection and direct messages topic from the
+     * message (see the hand-written {@code ReplyTarget}); {@code reply(Message, ...)} also replies
+     * to it. The other required parameters follow the message.
+     */
+    private String answerFactories(MethodDefinition method, Set<String> imports) {
+        if (!isAnswering(method)) {
+            return "";
+        }
+        imports.add(typesPackage + ".Message");
+        String messageParam = method.parameters().stream().anyMatch(p -> p.javaName().equals("message"))
+                ? "target" : "message";
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n");
+        appendAnswerFactory(sb, method, messageParam, false, imports);
+        if (method.parameters().stream().anyMatch(p -> p.name().equals("reply_parameters"))) {
+            sb.append("\n");
+            appendAnswerFactory(sb, method, messageParam, true, imports);
+        }
+        return sb.toString();
+    }
+
+    private static boolean isAnswering(MethodDefinition method) {
+        boolean sends = method.name().startsWith("send") || method.name().equals("copyMessage");
+        boolean hasChat = method.parameters().stream().anyMatch(p -> p.name().equals("chat_id") && p.required());
+        boolean hasOptionalThread = method.parameters().stream()
+                .anyMatch(p -> p.name().equals("message_thread_id") && !p.required());
+        return sends && hasChat && hasOptionalThread;
+    }
+
+    private void appendAnswerFactory(StringBuilder sb, MethodDefinition method, String messageParam, boolean reply,
+                                     Set<String> imports) {
+        List<String> factoryParams = new ArrayList<>();
+        factoryParams.add("Message " + messageParam);
+        List<String> constructorArgs = new ArrayList<>();
+        for (FieldDefinition param : method.parameters()) {
+            TypeName javaType = typeMapper.resolveMethodParameter(method.name(), param);
+            String fromMessage = switch (param.name()) {
+                // Most methods take a ChatId; a few (sendGame, sendMessageDraft) only a numeric id.
+                case "chat_id" -> javaType.isPrimitive()
+                        ? messageParam + ".chat().id()"
+                        : "ReplyTarget.chatId(" + messageParam + ")";
+                case "message_thread_id" -> "ReplyTarget.messageThreadId(" + messageParam + ")";
+                case "business_connection_id" -> "ReplyTarget.businessConnectionId(" + messageParam + ")";
+                case "direct_messages_topic_id" -> "ReplyTarget.directMessagesTopicId(" + messageParam + ")";
+                case "reply_parameters" -> reply ? "ReplyTarget.replyTo(" + messageParam + ")" : null;
+                default -> null;
+            };
+            if (fromMessage != null) {
+                constructorArgs.add(fromMessage);
+            } else if (param.required()) {
+                factoryParams.add(resolveTypeString(javaType, imports) + " " + param.javaName());
+                constructorArgs.add(param.javaName());
+            } else {
+                constructorArgs.add(javaType.isPrimitive() ? defaultPrimitiveValue(javaType) : "null");
+            }
+        }
+
+        sb.append("    /**\n");
+        if (reply) {
+            sb.append("     * Like {@code answer}, as a reply to {@code ").append(messageParam).append("}.\n");
+        } else {
+            sb.append("     * Sends to the chat of {@code ").append(messageParam)
+                    .append("}, and to its forum topic, business connection or direct\n")
+                    .append("     * messages topic when it came from one.\n");
+        }
+        sb.append("     */\n");
+        sb.append("    public static ").append(method.className()).append(reply ? " reply(" : " answer(")
+                .append(String.join(", ", factoryParams)).append(") {\n");
+        sb.append("        return new ").append(method.className()).append("(")
+                .append(String.join(", ", constructorArgs)).append(");\n");
         sb.append("    }\n");
     }
 
