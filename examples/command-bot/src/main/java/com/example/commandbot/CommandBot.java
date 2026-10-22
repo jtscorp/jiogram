@@ -8,7 +8,6 @@ import io.jiogram.bot.Bot;
 import io.jiogram.methods.AnswerCallbackQuery;
 import io.jiogram.methods.SendMessage;
 import io.jiogram.types.CallbackQuery;
-import io.jiogram.types.ChatId;
 import io.jiogram.types.InlineKeyboardButton;
 import io.jiogram.types.InlineKeyboardMarkup;
 import io.jiogram.types.Message;
@@ -25,8 +24,8 @@ public class CommandBot {
     @OnMessage
     @Command("start")
     public SendMessage onStart(Message message) {
-        return SendMessage.of(
-            ChatId.of(message.chat().id()),
+        return SendMessage.answer(
+            message,
             "Welcome! Use /help to see available commands."
         );
     }
@@ -39,8 +38,8 @@ public class CommandBot {
             /start - Start the bot
             /help - Show this help message
             /settings - Open settings menu""";
-        return SendMessage.of(
-            ChatId.of(message.chat().id()),
+        return SendMessage.answer(
+            message,
             helpText
         );
     }
@@ -50,36 +49,15 @@ public class CommandBot {
     public Mono<Void> onSettings(Message message, Bot bot) {
         var keyboard = new InlineKeyboardMarkup(List.of(
             List.of(
-                new InlineKeyboardButton(
-                    "Language", null, null, null,
-                    "settings_lang", null, null, null,
-                    null, null, null, null, null
-                ),
-                new InlineKeyboardButton(
-                    "Notifications", null, null, null,
-                    "settings_notif", null, null, null,
-                    null, null, null, null, null
-                )
+                InlineKeyboardButton.of("Language").withCallbackData("settings_lang"),
+                InlineKeyboardButton.of("Notifications").withCallbackData("settings_notif")
             ),
             List.of(
-                new InlineKeyboardButton(
-                    "About", null, null, null,
-                    "settings_about", null, null, null,
-                    null, null, null, null, null
-                )
+                InlineKeyboardButton.of("About").withCallbackData("settings_about")
             )
         ));
 
-        var send = new SendMessage(
-            null,
-            ChatId.of(message.chat().id()),
-            null, null,
-            "Settings:",
-            null, null, null, null, null, null, null, null, null,
-            keyboard
-        );
-
-        return bot.execute(send).then();
+        return bot.execute(SendMessage.answer(message, "Settings:").withReplyMarkup(keyboard)).then();
     }
 
     @OnCallbackQuery(prefix = "settings_")
@@ -95,9 +73,7 @@ public class CommandBot {
         };
 
         // Answer the callback query (removes the loading indicator)
-        var answer = new AnswerCallbackQuery(
-            callback.id(), responseText, false, null, null
-        );
+        var answer = AnswerCallbackQuery.of(callback.id()).withText(responseText);
 
         return bot.execute(answer).then();
     }

@@ -4,3 +4,8 @@ telegram:
     enabled: true
     strategy: USER_IN_CHAT
     storage: memory
+    # With storage: redis (Redis at spring.data.redis.host/port, localhost:6379 by default):
+    # redis:
+    #   key-prefix: fsm-bot:fsm
+    #   state-ttl: 1d
+    #   data-ttl: 1d

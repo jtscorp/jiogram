@@ -8,7 +8,6 @@ import io.jiogram.bot.Bot;
 import io.jiogram.dispatcher.UpdateContext;
 import io.jiogram.fsm.FSMContext;
 import io.jiogram.methods.SendMessage;
-import io.jiogram.types.ChatId;
 import io.jiogram.types.Message;
 import reactor.core.publisher.Mono;
 
@@ -23,8 +22,8 @@ public class RegistrationBot {
     @OnMessage
     @Command("start")
     public SendMessage onStart(Message message) {
-        return SendMessage.of(
-            ChatId.of(message.chat().id()),
+        return SendMessage.answer(
+            message,
             "Welcome! Use /register to start the registration form."
         );
     }
@@ -34,8 +33,8 @@ public class RegistrationBot {
     public Mono<Void> onCancel(Message message, Bot bot, UpdateContext context) {
         FSMContext fsm = context.get("state", FSMContext.class);
         return fsm.clear()
-            .then(bot.execute(SendMessage.of(
-                ChatId.of(message.chat().id()),
+            .then(bot.execute(SendMessage.answer(
+                message,
                 "Registration cancelled. Use /register to start over."
             )))
             .then();
@@ -46,8 +45,8 @@ public class RegistrationBot {
     public Mono<Void> startRegistration(Message message, Bot bot, UpdateContext context) {
         FSMContext fsm = context.get("state", FSMContext.class);
         return fsm.setState(Form.WAITING_FOR_NAME)
-            .then(bot.execute(SendMessage.of(
-                ChatId.of(message.chat().id()),
+            .then(bot.execute(SendMessage.answer(
+                message,
                 "Let's start registration.\n\nWhat is your name?"
             )))
             .then();
@@ -58,8 +57,8 @@ public class RegistrationBot {
     public Mono<Void> processName(Message message, Bot bot, UpdateContext context) {
         String name = message.text();
         if (name == null || name.isBlank()) {
-            return bot.execute(SendMessage.of(
-                ChatId.of(message.chat().id()),
+            return bot.execute(SendMessage.answer(
+                message,
                 "Please enter a valid name."
             )).then();
         }
@@ -67,8 +66,8 @@ public class RegistrationBot {
         FSMContext fsm = context.get("state", FSMContext.class);
         return fsm.updateData("name", name)
             .then(fsm.setState(Form.WAITING_FOR_AGE))
-            .then(bot.execute(SendMessage.of(
-                ChatId.of(message.chat().id()),
+            .then(bot.execute(SendMessage.answer(
+                message,
                 "Nice to meet you, " + name + "!\n\nHow old are you?"
             )))
             .then();
@@ -79,8 +78,8 @@ public class RegistrationBot {
     public Mono<Void> processAge(Message message, Bot bot, UpdateContext context) {
         String ageText = message.text();
         if (ageText == null || ageText.isBlank()) {
-            return bot.execute(SendMessage.of(
-                ChatId.of(message.chat().id()),
+            return bot.execute(SendMessage.answer(
+                message,
                 "Please enter a valid age (a number)."
             )).then();
         }
@@ -89,15 +88,15 @@ public class RegistrationBot {
         try {
             age = Integer.parseInt(ageText.trim());
         } catch (NumberFormatException e) {
-            return bot.execute(SendMessage.of(
-                ChatId.of(message.chat().id()),
+            return bot.execute(SendMessage.answer(
+                message,
                 "That doesn't look like a number. Please enter your age."
             )).then();
         }
 
         if (age < 1 || age > 150) {
-            return bot.execute(SendMessage.of(
-                ChatId.of(message.chat().id()),
+            return bot.execute(SendMessage.answer(
+                message,
                 "Please enter a realistic age (1-150)."
             )).then();
         }
@@ -110,8 +109,8 @@ public class RegistrationBot {
                     + "Name: " + data.get("name") + "\n"
                     + "Age: " + data.get("age") + "\n\n"
                     + "Is this correct? (yes/no)";
-                return bot.execute(SendMessage.of(
-                    ChatId.of(message.chat().id()),
+                return bot.execute(SendMessage.answer(
+                    message,
                     summary
                 ));
             }))
@@ -130,21 +129,21 @@ public class RegistrationBot {
                     + "Name: " + data.get("name") + "\n"
                     + "Age: " + data.get("age");
                 return fsm.clear()
-                    .then(bot.execute(SendMessage.of(
-                        ChatId.of(message.chat().id()),
+                    .then(bot.execute(SendMessage.answer(
+                        message,
                         result
                     )));
             }).then();
         } else if ("no".equalsIgnoreCase(answer)) {
             return fsm.clear()
-                .then(bot.execute(SendMessage.of(
-                    ChatId.of(message.chat().id()),
+                .then(bot.execute(SendMessage.answer(
+                    message,
                     "Registration cancelled. Use /register to start over."
                 )))
                 .then();
         } else {
-            return bot.execute(SendMessage.of(
-                ChatId.of(message.chat().id()),
+            return bot.execute(SendMessage.answer(
+                message,
                 "Please answer 'yes' or 'no'."
             )).then();
         }

@@ -1,0 +1,11 @@
+telegram:
+  token: ${BOT_TOKEN}
+  polling:
+    allowed-updates:
+      - message
+      - shipping_query
+      - pre_checkout_query
+
+payment:
+  provider-token: ${PAYMENT_PROVIDER_TOKEN:}
+  payload: ${PAYMENT_PAYLOAD:jiogram-demo-invoice}

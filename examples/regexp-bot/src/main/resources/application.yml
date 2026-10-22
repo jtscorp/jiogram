@@ -1,0 +1,4 @@
+telegram:
+  token: ${BOT_TOKEN}
+  defaults:
+    parse-mode: HTML
