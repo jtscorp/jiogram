@@ -36,8 +36,8 @@ repositories {
 dependencies {
     // When building from the Jiogram source tree, use:
     // implementation project(':jiogram-spring-boot-starter')
-    implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-2-starter:0.2.0-SNAPSHOT'
-    annotationProcessor 'uz.jtscorp.jiogram:jiogram-fsm-processor-sb2:0.2.0-SNAPSHOT'
+    implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-2-starter:0.2.0'
+    annotationProcessor 'uz.jtscorp.jiogram:jiogram-fsm-processor-sb2:0.2.0'
 
     // Optional: keeps FSM state in Redis (telegram.fsm.storage=redis) so it survives restarts and
     // is shared between instances. Unused while the storage is "memory".
