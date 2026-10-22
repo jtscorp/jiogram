@@ -5,30 +5,49 @@ import java.util.Objects;
 
 /**
  * Represents the result of applying a filter: either passed (with optional data) or failed.
+ * The only implementations are {@link Passed} and {@link Failed}.
  */
 public interface FilterResult {
 
+    /**
+     * A passed filter, with the data it contributes to the handler.
+     */
     final class Passed implements FilterResult {
+
         private final Map<String, Object> data;
 
+        /**
+         * Creates a passed result carrying data.
+         *
+         * @param data the data the filter contributes
+         */
         public Passed(Map<String, Object> data) {
             this.data = data;
         }
 
+        /**
+         * Creates a passed result without data.
+         */
         public Passed() {
             this(Map.of());
         }
 
+        /**
+         * Returns the data the filter contributes.
+         */
         public Map<String, Object> data() {
             return data;
         }
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof Passed)) return false;
-            Passed other = (Passed) o;
-            return Objects.equals(data, other.data);
+            if (this == o) {
+                return true;
+            }
+            if (!(o instanceof Passed)) {
+                return false;
+            }
+            return Objects.equals(data, ((Passed) o).data);
         }
 
         @Override
@@ -38,26 +57,34 @@ public interface FilterResult {
 
         @Override
         public String toString() {
-            return "FilterResult.Passed[data=" + data + "]";
+            return "Passed[data=" + data + "]";
         }
     }
 
+    /**
+     * A failed filter.
+     */
     final class Failed implements FilterResult {
+
+        /**
+         * Creates a failed result.
+         */
+        public Failed() {
+        }
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
             return o instanceof Failed;
         }
 
         @Override
         public int hashCode() {
-            return 1;
+            return 0;
         }
 
         @Override
         public String toString() {
-            return "FilterResult.Failed[]";
+            return "Failed[]";
         }
     }
 

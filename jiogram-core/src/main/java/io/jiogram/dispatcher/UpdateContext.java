@@ -2,6 +2,7 @@ package io.jiogram.dispatcher;
 
 import io.jiogram.bot.Bot;
 import io.jiogram.types.Update;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.Map;
@@ -31,10 +32,15 @@ public class UpdateContext {
     }
 
     /**
-     * Stores a value in the context data map.
+     * Stores a value in the context data map. A {@code null} value removes the key, so
+     * {@link #get(String)} returns null for it either way.
      */
-    public void put(String key, Object value) {
-        data.put(key, value);
+    public void put(String key, @Nullable Object value) {
+        if (value == null) {
+            data.remove(key);
+        } else {
+            data.put(key, value);
+        }
     }
 
     /**
@@ -66,11 +72,11 @@ public class UpdateContext {
     }
 
     /**
-     * Merges the given map into the context data.
+     * Merges the given map into the context data, with the same null handling as {@link #put}.
      */
-    public void merge(Map<String, Object> other) {
+    public void merge(@Nullable Map<String, Object> other) {
         if (other != null) {
-            data.putAll(other);
+            other.forEach(this::put);
         }
     }
 }

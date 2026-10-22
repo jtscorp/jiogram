@@ -31,7 +31,7 @@ public interface Filter<E> {
     default Filter<E> and(Filter<E> other) {
         return (event, context) -> this.apply(event, context)
                 .flatMap(result -> {
-                    // Java 17-compatible dispatch over sealed FilterResult.
+                    // Java 11-compatible dispatch over FilterResult (Passed or Failed).
                     if (result instanceof FilterResult.Failed) {
                         return Mono.just(FilterResult.failed());
                     } else if (result instanceof FilterResult.Passed) {

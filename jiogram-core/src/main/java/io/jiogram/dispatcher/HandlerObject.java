@@ -40,7 +40,7 @@ public class HandlerObject<E> {
         for (Filter<E> filter : filters) {
             result = result.flatMap(accumulated ->
                     filter.apply(event, context).flatMap(filterResult -> {
-                        // Java 17-compatible exhaustive dispatch over the sealed
+                        // Java 11-compatible exhaustive dispatch over the
                         // FilterResult interface (no type pattern in switch).
                         if (filterResult instanceof FilterResult.Failed) {
                             return Mono.<Map<String, Object>>empty();

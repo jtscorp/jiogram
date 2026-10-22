@@ -15,6 +15,21 @@ public @interface StateFilter {
 
     /**
      * The state name to match against the current FSM state.
+     * <p>
+     * When {@link #enumClass()} is set, this value is interpreted as the enum
+     * constant name. Otherwise it is interpreted as the full state name.
      */
-    String value();
+    String value() default "";
+
+    /**
+     * Optional enum class that owns the FSM state constant.
+     */
+    Class<? extends Enum<?>> enumClass() default NoState.class;
+
+    /**
+     * Sentinel used as the default for {@link #enumClass()}.
+     */
+    enum NoState {
+        NONE
+    }
 }

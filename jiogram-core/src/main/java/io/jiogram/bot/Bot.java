@@ -1,15 +1,13 @@
 package io.jiogram.bot;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import io.jiogram.methods.GetMe;
 import io.jiogram.session.TelegramSession;
-import io.jiogram.types.LinkPreviewOptions;
-import io.jiogram.types.ParseMode;
 import io.jiogram.types.TelegramMethod;
+import io.jiogram.types.User;
 import reactor.core.publisher.Mono;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Parameter;
+import java.time.Duration;
+import java.util.Objects;
 
 /**
  * Represents a Telegram bot with a token, session, and default properties.
@@ -20,19 +18,21 @@ public class Bot {
     private final long id;
     private final TelegramSession session;
     private final DefaultBotProperties defaults;
+    private final RequestDefaults requestDefaults;
+    // A successful getMe is cached for the bot's lifetime; errors are not, so the next call retries.
+    private final Mono<User> me = Mono.defer(() -> execute(new GetMe()))
+        .cache(user -> Duration.ofMillis(Long.MAX_VALUE), error -> Duration.ZERO, () -> Duration.ZERO);
 
     public Bot(String token, TelegramSession session) {
         this(token, session, DefaultBotProperties.defaults());
     }
 
     public Bot(String token, TelegramSession session, DefaultBotProperties defaults) {
-        if (token == null || token.isBlank()) {
-            throw new IllegalArgumentException("Bot token must not be null or blank");
-        }
-        this.token = token;
+        this.token = requireValidToken(token);
         this.id = extractBotId(token);
-        this.session = session;
-        this.defaults = defaults;
+        this.session = Objects.requireNonNull(session, "session must not be null");
+        this.defaults = Objects.requireNonNull(defaults, "defaults must not be null");
+        this.requestDefaults = new RequestDefaults(defaults);
     }
 
     /**
@@ -43,7 +43,14 @@ public class Bot {
      * @return a Mono emitting the deserialized result
      */
     public <T> Mono<T> execute(TelegramMethod<T> method) {
-        return session.makeRequest(token, applyDefaults(method));
+        return session.makeRequest(token, requestDefaults.apply(method));
+    }
+
+    /**
+     * Returns the bot's own user (from {@code getMe}), fetched on first use and then cached.
+     */
+    public Mono<User> me() {
+        return me;
     }
 
     public String token() {
@@ -86,89 +93,10 @@ public class Bot {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private <T> TelegramMethod<T> applyDefaults(TelegramMethod<T> method) {
-        if (defaults.parseMode() == null && !defaults.protectContent() && defaults.linkPreview()) {
-            return method;
+    private static String requireValidToken(String token) {
+        if (token == null || token.isBlank()) {
+            throw new IllegalArgumentException("Bot token must not be null or blank");
         }
-
-        try {
-            Constructor<?> constructor = findJsonConstructor(method.getClass());
-            if (constructor == null) {
-                return method;
-            }
-
-            Object[] args = new Object[constructor.getParameterCount()];
-            boolean changed = false;
-
-            Parameter[] parameters = constructor.getParameters();
-            for (int i = 0; i < parameters.length; i++) {
-                JsonProperty jsonProperty = parameters[i].getAnnotation(JsonProperty.class);
-                if (jsonProperty == null) {
-                    return method;
-                }
-
-                String propertyName = jsonProperty.value();
-                Field field = findJsonPropertyField(method.getClass(), propertyName);
-                if (field == null) {
-                    return method;
-                }
-
-                field.setAccessible(true);
-                Object value = field.get(method);
-
-                if ("parse_mode".equals(propertyName)
-                    && value == null
-                    && defaults.parseMode() != null
-                    && parameters[i].getType().isAssignableFrom(ParseMode.class)) {
-                    value = defaults.parseMode();
-                    changed = true;
-                } else if ("protect_content".equals(propertyName)
-                    && value == null
-                    && defaults.protectContent()
-                    && parameters[i].getType().isAssignableFrom(Boolean.class)) {
-                    value = Boolean.TRUE;
-                    changed = true;
-                } else if ("link_preview_options".equals(propertyName)
-                    && value == null
-                    && !defaults.linkPreview()
-                    && parameters[i].getType().isAssignableFrom(LinkPreviewOptions.class)) {
-                    value = new LinkPreviewOptions(true, null, null, null, null);
-                    changed = true;
-                }
-
-                args[i] = value;
-            }
-
-            if (!changed) {
-                return method;
-            }
-
-            constructor.setAccessible(true);
-            return (TelegramMethod<T>) constructor.newInstance(args);
-        } catch (ReflectiveOperationException e) {
-            throw new IllegalStateException(
-                "Failed to apply default bot properties to " + method.getClass().getName(), e
-            );
-        }
-    }
-
-    private static Constructor<?> findJsonConstructor(Class<?> type) {
-        for (Constructor<?> constructor : type.getDeclaredConstructors()) {
-            if (constructor.getAnnotation(com.fasterxml.jackson.annotation.JsonCreator.class) != null) {
-                return constructor;
-            }
-        }
-        return null;
-    }
-
-    private static Field findJsonPropertyField(Class<?> type, String propertyName) {
-        for (Field field : type.getDeclaredFields()) {
-            JsonProperty jsonProperty = field.getAnnotation(JsonProperty.class);
-            if (jsonProperty != null && propertyName.equals(jsonProperty.value())) {
-                return field;
-            }
-        }
-        return null;
+        return token;
     }
 }

@@ -3,11 +3,14 @@ package io.jiogram.handler;
 import io.jiogram.bot.Bot;
 import io.jiogram.dispatcher.UpdateContext;
 import io.jiogram.types.TelegramMethod;
+import org.jspecify.annotations.Nullable;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.util.Arrays;
 
 /**
  * Adapts an annotated controller method into a {@link Handler}.
@@ -30,20 +33,65 @@ import java.lang.reflect.Parameter;
  */
 public class HandlerAdapter<E> implements Handler<E> {
 
+    private enum ArgumentSource { EVENT, BOT, CONTEXT }
+
     private final Object bean;
     private final Method method;
-    private final Class<E> eventType;
+    private final ArgumentSource[] argumentSources;
+    private final @Nullable Scheduler scheduler;
 
+    /**
+     * Creates an adapter that invokes the method on the subscribing thread.
+     *
+     * @throws IllegalStateException if a parameter is not the event, {@link Bot} or {@link UpdateContext},
+     *                               so a mistyped handler fails at startup instead of receiving null
+     */
     public HandlerAdapter(Object bean, Method method, Class<E> eventType) {
+        this(bean, method, eventType, null);
+    }
+
+    /**
+     * Creates an adapter that invokes the method on the given scheduler, so handler code may
+     * block (JDBC, blocking HTTP clients, {@code Mono.block()}) without stalling the event loop.
+     *
+     * @param scheduler where to invoke the method, or null to invoke it on the subscribing thread
+     * @throws IllegalStateException if a parameter is not the event, {@link Bot} or {@link UpdateContext}
+     */
+    public HandlerAdapter(Object bean, Method method, Class<E> eventType, @Nullable Scheduler scheduler) {
         this.bean = bean;
         this.method = method;
-        this.eventType = eventType;
+        this.argumentSources = Arrays.stream(method.getParameters())
+                .map(parameter -> argumentSource(method, parameter, eventType))
+                .toArray(ArgumentSource[]::new);
+        this.scheduler = scheduler;
         this.method.setAccessible(true);
     }
 
+    private static ArgumentSource argumentSource(Method method, Parameter parameter, Class<?> eventType) {
+        Class<?> type = parameter.getType();
+        if (type.isAssignableFrom(eventType)) {
+            return ArgumentSource.EVENT;
+        }
+        if (type.isAssignableFrom(Bot.class)) {
+            return ArgumentSource.BOT;
+        }
+        if (type.isAssignableFrom(UpdateContext.class)) {
+            return ArgumentSource.CONTEXT;
+        }
+        throw new IllegalStateException("Unsupported parameter '" + parameter.getType().getSimpleName() + " "
+                + parameter.getName() + "' in handler " + method.getDeclaringClass().getName() + "#"
+                + method.getName() + ": expected " + eventType.getSimpleName() + ", Bot or UpdateContext");
+    }
+
     @Override
-    @SuppressWarnings("unchecked")
     public Mono<Void> handle(E event, UpdateContext context) {
+        if (scheduler == null) {
+            return invoke(event, context);
+        }
+        return Mono.defer(() -> invoke(event, context)).subscribeOn(scheduler);
+    }
+
+    private Mono<Void> invoke(E event, UpdateContext context) {
         try {
             Object[] args = resolveArguments(event, context);
             Object result = method.invoke(bean, args);
@@ -56,47 +104,35 @@ public class HandlerAdapter<E> implements Handler<E> {
     }
 
     private Object[] resolveArguments(E event, UpdateContext context) {
-        Parameter[] params = method.getParameters();
-        Object[] args = new Object[params.length];
-
-        for (int i = 0; i < params.length; i++) {
-            Class<?> paramType = params[i].getType();
-
-            if (eventType.isAssignableFrom(paramType)) {
-                args[i] = event;
-            } else if (Bot.class.isAssignableFrom(paramType)) {
-                args[i] = context.bot();
-            } else if (UpdateContext.class.isAssignableFrom(paramType)) {
-                args[i] = context;
-            } else {
-                // Unknown parameter type, pass null
-                args[i] = null;
+        Object[] args = new Object[argumentSources.length];
+        for (int i = 0; i < argumentSources.length; i++) {
+            switch (argumentSources[i]) {
+                case EVENT:
+                    args[i] = event;
+                    break;
+                case BOT:
+                    args[i] = context.bot();
+                    break;
+                case CONTEXT:
+                    args[i] = context;
+                    break;
+                default:
+                    throw new IllegalStateException("Unknown argument source " + argumentSources[i]);
             }
         }
-
         return args;
     }
 
     @SuppressWarnings("unchecked")
     private Mono<Void> adaptReturnValue(Object result, UpdateContext context) {
-        if (result == null) {
-            return Mono.empty();
+        if (result instanceof Mono<?>) {
+            return ((Mono<?>) result).flatMap(value -> value instanceof TelegramMethod<?>
+                ? context.bot().execute((TelegramMethod<?>) value).then()
+                : Mono.<Void>empty()).then();
         }
-
-        if (result instanceof Mono) {
-            Mono<?> mono = (Mono<?>) result;
-            return mono.flatMap(value -> {
-                if (value instanceof TelegramMethod) {
-                    return context.bot().execute((TelegramMethod<?>) value).then();
-                }
-                return Mono.empty();
-            }).then();
-        }
-
-        if (result instanceof TelegramMethod) {
+        if (result instanceof TelegramMethod<?>) {
             return context.bot().execute((TelegramMethod<?>) result).then();
         }
-
         return Mono.empty();
     }
 }
