@@ -7,17 +7,49 @@ The `Bot` class wraps a Telegram bot token and a `TelegramSession` for making AP
 ```java
 import io.jiogram.bot.Bot;
 import io.jiogram.methods.SendMessage;
-import io.jiogram.types.ChatId;
 
 // In a handler, Bot is injected automatically:
 @OnMessage
 public Mono<Void> greet(Message message, Bot bot) {
-    return bot.execute(SendMessage.of(
-        ChatId.of(message.chat().id()),
-        "Hello!"
-    )).then();
+    return bot.execute(SendMessage.answer(message, "Hello!")).then();
 }
 ```
+
+### Answering a message
+
+Every method that sends into a chat (`SendMessage`, `SendPhoto`, `SendMediaGroup`, `SendPoll`,
+`CopyMessage`, `SendChatAction`, ...) has two factories that work out where the answer goes from
+the received message, like aiogram's `message.answer()` and `message.reply()`:
+
+```java
+SendMessage.answer(message, "Hi");       // to the message's chat
+SendPhoto.reply(message, photo);         // the same, as a reply to the message
+```
+
+They fill in the chat, the forum topic (only when the message is a topic message), the business
+connection and the direct messages topic. With `SendMessage.of(ChatId.of(chatId), text)` instead,
+an answer in a forum group lands in the General topic.
+
+### Building requests
+
+Methods and types are records with a canonical constructor of every Bot API field. For the
+optional ones there are shorter ways: `of(...)` takes only the required values, and every record
+has a `withX(...)` per field that returns a copy with that value set.
+
+```java
+var keyboard = new InlineKeyboardMarkup(List.of(List.of(
+    InlineKeyboardButton.of("About").withCallbackData("about"),
+    InlineKeyboardButton.of("Docs").withUrl("https://core.telegram.org/bots/api"))));
+
+bot.execute(SendDocument.answer(message, InputFileOrString.of(InputFile.fromPath(report)))
+    .withCaption("<b>Report</b>")
+    .withReplyMarkup(keyboard));
+```
+
+`InputFile.fromPath(...)` and `InputFile.fromBytes(name, bytes)` upload a file from the
+application; they can stand wherever the Bot API accepts a file, also inside a media group, and
+the request is then sent as `multipart/form-data`. Union subtypes fill in their `type`
+themselves: `InputMediaPhoto.of(media)` is already a photo.
 
 With Spring Boot auto-configuration, the `Bot` bean is created from your `telegram.token` property. You can also inject it anywhere:
 
@@ -48,7 +80,9 @@ telegram:
     link-preview: true
 ```
 
-These are available via `bot.defaults()`.
+They are filled into every request field you leave unset, including nested ones such as media
+group captions or inline query results; a field you set yourself is never changed, and a text that
+comes with entities gets no default parse mode. They are available via `bot.defaults()`.
 
 ---
 
@@ -105,8 +139,8 @@ public class MyHandlers {
     @OnMessage
     @Command("start")
     public SendMessage onStart(Message message) {
-        return SendMessage.of(
-            ChatId.of(message.chat().id()),
+        return SendMessage.answer(
+            message,
             "Welcome!"
         );
     }
@@ -167,8 +201,8 @@ public class BotConfig {
         router.onMessage()
             .filter(Filters.command("ping"))
             .handle((message, context) -> {
-                var reply = SendMessage.of(
-                    ChatId.of(message.chat().id()),
+                var reply = SendMessage.answer(
+                    message,
                     "pong!"
                 );
                 return context.bot().execute(reply).then();
@@ -196,7 +230,7 @@ Filters decide whether a handler should process a given event. They return `Filt
 ### Built-in filters
 
 ```java
-// Match specific commands (without leading slash)
+// Match specific commands (without leading slash), in the text or a media caption
 Filters.command("start", "help")
 
 // Match exact text
@@ -278,7 +312,15 @@ router.onMessage()
 ```java
 @OnMessage
 @Command("start")              // same as Filters.command("start")
-@StateFilter(FormStates.IDLE)  // same as Filters.state("Form.IDLE")
+@StateFilter("Form.IDLE")      // same as Filters.state("Form.IDLE")
+public SendMessage handler(Message message) { /* ... */ }
+```
+
+For enum-based FSM states without generated constants, use `enumClass` so the enum type stays visible at the call site:
+
+```java
+@OnMessage
+@StateFilter(enumClass = FormState.class, value = "IDLE")
 public SendMessage handler(Message message) { /* ... */ }
 ```
 
@@ -347,37 +389,28 @@ FSM lets you build multi-step conversations where the bot remembers what step ea
 
 ### 1. Define states
 
-Create a plain enum annotated with `@FSMStates`:
+Create an enum and mark it with `@FSMStates`:
 
 ```java
 import io.jiogram.fsm.FSMStates;
 
 @FSMStates
-public enum Form {
+public enum FormState {
     WAITING_FOR_NAME,
     WAITING_FOR_AGE,
     CONFIRM
 }
 ```
 
-The annotation processor generates a companion `FormStates` class in the same package:
+Each constant is stored and matched as a state name like `"FormState.WAITING_FOR_NAME"`.
+`@FSMStates` also generates `FormStateStates` constants for annotation use.
 
-```java
-public final class FormStates {
-    public static final String WAITING_FOR_NAME = "Form.WAITING_FOR_NAME";
-    public static final String WAITING_FOR_AGE = "Form.WAITING_FOR_AGE";
-    public static final String CONFIRM = "Form.CONFIRM";
-}
-```
-
-Raw strings remain supported, so existing handlers such as `@StateFilter("Form.WAITING_FOR_NAME")` continue to work.
-
-Add the FSM module as an annotation processor dependency so these constants are generated:
+Enable the processor in Gradle. It is a separate artifact without dependencies (`@FSMStates`
+itself comes with `jiogram-fsm`):
 
 ```groovy
 dependencies {
-    implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-2-starter:0.2.0-SNAPSHOT'
-    annotationProcessor 'uz.jtscorp.jiogram:jiogram-fsm-sb2:0.2.0-SNAPSHOT'
+    annotationProcessor 'uz.jtscorp.jiogram:jiogram-fsm-processor-sb2:0.2.0-SNAPSHOT'
 }
 ```
 
@@ -391,38 +424,38 @@ public class RegistrationBot {
     @Command("register")
     public Mono<Void> startRegistration(Message message, Bot bot, UpdateContext context) {
         FSMContext fsm = context.get("state", FSMContext.class);
-        return fsm.setState(Form.WAITING_FOR_NAME)
-            .then(bot.execute(SendMessage.of(
-                ChatId.of(message.chat().id()),
+        return fsm.setState(FormState.WAITING_FOR_NAME)
+            .then(bot.execute(SendMessage.answer(
+                message,
                 "What is your name?"
             )))
             .then();
     }
 
     @OnMessage
-    @StateFilter(FormStates.WAITING_FOR_NAME)
+    @StateFilter(FormStateStates.WAITING_FOR_NAME)
     public Mono<Void> processName(Message message, Bot bot, UpdateContext context) {
         FSMContext fsm = context.get("state", FSMContext.class);
         return fsm.updateData("name", message.text())
-            .then(fsm.setState(Form.WAITING_FOR_AGE))
-            .then(bot.execute(SendMessage.of(
-                ChatId.of(message.chat().id()),
+            .then(fsm.setState(FormState.WAITING_FOR_AGE))
+            .then(bot.execute(SendMessage.answer(
+                message,
                 "How old are you?"
             )))
             .then();
     }
 
     @OnMessage
-    @StateFilter(FormStates.WAITING_FOR_AGE)
+    @StateFilter(FormStateStates.WAITING_FOR_AGE)
     public Mono<Void> processAge(Message message, Bot bot, UpdateContext context) {
         FSMContext fsm = context.get("state", FSMContext.class);
         return fsm.updateData("age", message.text())
-            .then(fsm.setState(Form.CONFIRM))
+            .then(fsm.setState(FormState.CONFIRM))
             .then(fsm.getData().flatMap(data -> {
                 String summary = "Name: " + data.get("name") + "\nAge: " + data.get("age")
                     + "\n\nIs this correct? (yes/no)";
-                return bot.execute(SendMessage.of(
-                    ChatId.of(message.chat().id()),
+                return bot.execute(SendMessage.answer(
+                    message,
                     summary
                 ));
             }))
@@ -430,13 +463,13 @@ public class RegistrationBot {
     }
 
     @OnMessage
-    @StateFilter(FormStates.CONFIRM)
+    @StateFilter(FormStateStates.CONFIRM)
     public Mono<Void> confirm(Message message, Bot bot, UpdateContext context) {
         FSMContext fsm = context.get("state", FSMContext.class);
         String text = "yes".equalsIgnoreCase(message.text()) ? "Registration complete!" : "Registration cancelled.";
         return fsm.clear()
-            .then(bot.execute(SendMessage.of(
-                ChatId.of(message.chat().id()),
+            .then(bot.execute(SendMessage.answer(
+                message,
                 text
             )))
             .then();
@@ -454,7 +487,7 @@ FSMContext fsm = context.get("state", FSMContext.class);
 
 | Method | Description |
 |---|---|
-| `fsm.setState(Enum<?> state)` | Set the current state using a plain enum constant |
+| `fsm.setState(Enum<?> state)` | Set the current state using an enum constant |
 | `fsm.setState(String state)` | Set the current state using a raw string |
 | `fsm.getState()` | Get the current state name as `Mono<String>` |
 | `fsm.updateData(String field, Object value)` | Merge a key-value pair into stored data |
@@ -462,8 +495,6 @@ FSMContext fsm = context.get("state", FSMContext.class);
 | `fsm.getData()` | Get all stored data as `Mono<Map<String, Object>>` |
 | `fsm.getValue(String field, Class<T> type)` | Get a single value by key |
 | `fsm.clear()` | Clear both state and data |
-
-`BotState` remains available as an optional legacy helper for code that already implements it. New FSM enums do not need to implement `BotState`.
 
 ### 4. FSM Strategy
 
@@ -474,7 +505,12 @@ The `FSMStrategy` determines how the storage key is resolved:
 | `USER_IN_CHAT` (default) | Each user has their own state per chat |
 | `CHAT` | All users in a chat share the same state |
 | `USER` | User has the same state across all chats |
-| `CHAT_TOPIC` | State is isolated per forum thread |
+| `USER_IN_TOPIC` | Each user has their own state per forum topic |
+| `CHAT_TOPIC` | All users in a forum topic share the same state |
+
+Outside forum topics the topic strategies behave like `USER_IN_CHAT` / `CHAT`. Per-user strategies
+skip FSM for updates that have no user (channel posts, reaction counts, boosts): `context.get("state")`
+is then `null`. Updates sent through a business connection get a separate state per connection.
 
 Configure in `application.yml`:
 
@@ -501,15 +537,13 @@ Jiogram automatically handles the return value of handler methods:
 // Return a TelegramMethod -> auto-executed via bot.execute()
 @OnMessage
 public SendMessage echo(Message message) {
-    return SendMessage.of(ChatId.of(message.chat().id()), message.text());
+    return SendMessage.answer(message, message.text());
 }
 
 // Return Mono<Void> -> subscribed directly
 @OnMessage
 public Mono<Void> manual(Message message, Bot bot) {
-    return bot.execute(SendMessage.of(
-        ChatId.of(message.chat().id()), "Hi"
-    )).then();
+    return bot.execute(SendMessage.answer(message, "Hi")).then();
 }
 
 // Return void -> no-op
@@ -522,6 +556,6 @@ public void logOnly(Message message) {
 @OnMessage
 public SendMessage conditional(Message message) {
     if (message.text() == null) return null;
-    return SendMessage.of(ChatId.of(message.chat().id()), message.text());
+    return SendMessage.answer(message, message.text());
 }
 ```

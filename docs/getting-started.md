@@ -4,8 +4,8 @@ This guide walks you through creating your first Telegram bot with Jiogram.
 
 ## Prerequisites
 
-- Java 17 or newer
-- Gradle 8.x or newer
+- Java 11 or newer
+- Gradle 7.5 to 8.x (the Spring Boot 2.7 Gradle plugin does not support Gradle 9)
 - A bot token from [@BotFather](https://t.me/BotFather)
 
 ## 1. Create a Spring Boot project
@@ -24,7 +24,7 @@ version = '1.0.0'
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(11)
     }
 }
 
@@ -85,7 +85,6 @@ import io.jiogram.annotation.Command;
 import io.jiogram.annotation.OnMessage;
 import io.jiogram.annotation.TelegramController;
 import io.jiogram.methods.SendMessage;
-import io.jiogram.types.ChatId;
 import io.jiogram.types.Message;
 
 @TelegramController
@@ -95,8 +94,8 @@ public class MyBot {
     @OnMessage
     @Command("start")
     public SendMessage start(Message message) {
-        return SendMessage.of(
-            ChatId.of(message.chat().id()),
+        return SendMessage.answer(
+            message,
             "Hello! I am your first Jiogram bot."
         );
     }
@@ -105,8 +104,8 @@ public class MyBot {
     @OnMessage
     @Command("help")
     public SendMessage help(Message message) {
-        return SendMessage.of(
-            ChatId.of(message.chat().id()),
+        return SendMessage.answer(
+            message,
             "Available commands:\n/start - Start the bot\n/help - Show this help"
         );
     }
@@ -118,8 +117,8 @@ public class MyBot {
         if (text == null) {
             return null; // Ignore non-text messages
         }
-        return SendMessage.of(
-            ChatId.of(message.chat().id()),
+        return SendMessage.answer(
+            message,
             "You said: " + text
         );
     }

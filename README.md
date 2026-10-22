@@ -26,13 +26,12 @@ plugins {
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(11)
     }
 }
 
 dependencies {
     implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-2-starter:0.2.0-SNAPSHOT'
-    annotationProcessor 'uz.jtscorp.jiogram:jiogram-fsm-sb2:0.2.0-SNAPSHOT' // for @FSMStates
 }
 ```
 
@@ -49,7 +48,6 @@ telegram:
 import io.jiogram.annotation.OnMessage;
 import io.jiogram.annotation.TelegramController;
 import io.jiogram.methods.SendMessage;
-import io.jiogram.types.ChatId;
 import io.jiogram.types.Message;
 
 @TelegramController
@@ -57,10 +55,7 @@ public class EchoBot {
 
     @OnMessage
     public SendMessage echo(Message message) {
-        return SendMessage.of(
-            ChatId.of(message.chat().id()),
-            message.text()
-        );
+        return SendMessage.answer(message, message.text());
     }
 }
 ```
@@ -75,11 +70,16 @@ That's it. Run your Spring Boot app and the bot starts polling for updates autom
 - **Built-in filters** -- `Filters.command()`, `Filters.text()`, `Filters.regex()`, `Filters.callbackData()`, `Filters.state()`
 - **Composable filters** -- `.and()`, `.or()`, `.negate()` on any filter
 - **Middleware pipeline** -- intercept and transform updates before they reach handlers
-- **Finite State Machine (FSM)** -- `@FSMStates` enum constants + `FSMContext` for multi-step conversations
+- **Finite State Machine (FSM)** -- enum states, generated `@StateFilter` constants, and `FSMContext` for multi-step conversations
 - **Pluggable FSM storage** -- in-memory (default) or Redis for distributed deployments
-- **Reactive throughout** -- built on Project Reactor (`Mono`/`Flux`), fully non-blocking
+- **Reactive throughout** -- built on Project Reactor (`Mono`/`Flux`); annotated handlers run on virtual threads (Java 21+) or a bounded elastic pool (older Java), so they may block
 - **Auto-return-value handling** -- return `SendMessage` from a handler and it gets executed automatically
-- **Long-polling and webhook modes** -- switch with a single config property
+- **Request builders** -- `SendMessage.answer(message, text)` / `reply(...)` answer into the right chat and forum topic; `of(...)` and `withX(...)` instead of long constructors
+- **File uploads** -- `InputFile.fromPath(...)` / `fromBytes(...)` anywhere in a request, sent as multipart automatically
+- **Bot defaults** -- parse mode, link previews and content protection filled into every request, nested objects included
+- **Long-polling and webhook modes** -- switch with a single config property; polling processes chats in parallel and keeps each chat in order
+- **Graceful shutdown** -- a running batch finishes and is confirmed to Telegram before the app stops
+- **Forward compatible** -- unknown enum values and union variants from newer Bot API versions do not break parsing
 - **Spring Boot auto-configuration** -- just add the starter dependency and a token
 
 ## Module Structure
@@ -89,15 +89,18 @@ That's it. Run your Spring Boot app and the bot starts polling for updates autom
 | `jiogram-types` | Generated Java records for all Telegram Bot API types (`Message`, `Update`, `Chat`, etc.) |
 | `jiogram-methods` | Generated Java records for all Telegram Bot API methods (`SendMessage`, `GetUpdates`, etc.) |
 | `jiogram-core` | Dispatcher, Router, Filters, Middleware, Handler infrastructure, `Bot` class |
-| `jiogram-fsm` | Finite State Machine: `@FSMStates`, `FSMContext`, `StateStorage`, `FSMMiddleware` |
+| `jiogram-fsm` | Finite State Machine: `@FSMStates`, `BotState`, `FSMContext`, `StateStorage`, `FSMMiddleware` |
+| `jiogram-fsm-processor` | Annotation processor generating `<Enum>States` constants for `@FSMStates` enums (use as `annotationProcessor`) |
 | `jiogram-spring-boot-starter` | Spring Boot auto-configuration, polling runner, webhook controller |
 | `jiogram-codegen` | Code generator that produces `jiogram-types` and `jiogram-methods` from the Bot API schema |
 
 ## Requirements
 
-- **Java 17** or newer
-- **Spring Boot 2.7.x**
-- **Project Reactor** (comes with Spring Boot WebFlux)
+- **Java 11** or newer (handlers use virtual threads on Java 21+)
+- **Spring Boot 2.7.x** (this branch); its Gradle plugin needs Gradle 7.5 to 8.x
+- Webhook mode only: a web server, e.g. `spring-boot-starter-webflux` (polling bots need none)
+
+For other Spring Boot versions, see [`docs/spring-boot-versions.md`](docs/spring-boot-versions.md).
 
 ## Configuration Reference
 
@@ -107,19 +110,28 @@ All properties live under the `telegram` prefix. See [docs/configuration.md](doc
 |---|---|---|
 | `telegram.token` | *(required)* | Bot API token from @BotFather |
 | `telegram.mode` | `POLLING` | `POLLING` or `WEBHOOK` |
+| `telegram.api.base-url` | `https://api.telegram.org` | Telegram Bot API endpoint; set to a local Bot API server URL when self-hosting |
+| `telegram.api.request-timeout` | `60s` | Time to wait for a response; `getUpdates` adds its polling timeout |
 | `telegram.polling.timeout` | `30` | Long-polling timeout in seconds |
 | `telegram.polling.limit` | `100` | Max updates per poll |
 | `telegram.polling.backoff` | `1000` | Error backoff in ms |
+| `telegram.polling.concurrency` | `32` | Chats of one batch processed in parallel |
+| `telegram.polling.shutdown-timeout` | `10s` | How long shutdown waits for the running batch |
+| `telegram.webhook.secret-token` | *(generated)* | Checked on every webhook request; generated when `webhook.url` is set |
 | `telegram.defaults.parse-mode` | `null` | Default parse mode (`HTML`, `MARKDOWN`, `MARKDOWN_V2`) |
+| `telegram.handlers.virtual-threads` | `true` | Run annotated handlers off the event loop: virtual threads on Java 21+, a bounded elastic pool on older Java |
 | `telegram.fsm.enabled` | `true` | Enable FSM middleware |
 | `telegram.fsm.strategy` | `USER_IN_CHAT` | FSM key strategy |
 | `telegram.fsm.storage` | `memory` | `memory` or `redis` |
+| `telegram.fsm.redis.key-prefix` | `jiogram:fsm` | Redis key prefix |
+| `telegram.fsm.redis.state-ttl` / `data-ttl` | none | Expire FSM state / data after the last change |
 
 ## Documentation
 
 - [Getting Started](docs/getting-started.md)
 - [Core Concepts](docs/core-concepts.md)
 - [Configuration Reference](docs/configuration.md)
+- [Migrating from 0.1.x](docs/migration-from-0.1.x.md)
 
 ## Examples
 
@@ -130,6 +142,18 @@ All properties live under the `telegram` prefix. See [docs/configuration.md](doc
 | [FSM Bot](examples/fsm-bot/) | Multi-step registration form using FSM |
 | [Multi-Router Bot](examples/multi-router-bot/) | Splitting handlers across multiple controller classes |
 | [Programmatic Bot](examples/programmatic-bot/) | Using the programmatic (non-annotation) router API |
+| [Inline Bot](examples/inline-bot/) | Answers inline queries with article results |
+| [Webhook Bot](examples/webhook-bot/) | Runs the same echo handler in webhook mode |
+| [Broadcast Bot](examples/broadcast-bot/) | Sends a message to a configured list of users with basic error handling |
+| [Media Group Bot](examples/media-group-bot/) | Sends a photo album from URLs (`/start`) and uploads files from memory and disk (`/upload`) |
+| [Regexp Bot](examples/regexp-bot/) | Uses regex filters for item commands and deep-link payloads |
+| [Language Bot](examples/language-bot/) | Reads the user's Telegram language code |
+| [Proxy Bot](examples/proxy-bot/) | Provides a `TelegramSession` bean that uses an HTTP/SOCKS5 proxy |
+| [I18n Bot](examples/i18n-bot/) | Uses Spring `MessageSource` for localized replies |
+| [Throttling Bot](examples/throttling-bot/) | Adds antiflood behavior through middleware |
+| [Payments Bot](examples/payments-bot/) | Sends invoices and handles shipping/pre-checkout updates |
+| [Local Server Bot](examples/local-server-bot/) | Uses a configurable Bot API base URL for a local Bot API server |
+| [Updates Bot](examples/updates-bot/) | Demonstrates update-specific handlers for polls, reactions, chat members, business events, boosts, paid media, and managed bots |
 
 ## License
 
