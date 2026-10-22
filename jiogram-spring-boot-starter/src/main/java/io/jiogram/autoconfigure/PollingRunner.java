@@ -208,9 +208,11 @@ public class PollingRunner implements SmartLifecycle {
             case MANAGED_BOT -> ((ManagedBotUpdated) event).user().id();
             case POLL_ANSWER -> {
                 PollAnswer answer = (PollAnswer) event;
-                yield answer.user() != null ? answer.user().id()
-                    : answer.voterChat() != null ? answer.voterChat().id()
-                    : null;
+                // Not one nested ?: : mixing long and null there unboxes the null.
+                if (answer.user() != null) {
+                    yield answer.user().id();
+                }
+                yield answer.voterChat() != null ? answer.voterChat().id() : null;
             }
             case POLL -> null;
         };
