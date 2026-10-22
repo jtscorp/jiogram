@@ -23,6 +23,10 @@ public record InputProfilePhotoAnimated(
     @JsonProperty("main_frame_timestamp") @Nullable Double mainFrameTimestamp
 ) implements InputProfilePhoto {
 
+    public static InputProfilePhotoAnimated of(InputFileOrString animation) {
+        return new InputProfilePhotoAnimated(InputProfilePhotoType.ANIMATED, animation, null);
+    }
+
     public InputProfilePhotoAnimated withAnimation(InputFileOrString animation) {
         return new InputProfilePhotoAnimated(type, animation, mainFrameTimestamp);
     }

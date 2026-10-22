@@ -41,6 +41,10 @@ public record InlineQueryResultVoice(
     @JsonProperty("input_message_content") @Nullable InputMessageContent inputMessageContent
 ) implements InlineQueryResult {
 
+    public static InlineQueryResultVoice of(String id, String voiceUrl, String title) {
+        return new InlineQueryResultVoice(InlineQueryResultType.VOICE, id, voiceUrl, title, null, null, null, null, null, null);
+    }
+
     public InlineQueryResultVoice withId(String id) {
         return new InlineQueryResultVoice(type, id, voiceUrl, title, caption, parseMode, captionEntities, voiceDuration, replyMarkup, inputMessageContent);
     }

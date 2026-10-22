@@ -22,6 +22,10 @@ public record MessageOriginChat(
     @JsonProperty("author_signature") @Nullable String authorSignature
 ) implements MessageOrigin {
 
+    public static MessageOriginChat of(long date, Chat senderChat) {
+        return new MessageOriginChat(MessageOriginType.CHAT, date, senderChat, null);
+    }
+
     public MessageOriginChat withDate(long date) {
         return new MessageOriginChat(type, date, senderChat, authorSignature);
     }

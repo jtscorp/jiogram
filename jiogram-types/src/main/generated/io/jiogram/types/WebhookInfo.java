@@ -37,6 +37,10 @@ public record WebhookInfo(
     @JsonProperty("allowed_updates") @Nullable List<UpdateType> allowedUpdates
 ) {
 
+    public static WebhookInfo of(String url, boolean hasCustomCertificate, long pendingUpdateCount) {
+        return new WebhookInfo(url, hasCustomCertificate, pendingUpdateCount, null, null, null, null, null, null);
+    }
+
     public WebhookInfo withUrl(String url) {
         return new WebhookInfo(url, hasCustomCertificate, pendingUpdateCount, ipAddress, lastErrorDate, lastErrorMessage, lastSynchronizationErrorDate, maxConnections, allowedUpdates);
     }

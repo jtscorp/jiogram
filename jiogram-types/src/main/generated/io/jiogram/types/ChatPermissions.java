@@ -46,6 +46,10 @@ public record ChatPermissions(
     @JsonProperty("can_manage_topics") @Nullable Boolean canManageTopics
 ) {
 
+    public static ChatPermissions of() {
+        return new ChatPermissions(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+    }
+
     public ChatPermissions withCanSendMessages(@Nullable Boolean canSendMessages) {
         return new ChatPermissions(canSendMessages, canSendAudios, canSendDocuments, canSendPhotos, canSendVideos, canSendVideoNotes, canSendVoiceNotes, canSendPolls, canSendOtherMessages, canAddWebPagePreviews, canEditTag, canChangeInfo, canInviteUsers, canPinMessages, canManageTopics);
     }

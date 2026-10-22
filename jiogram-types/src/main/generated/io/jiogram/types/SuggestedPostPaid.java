@@ -25,6 +25,10 @@ public record SuggestedPostPaid(
     @JsonProperty("star_amount") @Nullable StarAmount starAmount
 ) {
 
+    public static SuggestedPostPaid of(String currency) {
+        return new SuggestedPostPaid(null, currency, null, null);
+    }
+
     public SuggestedPostPaid withSuggestedPostMessage(@Nullable Message suggestedPostMessage) {
         return new SuggestedPostPaid(suggestedPostMessage, currency, amount, starAmount);
     }

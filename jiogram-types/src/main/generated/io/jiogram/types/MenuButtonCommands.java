@@ -11,4 +11,9 @@ import io.jiogram.types.MenuButtonType;
  */
 public record MenuButtonCommands(
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) MenuButtonType type
-) implements MenuButton {}
+) implements MenuButton {
+
+    public static MenuButtonCommands of() {
+        return new MenuButtonCommands(MenuButtonType.COMMANDS);
+    }
+}

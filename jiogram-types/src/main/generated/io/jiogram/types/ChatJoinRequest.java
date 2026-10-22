@@ -31,6 +31,10 @@ public record ChatJoinRequest(
     @JsonProperty("invite_link") @Nullable ChatInviteLink inviteLink
 ) {
 
+    public static ChatJoinRequest of(Chat chat, User from, long userChatId, long date) {
+        return new ChatJoinRequest(chat, from, userChatId, date, null, null);
+    }
+
     public ChatJoinRequest withChat(Chat chat) {
         return new ChatJoinRequest(chat, from, userChatId, date, bio, inviteLink);
     }

@@ -18,6 +18,10 @@ public record MessageOriginUser(
     @JsonProperty("sender_user") User senderUser
 ) implements MessageOrigin {
 
+    public static MessageOriginUser of(long date, User senderUser) {
+        return new MessageOriginUser(MessageOriginType.USER, date, senderUser);
+    }
+
     public MessageOriginUser withDate(long date) {
         return new MessageOriginUser(type, date, senderUser);
     }

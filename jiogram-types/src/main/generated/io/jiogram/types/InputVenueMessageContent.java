@@ -28,6 +28,10 @@ public record InputVenueMessageContent(
     @JsonProperty("google_place_type") @Nullable String googlePlaceType
 ) implements InputMessageContent {
 
+    public static InputVenueMessageContent of(double latitude, double longitude, String title, String address) {
+        return new InputVenueMessageContent(latitude, longitude, title, address, null, null, null, null);
+    }
+
     public InputVenueMessageContent withLatitude(double latitude) {
         return new InputVenueMessageContent(latitude, longitude, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType);
     }

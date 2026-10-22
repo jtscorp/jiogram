@@ -11,4 +11,9 @@ import io.jiogram.types.MenuButtonType;
  */
 public record MenuButtonDefault(
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) MenuButtonType type
-) implements MenuButton {}
+) implements MenuButton {
+
+    public static MenuButtonDefault of() {
+        return new MenuButtonDefault(MenuButtonType.DEFAULT);
+    }
+}

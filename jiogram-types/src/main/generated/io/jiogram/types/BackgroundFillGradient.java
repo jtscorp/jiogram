@@ -19,6 +19,10 @@ public record BackgroundFillGradient(
     @JsonProperty("rotation_angle") long rotationAngle
 ) implements BackgroundFill {
 
+    public static BackgroundFillGradient of(long topColor, long bottomColor, long rotationAngle) {
+        return new BackgroundFillGradient(BackgroundFillType.GRADIENT, topColor, bottomColor, rotationAngle);
+    }
+
     public BackgroundFillGradient withTopColor(long topColor) {
         return new BackgroundFillGradient(type, topColor, bottomColor, rotationAngle);
     }

@@ -22,6 +22,10 @@ public record PassportElementErrorSelfie(
     @JsonProperty("message") String message
 ) implements PassportElementError {
 
+    public static PassportElementErrorSelfie of(PassportElementType type, String fileHash, String message) {
+        return new PassportElementErrorSelfie(PassportElementErrorType.SELFIE, type, fileHash, message);
+    }
+
     public PassportElementErrorSelfie withType(PassportElementType type) {
         return new PassportElementErrorSelfie(source, type, fileHash, message);
     }

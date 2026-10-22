@@ -19,6 +19,10 @@ public record OwnedGifts(
     @JsonProperty("next_offset") @Nullable String nextOffset
 ) {
 
+    public static OwnedGifts of(long totalCount, List<OwnedGift> gifts) {
+        return new OwnedGifts(totalCount, gifts, null);
+    }
+
     public OwnedGifts withTotalCount(long totalCount) {
         return new OwnedGifts(totalCount, gifts, nextOffset);
     }

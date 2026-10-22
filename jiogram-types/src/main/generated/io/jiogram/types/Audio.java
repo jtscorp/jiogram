@@ -33,6 +33,10 @@ public record Audio(
     @JsonProperty("thumbnail") @Nullable PhotoSize thumbnail
 ) {
 
+    public static Audio of(String fileId, String fileUniqueId, long duration) {
+        return new Audio(fileId, fileUniqueId, duration, null, null, null, null, null, null);
+    }
+
     public Audio withFileId(String fileId) {
         return new Audio(fileId, fileUniqueId, duration, performer, title, fileName, mimeType, fileSize, thumbnail);
     }

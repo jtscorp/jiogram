@@ -14,6 +14,10 @@ public record GiveawayCreated(
     @JsonProperty("prize_star_count") @Nullable Long prizeStarCount
 ) {
 
+    public static GiveawayCreated of() {
+        return new GiveawayCreated(null);
+    }
+
     public GiveawayCreated withPrizeStarCount(@Nullable Long prizeStarCount) {
         return new GiveawayCreated(prizeStarCount);
     }

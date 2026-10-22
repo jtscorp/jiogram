@@ -44,6 +44,10 @@ public record InputMediaAudio(
     @JsonProperty("title") @Nullable String title
 ) implements InputMedia {
 
+    public static InputMediaAudio of(InputFileOrString media) {
+        return new InputMediaAudio(InputMediaType.AUDIO, media, null, null, null, null, null, null, null);
+    }
+
     public InputMediaAudio withMedia(InputFileOrString media) {
         return new InputMediaAudio(type, media, thumbnail, caption, parseMode, captionEntities, duration, performer, title);
     }

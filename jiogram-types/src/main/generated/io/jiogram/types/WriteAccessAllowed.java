@@ -22,6 +22,10 @@ public record WriteAccessAllowed(
     @JsonProperty("from_attachment_menu") @Nullable Boolean fromAttachmentMenu
 ) {
 
+    public static WriteAccessAllowed of() {
+        return new WriteAccessAllowed(null, null, null);
+    }
+
     public WriteAccessAllowed withFromRequest(@Nullable Boolean fromRequest) {
         return new WriteAccessAllowed(fromRequest, webAppName, fromAttachmentMenu);
     }

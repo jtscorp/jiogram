@@ -21,6 +21,10 @@ public record SuggestedPostInfo(
     @JsonProperty("send_date") @Nullable Long sendDate
 ) {
 
+    public static SuggestedPostInfo of(String state) {
+        return new SuggestedPostInfo(state, null, null);
+    }
+
     public SuggestedPostInfo withState(String state) {
         return new SuggestedPostInfo(state, price, sendDate);
     }

@@ -19,6 +19,10 @@ public record DirectMessagesTopic(
     @JsonProperty("user") @Nullable User user
 ) {
 
+    public static DirectMessagesTopic of(long topicId) {
+        return new DirectMessagesTopic(topicId, null);
+    }
+
     public DirectMessagesTopic withTopicId(long topicId) {
         return new DirectMessagesTopic(topicId, user);
     }

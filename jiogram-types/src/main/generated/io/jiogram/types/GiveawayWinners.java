@@ -43,6 +43,10 @@ public record GiveawayWinners(
     @JsonProperty("prize_description") @Nullable String prizeDescription
 ) {
 
+    public static GiveawayWinners of(Chat chat, long giveawayMessageId, long winnersSelectionDate, long winnerCount, List<User> winners) {
+        return new GiveawayWinners(chat, giveawayMessageId, winnersSelectionDate, winnerCount, winners, null, null, null, null, null, null, null);
+    }
+
     public GiveawayWinners withChat(Chat chat) {
         return new GiveawayWinners(chat, giveawayMessageId, winnersSelectionDate, winnerCount, winners, additionalChatCount, prizeStarCount, premiumSubscriptionMonthCount, unclaimedPrizeCount, onlyNewMembers, wasRefunded, prizeDescription);
     }

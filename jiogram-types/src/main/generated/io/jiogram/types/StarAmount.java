@@ -16,6 +16,10 @@ public record StarAmount(
     @JsonProperty("nanostar_amount") @Nullable Long nanostarAmount
 ) {
 
+    public static StarAmount of(long amount) {
+        return new StarAmount(amount, null);
+    }
+
     public StarAmount withAmount(long amount) {
         return new StarAmount(amount, nanostarAmount);
     }

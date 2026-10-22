@@ -38,6 +38,10 @@ public record SuccessfulPayment(
     @JsonProperty("provider_payment_charge_id") String providerPaymentChargeId
 ) {
 
+    public static SuccessfulPayment of(String currency, long totalAmount, String invoicePayload, String telegramPaymentChargeId, String providerPaymentChargeId) {
+        return new SuccessfulPayment(currency, totalAmount, invoicePayload, null, null, null, null, null, telegramPaymentChargeId, providerPaymentChargeId);
+    }
+
     public SuccessfulPayment withCurrency(String currency) {
         return new SuccessfulPayment(currency, totalAmount, invoicePayload, subscriptionExpirationDate, isRecurring, isFirstRecurring, shippingOptionId, orderInfo, telegramPaymentChargeId, providerPaymentChargeId);
     }

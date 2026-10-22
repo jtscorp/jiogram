@@ -50,6 +50,10 @@ public record InlineQueryResultPhoto(
     @JsonProperty("input_message_content") @Nullable InputMessageContent inputMessageContent
 ) implements InlineQueryResult {
 
+    public static InlineQueryResultPhoto of(String id, String photoUrl, String thumbnailUrl) {
+        return new InlineQueryResultPhoto(InlineQueryResultType.PHOTO, id, photoUrl, thumbnailUrl, null, null, null, null, null, null, null, null, null, null);
+    }
+
     public InlineQueryResultPhoto withId(String id) {
         return new InlineQueryResultPhoto(type, id, photoUrl, thumbnailUrl, photoWidth, photoHeight, title, description, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
     }

@@ -17,6 +17,10 @@ public record PaidMediaPhoto(
     @JsonProperty("photo") List<PhotoSize> photo
 ) implements PaidMedia {
 
+    public static PaidMediaPhoto of(List<PhotoSize> photo) {
+        return new PaidMediaPhoto(PaidMediaType.PHOTO, photo);
+    }
+
     public PaidMediaPhoto withPhoto(List<PhotoSize> photo) {
         return new PaidMediaPhoto(type, photo);
     }

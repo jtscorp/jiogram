@@ -11,4 +11,9 @@ import io.jiogram.types.ReactionTypeType;
  */
 public record ReactionTypePaid(
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) ReactionTypeType type
-) implements ReactionType {}
+) implements ReactionType {
+
+    public static ReactionTypePaid of() {
+        return new ReactionTypePaid(ReactionTypeType.PAID);
+    }
+}

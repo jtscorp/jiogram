@@ -22,6 +22,10 @@ public record StoryAreaTypeSuggestedReaction(
     @JsonProperty("is_flipped") @Nullable Boolean isFlipped
 ) implements StoryAreaType {
 
+    public static StoryAreaTypeSuggestedReaction of(ReactionType reactionType) {
+        return new StoryAreaTypeSuggestedReaction(StoryAreaTypeType.SUGGESTED_REACTION, reactionType, null, null);
+    }
+
     public StoryAreaTypeSuggestedReaction withReactionType(ReactionType reactionType) {
         return new StoryAreaTypeSuggestedReaction(type, reactionType, isDark, isFlipped);
     }

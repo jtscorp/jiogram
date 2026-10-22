@@ -55,6 +55,10 @@ public record Poll(
     @JsonProperty("description_entities") @Nullable List<MessageEntity> descriptionEntities
 ) {
 
+    public static Poll of(String id, String question, List<PollOption> options, long totalVoterCount, boolean isClosed, boolean isAnonymous, PollType type, boolean allowsMultipleAnswers, boolean allowsRevoting) {
+        return new Poll(id, question, null, options, totalVoterCount, isClosed, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, null, null, null, null, null, null, null);
+    }
+
     public Poll withId(String id) {
         return new Poll(id, question, questionEntities, options, totalVoterCount, isClosed, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, correctOptionIds, explanation, explanationEntities, openPeriod, closeDate, description, descriptionEntities);
     }

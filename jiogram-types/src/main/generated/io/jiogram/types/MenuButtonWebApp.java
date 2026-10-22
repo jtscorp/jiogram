@@ -22,6 +22,10 @@ public record MenuButtonWebApp(
     @JsonProperty("web_app") WebAppInfo webApp
 ) implements MenuButton {
 
+    public static MenuButtonWebApp of(String text, WebAppInfo webApp) {
+        return new MenuButtonWebApp(MenuButtonType.WEB_APP, text, webApp);
+    }
+
     public MenuButtonWebApp withText(String text) {
         return new MenuButtonWebApp(type, text, webApp);
     }

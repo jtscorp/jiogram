@@ -43,6 +43,10 @@ public record InlineQueryResultCachedVideo(
     @JsonProperty("input_message_content") @Nullable InputMessageContent inputMessageContent
 ) implements InlineQueryResult {
 
+    public static InlineQueryResultCachedVideo of(String id, String videoFileId, String title) {
+        return new InlineQueryResultCachedVideo(InlineQueryResultType.VIDEO, id, videoFileId, title, null, null, null, null, null, null, null);
+    }
+
     public InlineQueryResultCachedVideo withId(String id) {
         return new InlineQueryResultCachedVideo(type, id, videoFileId, title, description, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
     }

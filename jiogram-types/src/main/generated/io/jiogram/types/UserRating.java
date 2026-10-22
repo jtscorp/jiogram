@@ -22,6 +22,10 @@ public record UserRating(
     @JsonProperty("next_level_rating") @Nullable Long nextLevelRating
 ) {
 
+    public static UserRating of(long level, long rating, long currentLevelRating) {
+        return new UserRating(level, rating, currentLevelRating, null);
+    }
+
     public UserRating withLevel(long level) {
         return new UserRating(level, rating, currentLevelRating, nextLevelRating);
     }

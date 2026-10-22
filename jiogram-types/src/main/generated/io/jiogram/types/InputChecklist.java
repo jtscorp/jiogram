@@ -30,6 +30,10 @@ public record InputChecklist(
     @JsonProperty("others_can_mark_tasks_as_done") @Nullable Boolean othersCanMarkTasksAsDone
 ) {
 
+    public static InputChecklist of(String title, List<InputChecklistTask> tasks) {
+        return new InputChecklist(title, null, null, tasks, null, null);
+    }
+
     public InputChecklist withTitle(String title) {
         return new InputChecklist(title, parseMode, titleEntities, tasks, othersCanAddTasks, othersCanMarkTasksAsDone);
     }

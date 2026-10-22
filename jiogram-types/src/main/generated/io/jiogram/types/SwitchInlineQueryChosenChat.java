@@ -23,6 +23,10 @@ public record SwitchInlineQueryChosenChat(
     @JsonProperty("allow_channel_chats") @Nullable Boolean allowChannelChats
 ) {
 
+    public static SwitchInlineQueryChosenChat of() {
+        return new SwitchInlineQueryChosenChat(null, null, null, null, null);
+    }
+
     public SwitchInlineQueryChosenChat withQuery(@Nullable String query) {
         return new SwitchInlineQueryChosenChat(query, allowUserChats, allowBotChats, allowGroupChats, allowChannelChats);
     }

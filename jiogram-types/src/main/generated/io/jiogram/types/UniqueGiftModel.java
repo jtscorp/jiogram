@@ -22,6 +22,10 @@ public record UniqueGiftModel(
     @JsonProperty("rarity") @Nullable String rarity
 ) {
 
+    public static UniqueGiftModel of(String name, Sticker sticker, long rarityPerMille) {
+        return new UniqueGiftModel(name, sticker, rarityPerMille, null);
+    }
+
     public UniqueGiftModel withName(String name) {
         return new UniqueGiftModel(name, sticker, rarityPerMille, rarity);
     }

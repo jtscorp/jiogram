@@ -28,6 +28,10 @@ public record SharedUser(
     @JsonProperty("photo") @Nullable List<PhotoSize> photo
 ) {
 
+    public static SharedUser of(long userId) {
+        return new SharedUser(userId, null, null, null, null);
+    }
+
     public SharedUser withUserId(long userId) {
         return new SharedUser(userId, firstName, lastName, username, photo);
     }

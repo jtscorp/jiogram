@@ -17,6 +17,10 @@ public record MessageOriginHiddenUser(
     @JsonProperty("sender_user_name") String senderUserName
 ) implements MessageOrigin {
 
+    public static MessageOriginHiddenUser of(long date, String senderUserName) {
+        return new MessageOriginHiddenUser(MessageOriginType.HIDDEN_USER, date, senderUserName);
+    }
+
     public MessageOriginHiddenUser withDate(long date) {
         return new MessageOriginHiddenUser(type, date, senderUserName);
     }

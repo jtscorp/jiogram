@@ -25,6 +25,10 @@ public record PassportElementErrorDataField(
     @JsonProperty("message") String message
 ) implements PassportElementError {
 
+    public static PassportElementErrorDataField of(PassportElementType type, String fieldName, String dataHash, String message) {
+        return new PassportElementErrorDataField(PassportElementErrorType.DATA, type, fieldName, dataHash, message);
+    }
+
     public PassportElementErrorDataField withType(PassportElementType type) {
         return new PassportElementErrorDataField(source, type, fieldName, dataHash, message);
     }

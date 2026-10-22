@@ -17,6 +17,10 @@ public record TransactionPartnerFragment(
     @JsonProperty("withdrawal_state") @Nullable RevenueWithdrawalState withdrawalState
 ) implements TransactionPartner {
 
+    public static TransactionPartnerFragment of() {
+        return new TransactionPartnerFragment(TransactionPartnerType.FRAGMENT, null);
+    }
+
     public TransactionPartnerFragment withWithdrawalState(@Nullable RevenueWithdrawalState withdrawalState) {
         return new TransactionPartnerFragment(type, withdrawalState);
     }

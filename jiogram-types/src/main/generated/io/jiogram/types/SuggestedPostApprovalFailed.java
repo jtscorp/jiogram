@@ -20,6 +20,10 @@ public record SuggestedPostApprovalFailed(
     @JsonProperty("price") SuggestedPostPrice price
 ) {
 
+    public static SuggestedPostApprovalFailed of(SuggestedPostPrice price) {
+        return new SuggestedPostApprovalFailed(null, price);
+    }
+
     public SuggestedPostApprovalFailed withSuggestedPostMessage(@Nullable Message suggestedPostMessage) {
         return new SuggestedPostApprovalFailed(suggestedPostMessage, price);
     }

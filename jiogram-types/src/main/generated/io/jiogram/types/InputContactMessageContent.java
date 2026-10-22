@@ -19,6 +19,10 @@ public record InputContactMessageContent(
     @JsonProperty("vcard") @Nullable String vcard
 ) implements InputMessageContent {
 
+    public static InputContactMessageContent of(String phoneNumber, String firstName) {
+        return new InputContactMessageContent(phoneNumber, firstName, null, null);
+    }
+
     public InputContactMessageContent withPhoneNumber(String phoneNumber) {
         return new InputContactMessageContent(phoneNumber, firstName, lastName, vcard);
     }

@@ -19,6 +19,10 @@ public record KeyboardButtonRequestManagedBot(
     @JsonProperty("suggested_username") @Nullable String suggestedUsername
 ) {
 
+    public static KeyboardButtonRequestManagedBot of(long requestId) {
+        return new KeyboardButtonRequestManagedBot(requestId, null, null);
+    }
+
     public KeyboardButtonRequestManagedBot withRequestId(long requestId) {
         return new KeyboardButtonRequestManagedBot(requestId, suggestedName, suggestedUsername);
     }

@@ -47,6 +47,10 @@ public record Gift(
     @JsonProperty("publisher_chat") @Nullable Chat publisherChat
 ) {
 
+    public static Gift of(String id, Sticker sticker, long starCount) {
+        return new Gift(id, sticker, starCount, null, null, null, null, null, null, null, null, null, null);
+    }
+
     public Gift withId(String id) {
         return new Gift(id, sticker, starCount, upgradeStarCount, isPremium, hasColors, totalCount, remainingCount, personalTotalCount, personalRemainingCount, background, uniqueGiftVariantCount, publisherChat);
     }

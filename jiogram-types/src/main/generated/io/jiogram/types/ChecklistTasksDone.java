@@ -21,6 +21,10 @@ public record ChecklistTasksDone(
     @JsonProperty("marked_as_not_done_task_ids") @Nullable List<Long> markedAsNotDoneTaskIds
 ) {
 
+    public static ChecklistTasksDone of() {
+        return new ChecklistTasksDone(null, null, null);
+    }
+
     public ChecklistTasksDone withChecklistMessage(@Nullable Message checklistMessage) {
         return new ChecklistTasksDone(checklistMessage, markedAsDoneTaskIds, markedAsNotDoneTaskIds);
     }

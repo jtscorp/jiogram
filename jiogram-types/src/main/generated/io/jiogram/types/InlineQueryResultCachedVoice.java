@@ -39,6 +39,10 @@ public record InlineQueryResultCachedVoice(
     @JsonProperty("input_message_content") @Nullable InputMessageContent inputMessageContent
 ) implements InlineQueryResult {
 
+    public static InlineQueryResultCachedVoice of(String id, String voiceFileId, String title) {
+        return new InlineQueryResultCachedVoice(InlineQueryResultType.VOICE, id, voiceFileId, title, null, null, null, null, null);
+    }
+
     public InlineQueryResultCachedVoice withId(String id) {
         return new InlineQueryResultCachedVoice(type, id, voiceFileId, title, caption, parseMode, captionEntities, replyMarkup, inputMessageContent);
     }

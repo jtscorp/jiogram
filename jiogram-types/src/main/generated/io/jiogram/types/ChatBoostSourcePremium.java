@@ -17,6 +17,10 @@ public record ChatBoostSourcePremium(
     @JsonProperty("user") User user
 ) implements ChatBoostSource {
 
+    public static ChatBoostSourcePremium of(User user) {
+        return new ChatBoostSourcePremium(ChatBoostSourceType.PREMIUM, user);
+    }
+
     public ChatBoostSourcePremium withUser(User user) {
         return new ChatBoostSourcePremium(source, user);
     }

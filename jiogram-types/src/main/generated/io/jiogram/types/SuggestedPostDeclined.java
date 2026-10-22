@@ -17,6 +17,10 @@ public record SuggestedPostDeclined(
     @JsonProperty("comment") @Nullable String comment
 ) {
 
+    public static SuggestedPostDeclined of() {
+        return new SuggestedPostDeclined(null, null);
+    }
+
     public SuggestedPostDeclined withSuggestedPostMessage(@Nullable Message suggestedPostMessage) {
         return new SuggestedPostDeclined(suggestedPostMessage, comment);
     }

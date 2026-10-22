@@ -28,6 +28,10 @@ public record ChatBoostSourceGiveaway(
     @JsonProperty("is_unclaimed") @Nullable Boolean isUnclaimed
 ) implements ChatBoostSource {
 
+    public static ChatBoostSourceGiveaway of(long giveawayMessageId) {
+        return new ChatBoostSourceGiveaway(ChatBoostSourceType.GIVEAWAY, giveawayMessageId, null, null, null);
+    }
+
     public ChatBoostSourceGiveaway withGiveawayMessageId(long giveawayMessageId) {
         return new ChatBoostSourceGiveaway(source, giveawayMessageId, user, prizeStarCount, isUnclaimed);
     }

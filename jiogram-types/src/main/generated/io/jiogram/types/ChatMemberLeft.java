@@ -16,6 +16,10 @@ public record ChatMemberLeft(
     @JsonProperty("user") User user
 ) implements ChatMember {
 
+    public static ChatMemberLeft of(User user) {
+        return new ChatMemberLeft(ChatMemberType.LEFT, user);
+    }
+
     public ChatMemberLeft withUser(User user) {
         return new ChatMemberLeft(status, user);
     }

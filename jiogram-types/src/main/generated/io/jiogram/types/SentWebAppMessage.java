@@ -14,6 +14,10 @@ public record SentWebAppMessage(
     @JsonProperty("inline_message_id") @Nullable String inlineMessageId
 ) {
 
+    public static SentWebAppMessage of() {
+        return new SentWebAppMessage(null);
+    }
+
     public SentWebAppMessage withInlineMessageId(@Nullable String inlineMessageId) {
         return new SentWebAppMessage(inlineMessageId);
     }

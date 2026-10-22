@@ -50,6 +50,10 @@ public record Sticker(
     @JsonProperty("file_size") @Nullable Long fileSize
 ) {
 
+    public static Sticker of(String fileId, String fileUniqueId, StickerType type, long width, long height, boolean isAnimated, boolean isVideo) {
+        return new Sticker(fileId, fileUniqueId, type, width, height, isAnimated, isVideo, null, null, null, null, null, null, null, null);
+    }
+
     public Sticker withFileId(String fileId) {
         return new Sticker(fileId, fileUniqueId, type, width, height, isAnimated, isVideo, thumbnail, emoji, setName, premiumAnimation, maskPosition, customEmojiId, needsRepainting, fileSize);
     }

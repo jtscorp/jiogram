@@ -30,6 +30,10 @@ public record InlineQuery(
     @JsonProperty("location") @Nullable Location location
 ) {
 
+    public static InlineQuery of(String id, User from, String query, String offset) {
+        return new InlineQuery(id, from, query, offset, null, null);
+    }
+
     public InlineQuery withId(String id) {
         return new InlineQuery(id, from, query, offset, chatType, location);
     }

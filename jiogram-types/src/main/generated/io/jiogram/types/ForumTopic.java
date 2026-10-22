@@ -22,6 +22,10 @@ public record ForumTopic(
     @JsonProperty("is_name_implicit") @Nullable Boolean isNameImplicit
 ) {
 
+    public static ForumTopic of(long messageThreadId, String name, long iconColor) {
+        return new ForumTopic(messageThreadId, name, iconColor, null, null);
+    }
+
     public ForumTopic withMessageThreadId(long messageThreadId) {
         return new ForumTopic(messageThreadId, name, iconColor, iconCustomEmojiId, isNameImplicit);
     }

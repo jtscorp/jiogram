@@ -39,6 +39,10 @@ public record Giveaway(
     @JsonProperty("premium_subscription_month_count") @Nullable Long premiumSubscriptionMonthCount
 ) {
 
+    public static Giveaway of(List<Chat> chats, long winnersSelectionDate, long winnerCount) {
+        return new Giveaway(chats, winnersSelectionDate, winnerCount, null, null, null, null, null, null);
+    }
+
     public Giveaway withChats(List<Chat> chats) {
         return new Giveaway(chats, winnersSelectionDate, winnerCount, onlyNewMembers, hasPublicWinners, prizeDescription, countryCodes, prizeStarCount, premiumSubscriptionMonthCount);
     }

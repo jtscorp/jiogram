@@ -17,6 +17,10 @@ public record ChatBoostSourceGiftCode(
     @JsonProperty("user") User user
 ) implements ChatBoostSource {
 
+    public static ChatBoostSourceGiftCode of(User user) {
+        return new ChatBoostSourceGiftCode(ChatBoostSourceType.GIFT_CODE, user);
+    }
+
     public ChatBoostSourceGiftCode withUser(User user) {
         return new ChatBoostSourceGiftCode(source, user);
     }

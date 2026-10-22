@@ -89,6 +89,10 @@ public record ExternalReplyInfo(
     @JsonProperty("venue") @Nullable Venue venue
 ) {
 
+    public static ExternalReplyInfo of(MessageOrigin origin) {
+        return new ExternalReplyInfo(origin, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+    }
+
     public ExternalReplyInfo withOrigin(MessageOrigin origin) {
         return new ExternalReplyInfo(origin, chat, messageId, linkPreviewOptions, animation, audio, document, paidMedia, photo, sticker, story, video, videoNote, voice, hasMediaSpoiler, checklist, contact, dice, game, giveaway, giveawayWinners, invoice, location, poll, venue);
     }

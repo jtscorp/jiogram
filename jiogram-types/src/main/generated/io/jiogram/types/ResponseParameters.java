@@ -19,6 +19,10 @@ public record ResponseParameters(
     @JsonProperty("retry_after") @Nullable Long retryAfter
 ) {
 
+    public static ResponseParameters of() {
+        return new ResponseParameters(null, null);
+    }
+
     public ResponseParameters withMigrateToChatId(@Nullable Long migrateToChatId) {
         return new ResponseParameters(migrateToChatId, retryAfter);
     }

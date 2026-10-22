@@ -27,6 +27,10 @@ public record AffiliateInfo(
     @JsonProperty("nanostar_amount") @Nullable Long nanostarAmount
 ) {
 
+    public static AffiliateInfo of(long commissionPerMille, long amount) {
+        return new AffiliateInfo(null, null, commissionPerMille, amount, null);
+    }
+
     public AffiliateInfo withAffiliateUser(@Nullable User affiliateUser) {
         return new AffiliateInfo(affiliateUser, affiliateChat, commissionPerMille, amount, nanostarAmount);
     }

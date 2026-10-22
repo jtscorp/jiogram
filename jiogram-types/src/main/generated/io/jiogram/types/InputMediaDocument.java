@@ -42,6 +42,10 @@ public record InputMediaDocument(
     @JsonProperty("disable_content_type_detection") @Nullable Boolean disableContentTypeDetection
 ) implements InputMedia {
 
+    public static InputMediaDocument of(InputFileOrString media) {
+        return new InputMediaDocument(InputMediaType.DOCUMENT, media, null, null, null, null, null);
+    }
+
     public InputMediaDocument withMedia(InputFileOrString media) {
         return new InputMediaDocument(type, media, thumbnail, caption, parseMode, captionEntities, disableContentTypeDetection);
     }

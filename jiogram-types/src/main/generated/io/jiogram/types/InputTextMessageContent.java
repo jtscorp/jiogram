@@ -25,6 +25,10 @@ public record InputTextMessageContent(
     @JsonProperty("link_preview_options") @Nullable LinkPreviewOptions linkPreviewOptions
 ) implements InputMessageContent {
 
+    public static InputTextMessageContent of(String messageText) {
+        return new InputTextMessageContent(messageText, null, null, null);
+    }
+
     public InputTextMessageContent withMessageText(String messageText) {
         return new InputTextMessageContent(messageText, parseMode, entities, linkPreviewOptions);
     }

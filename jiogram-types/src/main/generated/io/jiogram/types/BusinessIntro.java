@@ -18,6 +18,10 @@ public record BusinessIntro(
     @JsonProperty("sticker") @Nullable Sticker sticker
 ) {
 
+    public static BusinessIntro of() {
+        return new BusinessIntro(null, null, null);
+    }
+
     public BusinessIntro withTitle(@Nullable String title) {
         return new BusinessIntro(title, message, sticker);
     }

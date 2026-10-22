@@ -69,6 +69,10 @@ public record ChatMemberAdministrator(
     @JsonProperty("custom_title") @Nullable String customTitle
 ) implements ChatMember {
 
+    public static ChatMemberAdministrator of(User user, boolean canBeEdited, boolean isAnonymous, boolean canManageChat, boolean canDeleteMessages, boolean canManageVideoChats, boolean canRestrictMembers, boolean canPromoteMembers, boolean canChangeInfo, boolean canInviteUsers, boolean canPostStories, boolean canEditStories, boolean canDeleteStories) {
+        return new ChatMemberAdministrator(ChatMemberType.ADMINISTRATOR, user, canBeEdited, isAnonymous, canManageChat, canDeleteMessages, canManageVideoChats, canRestrictMembers, canPromoteMembers, canChangeInfo, canInviteUsers, canPostStories, canEditStories, canDeleteStories, null, null, null, null, null, null, null);
+    }
+
     public ChatMemberAdministrator withUser(User user) {
         return new ChatMemberAdministrator(status, user, canBeEdited, isAnonymous, canManageChat, canDeleteMessages, canManageVideoChats, canRestrictMembers, canPromoteMembers, canChangeInfo, canInviteUsers, canPostStories, canEditStories, canDeleteStories, canPostMessages, canEditMessages, canPinMessages, canManageTopics, canManageDirectMessages, canManageTags, customTitle);
     }

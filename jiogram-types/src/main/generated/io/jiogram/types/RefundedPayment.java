@@ -25,6 +25,10 @@ public record RefundedPayment(
     @JsonProperty("provider_payment_charge_id") @Nullable String providerPaymentChargeId
 ) {
 
+    public static RefundedPayment of(String currency, long totalAmount, String invoicePayload, String telegramPaymentChargeId) {
+        return new RefundedPayment(currency, totalAmount, invoicePayload, telegramPaymentChargeId, null);
+    }
+
     public RefundedPayment withCurrency(String currency) {
         return new RefundedPayment(currency, totalAmount, invoicePayload, telegramPaymentChargeId, providerPaymentChargeId);
     }

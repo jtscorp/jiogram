@@ -24,6 +24,10 @@ public record Voice(
     @JsonProperty("file_size") @Nullable Long fileSize
 ) {
 
+    public static Voice of(String fileId, String fileUniqueId, long duration) {
+        return new Voice(fileId, fileUniqueId, duration, null, null);
+    }
+
     public Voice withFileId(String fileId) {
         return new Voice(fileId, fileUniqueId, duration, mimeType, fileSize);
     }

@@ -75,6 +75,10 @@ public record InputInvoiceMessageContent(
     @JsonProperty("is_flexible") @Nullable Boolean isFlexible
 ) implements InputMessageContent {
 
+    public static InputInvoiceMessageContent of(String title, String description, String payload, String currency, List<LabeledPrice> prices) {
+        return new InputInvoiceMessageContent(title, description, payload, null, currency, prices, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+    }
+
     public InputInvoiceMessageContent withTitle(String title) {
         return new InputInvoiceMessageContent(title, description, payload, providerToken, currency, prices, maxTipAmount, suggestedTipAmounts, providerData, photoUrl, photoSize, photoWidth, photoHeight, needName, needPhoneNumber, needEmail, needShippingAddress, sendPhoneNumberToProvider, sendEmailToProvider, isFlexible);
     }

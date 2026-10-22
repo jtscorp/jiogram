@@ -29,6 +29,10 @@ public record InlineQueryResultsButton(
     @JsonProperty("start_parameter") @Nullable String startParameter
 ) {
 
+    public static InlineQueryResultsButton of(String text) {
+        return new InlineQueryResultsButton(text, null, null);
+    }
+
     public InlineQueryResultsButton withText(String text) {
         return new InlineQueryResultsButton(text, webApp, startParameter);
     }

@@ -32,6 +32,10 @@ public record LoginUrl(
     @JsonProperty("request_write_access") @Nullable Boolean requestWriteAccess
 ) {
 
+    public static LoginUrl of(String url) {
+        return new LoginUrl(url, null, null, null);
+    }
+
     public LoginUrl withUrl(String url) {
         return new LoginUrl(url, forwardText, botUsername, requestWriteAccess);
     }

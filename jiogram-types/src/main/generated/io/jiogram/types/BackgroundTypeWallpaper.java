@@ -24,6 +24,10 @@ public record BackgroundTypeWallpaper(
     @JsonProperty("is_moving") @Nullable Boolean isMoving
 ) implements BackgroundType {
 
+    public static BackgroundTypeWallpaper of(Document document, long darkThemeDimming) {
+        return new BackgroundTypeWallpaper(BackgroundTypeType.WALLPAPER, document, darkThemeDimming, null, null);
+    }
+
     public BackgroundTypeWallpaper withDocument(Document document) {
         return new BackgroundTypeWallpaper(type, document, darkThemeDimming, isBlurred, isMoving);
     }

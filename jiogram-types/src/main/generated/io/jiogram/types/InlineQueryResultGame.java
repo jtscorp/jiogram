@@ -21,6 +21,10 @@ public record InlineQueryResultGame(
     @JsonProperty("reply_markup") @Nullable InlineKeyboardMarkup replyMarkup
 ) implements InlineQueryResult {
 
+    public static InlineQueryResultGame of(String id, String gameShortName) {
+        return new InlineQueryResultGame(InlineQueryResultType.GAME, id, gameShortName, null);
+    }
+
     public InlineQueryResultGame withId(String id) {
         return new InlineQueryResultGame(type, id, gameShortName, replyMarkup);
     }

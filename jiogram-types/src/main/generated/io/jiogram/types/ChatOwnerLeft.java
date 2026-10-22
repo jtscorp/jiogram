@@ -15,6 +15,10 @@ public record ChatOwnerLeft(
     @JsonProperty("new_owner") @Nullable User newOwner
 ) {
 
+    public static ChatOwnerLeft of() {
+        return new ChatOwnerLeft(null);
+    }
+
     public ChatOwnerLeft withNewOwner(@Nullable User newOwner) {
         return new ChatOwnerLeft(newOwner);
     }

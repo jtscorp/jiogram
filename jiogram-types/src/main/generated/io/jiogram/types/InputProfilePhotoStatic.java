@@ -18,6 +18,10 @@ public record InputProfilePhotoStatic(
     @JsonProperty("photo") InputFileOrString photo
 ) implements InputProfilePhoto {
 
+    public static InputProfilePhotoStatic of(InputFileOrString photo) {
+        return new InputProfilePhotoStatic(InputProfilePhotoType.STATIC, photo);
+    }
+
     public InputProfilePhotoStatic withPhoto(InputFileOrString photo) {
         return new InputProfilePhotoStatic(type, photo);
     }

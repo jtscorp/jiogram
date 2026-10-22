@@ -11,4 +11,9 @@ import io.jiogram.types.RevenueWithdrawalStateType;
  */
 public record RevenueWithdrawalStateFailed(
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) RevenueWithdrawalStateType type
-) implements RevenueWithdrawalState {}
+) implements RevenueWithdrawalState {
+
+    public static RevenueWithdrawalStateFailed of() {
+        return new RevenueWithdrawalStateFailed(RevenueWithdrawalStateType.FAILED);
+    }
+}

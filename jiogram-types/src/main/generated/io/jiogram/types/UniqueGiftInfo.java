@@ -34,6 +34,10 @@ public record UniqueGiftInfo(
     @JsonProperty("next_transfer_date") @Nullable Long nextTransferDate
 ) {
 
+    public static UniqueGiftInfo of(UniqueGift gift, String origin) {
+        return new UniqueGiftInfo(gift, origin, null, null, null, null, null);
+    }
+
     public UniqueGiftInfo withGift(UniqueGift gift) {
         return new UniqueGiftInfo(gift, origin, lastResaleCurrency, lastResaleAmount, ownedGiftId, transferStarCount, nextTransferDate);
     }

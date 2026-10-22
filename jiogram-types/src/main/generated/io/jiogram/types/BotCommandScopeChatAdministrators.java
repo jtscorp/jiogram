@@ -19,6 +19,10 @@ public record BotCommandScopeChatAdministrators(
     @JsonProperty("chat_id") ChatId chatId
 ) implements BotCommandScope {
 
+    public static BotCommandScopeChatAdministrators of(ChatId chatId) {
+        return new BotCommandScopeChatAdministrators(BotCommandScopeType.CHAT_ADMINISTRATORS, chatId);
+    }
+
     public BotCommandScopeChatAdministrators withChatId(ChatId chatId) {
         return new BotCommandScopeChatAdministrators(type, chatId);
     }

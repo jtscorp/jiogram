@@ -22,6 +22,10 @@ public record GiveawayCompleted(
     @JsonProperty("is_star_giveaway") @Nullable Boolean isStarGiveaway
 ) {
 
+    public static GiveawayCompleted of(long winnerCount) {
+        return new GiveawayCompleted(winnerCount, null, null, null);
+    }
+
     public GiveawayCompleted withWinnerCount(long winnerCount) {
         return new GiveawayCompleted(winnerCount, unclaimedPrizeCount, giveawayMessage, isStarGiveaway);
     }

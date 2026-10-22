@@ -41,6 +41,10 @@ public record Video(
     @JsonProperty("file_size") @Nullable Long fileSize
 ) {
 
+    public static Video of(String fileId, String fileUniqueId, long width, long height, long duration) {
+        return new Video(fileId, fileUniqueId, width, height, duration, null, null, null, null, null, null, null);
+    }
+
     public Video withFileId(String fileId) {
         return new Video(fileId, fileUniqueId, width, height, duration, thumbnail, cover, startTimestamp, qualities, fileName, mimeType, fileSize);
     }

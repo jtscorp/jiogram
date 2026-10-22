@@ -29,6 +29,10 @@ public record MessageReactionUpdated(
     @JsonProperty("new_reaction") List<ReactionType> newReaction
 ) {
 
+    public static MessageReactionUpdated of(Chat chat, long messageId, long date, List<ReactionType> oldReaction, List<ReactionType> newReaction) {
+        return new MessageReactionUpdated(chat, messageId, null, null, date, oldReaction, newReaction);
+    }
+
     public MessageReactionUpdated withChat(Chat chat) {
         return new MessageReactionUpdated(chat, messageId, user, actorChat, date, oldReaction, newReaction);
     }

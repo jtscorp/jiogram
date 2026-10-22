@@ -58,6 +58,10 @@ public record InlineQueryResultVideo(
     @JsonProperty("input_message_content") @Nullable InputMessageContent inputMessageContent
 ) implements InlineQueryResult {
 
+    public static InlineQueryResultVideo of(String id, String videoUrl, VideoMimeType mimeType, String thumbnailUrl, String title) {
+        return new InlineQueryResultVideo(InlineQueryResultType.VIDEO, id, videoUrl, mimeType, thumbnailUrl, title, null, null, null, null, null, null, null, null, null, null);
+    }
+
     public InlineQueryResultVideo withId(String id) {
         return new InlineQueryResultVideo(type, id, videoUrl, mimeType, thumbnailUrl, title, caption, parseMode, captionEntities, showCaptionAboveMedia, videoWidth, videoHeight, videoDuration, description, replyMarkup, inputMessageContent);
     }

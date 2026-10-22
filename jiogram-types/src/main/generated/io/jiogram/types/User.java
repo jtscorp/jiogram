@@ -51,6 +51,10 @@ public record User(
     @JsonProperty("can_manage_bots") @Nullable Boolean canManageBots
 ) {
 
+    public static User of(long id, boolean isBot, String firstName) {
+        return new User(id, isBot, firstName, null, null, null, null, null, null, null, null, null, null, null, null, null);
+    }
+
     public User withId(long id) {
         return new User(id, isBot, firstName, lastName, username, languageCode, isPremium, addedToAttachmentMenu, canJoinGroups, canReadAllGroupMessages, supportsInlineQueries, canConnectToBusiness, hasMainWebApp, hasTopicsEnabled, allowsUsersToCreateTopics, canManageBots);
     }

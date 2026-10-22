@@ -21,6 +21,10 @@ public record ChatMemberMember(
     @JsonProperty("until_date") @Nullable Long untilDate
 ) implements ChatMember {
 
+    public static ChatMemberMember of(User user) {
+        return new ChatMemberMember(ChatMemberType.MEMBER, null, user, null);
+    }
+
     public ChatMemberMember withTag(@Nullable String tag) {
         return new ChatMemberMember(status, tag, user, untilDate);
     }

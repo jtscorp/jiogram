@@ -161,6 +161,10 @@ public record ChatFullInfo(
     @JsonProperty("paid_message_star_count") @Nullable Long paidMessageStarCount
 ) {
 
+    public static ChatFullInfo of(long id, ChatType type, long accentColorId, long maxReactionCount, AcceptedGiftTypes acceptedGiftTypes) {
+        return new ChatFullInfo(id, type, null, null, null, null, null, null, accentColorId, maxReactionCount, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, acceptedGiftTypes, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+    }
+
     public ChatFullInfo withId(long id) {
         return new ChatFullInfo(id, type, title, username, firstName, lastName, isForum, isDirectMessages, accentColorId, maxReactionCount, photo, activeUsernames, birthdate, businessIntro, businessLocation, businessOpeningHours, personalChat, parentChat, availableReactions, backgroundCustomEmojiId, profileAccentColorId, profileBackgroundCustomEmojiId, emojiStatusCustomEmojiId, emojiStatusExpirationDate, bio, hasPrivateForwards, hasRestrictedVoiceAndVideoMessages, joinToSendMessages, joinByRequest, description, inviteLink, pinnedMessage, permissions, acceptedGiftTypes, canSendPaidMedia, slowModeDelay, unrestrictBoostCount, messageAutoDeleteTime, hasAggressiveAntiSpamEnabled, hasHiddenMembers, hasProtectedContent, hasVisibleHistory, stickerSetName, canSetStickerSet, customEmojiStickerSetName, linkedChatId, location, rating, firstProfileAudio, uniqueGiftColors, paidMessageStarCount);
     }

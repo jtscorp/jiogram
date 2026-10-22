@@ -39,6 +39,10 @@ public record ReplyKeyboardMarkup(
     @JsonProperty("selective") @Nullable Boolean selective
 ) implements ReplyMarkup {
 
+    public static ReplyKeyboardMarkup of(List<List<KeyboardButton>> keyboard) {
+        return new ReplyKeyboardMarkup(keyboard, null, null, null, null, null);
+    }
+
     public ReplyKeyboardMarkup withKeyboard(List<List<KeyboardButton>> keyboard) {
         return new ReplyKeyboardMarkup(keyboard, isPersistent, resizeKeyboard, oneTimeKeyboard, inputFieldPlaceholder, selective);
     }

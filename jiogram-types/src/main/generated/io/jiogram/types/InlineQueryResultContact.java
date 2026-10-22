@@ -38,6 +38,10 @@ public record InlineQueryResultContact(
     @JsonProperty("thumbnail_height") @Nullable Long thumbnailHeight
 ) implements InlineQueryResult {
 
+    public static InlineQueryResultContact of(String id, String phoneNumber, String firstName) {
+        return new InlineQueryResultContact(InlineQueryResultType.CONTACT, id, phoneNumber, firstName, null, null, null, null, null, null, null);
+    }
+
     public InlineQueryResultContact withId(String id) {
         return new InlineQueryResultContact(type, id, phoneNumber, firstName, lastName, vcard, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
     }

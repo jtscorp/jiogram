@@ -33,6 +33,10 @@ public record PollOption(
     @JsonProperty("addition_date") @Nullable Long additionDate
 ) {
 
+    public static PollOption of(String persistentId, String text, long voterCount) {
+        return new PollOption(persistentId, text, null, voterCount, null, null, null);
+    }
+
     public PollOption withPersistentId(String persistentId) {
         return new PollOption(persistentId, text, textEntities, voterCount, addedByUser, addedByChat, additionDate);
     }

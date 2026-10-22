@@ -27,6 +27,10 @@ public record File(
     @JsonProperty("file_path") @Nullable String filePath
 ) {
 
+    public static File of(String fileId, String fileUniqueId) {
+        return new File(fileId, fileUniqueId, null, null);
+    }
+
     public File withFileId(String fileId) {
         return new File(fileId, fileUniqueId, fileSize, filePath);
     }

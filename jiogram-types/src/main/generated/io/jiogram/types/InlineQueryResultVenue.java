@@ -46,6 +46,10 @@ public record InlineQueryResultVenue(
     @JsonProperty("thumbnail_height") @Nullable Long thumbnailHeight
 ) implements InlineQueryResult {
 
+    public static InlineQueryResultVenue of(String id, double latitude, double longitude, String title, String address) {
+        return new InlineQueryResultVenue(InlineQueryResultType.VENUE, id, latitude, longitude, title, address, null, null, null, null, null, null, null, null, null);
+    }
+
     public InlineQueryResultVenue withId(String id) {
         return new InlineQueryResultVenue(type, id, latitude, longitude, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
     }

@@ -28,6 +28,10 @@ public record InputStoryContentVideo(
     @JsonProperty("is_animation") @Nullable Boolean isAnimation
 ) implements InputStoryContent {
 
+    public static InputStoryContentVideo of(InputFileOrString video) {
+        return new InputStoryContentVideo(InputStoryContentType.VIDEO, video, null, null, null);
+    }
+
     public InputStoryContentVideo withVideo(InputFileOrString video) {
         return new InputStoryContentVideo(type, video, duration, coverFrameTimestamp, isAnimation);
     }

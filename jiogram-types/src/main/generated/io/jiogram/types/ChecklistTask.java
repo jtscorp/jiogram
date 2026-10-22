@@ -30,6 +30,10 @@ public record ChecklistTask(
     @JsonProperty("completion_date") @Nullable Long completionDate
 ) {
 
+    public static ChecklistTask of(long id, String text) {
+        return new ChecklistTask(id, text, null, null, null, null);
+    }
+
     public ChecklistTask withId(long id) {
         return new ChecklistTask(id, text, textEntities, completedByUser, completedByChat, completionDate);
     }

@@ -16,6 +16,10 @@ public record BusinessLocation(
     @JsonProperty("location") @Nullable Location location
 ) {
 
+    public static BusinessLocation of(String address) {
+        return new BusinessLocation(address, null);
+    }
+
     public BusinessLocation withAddress(String address) {
         return new BusinessLocation(address, location);
     }

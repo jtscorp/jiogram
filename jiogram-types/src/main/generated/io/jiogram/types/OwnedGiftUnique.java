@@ -37,6 +37,10 @@ public record OwnedGiftUnique(
     @JsonProperty("next_transfer_date") @Nullable Long nextTransferDate
 ) implements OwnedGift {
 
+    public static OwnedGiftUnique of(UniqueGift gift, long sendDate) {
+        return new OwnedGiftUnique(OwnedGiftType.UNIQUE, gift, null, null, sendDate, null, null, null, null);
+    }
+
     public OwnedGiftUnique withGift(UniqueGift gift) {
         return new OwnedGiftUnique(type, gift, ownedGiftId, senderUser, sendDate, isSaved, canBeTransferred, transferStarCount, nextTransferDate);
     }

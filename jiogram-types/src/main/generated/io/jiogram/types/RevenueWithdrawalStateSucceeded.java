@@ -17,6 +17,10 @@ public record RevenueWithdrawalStateSucceeded(
     @JsonProperty("url") String url
 ) implements RevenueWithdrawalState {
 
+    public static RevenueWithdrawalStateSucceeded of(long date, String url) {
+        return new RevenueWithdrawalStateSucceeded(RevenueWithdrawalStateType.SUCCEEDED, date, url);
+    }
+
     public RevenueWithdrawalStateSucceeded withDate(long date) {
         return new RevenueWithdrawalStateSucceeded(type, date, url);
     }

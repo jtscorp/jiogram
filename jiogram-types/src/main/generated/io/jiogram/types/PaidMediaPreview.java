@@ -20,6 +20,10 @@ public record PaidMediaPreview(
     @JsonProperty("duration") @Nullable Long duration
 ) implements PaidMedia {
 
+    public static PaidMediaPreview of() {
+        return new PaidMediaPreview(PaidMediaType.PREVIEW, null, null, null);
+    }
+
     public PaidMediaPreview withWidth(@Nullable Long width) {
         return new PaidMediaPreview(type, width, height, duration);
     }

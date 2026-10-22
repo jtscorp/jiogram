@@ -47,6 +47,10 @@ public record KeyboardButtonRequestChat(
     @JsonProperty("request_photo") @Nullable Boolean requestPhoto
 ) {
 
+    public static KeyboardButtonRequestChat of(long requestId, boolean chatIsChannel) {
+        return new KeyboardButtonRequestChat(requestId, chatIsChannel, null, null, null, null, null, null, null, null, null);
+    }
+
     public KeyboardButtonRequestChat withRequestId(long requestId) {
         return new KeyboardButtonRequestChat(requestId, chatIsChannel, chatIsForum, chatHasUsername, chatIsCreated, userAdministratorRights, botAdministratorRights, botIsMember, requestTitle, requestUsername, requestPhoto);
     }

@@ -42,6 +42,10 @@ public record MessageEntity(
     @JsonProperty("date_time_format") @Nullable String dateTimeFormat
 ) {
 
+    public static MessageEntity of(MessageEntityType type, long offset, long length) {
+        return new MessageEntity(type, offset, length, null, null, null, null, null, null);
+    }
+
     public MessageEntity withType(MessageEntityType type) {
         return new MessageEntity(type, offset, length, url, user, language, customEmojiId, unixTime, dateTimeFormat);
     }

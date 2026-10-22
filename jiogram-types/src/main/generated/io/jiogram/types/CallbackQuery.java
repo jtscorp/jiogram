@@ -39,6 +39,10 @@ public record CallbackQuery(
     @JsonProperty("game_short_name") @Nullable String gameShortName
 ) {
 
+    public static CallbackQuery of(String id, User from, String chatInstance) {
+        return new CallbackQuery(id, from, null, null, chatInstance, null, null);
+    }
+
     public CallbackQuery withId(String id) {
         return new CallbackQuery(id, from, message, inlineMessageId, chatInstance, data, gameShortName);
     }

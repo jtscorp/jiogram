@@ -19,6 +19,10 @@ public record SuggestedPostRefunded(
     @JsonProperty("reason") String reason
 ) {
 
+    public static SuggestedPostRefunded of(String reason) {
+        return new SuggestedPostRefunded(null, reason);
+    }
+
     public SuggestedPostRefunded withSuggestedPostMessage(@Nullable Message suggestedPostMessage) {
         return new SuggestedPostRefunded(suggestedPostMessage, reason);
     }

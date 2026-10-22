@@ -18,6 +18,10 @@ public record ReactionTypeEmoji(
     @JsonProperty("emoji") String emoji
 ) implements ReactionType {
 
+    public static ReactionTypeEmoji of(String emoji) {
+        return new ReactionTypeEmoji(ReactionTypeType.EMOJI, emoji);
+    }
+
     public ReactionTypeEmoji withEmoji(String emoji) {
         return new ReactionTypeEmoji(type, emoji);
     }

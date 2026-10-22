@@ -17,6 +17,10 @@ public record Birthdate(
     @JsonProperty("year") @Nullable Long year
 ) {
 
+    public static Birthdate of(long day, long month) {
+        return new Birthdate(day, month, null);
+    }
+
     public Birthdate withDay(long day) {
         return new Birthdate(day, month, year);
     }

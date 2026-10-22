@@ -20,6 +20,10 @@ public record ForumTopicCreated(
     @JsonProperty("is_name_implicit") @Nullable Boolean isNameImplicit
 ) {
 
+    public static ForumTopicCreated of(String name, long iconColor) {
+        return new ForumTopicCreated(name, iconColor, null, null);
+    }
+
     public ForumTopicCreated withName(String name) {
         return new ForumTopicCreated(name, iconColor, iconCustomEmojiId, isNameImplicit);
     }

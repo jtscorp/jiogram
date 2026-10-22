@@ -16,6 +16,10 @@ public record TransactionPartnerTelegramApi(
     @JsonProperty("request_count") long requestCount
 ) implements TransactionPartner {
 
+    public static TransactionPartnerTelegramApi of(long requestCount) {
+        return new TransactionPartnerTelegramApi(TransactionPartnerType.TELEGRAM_API, requestCount);
+    }
+
     public TransactionPartnerTelegramApi withRequestCount(long requestCount) {
         return new TransactionPartnerTelegramApi(type, requestCount);
     }

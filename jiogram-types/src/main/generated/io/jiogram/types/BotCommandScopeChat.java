@@ -18,6 +18,10 @@ public record BotCommandScopeChat(
     @JsonProperty("chat_id") ChatId chatId
 ) implements BotCommandScope {
 
+    public static BotCommandScopeChat of(ChatId chatId) {
+        return new BotCommandScopeChat(BotCommandScopeType.CHAT, chatId);
+    }
+
     public BotCommandScopeChat withChatId(ChatId chatId) {
         return new BotCommandScopeChat(type, chatId);
     }

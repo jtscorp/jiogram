@@ -33,6 +33,10 @@ public record ChatMemberUpdated(
     @JsonProperty("via_chat_folder_invite_link") @Nullable Boolean viaChatFolderInviteLink
 ) {
 
+    public static ChatMemberUpdated of(Chat chat, User from, long date, ChatMember oldChatMember, ChatMember newChatMember) {
+        return new ChatMemberUpdated(chat, from, date, oldChatMember, newChatMember, null, null, null);
+    }
+
     public ChatMemberUpdated withChat(Chat chat) {
         return new ChatMemberUpdated(chat, from, date, oldChatMember, newChatMember, inviteLink, viaJoinRequest, viaChatFolderInviteLink);
     }

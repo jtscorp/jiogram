@@ -28,6 +28,10 @@ public record BusinessConnection(
     @JsonProperty("is_enabled") boolean isEnabled
 ) {
 
+    public static BusinessConnection of(String id, User user, long userChatId, long date, boolean isEnabled) {
+        return new BusinessConnection(id, user, userChatId, date, null, isEnabled);
+    }
+
     public BusinessConnection withId(String id) {
         return new BusinessConnection(id, user, userChatId, date, rights, isEnabled);
     }

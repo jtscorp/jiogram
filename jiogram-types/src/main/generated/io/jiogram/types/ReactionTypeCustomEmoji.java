@@ -15,6 +15,10 @@ public record ReactionTypeCustomEmoji(
     @JsonProperty("custom_emoji_id") String customEmojiId
 ) implements ReactionType {
 
+    public static ReactionTypeCustomEmoji of(String customEmojiId) {
+        return new ReactionTypeCustomEmoji(ReactionTypeType.CUSTOM_EMOJI, customEmojiId);
+    }
+
     public ReactionTypeCustomEmoji withCustomEmojiId(String customEmojiId) {
         return new ReactionTypeCustomEmoji(type, customEmojiId);
     }

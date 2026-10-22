@@ -19,6 +19,10 @@ public record InputPaidMediaPhoto(
     @JsonProperty("media") InputFileOrString media
 ) implements InputPaidMedia {
 
+    public static InputPaidMediaPhoto of(InputFileOrString media) {
+        return new InputPaidMediaPhoto(InputPaidMediaType.PHOTO, media);
+    }
+
     public InputPaidMediaPhoto withMedia(InputFileOrString media) {
         return new InputPaidMediaPhoto(type, media);
     }

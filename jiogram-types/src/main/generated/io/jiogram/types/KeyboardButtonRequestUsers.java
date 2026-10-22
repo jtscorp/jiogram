@@ -29,6 +29,10 @@ public record KeyboardButtonRequestUsers(
     @JsonProperty("request_photo") @Nullable Boolean requestPhoto
 ) {
 
+    public static KeyboardButtonRequestUsers of(long requestId) {
+        return new KeyboardButtonRequestUsers(requestId, null, null, null, null, null, null);
+    }
+
     public KeyboardButtonRequestUsers withRequestId(long requestId) {
         return new KeyboardButtonRequestUsers(requestId, userIsBot, userIsPremium, maxQuantity, requestName, requestUsername, requestPhoto);
     }

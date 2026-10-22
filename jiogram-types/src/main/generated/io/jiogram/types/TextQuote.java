@@ -25,6 +25,10 @@ public record TextQuote(
     @JsonProperty("is_manual") @Nullable Boolean isManual
 ) {
 
+    public static TextQuote of(String text, long position) {
+        return new TextQuote(text, null, position, null);
+    }
+
     public TextQuote withText(String text) {
         return new TextQuote(text, entities, position, isManual);
     }

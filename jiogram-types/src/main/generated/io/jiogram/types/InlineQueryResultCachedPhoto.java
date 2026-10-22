@@ -43,6 +43,10 @@ public record InlineQueryResultCachedPhoto(
     @JsonProperty("input_message_content") @Nullable InputMessageContent inputMessageContent
 ) implements InlineQueryResult {
 
+    public static InlineQueryResultCachedPhoto of(String id, String photoFileId) {
+        return new InlineQueryResultCachedPhoto(InlineQueryResultType.PHOTO, id, photoFileId, null, null, null, null, null, null, null, null);
+    }
+
     public InlineQueryResultCachedPhoto withId(String id) {
         return new InlineQueryResultCachedPhoto(type, id, photoFileId, title, description, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
     }

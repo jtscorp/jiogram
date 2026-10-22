@@ -26,6 +26,10 @@ public record VideoQuality(
     @JsonProperty("file_size") @Nullable Long fileSize
 ) {
 
+    public static VideoQuality of(String fileId, String fileUniqueId, long width, long height, String codec) {
+        return new VideoQuality(fileId, fileUniqueId, width, height, codec, null);
+    }
+
     public VideoQuality withFileId(String fileId) {
         return new VideoQuality(fileId, fileUniqueId, width, height, codec, fileSize);
     }

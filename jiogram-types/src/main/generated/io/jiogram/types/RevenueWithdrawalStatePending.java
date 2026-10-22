@@ -11,4 +11,9 @@ import io.jiogram.types.RevenueWithdrawalStateType;
  */
 public record RevenueWithdrawalStatePending(
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) RevenueWithdrawalStateType type
-) implements RevenueWithdrawalState {}
+) implements RevenueWithdrawalState {
+
+    public static RevenueWithdrawalStatePending of() {
+        return new RevenueWithdrawalStatePending(RevenueWithdrawalStateType.PENDING);
+    }
+}

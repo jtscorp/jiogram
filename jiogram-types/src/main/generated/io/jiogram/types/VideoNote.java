@@ -25,6 +25,10 @@ public record VideoNote(
     @JsonProperty("file_size") @Nullable Long fileSize
 ) {
 
+    public static VideoNote of(String fileId, String fileUniqueId, long length, long duration) {
+        return new VideoNote(fileId, fileUniqueId, length, duration, null, null);
+    }
+
     public VideoNote withFileId(String fileId) {
         return new VideoNote(fileId, fileUniqueId, length, duration, thumbnail, fileSize);
     }

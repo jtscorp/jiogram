@@ -53,6 +53,10 @@ public record InlineQueryResultMpeg4Gif(
     @JsonProperty("input_message_content") @Nullable InputMessageContent inputMessageContent
 ) implements InlineQueryResult {
 
+    public static InlineQueryResultMpeg4Gif of(String id, String mpeg4Url, String thumbnailUrl) {
+        return new InlineQueryResultMpeg4Gif(InlineQueryResultType.MPEG4_GIF, id, mpeg4Url, null, null, null, thumbnailUrl, null, null, null, null, null, null, null, null);
+    }
+
     public InlineQueryResultMpeg4Gif withId(String id) {
         return new InlineQueryResultMpeg4Gif(type, id, mpeg4Url, mpeg4Width, mpeg4Height, mpeg4Duration, thumbnailUrl, thumbnailMimeType, title, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
     }

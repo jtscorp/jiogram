@@ -11,4 +11,9 @@ import io.jiogram.types.BotCommandScopeType;
  */
 public record BotCommandScopeAllGroupChats(
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) BotCommandScopeType type
-) implements BotCommandScope {}
+) implements BotCommandScope {
+
+    public static BotCommandScopeAllGroupChats of() {
+        return new BotCommandScopeAllGroupChats(BotCommandScopeType.ALL_GROUP_CHATS);
+    }
+}

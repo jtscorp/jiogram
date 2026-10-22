@@ -12,4 +12,9 @@ import io.jiogram.types.BotCommandScopeType;
  */
 public record BotCommandScopeDefault(
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) BotCommandScopeType type
-) implements BotCommandScope {}
+) implements BotCommandScope {
+
+    public static BotCommandScopeDefault of() {
+        return new BotCommandScopeDefault(BotCommandScopeType.DEFAULT);
+    }
+}

@@ -30,6 +30,10 @@ public record PreCheckoutQuery(
     @JsonProperty("order_info") @Nullable OrderInfo orderInfo
 ) {
 
+    public static PreCheckoutQuery of(String id, User from, String currency, long totalAmount, String invoicePayload) {
+        return new PreCheckoutQuery(id, from, currency, totalAmount, invoicePayload, null, null);
+    }
+
     public PreCheckoutQuery withId(String id) {
         return new PreCheckoutQuery(id, from, currency, totalAmount, invoicePayload, shippingOptionId, orderInfo);
     }

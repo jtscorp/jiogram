@@ -106,6 +106,10 @@ public record Update(
     @JsonProperty("managed_bot") @Nullable ManagedBotUpdated managedBot
 ) {
 
+    public static Update of(long updateId) {
+        return new Update(updateId, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+    }
+
     public Update withUpdateId(long updateId) {
         return new Update(updateId, message, editedMessage, channelPost, editedChannelPost, businessConnection, businessMessage, editedBusinessMessage, deletedBusinessMessages, messageReaction, messageReactionCount, inlineQuery, chosenInlineResult, callbackQuery, shippingQuery, preCheckoutQuery, purchasedPaidMedia, poll, pollAnswer, myChatMember, chatMember, chatJoinRequest, chatBoost, removedChatBoost, managedBot);
     }

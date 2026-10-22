@@ -17,6 +17,10 @@ public record BackgroundFillFreeformGradient(
     @JsonProperty("colors") List<Long> colors
 ) implements BackgroundFill {
 
+    public static BackgroundFillFreeformGradient of(List<Long> colors) {
+        return new BackgroundFillFreeformGradient(BackgroundFillType.FREEFORM_GRADIENT, colors);
+    }
+
     public BackgroundFillFreeformGradient withColors(List<Long> colors) {
         return new BackgroundFillFreeformGradient(type, colors);
     }

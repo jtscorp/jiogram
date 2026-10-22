@@ -59,6 +59,10 @@ public record ChatAdministratorRights(
     @JsonProperty("can_manage_tags") @Nullable Boolean canManageTags
 ) {
 
+    public static ChatAdministratorRights of(boolean isAnonymous, boolean canManageChat, boolean canDeleteMessages, boolean canManageVideoChats, boolean canRestrictMembers, boolean canPromoteMembers, boolean canChangeInfo, boolean canInviteUsers, boolean canPostStories, boolean canEditStories, boolean canDeleteStories) {
+        return new ChatAdministratorRights(isAnonymous, canManageChat, canDeleteMessages, canManageVideoChats, canRestrictMembers, canPromoteMembers, canChangeInfo, canInviteUsers, canPostStories, canEditStories, canDeleteStories, null, null, null, null, null, null);
+    }
+
     public ChatAdministratorRights withIsAnonymous(boolean isAnonymous) {
         return new ChatAdministratorRights(isAnonymous, canManageChat, canDeleteMessages, canManageVideoChats, canRestrictMembers, canPromoteMembers, canChangeInfo, canInviteUsers, canPostStories, canEditStories, canDeleteStories, canPostMessages, canEditMessages, canPinMessages, canManageTopics, canManageDirectMessages, canManageTags);
     }

@@ -28,6 +28,10 @@ public record ChatShared(
     @JsonProperty("photo") @Nullable List<PhotoSize> photo
 ) {
 
+    public static ChatShared of(long requestId, long chatId) {
+        return new ChatShared(requestId, chatId, null, null, null);
+    }
+
     public ChatShared withRequestId(long requestId) {
         return new ChatShared(requestId, chatId, title, username, photo);
     }

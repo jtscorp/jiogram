@@ -26,6 +26,10 @@ public record LinkPreviewOptions(
     @JsonProperty("show_above_text") @Nullable Boolean showAboveText
 ) {
 
+    public static LinkPreviewOptions of() {
+        return new LinkPreviewOptions(null, null, null, null, null);
+    }
+
     public LinkPreviewOptions withIsDisabled(@Nullable Boolean isDisabled) {
         return new LinkPreviewOptions(isDisabled, url, preferSmallMedia, preferLargeMedia, showAboveText);
     }

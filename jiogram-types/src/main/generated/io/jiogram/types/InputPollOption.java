@@ -22,6 +22,10 @@ public record InputPollOption(
     @JsonProperty("text_entities") @Nullable List<MessageEntity> textEntities
 ) {
 
+    public static InputPollOption of(String text) {
+        return new InputPollOption(text, null, null);
+    }
+
     public InputPollOption withText(String text) {
         return new InputPollOption(text, textParseMode, textEntities);
     }

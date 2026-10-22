@@ -24,6 +24,10 @@ public record PollOptionAdded(
     @JsonProperty("option_text_entities") @Nullable List<MessageEntity> optionTextEntities
 ) {
 
+    public static PollOptionAdded of(String optionPersistentId, String optionText) {
+        return new PollOptionAdded(null, optionPersistentId, optionText, null);
+    }
+
     public PollOptionAdded withPollMessage(@Nullable MaybeInaccessibleMessage pollMessage) {
         return new PollOptionAdded(pollMessage, optionPersistentId, optionText, optionTextEntities);
     }

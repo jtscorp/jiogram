@@ -45,6 +45,10 @@ public record UniqueGift(
     @JsonProperty("publisher_chat") @Nullable Chat publisherChat
 ) {
 
+    public static UniqueGift of(String giftId, String baseName, String name, long number, UniqueGiftModel model, UniqueGiftSymbol symbol, UniqueGiftBackdrop backdrop) {
+        return new UniqueGift(giftId, baseName, name, number, model, symbol, backdrop, null, null, null, null, null);
+    }
+
     public UniqueGift withGiftId(String giftId) {
         return new UniqueGift(giftId, baseName, name, number, model, symbol, backdrop, isPremium, isBurned, isFromBlockchain, colors, publisherChat);
     }

@@ -26,6 +26,10 @@ public record PollAnswer(
     @JsonProperty("option_persistent_ids") List<String> optionPersistentIds
 ) {
 
+    public static PollAnswer of(String pollId, List<Long> optionIds, List<String> optionPersistentIds) {
+        return new PollAnswer(pollId, null, null, optionIds, optionPersistentIds);
+    }
+
     public PollAnswer withPollId(String pollId) {
         return new PollAnswer(pollId, voterChat, user, optionIds, optionPersistentIds);
     }

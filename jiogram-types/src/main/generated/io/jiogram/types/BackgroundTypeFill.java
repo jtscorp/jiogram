@@ -18,6 +18,10 @@ public record BackgroundTypeFill(
     @JsonProperty("dark_theme_dimming") long darkThemeDimming
 ) implements BackgroundType {
 
+    public static BackgroundTypeFill of(BackgroundFill fill, long darkThemeDimming) {
+        return new BackgroundTypeFill(BackgroundTypeType.FILL, fill, darkThemeDimming);
+    }
+
     public BackgroundTypeFill withFill(BackgroundFill fill) {
         return new BackgroundTypeFill(type, fill, darkThemeDimming);
     }

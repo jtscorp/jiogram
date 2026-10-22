@@ -24,6 +24,10 @@ public record PassportElementErrorTranslationFiles(
     @JsonProperty("message") String message
 ) implements PassportElementError {
 
+    public static PassportElementErrorTranslationFiles of(PassportElementType type, List<String> fileHashes, String message) {
+        return new PassportElementErrorTranslationFiles(PassportElementErrorType.TRANSLATION_FILES, type, fileHashes, message);
+    }
+
     public PassportElementErrorTranslationFiles withType(PassportElementType type) {
         return new PassportElementErrorTranslationFiles(source, type, fileHashes, message);
     }

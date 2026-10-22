@@ -32,6 +32,10 @@ public record StarTransaction(
     @JsonProperty("receiver") @Nullable TransactionPartner receiver
 ) {
 
+    public static StarTransaction of(String id, long amount, long date) {
+        return new StarTransaction(id, amount, null, date, null, null);
+    }
+
     public StarTransaction withId(String id) {
         return new StarTransaction(id, amount, nanostarAmount, date, source, receiver);
     }

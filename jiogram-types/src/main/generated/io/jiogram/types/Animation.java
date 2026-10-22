@@ -33,6 +33,10 @@ public record Animation(
     @JsonProperty("file_size") @Nullable Long fileSize
 ) {
 
+    public static Animation of(String fileId, String fileUniqueId, long width, long height, long duration) {
+        return new Animation(fileId, fileUniqueId, width, height, duration, null, null, null, null);
+    }
+
     public Animation withFileId(String fileId) {
         return new Animation(fileId, fileUniqueId, width, height, duration, thumbnail, fileName, mimeType, fileSize);
     }

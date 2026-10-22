@@ -20,6 +20,10 @@ public record ChecklistTasksAdded(
     @JsonProperty("tasks") List<ChecklistTask> tasks
 ) {
 
+    public static ChecklistTasksAdded of(List<ChecklistTask> tasks) {
+        return new ChecklistTasksAdded(null, tasks);
+    }
+
     public ChecklistTasksAdded withChecklistMessage(@Nullable Message checklistMessage) {
         return new ChecklistTasksAdded(checklistMessage, tasks);
     }

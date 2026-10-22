@@ -39,6 +39,10 @@ public record ChatInviteLink(
     @JsonProperty("subscription_price") @Nullable Long subscriptionPrice
 ) {
 
+    public static ChatInviteLink of(String inviteLink, User creator, boolean createsJoinRequest, boolean isPrimary, boolean isRevoked) {
+        return new ChatInviteLink(inviteLink, creator, createsJoinRequest, isPrimary, isRevoked, null, null, null, null, null, null);
+    }
+
     public ChatInviteLink withInviteLink(String inviteLink) {
         return new ChatInviteLink(inviteLink, creator, createsJoinRequest, isPrimary, isRevoked, name, expireDate, memberLimit, pendingJoinRequestCount, subscriptionPeriod, subscriptionPrice);
     }

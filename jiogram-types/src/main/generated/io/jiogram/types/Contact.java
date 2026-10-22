@@ -24,6 +24,10 @@ public record Contact(
     @JsonProperty("vcard") @Nullable String vcard
 ) {
 
+    public static Contact of(String phoneNumber, String firstName) {
+        return new Contact(phoneNumber, firstName, null, null, null);
+    }
+
     public Contact withPhoneNumber(String phoneNumber) {
         return new Contact(phoneNumber, firstName, lastName, userId, vcard);
     }

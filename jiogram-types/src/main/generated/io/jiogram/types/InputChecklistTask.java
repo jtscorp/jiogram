@@ -25,6 +25,10 @@ public record InputChecklistTask(
     @JsonProperty("text_entities") @Nullable List<MessageEntity> textEntities
 ) {
 
+    public static InputChecklistTask of(long id, String text) {
+        return new InputChecklistTask(id, text, null, null);
+    }
+
     public InputChecklistTask withId(long id) {
         return new InputChecklistTask(id, text, parseMode, textEntities);
     }

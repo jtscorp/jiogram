@@ -55,6 +55,10 @@ public record OwnedGiftRegular(
     @JsonProperty("unique_gift_number") @Nullable Long uniqueGiftNumber
 ) implements OwnedGift {
 
+    public static OwnedGiftRegular of(Gift gift, long sendDate) {
+        return new OwnedGiftRegular(OwnedGiftType.REGULAR, gift, null, null, sendDate, null, null, null, null, null, null, null, null, null, null);
+    }
+
     public OwnedGiftRegular withGift(Gift gift) {
         return new OwnedGiftRegular(type, gift, ownedGiftId, senderUser, sendDate, text, entities, isPrivate, isSaved, canBeUpgraded, wasRefunded, convertStarCount, prepaidUpgradeStarCount, isUpgradeSeparate, uniqueGiftNumber);
     }

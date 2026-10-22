@@ -15,6 +15,10 @@ public record BackgroundTypeChatTheme(
     @JsonProperty("theme_name") String themeName
 ) implements BackgroundType {
 
+    public static BackgroundTypeChatTheme of(String themeName) {
+        return new BackgroundTypeChatTheme(BackgroundTypeType.CHAT_THEME, themeName);
+    }
+
     public BackgroundTypeChatTheme withThemeName(String themeName) {
         return new BackgroundTypeChatTheme(type, themeName);
     }

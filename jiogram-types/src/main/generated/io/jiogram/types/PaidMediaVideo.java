@@ -16,6 +16,10 @@ public record PaidMediaVideo(
     @JsonProperty("video") Video video
 ) implements PaidMedia {
 
+    public static PaidMediaVideo of(Video video) {
+        return new PaidMediaVideo(PaidMediaType.VIDEO, video);
+    }
+
     public PaidMediaVideo withVideo(Video video) {
         return new PaidMediaVideo(type, video);
     }

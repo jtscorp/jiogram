@@ -20,6 +20,10 @@ public record SuggestedPostApproved(
     @JsonProperty("send_date") long sendDate
 ) {
 
+    public static SuggestedPostApproved of(long sendDate) {
+        return new SuggestedPostApproved(null, null, sendDate);
+    }
+
     public SuggestedPostApproved withSuggestedPostMessage(@Nullable Message suggestedPostMessage) {
         return new SuggestedPostApproved(suggestedPostMessage, price, sendDate);
     }

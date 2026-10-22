@@ -20,6 +20,10 @@ public record TransactionPartnerChat(
     @JsonProperty("gift") @Nullable Gift gift
 ) implements TransactionPartner {
 
+    public static TransactionPartnerChat of(Chat chat) {
+        return new TransactionPartnerChat(TransactionPartnerType.CHAT, chat, null);
+    }
+
     public TransactionPartnerChat withChat(Chat chat) {
         return new TransactionPartnerChat(type, chat, gift);
     }

@@ -30,6 +30,10 @@ public record InputSticker(
     @JsonProperty("keywords") @Nullable List<String> keywords
 ) {
 
+    public static InputSticker of(InputFileOrString sticker, String format, List<String> emojiList) {
+        return new InputSticker(sticker, format, emojiList, null, null);
+    }
+
     public InputSticker withSticker(InputFileOrString sticker) {
         return new InputSticker(sticker, format, emojiList, maskPosition, keywords);
     }

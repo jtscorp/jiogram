@@ -21,6 +21,10 @@ public record ChatMemberOwner(
     @JsonProperty("custom_title") @Nullable String customTitle
 ) implements ChatMember {
 
+    public static ChatMemberOwner of(User user, boolean isAnonymous) {
+        return new ChatMemberOwner(ChatMemberType.CREATOR, user, isAnonymous, null);
+    }
+
     public ChatMemberOwner withUser(User user) {
         return new ChatMemberOwner(status, user, isAnonymous, customTitle);
     }

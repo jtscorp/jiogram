@@ -46,6 +46,10 @@ public record BusinessBotRights(
     @JsonProperty("can_manage_stories") @Nullable Boolean canManageStories
 ) {
 
+    public static BusinessBotRights of() {
+        return new BusinessBotRights(null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+    }
+
     public BusinessBotRights withCanReply(@Nullable Boolean canReply) {
         return new BusinessBotRights(canReply, canReadMessages, canDeleteSentMessages, canDeleteAllMessages, canEditName, canEditBio, canEditProfilePhoto, canEditUsername, canChangeGiftSettings, canViewGiftsAndStars, canConvertGiftsToStars, canTransferAndUpgradeGifts, canTransferStars, canManageStories);
     }

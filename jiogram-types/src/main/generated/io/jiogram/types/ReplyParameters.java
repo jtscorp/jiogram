@@ -44,6 +44,10 @@ public record ReplyParameters(
     @JsonProperty("poll_option_id") @Nullable String pollOptionId
 ) {
 
+    public static ReplyParameters of(long messageId) {
+        return new ReplyParameters(messageId, null, null, null, null, null, null, null, null);
+    }
+
     public ReplyParameters withMessageId(long messageId) {
         return new ReplyParameters(messageId, chatId, allowSendingWithoutReply, quote, quoteParseMode, quoteEntities, quotePosition, checklistTaskId, pollOptionId);
     }

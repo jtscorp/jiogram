@@ -27,6 +27,10 @@ public record Document(
     @JsonProperty("file_size") @Nullable Long fileSize
 ) {
 
+    public static Document of(String fileId, String fileUniqueId) {
+        return new Document(fileId, fileUniqueId, null, null, null, null);
+    }
+
     public Document withFileId(String fileId) {
         return new Document(fileId, fileUniqueId, thumbnail, fileName, mimeType, fileSize);
     }

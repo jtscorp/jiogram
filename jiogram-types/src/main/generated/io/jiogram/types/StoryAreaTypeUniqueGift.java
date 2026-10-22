@@ -16,6 +16,10 @@ public record StoryAreaTypeUniqueGift(
     @JsonProperty("name") String name
 ) implements StoryAreaType {
 
+    public static StoryAreaTypeUniqueGift of(String name) {
+        return new StoryAreaTypeUniqueGift(StoryAreaTypeType.UNIQUE_GIFT, name);
+    }
+
     public StoryAreaTypeUniqueGift withName(String name) {
         return new StoryAreaTypeUniqueGift(type, name);
     }

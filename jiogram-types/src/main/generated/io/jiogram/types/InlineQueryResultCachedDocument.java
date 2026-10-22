@@ -41,6 +41,10 @@ public record InlineQueryResultCachedDocument(
     @JsonProperty("input_message_content") @Nullable InputMessageContent inputMessageContent
 ) implements InlineQueryResult {
 
+    public static InlineQueryResultCachedDocument of(String id, String title, String documentFileId) {
+        return new InlineQueryResultCachedDocument(InlineQueryResultType.DOCUMENT, id, title, documentFileId, null, null, null, null, null, null);
+    }
+
     public InlineQueryResultCachedDocument withId(String id) {
         return new InlineQueryResultCachedDocument(type, id, title, documentFileId, description, caption, parseMode, captionEntities, replyMarkup, inputMessageContent);
     }

@@ -21,6 +21,10 @@ public record PassportElementErrorUnspecified(
     @JsonProperty("message") String message
 ) implements PassportElementError {
 
+    public static PassportElementErrorUnspecified of(PassportElementType type, String elementHash, String message) {
+        return new PassportElementErrorUnspecified(PassportElementErrorType.UNSPECIFIED, type, elementHash, message);
+    }
+
     public PassportElementErrorUnspecified withType(PassportElementType type) {
         return new PassportElementErrorUnspecified(source, type, elementHash, message);
     }

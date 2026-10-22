@@ -22,6 +22,10 @@ public record PassportElementErrorReverseSide(
     @JsonProperty("message") String message
 ) implements PassportElementError {
 
+    public static PassportElementErrorReverseSide of(PassportElementType type, String fileHash, String message) {
+        return new PassportElementErrorReverseSide(PassportElementErrorType.REVERSE_SIDE, type, fileHash, message);
+    }
+
     public PassportElementErrorReverseSide withType(PassportElementType type) {
         return new PassportElementErrorReverseSide(source, type, fileHash, message);
     }

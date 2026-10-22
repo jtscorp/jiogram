@@ -26,6 +26,10 @@ public record InlineQueryResultCachedSticker(
     @JsonProperty("input_message_content") @Nullable InputMessageContent inputMessageContent
 ) implements InlineQueryResult {
 
+    public static InlineQueryResultCachedSticker of(String id, String stickerFileId) {
+        return new InlineQueryResultCachedSticker(InlineQueryResultType.STICKER, id, stickerFileId, null, null);
+    }
+
     public InlineQueryResultCachedSticker withId(String id) {
         return new InlineQueryResultCachedSticker(type, id, stickerFileId, replyMarkup, inputMessageContent);
     }

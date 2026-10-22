@@ -17,6 +17,10 @@ public record KeyboardButtonPollType(
     @JsonProperty("type") @Nullable PollType type
 ) {
 
+    public static KeyboardButtonPollType of() {
+        return new KeyboardButtonPollType(null);
+    }
+
     public KeyboardButtonPollType withType(@Nullable PollType type) {
         return new KeyboardButtonPollType(type);
     }

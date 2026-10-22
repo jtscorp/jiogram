@@ -47,6 +47,10 @@ public record TransactionPartnerUser(
     @JsonProperty("premium_subscription_duration") @Nullable Long premiumSubscriptionDuration
 ) implements TransactionPartner {
 
+    public static TransactionPartnerUser of(TransactionType transactionType, User user) {
+        return new TransactionPartnerUser(TransactionPartnerType.USER, transactionType, user, null, null, null, null, null, null, null);
+    }
+
     public TransactionPartnerUser withTransactionType(TransactionType transactionType) {
         return new TransactionPartnerUser(type, transactionType, user, affiliate, invoicePayload, subscriptionPeriod, paidMedia, paidMediaPayload, gift, premiumSubscriptionDuration);
     }

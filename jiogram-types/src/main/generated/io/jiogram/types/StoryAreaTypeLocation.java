@@ -22,6 +22,10 @@ public record StoryAreaTypeLocation(
     @JsonProperty("address") @Nullable LocationAddress address
 ) implements StoryAreaType {
 
+    public static StoryAreaTypeLocation of(double latitude, double longitude) {
+        return new StoryAreaTypeLocation(StoryAreaTypeType.LOCATION, latitude, longitude, null);
+    }
+
     public StoryAreaTypeLocation withLatitude(double latitude) {
         return new StoryAreaTypeLocation(type, latitude, longitude, address);
     }

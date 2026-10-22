@@ -43,6 +43,10 @@ public record InlineQueryResultAudio(
     @JsonProperty("input_message_content") @Nullable InputMessageContent inputMessageContent
 ) implements InlineQueryResult {
 
+    public static InlineQueryResultAudio of(String id, String audioUrl, String title) {
+        return new InlineQueryResultAudio(InlineQueryResultType.AUDIO, id, audioUrl, title, null, null, null, null, null, null, null);
+    }
+
     public InlineQueryResultAudio withId(String id) {
         return new InlineQueryResultAudio(type, id, audioUrl, title, caption, parseMode, captionEntities, performer, audioDuration, replyMarkup, inputMessageContent);
     }

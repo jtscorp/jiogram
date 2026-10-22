@@ -51,6 +51,10 @@ public record InlineQueryResultDocument(
     @JsonProperty("thumbnail_height") @Nullable Long thumbnailHeight
 ) implements InlineQueryResult {
 
+    public static InlineQueryResultDocument of(String id, String title, String documentUrl, DocumentMimeType mimeType) {
+        return new InlineQueryResultDocument(InlineQueryResultType.DOCUMENT, id, title, null, null, null, documentUrl, mimeType, null, null, null, null, null, null);
+    }
+
     public InlineQueryResultDocument withId(String id) {
         return new InlineQueryResultDocument(type, id, title, caption, parseMode, captionEntities, documentUrl, mimeType, description, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
     }

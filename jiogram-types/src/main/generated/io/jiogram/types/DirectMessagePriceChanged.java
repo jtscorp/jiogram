@@ -19,6 +19,10 @@ public record DirectMessagePriceChanged(
     @JsonProperty("direct_message_star_count") @Nullable Long directMessageStarCount
 ) {
 
+    public static DirectMessagePriceChanged of(boolean areDirectMessagesEnabled) {
+        return new DirectMessagePriceChanged(areDirectMessagesEnabled, null);
+    }
+
     public DirectMessagePriceChanged withAreDirectMessagesEnabled(boolean areDirectMessagesEnabled) {
         return new DirectMessagePriceChanged(areDirectMessagesEnabled, directMessageStarCount);
     }

@@ -57,6 +57,10 @@ public record InputMediaVideo(
     @JsonProperty("has_spoiler") @Nullable Boolean hasSpoiler
 ) implements InputMedia {
 
+    public static InputMediaVideo of(InputFileOrString media) {
+        return new InputMediaVideo(InputMediaType.VIDEO, media, null, null, null, null, null, null, null, null, null, null, null, null);
+    }
+
     public InputMediaVideo withMedia(InputFileOrString media) {
         return new InputMediaVideo(type, media, thumbnail, cover, startTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, width, height, duration, supportsStreaming, hasSpoiler);
     }

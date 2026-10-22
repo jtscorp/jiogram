@@ -26,6 +26,10 @@ public record InputLocationMessageContent(
     @JsonProperty("proximity_alert_radius") @Nullable Long proximityAlertRadius
 ) implements InputMessageContent {
 
+    public static InputLocationMessageContent of(double latitude, double longitude) {
+        return new InputLocationMessageContent(latitude, longitude, null, null, null, null);
+    }
+
     public InputLocationMessageContent withLatitude(double latitude) {
         return new InputLocationMessageContent(latitude, longitude, horizontalAccuracy, livePeriod, heading, proximityAlertRadius);
     }

@@ -54,6 +54,10 @@ public record KeyboardButton(
     @JsonProperty("web_app") @Nullable WebAppInfo webApp
 ) {
 
+    public static KeyboardButton of(String text) {
+        return new KeyboardButton(text, null, null, null, null, null, null, null, null, null);
+    }
+
     public KeyboardButton withText(String text) {
         return new KeyboardButton(text, iconCustomEmojiId, style, requestUsers, requestChat, requestManagedBot, requestContact, requestLocation, requestPoll, webApp);
     }

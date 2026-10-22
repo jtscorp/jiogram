@@ -54,6 +54,10 @@ public record EncryptedPassportElement(
     @JsonProperty("hash") String hash
 ) {
 
+    public static EncryptedPassportElement of(PassportElementType type, String hash) {
+        return new EncryptedPassportElement(type, null, null, null, null, null, null, null, null, hash);
+    }
+
     public EncryptedPassportElement withType(PassportElementType type) {
         return new EncryptedPassportElement(type, data, phoneNumber, email, files, frontSide, reverseSide, selfie, translation, hash);
     }

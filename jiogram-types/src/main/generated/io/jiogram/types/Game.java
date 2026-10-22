@@ -32,6 +32,10 @@ public record Game(
     @JsonProperty("animation") @Nullable Animation animation
 ) {
 
+    public static Game of(String title, String description, List<PhotoSize> photo) {
+        return new Game(title, description, photo, null, null, null);
+    }
+
     public Game withTitle(String title) {
         return new Game(title, description, photo, text, textEntities, animation);
     }

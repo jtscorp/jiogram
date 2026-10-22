@@ -16,6 +16,10 @@ public record ForumTopicEdited(
     @JsonProperty("icon_custom_emoji_id") @Nullable String iconCustomEmojiId
 ) {
 
+    public static ForumTopicEdited of() {
+        return new ForumTopicEdited(null, null);
+    }
+
     public ForumTopicEdited withName(@Nullable String name) {
         return new ForumTopicEdited(name, iconCustomEmojiId);
     }

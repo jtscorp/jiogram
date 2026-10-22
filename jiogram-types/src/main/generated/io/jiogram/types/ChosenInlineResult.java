@@ -28,6 +28,10 @@ public record ChosenInlineResult(
     @JsonProperty("query") String query
 ) {
 
+    public static ChosenInlineResult of(String resultId, User from, String query) {
+        return new ChosenInlineResult(resultId, from, null, null, query);
+    }
+
     public ChosenInlineResult withResultId(String resultId) {
         return new ChosenInlineResult(resultId, from, location, inlineMessageId, query);
     }

@@ -42,6 +42,10 @@ public record InputPaidMediaVideo(
     @JsonProperty("supports_streaming") @Nullable Boolean supportsStreaming
 ) implements InputPaidMedia {
 
+    public static InputPaidMediaVideo of(InputFileOrString media) {
+        return new InputPaidMediaVideo(InputPaidMediaType.VIDEO, media, null, null, null, null, null, null, null);
+    }
+
     public InputPaidMediaVideo withMedia(InputFileOrString media) {
         return new InputPaidMediaVideo(type, media, thumbnail, cover, startTimestamp, width, height, duration, supportsStreaming);
     }

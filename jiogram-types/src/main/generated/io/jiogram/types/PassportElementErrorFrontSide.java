@@ -22,6 +22,10 @@ public record PassportElementErrorFrontSide(
     @JsonProperty("message") String message
 ) implements PassportElementError {
 
+    public static PassportElementErrorFrontSide of(PassportElementType type, String fileHash, String message) {
+        return new PassportElementErrorFrontSide(PassportElementErrorType.FRONT_SIDE, type, fileHash, message);
+    }
+
     public PassportElementErrorFrontSide withType(PassportElementType type) {
         return new PassportElementErrorFrontSide(source, type, fileHash, message);
     }

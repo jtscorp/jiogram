@@ -35,6 +35,10 @@ public record InputMediaPhoto(
     @JsonProperty("has_spoiler") @Nullable Boolean hasSpoiler
 ) implements InputMedia {
 
+    public static InputMediaPhoto of(InputFileOrString media) {
+        return new InputMediaPhoto(InputMediaType.PHOTO, media, null, null, null, null, null);
+    }
+
     public InputMediaPhoto withMedia(InputFileOrString media) {
         return new InputMediaPhoto(type, media, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler);
     }

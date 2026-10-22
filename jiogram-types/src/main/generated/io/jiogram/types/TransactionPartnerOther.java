@@ -11,4 +11,9 @@ import io.jiogram.types.TransactionPartnerType;
  */
 public record TransactionPartnerOther(
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) TransactionPartnerType type
-) implements TransactionPartner {}
+) implements TransactionPartner {
+
+    public static TransactionPartnerOther of() {
+        return new TransactionPartnerOther(TransactionPartnerType.OTHER);
+    }
+}

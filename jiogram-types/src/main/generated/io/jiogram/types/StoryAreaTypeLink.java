@@ -16,6 +16,10 @@ public record StoryAreaTypeLink(
     @JsonProperty("url") String url
 ) implements StoryAreaType {
 
+    public static StoryAreaTypeLink of(String url) {
+        return new StoryAreaTypeLink(StoryAreaTypeType.LINK, url);
+    }
+
     public StoryAreaTypeLink withUrl(String url) {
         return new StoryAreaTypeLink(type, url);
     }

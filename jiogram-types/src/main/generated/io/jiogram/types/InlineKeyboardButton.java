@@ -69,6 +69,10 @@ public record InlineKeyboardButton(
     @JsonProperty("pay") @Nullable Boolean pay
 ) {
 
+    public static InlineKeyboardButton of(String text) {
+        return new InlineKeyboardButton(text, null, null, null, null, null, null, null, null, null, null, null, null);
+    }
+
     public InlineKeyboardButton withText(String text) {
         return new InlineKeyboardButton(text, iconCustomEmojiId, style, url, callbackData, webApp, loginUrl, switchInlineQuery, switchInlineQueryCurrentChat, switchInlineQueryChosenChat, copyText, callbackGame, pay);
     }

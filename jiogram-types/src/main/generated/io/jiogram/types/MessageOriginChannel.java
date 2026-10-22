@@ -23,6 +23,10 @@ public record MessageOriginChannel(
     @JsonProperty("author_signature") @Nullable String authorSignature
 ) implements MessageOrigin {
 
+    public static MessageOriginChannel of(long date, Chat chat, long messageId) {
+        return new MessageOriginChannel(MessageOriginType.CHANNEL, date, chat, messageId, null);
+    }
+
     public MessageOriginChannel withDate(long date) {
         return new MessageOriginChannel(type, date, chat, messageId, authorSignature);
     }

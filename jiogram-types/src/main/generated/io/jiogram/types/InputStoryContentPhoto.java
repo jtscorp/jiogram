@@ -19,6 +19,10 @@ public record InputStoryContentPhoto(
     @JsonProperty("photo") InputFileOrString photo
 ) implements InputStoryContent {
 
+    public static InputStoryContentPhoto of(InputFileOrString photo) {
+        return new InputStoryContentPhoto(InputStoryContentType.PHOTO, photo);
+    }
+
     public InputStoryContentPhoto withPhoto(InputFileOrString photo) {
         return new InputStoryContentPhoto(type, photo);
     }

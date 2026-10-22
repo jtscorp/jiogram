@@ -48,6 +48,10 @@ public record InputMediaAnimation(
     @JsonProperty("has_spoiler") @Nullable Boolean hasSpoiler
 ) implements InputMedia {
 
+    public static InputMediaAnimation of(InputFileOrString media) {
+        return new InputMediaAnimation(InputMediaType.ANIMATION, media, null, null, null, null, null, null, null, null, null);
+    }
+
     public InputMediaAnimation withMedia(InputFileOrString media) {
         return new InputMediaAnimation(type, media, thumbnail, caption, parseMode, captionEntities, showCaptionAboveMedia, width, height, duration, hasSpoiler);
     }

@@ -20,6 +20,10 @@ public record ChatMemberBanned(
     @JsonProperty("until_date") long untilDate
 ) implements ChatMember {
 
+    public static ChatMemberBanned of(User user, long untilDate) {
+        return new ChatMemberBanned(ChatMemberType.KICKED, user, untilDate);
+    }
+
     public ChatMemberBanned withUser(User user) {
         return new ChatMemberBanned(status, user, untilDate);
     }

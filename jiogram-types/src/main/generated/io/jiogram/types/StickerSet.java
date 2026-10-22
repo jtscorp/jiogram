@@ -26,6 +26,10 @@ public record StickerSet(
     @JsonProperty("thumbnail") @Nullable PhotoSize thumbnail
 ) {
 
+    public static StickerSet of(String name, String title, StickerType stickerType, List<Sticker> stickers) {
+        return new StickerSet(name, title, stickerType, stickers, null);
+    }
+
     public StickerSet withName(String name) {
         return new StickerSet(name, title, stickerType, stickers, thumbnail);
     }

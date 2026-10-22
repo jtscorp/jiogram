@@ -41,6 +41,10 @@ public record InlineQueryResultCachedGif(
     @JsonProperty("input_message_content") @Nullable InputMessageContent inputMessageContent
 ) implements InlineQueryResult {
 
+    public static InlineQueryResultCachedGif of(String id, String gifFileId) {
+        return new InlineQueryResultCachedGif(InlineQueryResultType.GIF, id, gifFileId, null, null, null, null, null, null, null);
+    }
+
     public InlineQueryResultCachedGif withId(String id) {
         return new InlineQueryResultCachedGif(type, id, gifFileId, title, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
     }

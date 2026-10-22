@@ -20,6 +20,10 @@ public record OrderInfo(
     @JsonProperty("shipping_address") @Nullable ShippingAddress shippingAddress
 ) {
 
+    public static OrderInfo of() {
+        return new OrderInfo(null, null, null, null);
+    }
+
     public OrderInfo withName(@Nullable String name) {
         return new OrderInfo(name, phoneNumber, email, shippingAddress);
     }

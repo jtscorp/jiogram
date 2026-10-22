@@ -15,6 +15,10 @@ public record BackgroundFillSolid(
     @JsonProperty("color") long color
 ) implements BackgroundFill {
 
+    public static BackgroundFillSolid of(long color) {
+        return new BackgroundFillSolid(BackgroundFillType.SOLID, color);
+    }
+
     public BackgroundFillSolid withColor(long color) {
         return new BackgroundFillSolid(type, color);
     }

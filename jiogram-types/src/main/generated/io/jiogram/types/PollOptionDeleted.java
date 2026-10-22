@@ -24,6 +24,10 @@ public record PollOptionDeleted(
     @JsonProperty("option_text_entities") @Nullable List<MessageEntity> optionTextEntities
 ) {
 
+    public static PollOptionDeleted of(String optionPersistentId, String optionText) {
+        return new PollOptionDeleted(null, optionPersistentId, optionText, null);
+    }
+
     public PollOptionDeleted withPollMessage(@Nullable MaybeInaccessibleMessage pollMessage) {
         return new PollOptionDeleted(pollMessage, optionPersistentId, optionText, optionTextEntities);
     }

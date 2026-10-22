@@ -29,6 +29,10 @@ public record BackgroundTypePattern(
     @JsonProperty("is_moving") @Nullable Boolean isMoving
 ) implements BackgroundType {
 
+    public static BackgroundTypePattern of(Document document, BackgroundFill fill, long intensity) {
+        return new BackgroundTypePattern(BackgroundTypeType.PATTERN, document, fill, intensity, null, null);
+    }
+
     public BackgroundTypePattern withDocument(Document document) {
         return new BackgroundTypePattern(type, document, fill, intensity, isInverted, isMoving);
     }

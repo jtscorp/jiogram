@@ -19,6 +19,10 @@ public record SuggestedPostParameters(
     @JsonProperty("send_date") @Nullable Long sendDate
 ) {
 
+    public static SuggestedPostParameters of() {
+        return new SuggestedPostParameters(null, null);
+    }
+
     public SuggestedPostParameters withPrice(@Nullable SuggestedPostPrice price) {
         return new SuggestedPostParameters(price, sendDate);
     }

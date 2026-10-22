@@ -22,6 +22,10 @@ public record PhotoSize(
     @JsonProperty("file_size") @Nullable Long fileSize
 ) {
 
+    public static PhotoSize of(String fileId, String fileUniqueId, long width, long height) {
+        return new PhotoSize(fileId, fileUniqueId, width, height, null);
+    }
+
     public PhotoSize withFileId(String fileId) {
         return new PhotoSize(fileId, fileUniqueId, width, height, fileSize);
     }

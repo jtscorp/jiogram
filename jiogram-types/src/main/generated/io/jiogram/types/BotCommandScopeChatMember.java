@@ -20,6 +20,10 @@ public record BotCommandScopeChatMember(
     @JsonProperty("user_id") long userId
 ) implements BotCommandScope {
 
+    public static BotCommandScopeChatMember of(ChatId chatId, long userId) {
+        return new BotCommandScopeChatMember(BotCommandScopeType.CHAT_MEMBER, chatId, userId);
+    }
+
     public BotCommandScopeChatMember withChatId(ChatId chatId) {
         return new BotCommandScopeChatMember(type, chatId, userId);
     }

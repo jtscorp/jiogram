@@ -26,6 +26,10 @@ public record Location(
     @JsonProperty("proximity_alert_radius") @Nullable Long proximityAlertRadius
 ) {
 
+    public static Location of(double latitude, double longitude) {
+        return new Location(latitude, longitude, null, null, null, null);
+    }
+
     public Location withLatitude(double latitude) {
         return new Location(latitude, longitude, horizontalAccuracy, livePeriod, heading, proximityAlertRadius);
     }

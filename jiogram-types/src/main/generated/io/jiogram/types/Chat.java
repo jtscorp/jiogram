@@ -31,6 +31,10 @@ public record Chat(
     @JsonProperty("is_direct_messages") @Nullable Boolean isDirectMessages
 ) {
 
+    public static Chat of(long id, ChatType type) {
+        return new Chat(id, type, null, null, null, null, null, null);
+    }
+
     public Chat withId(long id) {
         return new Chat(id, type, title, username, firstName, lastName, isForum, isDirectMessages);
     }

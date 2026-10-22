@@ -21,6 +21,10 @@ public record TransactionPartnerAffiliateProgram(
     @JsonProperty("commission_per_mille") long commissionPerMille
 ) implements TransactionPartner {
 
+    public static TransactionPartnerAffiliateProgram of(long commissionPerMille) {
+        return new TransactionPartnerAffiliateProgram(TransactionPartnerType.AFFILIATE_PROGRAM, null, commissionPerMille);
+    }
+
     public TransactionPartnerAffiliateProgram withSponsorUser(@Nullable User sponsorUser) {
         return new TransactionPartnerAffiliateProgram(type, sponsorUser, commissionPerMille);
     }

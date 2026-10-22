@@ -58,6 +58,10 @@ public record ChatMemberRestricted(
     @JsonProperty("until_date") long untilDate
 ) implements ChatMember {
 
+    public static ChatMemberRestricted of(User user, boolean isMember, boolean canSendMessages, boolean canSendAudios, boolean canSendDocuments, boolean canSendPhotos, boolean canSendVideos, boolean canSendVideoNotes, boolean canSendVoiceNotes, boolean canSendPolls, boolean canSendOtherMessages, boolean canAddWebPagePreviews, boolean canEditTag, boolean canChangeInfo, boolean canInviteUsers, boolean canPinMessages, boolean canManageTopics, long untilDate) {
+        return new ChatMemberRestricted(ChatMemberType.RESTRICTED, null, user, isMember, canSendMessages, canSendAudios, canSendDocuments, canSendPhotos, canSendVideos, canSendVideoNotes, canSendVoiceNotes, canSendPolls, canSendOtherMessages, canAddWebPagePreviews, canEditTag, canChangeInfo, canInviteUsers, canPinMessages, canManageTopics, untilDate);
+    }
+
     public ChatMemberRestricted withTag(@Nullable String tag) {
         return new ChatMemberRestricted(status, tag, user, isMember, canSendMessages, canSendAudios, canSendDocuments, canSendPhotos, canSendVideos, canSendVideoNotes, canSendVoiceNotes, canSendPolls, canSendOtherMessages, canAddWebPagePreviews, canEditTag, canChangeInfo, canInviteUsers, canPinMessages, canManageTopics, untilDate);
     }

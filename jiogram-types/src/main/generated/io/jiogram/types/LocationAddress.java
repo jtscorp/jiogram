@@ -20,6 +20,10 @@ public record LocationAddress(
     @JsonProperty("street") @Nullable String street
 ) {
 
+    public static LocationAddress of(String countryCode) {
+        return new LocationAddress(countryCode, null, null, null);
+    }
+
     public LocationAddress withCountryCode(String countryCode) {
         return new LocationAddress(countryCode, state, city, street);
     }

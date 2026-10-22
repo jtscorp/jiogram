@@ -26,6 +26,10 @@ public record ReplyKeyboardRemove(
     @JsonProperty("selective") @Nullable Boolean selective
 ) implements ReplyMarkup {
 
+    public static ReplyKeyboardRemove of(boolean removeKeyboard) {
+        return new ReplyKeyboardRemove(removeKeyboard, null);
+    }
+
     public ReplyKeyboardRemove withRemoveKeyboard(boolean removeKeyboard) {
         return new ReplyKeyboardRemove(removeKeyboard, selective);
     }

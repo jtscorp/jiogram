@@ -39,6 +39,10 @@ public record GiftInfo(
     @JsonProperty("unique_gift_number") @Nullable Long uniqueGiftNumber
 ) {
 
+    public static GiftInfo of(Gift gift) {
+        return new GiftInfo(gift, null, null, null, null, null, null, null, null, null);
+    }
+
     public GiftInfo withGift(Gift gift) {
         return new GiftInfo(gift, ownedGiftId, convertStarCount, prepaidUpgradeStarCount, isUpgradeSeparate, canBeUpgraded, text, entities, isPrivate, uniqueGiftNumber);
     }

@@ -27,6 +27,10 @@ public record Venue(
     @JsonProperty("google_place_type") @Nullable String googlePlaceType
 ) {
 
+    public static Venue of(Location location, String title, String address) {
+        return new Venue(location, title, address, null, null, null, null);
+    }
+
     public Venue withLocation(Location location) {
         return new Venue(location, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType);
     }
