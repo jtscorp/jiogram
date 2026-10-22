@@ -1,5 +1,6 @@
 package io.jiogram.dispatcher;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.bot.Bot;
 import io.jiogram.middleware.Middleware;
 import io.jiogram.session.TelegramSession;
@@ -9,12 +10,19 @@ import io.jiogram.types.ChatType;
 import io.jiogram.types.Message;
 import io.jiogram.types.TelegramMethod;
 import io.jiogram.types.Update;
+import io.jiogram.types.UpdateType;
 import io.jiogram.types.User;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.RecordComponent;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -218,6 +226,66 @@ class DispatcherTest {
         assertEquals("handler", order.get(2));
         assertEquals("m2-after", order.get(3));
         assertEquals("m1-after", order.get(4));
+    }
+
+    @Test
+    void everyEventFieldOfUpdate_hasAnEventTypeThatReadsExactlyThatField() throws Exception {
+        RecordComponent[] components = Update.class.getRecordComponents();
+        Set<String> covered = new HashSet<>();
+        for (int i = 0; i < components.length; i++) {
+            String field = components[i].getAccessor().getAnnotation(JsonProperty.class).value();
+            if (field.equals("update_id")) {
+                continue;
+            }
+            Object event = blankInstance(components[i].getType());
+            Object[] args = new Object[components.length];
+            args[0] = 1L;
+            args[i] = event;
+            Update update = canonicalConstructor(Update.class).newInstance(args);
+
+            EventType type = EventType.of(update);
+
+            assertNotNull(type, "no EventType for Update." + field);
+            assertEquals(field, type.apiName());
+            assertSame(event, type.extract(update));
+            assertTrue(type.eventClass().isInstance(event), field);
+            covered.add(field);
+        }
+        assertEquals(EventType.values().length, covered.size(), "EventType constants without an Update field");
+    }
+
+    @Test
+    void everyAllowedUpdateValue_hasAnEventType_andEveryEventTypeAnObserver() {
+        Set<UpdateType> mapped = Arrays.stream(EventType.values()).map(EventType::updateType).collect(Collectors.toSet());
+        Router router = new Router();
+
+        for (UpdateType updateType : UpdateType.values()) {
+            assertEquals(updateType != UpdateType.UNKNOWN, mapped.contains(updateType), updateType.name());
+        }
+        for (EventType type : EventType.values()) {
+            assertEquals(type.apiName(), router.observer(type).eventType());
+        }
+    }
+
+    /** A record of the given type with every component null, zero or false. */
+    private static Object blankInstance(Class<?> type) throws Exception {
+        Constructor<?> constructor = canonicalConstructor(type);
+        Object[] args = Arrays.stream(constructor.getParameterTypes())
+            .map(parameter -> parameter == boolean.class ? Boolean.FALSE
+                : parameter == long.class ? (Object) 0L
+                : parameter == double.class ? (Object) 0d
+                : parameter.isPrimitive() ? (Object) 0
+                : null)
+            .toArray();
+        return constructor.newInstance(args);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T> Constructor<T> canonicalConstructor(Class<T> type) throws NoSuchMethodException {
+        Class<?>[] parameterTypes = Arrays.stream(type.getRecordComponents())
+            .map(RecordComponent::getType)
+            .toArray(Class<?>[]::new);
+        return type.getDeclaredConstructor(parameterTypes);
     }
 
     @Test

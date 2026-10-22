@@ -2,28 +2,11 @@ package io.jiogram.handler;
 
 import io.jiogram.annotation.*;
 import io.jiogram.dispatcher.EventObserver;
+import io.jiogram.dispatcher.EventType;
 import io.jiogram.dispatcher.Router;
 import io.jiogram.filter.Filter;
 import io.jiogram.filter.Filters;
 import io.jiogram.filter.NamedState;
-import io.jiogram.types.BusinessConnection;
-import io.jiogram.types.BusinessMessagesDeleted;
-import io.jiogram.types.CallbackQuery;
-import io.jiogram.types.ChatBoostRemoved;
-import io.jiogram.types.ChatBoostUpdated;
-import io.jiogram.types.ChatJoinRequest;
-import io.jiogram.types.ChatMemberUpdated;
-import io.jiogram.types.ChosenInlineResult;
-import io.jiogram.types.InlineQuery;
-import io.jiogram.types.ManagedBotUpdated;
-import io.jiogram.types.Message;
-import io.jiogram.types.MessageReactionCountUpdated;
-import io.jiogram.types.MessageReactionUpdated;
-import io.jiogram.types.PaidMediaPurchased;
-import io.jiogram.types.Poll;
-import io.jiogram.types.PollAnswer;
-import io.jiogram.types.PreCheckoutQuery;
-import io.jiogram.types.ShippingQuery;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,12 +29,14 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.Executors;
-import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * Spring {@link BeanPostProcessor} that scans beans annotated with
@@ -74,8 +59,8 @@ public class HandlerRegistry implements BeanPostProcessor, SmartInitializingSing
 
     private static final Logger log = LoggerFactory.getLogger(HandlerRegistry.class);
 
-    private static final Comparator<Registration<?>> MATCHING_ORDER = Comparator
-            .comparingInt((Registration<?> r) -> r.order())
+    private static final Comparator<Registration> MATCHING_ORDER = Comparator
+            .comparingInt((Registration r) -> r.order())
             .thenComparingInt(Registration::specificity)
             .thenComparing(Registration::sortKey);
 
@@ -88,38 +73,45 @@ public class HandlerRegistry implements BeanPostProcessor, SmartInitializingSing
      * Handler annotations and the observer each one registers on. Message-like events also
      * honour {@link Command}.
      */
-    private static final List<Binding<?>> BINDINGS = List.of(
-            new Binding<>(OnMessage.class, Message.class, Router::messageObserver, true),
-            new Binding<>(OnEditedMessage.class, Message.class, Router::editedMessageObserver, true),
-            new Binding<>(OnChannelPost.class, Message.class, Router::channelPostObserver, true),
-            new Binding<>(OnEditedChannelPost.class, Message.class, Router::editedChannelPostObserver, true),
-            new Binding<>(OnBusinessMessage.class, Message.class, Router::businessMessageObserver, true),
-            new Binding<>(OnEditedBusinessMessage.class, Message.class, Router::editedBusinessMessageObserver, true),
-            new Binding<>(OnCallbackQuery.class, CallbackQuery.class, Router::callbackQueryObserver, false),
-            new Binding<>(OnInlineQuery.class, InlineQuery.class, Router::inlineQueryObserver, false),
-            new Binding<>(OnChosenInlineResult.class, ChosenInlineResult.class, Router::chosenInlineResultObserver, false),
-            new Binding<>(OnShippingQuery.class, ShippingQuery.class, Router::shippingQueryObserver, false),
-            new Binding<>(OnPreCheckoutQuery.class, PreCheckoutQuery.class, Router::preCheckoutQueryObserver, false),
-            new Binding<>(OnPurchasedPaidMedia.class, PaidMediaPurchased.class, Router::purchasedPaidMediaObserver, false),
-            new Binding<>(OnPoll.class, Poll.class, Router::pollObserver, false),
-            new Binding<>(OnPollAnswer.class, PollAnswer.class, Router::pollAnswerObserver, false),
-            new Binding<>(OnMyChatMember.class, ChatMemberUpdated.class, Router::myChatMemberObserver, false),
-            new Binding<>(OnChatMember.class, ChatMemberUpdated.class, Router::chatMemberObserver, false),
-            new Binding<>(OnChatJoinRequest.class, ChatJoinRequest.class, Router::chatJoinRequestObserver, false),
-            new Binding<>(OnBusinessConnection.class, BusinessConnection.class, Router::businessConnectionObserver, false),
-            new Binding<>(OnDeletedBusinessMessages.class, BusinessMessagesDeleted.class, Router::deletedBusinessMessagesObserver, false),
-            new Binding<>(OnMessageReaction.class, MessageReactionUpdated.class, Router::messageReactionObserver, false),
-            new Binding<>(OnMessageReactionCount.class, MessageReactionCountUpdated.class, Router::messageReactionCountObserver, false),
-            new Binding<>(OnChatBoost.class, ChatBoostUpdated.class, Router::chatBoostObserver, false),
-            new Binding<>(OnRemovedChatBoost.class, ChatBoostRemoved.class, Router::removedChatBoostObserver, false),
-            new Binding<>(OnManagedBot.class, ManagedBotUpdated.class, Router::managedBotObserver, false)
+    private static final List<Binding> BINDINGS = List.of(
+            new Binding(OnMessage.class, EventType.MESSAGE, true),
+            new Binding(OnEditedMessage.class, EventType.EDITED_MESSAGE, true),
+            new Binding(OnChannelPost.class, EventType.CHANNEL_POST, true),
+            new Binding(OnEditedChannelPost.class, EventType.EDITED_CHANNEL_POST, true),
+            new Binding(OnBusinessMessage.class, EventType.BUSINESS_MESSAGE, true),
+            new Binding(OnEditedBusinessMessage.class, EventType.EDITED_BUSINESS_MESSAGE, true),
+            new Binding(OnCallbackQuery.class, EventType.CALLBACK_QUERY, false),
+            new Binding(OnInlineQuery.class, EventType.INLINE_QUERY, false),
+            new Binding(OnChosenInlineResult.class, EventType.CHOSEN_INLINE_RESULT, false),
+            new Binding(OnShippingQuery.class, EventType.SHIPPING_QUERY, false),
+            new Binding(OnPreCheckoutQuery.class, EventType.PRE_CHECKOUT_QUERY, false),
+            new Binding(OnPurchasedPaidMedia.class, EventType.PURCHASED_PAID_MEDIA, false),
+            new Binding(OnPoll.class, EventType.POLL, false),
+            new Binding(OnPollAnswer.class, EventType.POLL_ANSWER, false),
+            new Binding(OnMyChatMember.class, EventType.MY_CHAT_MEMBER, false),
+            new Binding(OnChatMember.class, EventType.CHAT_MEMBER, false),
+            new Binding(OnChatJoinRequest.class, EventType.CHAT_JOIN_REQUEST, false),
+            new Binding(OnBusinessConnection.class, EventType.BUSINESS_CONNECTION, false),
+            new Binding(OnDeletedBusinessMessages.class, EventType.DELETED_BUSINESS_MESSAGES, false),
+            new Binding(OnMessageReaction.class, EventType.MESSAGE_REACTION, false),
+            new Binding(OnMessageReactionCount.class, EventType.MESSAGE_REACTION_COUNT, false),
+            new Binding(OnChatBoost.class, EventType.CHAT_BOOST, false),
+            new Binding(OnRemovedChatBoost.class, EventType.REMOVED_CHAT_BOOST, false),
+            new Binding(OnManagedBot.class, EventType.MANAGED_BOT, false)
     );
+
+    /** The event types that have a handler annotation; tests check that every one has. */
+    static Set<EventType> boundEventTypes() {
+        return BINDINGS.stream()
+                .map(Binding::eventType)
+                .collect(Collectors.toCollection(() -> EnumSet.noneOf(EventType.class)));
+    }
 
     private final Supplier<? extends Router> routerSupplier;
     private @Nullable Router router;
     private final @Nullable Scheduler handlerScheduler;
     private final boolean ownsScheduler;
-    private final List<Registration<?>> pending = new ArrayList<>();
+    private final List<Registration> pending = new ArrayList<>();
     private boolean singletonsInstantiated;
 
     /**
@@ -204,15 +196,15 @@ public class HandlerRegistry implements BeanPostProcessor, SmartInitializingSing
         log.debug("Scanning TelegramController: {}", targetClass.getName());
         int classOrder = OrderUtils.getOrder(targetClass, Ordered.LOWEST_PRECEDENCE);
 
-        Map<Method, List<Binding<?>>> handlerMethods = MethodIntrospector.selectMethods(targetClass,
-                (MethodIntrospector.MetadataLookup<List<Binding<?>>>) method -> {
-                    List<Binding<?>> bindings = BINDINGS.stream()
+        Map<Method, List<Binding>> handlerMethods = MethodIntrospector.selectMethods(targetClass,
+                (MethodIntrospector.MetadataLookup<List<Binding>>) method -> {
+                    List<Binding> bindings = BINDINGS.stream()
                             .filter(binding -> AnnotatedElementUtils.hasAnnotation(method, binding.annotation()))
                             .toList();
                     return bindings.isEmpty() ? null : bindings;
                 });
 
-        List<Registration<?>> found = new ArrayList<>();
+        List<Registration> found = new ArrayList<>();
         handlerMethods.forEach((method, bindings) -> bindings.forEach(binding ->
                 found.add(binding.registration(bean, targetClass, method, classOrder, handlerScheduler))));
 
@@ -242,15 +234,14 @@ public class HandlerRegistry implements BeanPostProcessor, SmartInitializingSing
         }
     }
 
-    private record Binding<E>(
+    private record Binding(
             Class<? extends Annotation> annotation,
-            Class<E> eventType,
-            Function<Router, EventObserver<E>> observer,
+            EventType eventType,
             boolean supportsCommand) {
 
-        Registration<E> registration(Object bean, Class<?> targetClass, Method method, int classOrder,
-                                     @Nullable Scheduler scheduler) {
-            List<Filter<E>> filters = new ArrayList<>();
+        Registration registration(Object bean, Class<?> targetClass, Method method, int classOrder,
+                                  @Nullable Scheduler scheduler) {
+            List<Filter<Object>> filters = new ArrayList<>();
             Command command = supportsCommand ? AnnotatedElementUtils.findMergedAnnotation(method, Command.class) : null;
             if (command != null) {
                 filters.add(castFilter(Filters.command(command.value())));
@@ -275,9 +266,9 @@ public class HandlerRegistry implements BeanPostProcessor, SmartInitializingSing
             String sortKey = targetClass.getName() + "#" + method.getName()
                     + Arrays.toString(method.getParameterTypes());
 
-            return new Registration<>(
-                    observer,
-                    new HandlerAdapter<>(bean, invocable, eventType, scheduler),
+            return new Registration(
+                    eventType,
+                    new HandlerAdapter<>(bean, invocable, eventClass(), scheduler),
                     List.copyOf(filters),
                     methodOrder != null ? methodOrder.value() : classOrder,
                     command != null ? COMMAND : filters.isEmpty() ? CATCH_ALL : FILTERED,
@@ -289,22 +280,28 @@ public class HandlerRegistry implements BeanPostProcessor, SmartInitializingSing
          * Message and callback filters are only built for bindings whose event type matches them.
          */
         @SuppressWarnings("unchecked")
-        private Filter<E> castFilter(Filter<?> filter) {
-            return (Filter<E>) filter;
+        private Filter<Object> castFilter(Filter<?> filter) {
+            return (Filter<Object>) filter;
+        }
+
+        @SuppressWarnings("unchecked")
+        private Class<Object> eventClass() {
+            return (Class<Object>) eventType.eventClass();
         }
     }
 
-    private record Registration<E>(
-            Function<Router, EventObserver<E>> observer,
-            Handler<E> handler,
-            List<Filter<E>> filters,
+    private record Registration(
+            EventType eventType,
+            Handler<Object> handler,
+            List<Filter<Object>> filters,
             int order,
             int specificity,
             String sortKey,
             String annotationName) {
 
+        @SuppressWarnings("unchecked")
         void register(Router router) {
-            observer.apply(router).register(handler, filters);
+            ((EventObserver<Object>) router.observer(eventType)).register(handler, filters);
             log.debug("Registered @{} handler {} (order {}, {} filter(s))",
                     annotationName, sortKey, order, filters.size());
         }
