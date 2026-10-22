@@ -414,7 +414,7 @@ annotation'ining o'zi `jiogram-fsm` bilan keladi):
 
 ```groovy
 dependencies {
-    annotationProcessor 'uz.jtscorp.jiogram:jiogram-fsm-processor-sb4:0.2.0-SNAPSHOT'
+    annotationProcessor 'uz.jtscorp.jiogram:jiogram-fsm-processor-sb4:0.2.0'
 }
 ```
 
