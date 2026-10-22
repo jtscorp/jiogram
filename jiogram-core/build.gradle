@@ -10,7 +10,9 @@ dependencies {
     api 'org.springframework:spring-webflux'
     api 'org.springframework:spring-context'
     api 'io.projectreactor:reactor-core'
-    implementation 'io.projectreactor.netty:reactor-netty-http'
+    // api: applications customize the HTTP client (proxy, timeouts) with Reactor Netty's
+    // HttpClient when they provide their own TelegramSession.
+    api 'io.projectreactor.netty:reactor-netty-http'
     implementation 'org.slf4j:slf4j-api'
 
     // Jackson 2 (com.fasterxml), version from the Spring Boot BOM — not the
