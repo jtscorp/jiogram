@@ -122,6 +122,7 @@ public final class TypeGenerator {
         if (!imports.isEmpty()) {
             sb.append("\n");
         }
+        sb.append(Javadoc.render(type.description(), type.fields(), type.name()));
         sb.append("public record ").append(type.name()).append("(\n");
         sb.append(String.join(",\n", components));
         sb.append("\n)");
@@ -159,6 +160,7 @@ public final class TypeGenerator {
             sb.append("import ").append(imp).append(";\n");
         }
         sb.append("\n");
+        sb.append(Javadoc.render(type.description(), List.of(), type.name()));
 
         if (isValueBasedDiscriminator) {
             // @JsonTypeInfo with CUSTOM resolver, reading the existing discriminator
@@ -218,6 +220,7 @@ public final class TypeGenerator {
     private String generatePlainInterface(TypeDefinition type) {
         StringBuilder sb = new StringBuilder();
         sb.append("package ").append(basePackage).append(";\n\n");
+        sb.append(Javadoc.render(type.description(), List.of(), type.name()));
         sb.append("public interface ").append(type.name()).append(" {}\n");
         return sb.toString();
     }
@@ -255,6 +258,7 @@ public final class TypeGenerator {
         if (!imports.isEmpty()) {
             sb.append("\n");
         }
+        sb.append(Javadoc.render(type.description(), type.fields(), type.name()));
         sb.append("public record ").append(type.name()).append("(\n");
         sb.append(String.join(",\n", components));
         sb.append("\n) implements ").append(parentName).append(" {}\n");

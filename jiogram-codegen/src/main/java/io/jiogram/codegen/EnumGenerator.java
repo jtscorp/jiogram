@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Objects;
 import java.util.TreeSet;
 import java.util.Set;
@@ -80,6 +81,7 @@ public final class EnumGenerator {
         }
         sb.append("\n");
 
+        sb.append(Javadoc.render(enumDef.description(), List.of(), null));
         sb.append("public enum ").append(enumDef.name()).append(" {\n");
 
         // Enum constants

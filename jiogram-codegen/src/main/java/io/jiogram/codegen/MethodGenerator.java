@@ -118,6 +118,7 @@ public final class MethodGenerator {
         sb.append("\n");
 
         // Record declaration
+        sb.append(Javadoc.render(method.description(), method.parameters(), method.name()));
         sb.append("public record ").append(method.className()).append("(\n");
         sb.append(String.join(",\n", components));
         sb.append("\n) implements TelegramMethod<").append(returnTypeStr).append("> {\n\n");
