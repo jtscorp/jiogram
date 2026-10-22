@@ -33,6 +33,8 @@ telegram:
       - inline_query
     # Chats processed in parallel per batch; one chat's updates stay in order (default: 32)
     concurrency: 32
+    # How long shutdown waits for the batch being processed (default: 10s)
+    shutdown-timeout: 10s
 
   # Webhook configuration (only used when mode=WEBHOOK)
   webhook:
@@ -121,6 +123,7 @@ Only applies when `mode=POLLING`.
 | `limit` | `int` | `100` | Maximum updates returned per `getUpdates` call. Range: 1-100. |
 | `allowed-updates` | `List<UpdateType>` | `null` | Restrict which update types are received. Omit to receive all. |
 | `concurrency` | `int` | `32` | How many chats of one batch are processed in parallel. Updates of the same chat (or, for inline queries and similar, the same user) always run one after another, in order. The next `getUpdates` call waits for the batch to finish. |
+| `shutdown-timeout` | `Duration` | `10s` | On shutdown, how long to wait for the batch being processed. A pending `getUpdates` call is cancelled at once. Processed updates are then confirmed to Telegram, so a restart does not receive them again; a batch that does not finish in time is cancelled and delivered again after the restart. Keep it below `spring.lifecycle.timeout-per-shutdown-phase` (30s by default). |
 
 ### telegram.webhook
 

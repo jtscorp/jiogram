@@ -1,5 +1,6 @@
 package io.jiogram.autoconfigure;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jiogram.bot.Bot;
 import io.jiogram.dispatcher.Dispatcher;
@@ -36,7 +37,7 @@ class PollingRunnerTest {
     }
 
     @Test
-    void chatsRunInParallel_butUpdatesOfOneChatKeepTheirOrder() throws Exception {
+    void chatsRunInParallel_butUpdatesOfOneChatKeepTheirOrder() {
         // Batch order: chat 1 (slow), chat 2, chat 1 again.
         List<Update> batch = List.of(message(1, 100, "A1"), message(2, 200, "B1"), message(3, 100, "A2"));
         Dispatcher dispatcher = new Dispatcher();
@@ -44,7 +45,7 @@ class PollingRunnerTest {
             ? Mono.delay(Duration.ofMillis(300)).then(Mono.fromRunnable(() -> handled.add("A1")))
             : Mono.fromRunnable(() -> handled.add(message.text())));
 
-        runner = new PollingRunner(botServing(batch), dispatcher, properties(32));
+        runner = new PollingRunner(botServing(batch), dispatcher, properties(32, Duration.ofSeconds(10)));
         runner.start();
 
         await().atMost(Duration.ofSeconds(5)).until(() -> handled.size() == 3);
@@ -56,7 +57,65 @@ class PollingRunnerTest {
     }
 
     @Test
-    void sequenceKey_groupsByChatOrActingUser() throws Exception {
+    void stopWhileWaitingForTelegram_cancelsThePollAtOnce_andHasNothingToConfirm() {
+        Dispatcher dispatcher = new Dispatcher();
+        dispatcher.onMessage().handle((message, context) -> Mono.fromRunnable(() -> handled.add(message.text())));
+
+        runner = new PollingRunner(botServing(List.of(message(1, 100, "A1"))), dispatcher, properties(32, Duration.ofSeconds(10)));
+        runner.start();
+        // The second poll (offset 2) is pending, and it already confirms update 1.
+        await().atMost(Duration.ofSeconds(5)).until(() -> requests.size() == 2);
+
+        long started = System.nanoTime();
+        runner.stop();
+
+        assertThat(Duration.ofNanos(System.nanoTime() - started)).isLessThan(Duration.ofSeconds(2));
+        assertThat(handled).containsExactly("A1");
+        assertThat(requests).hasSize(2);
+        assertThat(runner.isRunning()).isFalse();
+    }
+
+    @Test
+    void stopDuringABatch_letsItFinish_thenConfirmsItWithoutWaitingForNewUpdates() {
+        Dispatcher dispatcher = new Dispatcher();
+        dispatcher.onMessage().handle((message, context) -> Mono.delay(Duration.ofMillis(300))
+            .then(Mono.fromRunnable(() -> handled.add(message.text()))));
+
+        runner = new PollingRunner(botServing(List.of(message(1, 100, "A1"), message(2, 100, "A2"))),
+            dispatcher, properties(32, Duration.ofSeconds(10)));
+        runner.start();
+        await().atMost(Duration.ofSeconds(5)).until(() -> requests.size() == 1);
+
+        runner.stop();
+
+        assertThat(handled).containsExactly("A1", "A2");
+        assertThat(requests).hasSize(2);
+        GetUpdates confirm = requests.get(1);
+        assertThat(confirm.offset()).isEqualTo(3L);
+        assertThat(confirm.limit()).isEqualTo(1L);
+        assertThat(confirm.timeout()).isZero();
+    }
+
+    @Test
+    void batchExceedingTheShutdownTimeout_isCancelled_andNotConfirmed() {
+        Dispatcher dispatcher = new Dispatcher();
+        dispatcher.onMessage().handle((message, context) -> Mono.never());
+
+        runner = new PollingRunner(botServing(List.of(message(1, 100, "A1"))), dispatcher,
+            properties(32, Duration.ofMillis(200)));
+        runner.start();
+        await().atMost(Duration.ofSeconds(5)).until(() -> requests.size() == 1);
+
+        long started = System.nanoTime();
+        runner.stop();
+
+        assertThat(Duration.ofNanos(System.nanoTime() - started)).isLessThan(Duration.ofSeconds(2));
+        // Update 1 never finished: no confirmation, so Telegram delivers it again after a restart.
+        assertThat(requests).hasSize(1);
+    }
+
+    @Test
+    void sequenceKey_groupsByChatOrActingUser() {
         Update callbackInGroup = update("""
             {"update_id": 1, "callback_query": {"id": "q", "from": {"id": 7, "is_bot": false, "first_name": "U"},
              "chat_instance": "c", "message": {"message_id": 1, "chat": {"id": -100, "type": "group", "title": "G"},
@@ -79,7 +138,11 @@ class PollingRunnerTest {
             @Override
             @SuppressWarnings("unchecked")
             public <T> Mono<T> makeRequest(String token, TelegramMethod<T> method) {
-                requests.add((GetUpdates) method);
+                GetUpdates request = (GetUpdates) method;
+                requests.add(request);
+                if (Long.valueOf(0).equals(request.timeout()) && Long.valueOf(1).equals(request.limit())) {
+                    return (Mono<T>) Mono.just(List.of()); // the confirming call on stop
+                }
                 return calls.getAndIncrement() == 0 ? (Mono<T>) Mono.just(firstBatch) : Mono.never();
             }
 
@@ -90,19 +153,23 @@ class PollingRunnerTest {
         });
     }
 
-    private static JiogramProperties properties(int concurrency) {
+    private static JiogramProperties properties(int concurrency, Duration shutdownTimeout) {
         return new JiogramProperties("123:abc", JiogramProperties.Mode.POLLING,
-            new JiogramProperties.PollingProperties(0, 10, 100, null, concurrency),
+            new JiogramProperties.PollingProperties(30, 10, 100, null, concurrency, shutdownTimeout),
             null, null, null, null, null);
     }
 
-    private static Update message(long updateId, long chatId, String text) throws Exception {
+    private static Update message(long updateId, long chatId, String text) {
         return update("""
             {"update_id": %d, "message": {"message_id": %d, "chat": {"id": %d, "type": "private"},
              "date": 1775538971, "text": "%s"}}""".formatted(updateId, updateId, chatId, text));
     }
 
-    private static Update update(String json) throws Exception {
-        return MAPPER.readValue(json, Update.class);
+    private static Update update(String json) {
+        try {
+            return MAPPER.readValue(json, Update.class);
+        } catch (JsonProcessingException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 }

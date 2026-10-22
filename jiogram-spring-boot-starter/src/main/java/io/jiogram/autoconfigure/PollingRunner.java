@@ -14,6 +14,7 @@ import org.springframework.context.SmartLifecycle;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
 import reactor.util.retry.Retry;
 
 import java.time.Duration;
@@ -34,13 +35,21 @@ public class PollingRunner implements SmartLifecycle {
 
     private static final Logger log = LoggerFactory.getLogger(PollingRunner.class);
 
+    private static final Duration CONFIRM_TIMEOUT = Duration.ofSeconds(5);
+
     private final Bot bot;
     private final Dispatcher dispatcher;
     private final JiogramProperties properties;
 
     private final AtomicBoolean running = new AtomicBoolean(false);
+    /** True while a batch is being dispatched; a stop then lets it finish. */
+    private final AtomicBoolean processing = new AtomicBoolean(false);
+    /** First update id not yet processed; 0 before the first batch. */
     private final AtomicLong offset = new AtomicLong(0);
+    /** The offset last sent to Telegram, which confirms every update below it. */
+    private final AtomicLong requestedOffset = new AtomicLong(0);
     private volatile Disposable subscription;
+    private volatile Sinks.Empty<Void> loopTerminated;
     private volatile CountDownLatch stopped;
 
     public PollingRunner(Bot bot, Dispatcher dispatcher, JiogramProperties properties) {
@@ -61,10 +70,13 @@ public class PollingRunner implements SmartLifecycle {
             List<UpdateType> allowedUpdates = polling != null ? polling.allowedUpdates() : null;
             int concurrency = polling != null ? Math.max(1, polling.concurrency()) : 1;
 
+            Sinks.Empty<Void> terminated = Sinks.empty();
+            loopTerminated = terminated;
             subscription = Flux.defer(() -> {
-                    Long currentOffset = offset.get() == 0 ? null : offset.get();
+                    long currentOffset = offset.get();
+                    requestedOffset.set(currentOffset);
                     GetUpdates request = new GetUpdates(
-                        currentOffset,
+                        currentOffset == 0 ? null : currentOffset,
                         (long) limit,
                         timeout,
                         allowedUpdates
@@ -83,7 +95,8 @@ public class PollingRunner implements SmartLifecycle {
                             signal.totalRetries() + 1, signal.failure().getMessage())
                     )
                     .filter(throwable -> running.get()))
-                .subscribe();
+                .doFinally(signal -> terminated.tryEmitEmpty())
+                .subscribe(null, e -> log.warn("Polling stopped with an error: {}", e.getMessage()));
 
             keepJvmAlive();
         }
@@ -114,9 +127,7 @@ public class PollingRunner implements SmartLifecycle {
         if (updates == null || updates.isEmpty()) {
             return Flux.empty();
         }
-
-        // Confirmed to Telegram by the next getUpdates call.
-        offset.set(updates.stream().mapToLong(Update::updateId).max().getAsLong() + 1);
+        long nextOffset = updates.stream().mapToLong(Update::updateId).max().getAsLong() + 1;
 
         // Plain grouping instead of Flux.groupBy, which can stall when groups outnumber concurrency.
         Map<Object, List<Update>> byChat = new LinkedHashMap<>();
@@ -125,7 +136,12 @@ public class PollingRunner implements SmartLifecycle {
         }
 
         return Flux.fromIterable(byChat.values())
-            .flatMap(chatUpdates -> Flux.fromIterable(chatUpdates).concatMap(this::dispatch), concurrency);
+            .flatMap(chatUpdates -> Flux.fromIterable(chatUpdates).concatMap(this::dispatch), concurrency)
+            // Advanced only once the whole batch is done: a batch cut short by shutdown is
+            // delivered again after a restart instead of being lost.
+            .doOnComplete(() -> offset.set(nextOffset))
+            .doOnSubscribe(subscription -> processing.set(true))
+            .doFinally(signal -> processing.set(false));
     }
 
     private Mono<Void> dispatch(Update update) {
@@ -187,19 +203,76 @@ public class PollingRunner implements SmartLifecycle {
         return null;
     }
 
+    /**
+     * Stops polling. A pending {@code getUpdates} call is cancelled right away; a batch being
+     * processed may finish first, for up to {@code telegram.polling.shutdown-timeout}. The
+     * processed updates are then confirmed to Telegram, so a restart does not receive them again.
+     */
+    @Override
+    public void stop(Runnable callback) {
+        if (!running.compareAndSet(true, false)) {
+            callback.run();
+            return;
+        }
+        log.info("Stopping Telegram polling for bot {}", bot.id());
+        Disposable loop = subscription;
+        if (!processing.get()) {
+            // Only waiting for Telegram (or for a retry): nothing to finish.
+            loop.dispose();
+        }
+        Duration shutdownTimeout = properties.polling() != null
+            ? properties.polling().shutdownTimeout()
+            : Duration.ofSeconds(10);
+        loopTerminated.asMono()
+            .timeout(shutdownTimeout, Mono.fromRunnable(() -> {
+                log.warn("Update processing did not finish within {}, cancelling it; "
+                    + "the unfinished updates are delivered again after a restart", shutdownTimeout);
+                loop.dispose();
+            }))
+            .then(Mono.defer(this::confirmOffset))
+            .doFinally(signal -> {
+                CountDownLatch keepAlive = stopped;
+                if (keepAlive != null) {
+                    keepAlive.countDown();
+                }
+                callback.run();
+            })
+            .subscribe();
+    }
+
     @Override
     public void stop() {
-        if (running.compareAndSet(true, false)) {
-            log.info("Stopping Telegram polling for bot {}", bot.id());
-            if (subscription != null) {
-                subscription.dispose();
-                subscription = null;
-            }
-            if (stopped != null) {
-                stopped.countDown();
-                stopped = null;
-            }
+        CountDownLatch done = new CountDownLatch(1);
+        stop(done::countDown);
+        try {
+            done.await();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
+    }
+
+    /**
+     * Telegram forgets updates below the offset of a {@code getUpdates} call. When processed
+     * updates have not been confirmed by a poll yet, one short call (no waiting, at most one
+     * update, which is not processed and so stays unconfirmed) does it.
+     */
+    private Mono<Void> confirmOffset() {
+        long next = offset.get();
+        if (next == 0 || next == requestedOffset.get()) {
+            return Mono.empty();
+        }
+        return bot.execute(new GetUpdates(next, 1L, 0L, null))
+            .timeout(CONFIRM_TIMEOUT)
+            .doOnSuccess(ignored -> {
+                requestedOffset.set(next);
+                log.debug("Confirmed processed updates below {}", next);
+            })
+            .onErrorResume(e -> {
+                log.warn("Could not confirm processed updates to Telegram, they may be delivered again: {}",
+                    e.getMessage());
+                return Mono.empty();
+            })
+            .then();
     }
 
     @Override

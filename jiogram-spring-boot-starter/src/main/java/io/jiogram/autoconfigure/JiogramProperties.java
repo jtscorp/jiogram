@@ -6,6 +6,7 @@ import io.jiogram.types.UpdateType;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 
+import java.time.Duration;
 import java.util.List;
 
 /**
@@ -65,13 +66,16 @@ public record JiogramProperties(
      * @param allowedUpdates list of update types to receive
      * @param concurrency    how many chats of one batch are processed in parallel; updates of
      *                       the same chat are always processed one after another, in order
+     * @param shutdownTimeout how long stopping waits for the batch being processed to finish
+     *                        before cancelling it
      */
     public record PollingProperties(
         @DefaultValue("30") int timeout,
         @DefaultValue("1000") long backoff,
         @DefaultValue("100") int limit,
         List<UpdateType> allowedUpdates,
-        @DefaultValue("32") int concurrency
+        @DefaultValue("32") int concurrency,
+        @DefaultValue("10s") Duration shutdownTimeout
     ) {}
 
     /**
