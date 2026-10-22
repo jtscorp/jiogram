@@ -19,7 +19,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.7'
 }
 
-group = 'com.example'
+group = 'uz.example'
 version = '1.0.0'
 
 java {
@@ -57,10 +57,10 @@ Set the `BOT_TOKEN` environment variable before running, or paste your token dir
 
 ## 3. Write the application entry point
 
-Create `src/main/java/com/example/Application.java`:
+Create `src/main/java/uz/example/Application.java`:
 
 ```java
-package com.example;
+package uz.example;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -76,10 +76,10 @@ public class Application {
 
 ## 4. Write your first bot handler
 
-Create `src/main/java/com/example/MyBot.java`:
+Create `src/main/java/uz/example/MyBot.java`:
 
 ```java
-package com.example;
+package uz.example;
 
 import io.jiogram.annotation.Command;
 import io.jiogram.annotation.OnMessage;
