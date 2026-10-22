@@ -1,5 +1,6 @@
 package io.jiogram.autoconfigure;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jiogram.annotation.OnMessage;
 import io.jiogram.annotation.TelegramController;
 import io.jiogram.bot.Bot;
@@ -12,10 +13,16 @@ import io.jiogram.methods.SetWebhook;
 import io.jiogram.session.TelegramSession;
 import io.jiogram.types.Message;
 import io.jiogram.types.TelegramMethod;
+import io.jiogram.types.Update;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.boot.test.context.runner.ReactiveWebApplicationContextRunner;
+import org.springframework.boot.test.system.CapturedOutput;
+import org.springframework.boot.test.system.OutputCaptureExtension;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
@@ -186,6 +193,47 @@ class JiogramAutoConfigurationTest {
             .withBean(PingController.class)
             .withPropertyValues("telegram.token=123456789:ABCDEFghijklmnop")
             .run(context -> assertThat(context.getBean(Dispatcher.class).messageObserver().hasHandlers()).isTrue());
+    }
+
+    @Test
+    @ExtendWith(OutputCaptureExtension.class)
+    void handlerRegistry_doesNotCreateOtherBeansBeforeAllPostProcessorsAreRegistered(CapturedOutput output) {
+        contextRunner
+            .withBean(PingController.class)
+            .withPropertyValues("telegram.token=123456789:ABCDEFghijklmnop")
+            .run(context -> {
+                assertThat(context).hasNotFailed();
+                assertThat(context.getBean(Dispatcher.class).messageObserver().hasHandlers()).isTrue();
+            });
+        assertThat(output).doesNotContain("is not eligible for getting processed by all BeanPostProcessors");
+    }
+
+    @TelegramController
+    static class ThreadRecordingController {
+        volatile Boolean ranOnVirtualThread;
+
+        @OnMessage
+        public void onMessage(Message message) {
+            ranOnVirtualThread = Thread.currentThread().isVirtual();
+        }
+    }
+
+    @ParameterizedTest
+    @CsvSource({"true, true", "false, false", ", true"})
+    void handlerVirtualThreadsProperty_choosesTheHandlerThread(String property, boolean expectVirtual) {
+        ApplicationContextRunner runner = contextRunner
+            .withBean(ThreadRecordingController.class)
+            .withPropertyValues("telegram.token=123456789:ABCDEFghijklmnop");
+        if (property != null) {
+            runner = runner.withPropertyValues("telegram.handlers.virtual-threads=" + property);
+        }
+        runner.run(context -> {
+            Update update = new ObjectMapper().readValue("""
+                {"update_id": 1, "message": {"message_id": 1, "date": 1, "chat": {"id": 5, "type": "private"}, "text": "hi"}}
+                """, Update.class);
+            context.getBean(Dispatcher.class).feedUpdate(context.getBean(Bot.class), update).block();
+            assertThat(context.getBean(ThreadRecordingController.class).ranOnVirtualThread).isEqualTo(expectVirtual);
+        });
     }
 
     @Test

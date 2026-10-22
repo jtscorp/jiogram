@@ -12,7 +12,9 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.env.Environment;
 import org.springframework.web.reactive.function.client.WebClient;
 
 /**
@@ -67,11 +69,20 @@ public class JiogramAutoConfiguration {
         return dispatcher;
     }
 
+    /**
+     * The registry is a BeanPostProcessor, so it is created before ordinary beans. Hence the
+     * static method (no early instance of this configuration class), the lazily resolved
+     * dispatcher and the setting read straight from the environment: anything injected eagerly
+     * here would be created too early to be processed by the other post-processors.
+     */
     @Bean
     @ConditionalOnMissingBean
-    public HandlerRegistry handlerRegistry(Dispatcher dispatcher, JiogramProperties properties) {
-        return properties.handlers().virtualThreads()
-            ? HandlerRegistry.withVirtualThreads(dispatcher)
-            : new HandlerRegistry(dispatcher);
+    public static HandlerRegistry handlerRegistry(ObjectProvider<Dispatcher> dispatcher, Environment environment) {
+        boolean virtualThreads = Binder.get(environment)
+            .bind("telegram.handlers.virtual-threads", Boolean.class)
+            .orElse(true);
+        return virtualThreads
+            ? HandlerRegistry.withVirtualThreads(dispatcher::getObject)
+            : new HandlerRegistry(dispatcher::getObject);
     }
 }
