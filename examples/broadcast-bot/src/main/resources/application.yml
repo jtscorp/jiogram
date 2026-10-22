@@ -1,0 +1,9 @@
+telegram:
+  token: ${BOT_TOKEN}
+  defaults:
+    parse-mode: HTML
+
+broadcast:
+  enabled: ${BROADCAST_ENABLED:false}
+  user-ids: ${BROADCAST_USER_IDS:}
+  text: ${BROADCAST_TEXT:<b>Hello from Jiogram!</b>}

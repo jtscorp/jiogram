@@ -77,11 +77,17 @@ public class UserHandlers {
     @OnCallbackQuery(prefix = "menu_")
     public AnswerCallbackQuery onMenuCallback(CallbackQuery callback) {
         String section = callback.data().substring("menu_".length());
-        String text = switch (section) {
-            case "profile" -> "Your profile: User #" + callback.from().id();
-            case "settings" -> "Settings panel (coming soon)";
-            default -> "Unknown menu item";
-        };
+        String text;
+        switch (section) {
+            case "profile":
+                text = "Your profile: User #" + callback.from().id();
+                break;
+            case "settings":
+                text = "Settings panel (coming soon)";
+                break;
+            default:
+                text = "Unknown menu item";
+        }
         return new AnswerCallbackQuery(callback.id(), text, false, null, null);
     }
 }

@@ -1,0 +1,4 @@
+telegram:
+  token: ${BOT_TOKEN}
+  api:
+    base-url: ${TELEGRAM_API_BASE_URL:http://localhost:8081}

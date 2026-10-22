@@ -1,6 +1,5 @@
 plugins {
-    id 'java'
-    id 'org.springframework.boot' version '2.7.18'
+    id 'application'
     id 'io.spring.dependency-management' version '1.1.7'
 }
 
@@ -12,7 +11,25 @@ java {
         languageVersion = JavaLanguageVersion.of(17)
     }
 }
+
+// Compiled for Java 11, the baseline of the sb2.x branch.
+tasks.withType(JavaCompile).configureEach {
+    options.release = 11
+}
+
+application {
+    mainClass = 'com.example.multirouter.Application'
+}
+
+// Spring Boot 2.7's Gradle plugin does not run on Gradle 9; the BOM is imported directly.
+dependencyManagement {
+    imports {
+        mavenBom 'org.springframework.boot:spring-boot-dependencies:2.7.18'
+    }
+}
+
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 

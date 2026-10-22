@@ -1,0 +1,5 @@
+telegram:
+  token: ${BOT_TOKEN}
+
+antiflood:
+  rate-limit: ${ANTIFLOOD_RATE_LIMIT:5s}

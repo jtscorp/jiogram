@@ -1,0 +1,40 @@
+plugins {
+    id 'application'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.example'
+version = '1.0.0'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+// Compiled for Java 11, the baseline of the sb2.x branch.
+tasks.withType(JavaCompile).configureEach {
+    options.release = 11
+}
+
+application {
+    mainClass = 'com.example.Application'
+}
+
+// Spring Boot 2.7's Gradle plugin does not run on Gradle 9; the BOM is imported directly.
+dependencyManagement {
+    imports {
+        mavenBom 'org.springframework.boot:spring-boot-dependencies:2.7.18'
+    }
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-2-starter:0.2.0-SNAPSHOT'
+    // Webhook mode receives updates over HTTP; the starter itself brings no web server.
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+}

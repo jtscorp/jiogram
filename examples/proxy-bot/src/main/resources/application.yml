@@ -1,0 +1,6 @@
+telegram:
+  token: ${BOT_TOKEN}
+  proxy:
+    url: ${TELEGRAM_PROXY_URL:}
+  defaults:
+    parse-mode: MARKDOWN
