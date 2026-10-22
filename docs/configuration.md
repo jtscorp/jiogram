@@ -1,3 +1,5 @@
+[O'zbekcha](uz/configuration.md) · [English](configuration.md)
+
 # Configuration Reference
 
 All Jiogram properties are under the `telegram` prefix in `application.yml` or `application.properties`.

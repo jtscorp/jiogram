@@ -1,3 +1,5 @@
+[O'zbekcha](uz/core-concepts.md) · [English](core-concepts.md)
+
 # Core Concepts
 
 ## Bot
@@ -32,8 +34,8 @@ an answer in a forum group lands in the General topic.
 
 ### Building requests
 
-Methods and types are records with a canonical constructor of every Bot API field. For the
-optional ones there are shorter ways: `of(...)` takes only the required values, and every record
+Methods and types are immutable classes with a constructor of every Bot API field. For the
+optional ones there are shorter ways: `of(...)` takes only the required values, and every one
 has a `withX(...)` per field that returns a copy with that value set.
 
 ```java

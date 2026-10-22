@@ -1,3 +1,5 @@
+[O'zbekcha](uz/getting-started.md) · [English](getting-started.md)
+
 # Getting Started
 
 This guide walks you through creating your first Telegram bot with Jiogram.
