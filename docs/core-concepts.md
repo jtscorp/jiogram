@@ -48,7 +48,9 @@ telegram:
     link-preview: true
 ```
 
-These are available via `bot.defaults()`.
+They are filled into every request field you leave unset, including nested ones such as media
+group captions or inline query results; a field you set yourself is never changed, and a text that
+comes with entities gets no default parse mode. They are available via `bot.defaults()`.
 
 ---
 
@@ -196,7 +198,7 @@ Filters decide whether a handler should process a given event. They return `Filt
 ### Built-in filters
 
 ```java
-// Match specific commands (without leading slash)
+// Match specific commands (without leading slash), in the text or a media caption
 Filters.command("start", "help")
 
 // Match exact text

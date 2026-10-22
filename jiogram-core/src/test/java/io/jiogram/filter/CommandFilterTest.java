@@ -4,6 +4,7 @@ import io.jiogram.bot.Bot;
 import io.jiogram.dispatcher.UpdateContext;
 import io.jiogram.methods.GetMe;
 import io.jiogram.session.TelegramSession;
+import io.jiogram.session.WebClientTelegramSession;
 import io.jiogram.types.Chat;
 import io.jiogram.types.ChatType;
 import io.jiogram.types.Message;
@@ -62,6 +63,19 @@ class CommandFilterTest {
         apply("/start@AnyBot", contextFor(bot));
 
         assertEquals(2, getMeCalls.get(), "errors must not be cached");
+    }
+
+    @Test
+    void commandInAPhotoCaption_matches() throws Exception {
+        Message photo = WebClientTelegramSession.defaultObjectMapper().readValue("""
+                {"message_id": 1, "date": 1775538971, "chat": {"id": 1, "type": "private"},
+                 "photo": [{"file_id": "f", "file_unique_id": "u", "width": 1, "height": 1}],
+                 "caption": "/start from a photo"}""", Message.class);
+
+        FilterResult result = start.apply(photo, contextFor(botNamed("JiogramBot"))).block();
+
+        assertInstanceOf(FilterResult.Passed.class, result);
+        assertEquals("from a photo", ((FilterResult.Passed) result).data().get("command_args"));
     }
 
     private FilterResult apply(String text, UpdateContext context) {

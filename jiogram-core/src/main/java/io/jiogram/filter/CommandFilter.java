@@ -8,7 +8,8 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Filter that matches messages starting with a bot command (e.g., /start, /help).
+ * Filter that matches messages starting with a bot command (e.g., /start, /help), in the text
+ * or, for media messages, the caption.
  * <p>
  * Extracts the command name (without @botname suffix) and any arguments,
  * passing them as "command" and "command_args" in the filter result data map.
@@ -32,7 +33,8 @@ public class CommandFilter implements Filter<Message> {
 
     @Override
     public Mono<FilterResult> apply(Message event, UpdateContext context) {
-        String text = event.text();
+        // As in aiogram, a media message's caption can carry the command too.
+        String text = event.text() != null ? event.text() : event.caption();
         if (text == null || !text.startsWith("/")) {
             return Mono.just(FilterResult.failed());
         }

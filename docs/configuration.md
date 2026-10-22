@@ -152,9 +152,9 @@ Default values applied to outgoing bot API requests.
 
 | Property | Type | Default | Description |
 |---|---|---|---|
-| `parse-mode` | `ParseMode` | `null` | Default parse mode for all outgoing messages (`HTML`, `MARKDOWN`, `MARKDOWN_V2`, or `null`). |
-| `protect-content` | `boolean` | `false` | Protect messages from forwarding and saving by default. |
-| `link-preview` | `boolean` | `true` | Enable link previews in messages by default. |
+| `parse-mode` | `ParseMode` | `null` | Default parse mode (`HTML`, `MARKDOWN`, `MARKDOWN_V2`, or `null`). Filled into every unset `parse_mode` / `*_parse_mode` field of a request, nested objects included: media group captions, inline query results and their message content, poll questions and options, reply quotes. Skipped where the matching `entities` / `caption_entities` field is set, since entities replace the parse mode. |
+| `protect-content` | `boolean` | `false` | Protect messages from forwarding and saving by default (sets `protect_content` of sending methods when unset). |
+| `link-preview` | `boolean` | `true` | When `false`, unset `link_preview_options` (of `sendMessage`, `editMessageText` and inline `InputTextMessageContent`) are sent with previews disabled. |
 
 ### telegram.fsm
 
