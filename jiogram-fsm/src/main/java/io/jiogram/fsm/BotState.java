@@ -1,13 +1,16 @@
 package io.jiogram.fsm;
 
+import io.jiogram.filter.NamedState;
+
 /**
- * Optional legacy helper interface for FSM enum constants.
- * New code can use a plain enum annotated with {@link FSMStates} and call
- * {@link FSMContext#setState(Enum)} directly.
+ * Optional marker interface for state enums used in the FSM (Finite State Machine).
+ * Implementing enums get a {@link #fullName()} method that returns the name the state is
+ * stored under, following the {@link NamedState} rule ("EnumName.CONSTANT_NAME", with
+ * enclosing types for nested enums).
  * <p>
- * Enums that still implement this interface get a {@link #fullName()} method
- * that returns a unique string identifier in the format
- * "EnumSimpleName.CONSTANT_NAME".
+ * New code can also use plain enums with {@link FSMStates} and
+ * {@link FSMContext#setState(Enum)}. If you override {@link #fullName()}, use that same
+ * string in {@code @StateFilter}: the {@link FSMStates} constants follow the default rule.
  *
  * <p>Example:
  * <pre>{@code
@@ -19,16 +22,5 @@ package io.jiogram.fsm;
  * // OrderState.WAITING_FOR_NAME.fullName() -> "OrderState.WAITING_FOR_NAME"
  * }</pre>
  */
-public interface BotState {
-
-    /**
-     * Returns the fully qualified state name in the format "EnumSimpleName.CONSTANT_NAME".
-     * This is used as the storage key for FSM state persistence.
-     *
-     * @return the full state name
-     */
-    default String fullName() {
-        Enum<?> state = (Enum<?>) this;
-        return state.getDeclaringClass().getSimpleName() + "." + state.name();
-    }
+public interface BotState extends NamedState {
 }
