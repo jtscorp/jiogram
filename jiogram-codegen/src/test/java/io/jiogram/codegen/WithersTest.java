@@ -52,12 +52,12 @@ class WithersTest {
     }
 
     @Test
-    void typeRecord_getsWithers_exceptForASubtypesDiscriminator() {
+    void typeRecord_getsAFactoryAndWithers_exceptForASubtypesDiscriminator() {
         TypeGenerator generator = new TypeGenerator(typeMapper, "io.jiogram.types");
         TypeDefinition photo = new TypeDefinition("InputMediaPhoto", "",
                 List.of(
                         new FieldDefinition("type", "String", true, "Type of the result, must be photo"),
-                        new FieldDefinition("media", "String", true, ""),
+                        new FieldDefinition("media", "String", true, "File to send. Upload with attach://<name>"),
                         new FieldDefinition("caption", "String", false, "")
                 ),
                 "types");
@@ -65,10 +65,27 @@ class WithersTest {
 
         String source = generator.generateToString(photo);
 
+        assertTrue(source.contains("""
+                    public static InputMediaPhoto of(InputFileOrString media) {
+                        return new InputMediaPhoto(InputMediaType.PHOTO, media, null);
+                    }
+                """), source);
         assertTrue(source.contains("public InputMediaPhoto withCaption(@Nullable String caption)"), source);
         assertTrue(source.contains("public InputMediaPhoto withMedia("), source);
         assertFalse(source.contains("withType("), source);
         assertTrue(generator.generateToString(empty).contains("public record ForumTopicClosed(\n\n) {}"),
                 generator.generateToString(empty));
+    }
+
+    @Test
+    void typeWithOnlyRequiredFields_getsNoFactory() {
+        TypeDefinition location = new TypeDefinition("Point", "",
+                List.of(new FieldDefinition("x", "Integer", true, ""), new FieldDefinition("y", "Integer", true, "")),
+                "types");
+
+        String source = new TypeGenerator(typeMapper, "io.jiogram.types").generateToString(location);
+
+        assertFalse(source.contains(" of("), source);
+        assertTrue(source.contains("public Point withX(long x)"), source);
     }
 }

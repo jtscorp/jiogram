@@ -130,7 +130,7 @@ public final class TypeGenerator {
         if (!interfaces.isEmpty()) {
             sb.append(" implements ").append(String.join(", ", interfaces));
         }
-        sb.append(recordBody(type.name(), witherComponents));
+        sb.append(recordBody(type.name(), witherComponents, null, null));
 
         return sb.toString();
     }
@@ -218,9 +218,64 @@ public final class TypeGenerator {
         return sb.toString();
     }
 
-    private static String recordBody(String recordName, List<Withers.Component> witherComponents) {
-        String withers = Withers.render(recordName, witherComponents);
-        return withers.isEmpty() ? " {}\n" : " {\n" + withers + "}\n";
+    /**
+     * The body of a type record: an {@code of(...)} factory and the withers.
+     *
+     * @param fixedField the subtype's discriminator component, filled in by {@code of(...)}; or null
+     * @param fixedValue the Java expression of its value
+     */
+    private static String recordBody(String recordName, List<Withers.Component> components,
+                                     String fixedField, String fixedValue) {
+        String body = staticFactory(recordName, components, fixedField, fixedValue)
+                + Withers.render(recordName, components);
+        return body.isEmpty() ? " {}\n" : " {\n" + body + "}\n";
+    }
+
+    /**
+     * {@code of(...)} taking only the required components (optional ones start as null), so a
+     * value can be built from there with the withers. Generated when it is shorter than the
+     * canonical constructor: when there is an optional component or a discriminator to fill in.
+     */
+    private static String staticFactory(String recordName, List<Withers.Component> components,
+                                        String fixedField, String fixedValue) {
+        boolean hasOptional = components.stream().anyMatch(Withers.Component::nullable);
+        if (!hasOptional && fixedField == null) {
+            return "";
+        }
+        List<String> parameters = new ArrayList<>();
+        List<String> arguments = new ArrayList<>();
+        for (Withers.Component component : components) {
+            if (component.javaName().equals(fixedField)) {
+                arguments.add(fixedValue);
+            } else if (component.nullable()) {
+                arguments.add("null");
+            } else {
+                parameters.add(component.type() + " " + component.javaName());
+                arguments.add(component.javaName());
+            }
+        }
+        return "\n    public static " + recordName + " of(" + String.join(", ", parameters) + ") {\n"
+                + "        return new " + recordName + "(" + String.join(", ", arguments) + ");\n"
+                + "    }\n";
+    }
+
+    /** The Java expression of a subtype's discriminator value, e.g. {@code InputMediaType.PHOTO}. */
+    private static String discriminatorValue(String subtype, String parentName, List<Withers.Component> components) {
+        UnionRegistry.UnionInfo info = UnionRegistry.get(parentName);
+        String key = info.subtypes().entrySet().stream()
+                .filter(entry -> entry.getValue().equals(subtype))
+                .map(Map.Entry::getKey)
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException(subtype + " is not registered under " + parentName));
+        String wireValue = UnionRegistry.wireName(parentName, key);
+        String type = components.stream()
+                .filter(component -> component.javaName().equals(info.discriminator()))
+                .map(Withers.Component::type)
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException(subtype + " has no " + info.discriminator() + " field"));
+        return type.equals("String")
+                ? "\"" + wireValue + "\""
+                : type + "." + EnumGenerator.toConstantName(wireValue);
     }
 
     private String generatePlainInterface(TypeDefinition type) {
@@ -269,7 +324,8 @@ public final class TypeGenerator {
         sb.append(Javadoc.render(type.description(), type.fields(), type.name()));
         sb.append("public record ").append(type.name()).append("(\n");
         sb.append(String.join(",\n", components));
-        sb.append("\n) implements ").append(parentName).append(recordBody(type.name(), witherComponents));
+        sb.append("\n) implements ").append(parentName).append(recordBody(type.name(), witherComponents,
+                writeOnlyField, writeOnlyField == null ? null : discriminatorValue(type.name(), parentName, witherComponents)));
 
         return sb.toString();
     }
