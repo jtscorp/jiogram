@@ -18,7 +18,7 @@ U aiogram'ning qulay, annotation'larga asoslangan handler modelini Java/Spring d
 >
 > **Maven koordinatalari:**
 > ```
-> implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-3-starter:0.2.0-SNAPSHOT'
+> implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-3-starter:0.2.0'
 > ```
 
 ### Tez boshlash
@@ -39,7 +39,7 @@ java {
 }
 
 dependencies {
-    implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-3-starter:0.2.0-SNAPSHOT'
+    implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-3-starter:0.2.0'
 }
 ```
 
@@ -181,7 +181,7 @@ Jiogram brings the ergonomic, annotation-driven handler model of aiogram to the 
 >
 > **Maven coordinates:**
 > ```
-> implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-3-starter:0.2.0-SNAPSHOT'
+> implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-3-starter:0.2.0'
 > ```
 
 ### Quick Start
@@ -202,7 +202,7 @@ java {
 }
 
 dependencies {
-    implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-3-starter:0.2.0-SNAPSHOT'
+    implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-3-starter:0.2.0'
 }
 ```
 
