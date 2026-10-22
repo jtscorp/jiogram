@@ -84,7 +84,7 @@ subprojects {
                         ? 'jiogram-spring-boot-3-starter'
                         : "${project.name}-sb3"
                     description = 'Jiogram - Java Spring Framework for Telegram Bots'
-                    url = 'https://github.com/jaxongir/jiogram'
+                    url = 'https://github.com/jtscorp/jiogram'
 
                     licenses {
                         license {
@@ -101,9 +101,9 @@ subprojects {
                     }
 
                     scm {
-                        connection = 'scm:git:git://github.com/jaxongir/jiogram.git'
-                        developerConnection = 'scm:git:ssh://github.com/jaxongir/jiogram.git'
-                        url = 'https://github.com/jaxongir/jiogram'
+                        connection = 'scm:git:git://github.com/jtscorp/jiogram.git'
+                        developerConnection = 'scm:git:ssh://github.com/jtscorp/jiogram.git'
+                        url = 'https://github.com/jtscorp/jiogram'
                     }
                 }
             }

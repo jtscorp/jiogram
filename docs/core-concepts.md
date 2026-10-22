@@ -1,3 +1,5 @@
+[O'zbekcha](uz/core-concepts.md) · [English](core-concepts.md)
+
 # Core Concepts
 
 ## Bot

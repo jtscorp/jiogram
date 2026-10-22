@@ -1,3 +1,5 @@
+[O'zbekcha](uz/spring-boot-versions.md) · [English](spring-boot-versions.md)
+
 # Jiogram across Spring Boot versions
 
 Jiogram is published for three Spring Boot generations from one repository, one branch per Spring
