@@ -2,10 +2,26 @@ package io.jiogram.autoconfigure;
 
 import io.jiogram.bot.Bot;
 import io.jiogram.dispatcher.Dispatcher;
+import io.jiogram.dispatcher.EventType;
 import io.jiogram.methods.GetUpdates;
+import io.jiogram.types.BusinessConnection;
+import io.jiogram.types.BusinessMessagesDeleted;
+import io.jiogram.types.CallbackQuery;
+import io.jiogram.types.ChatBoostRemoved;
+import io.jiogram.types.ChatBoostUpdated;
+import io.jiogram.types.ChatJoinRequest;
+import io.jiogram.types.ChatMemberUpdated;
+import io.jiogram.types.ChosenInlineResult;
 import io.jiogram.types.InaccessibleMessage;
+import io.jiogram.types.InlineQuery;
+import io.jiogram.types.ManagedBotUpdated;
 import io.jiogram.types.Message;
+import io.jiogram.types.MessageReactionCountUpdated;
+import io.jiogram.types.MessageReactionUpdated;
+import io.jiogram.types.PaidMediaPurchased;
 import io.jiogram.types.PollAnswer;
+import io.jiogram.types.PreCheckoutQuery;
+import io.jiogram.types.ShippingQuery;
 import io.jiogram.types.Update;
 import io.jiogram.types.UpdateType;
 import org.slf4j.Logger;
@@ -159,48 +175,46 @@ public class PollingRunner implements SmartLifecycle {
      * get a unique key and run independently.
      */
     static Object sequenceKey(Update update) {
-        Message message = firstNonNull(update.message(), update.editedMessage(), update.channelPost(),
-            update.editedChannelPost(), update.businessMessage(), update.editedBusinessMessage());
-        if (message != null) {
-            return message.chat().id();
+        EventType type = EventType.of(update);
+        if (type == null) {
+            return "update:" + update.updateId();
         }
-        if (update.callbackQuery() != null) {
-            return switch (update.callbackQuery().message()) {
-                case Message m -> m.chat().id();
-                case InaccessibleMessage m -> m.chat().id();
-                case null -> update.callbackQuery().from().id();
-            };
-        }
-        if (update.myChatMember() != null) return update.myChatMember().chat().id();
-        if (update.chatMember() != null) return update.chatMember().chat().id();
-        if (update.chatJoinRequest() != null) return update.chatJoinRequest().chat().id();
-        if (update.messageReaction() != null) return update.messageReaction().chat().id();
-        if (update.messageReactionCount() != null) return update.messageReactionCount().chat().id();
-        if (update.chatBoost() != null) return update.chatBoost().chat().id();
-        if (update.removedChatBoost() != null) return update.removedChatBoost().chat().id();
-        if (update.deletedBusinessMessages() != null) return update.deletedBusinessMessages().chat().id();
-        if (update.inlineQuery() != null) return update.inlineQuery().from().id();
-        if (update.chosenInlineResult() != null) return update.chosenInlineResult().from().id();
-        if (update.shippingQuery() != null) return update.shippingQuery().from().id();
-        if (update.preCheckoutQuery() != null) return update.preCheckoutQuery().from().id();
-        if (update.purchasedPaidMedia() != null) return update.purchasedPaidMedia().from().id();
-        if (update.businessConnection() != null) return update.businessConnection().user().id();
-        if (update.pollAnswer() != null) {
-            PollAnswer answer = update.pollAnswer();
-            if (answer.user() != null) return answer.user().id();
-            if (answer.voterChat() != null) return answer.voterChat().id();
-        }
-        return "update:" + update.updateId();
-    }
-
-    @SafeVarargs
-    private static <T> T firstNonNull(T... values) {
-        for (T value : values) {
-            if (value != null) {
-                return value;
+        Object event = type.extract(update);
+        // Exhaustive on purpose: a new event type must decide its ordering here.
+        Long key = switch (type) {
+            case MESSAGE, EDITED_MESSAGE, CHANNEL_POST, EDITED_CHANNEL_POST, BUSINESS_MESSAGE,
+                 EDITED_BUSINESS_MESSAGE -> ((Message) event).chat().id();
+            case CALLBACK_QUERY -> {
+                CallbackQuery query = (CallbackQuery) event;
+                yield switch (query.message()) {
+                    case Message m -> m.chat().id();
+                    case InaccessibleMessage m -> m.chat().id();
+                    case null -> query.from().id();
+                };
             }
-        }
-        return null;
+            case MY_CHAT_MEMBER, CHAT_MEMBER -> ((ChatMemberUpdated) event).chat().id();
+            case CHAT_JOIN_REQUEST -> ((ChatJoinRequest) event).chat().id();
+            case MESSAGE_REACTION -> ((MessageReactionUpdated) event).chat().id();
+            case MESSAGE_REACTION_COUNT -> ((MessageReactionCountUpdated) event).chat().id();
+            case CHAT_BOOST -> ((ChatBoostUpdated) event).chat().id();
+            case REMOVED_CHAT_BOOST -> ((ChatBoostRemoved) event).chat().id();
+            case DELETED_BUSINESS_MESSAGES -> ((BusinessMessagesDeleted) event).chat().id();
+            case INLINE_QUERY -> ((InlineQuery) event).from().id();
+            case CHOSEN_INLINE_RESULT -> ((ChosenInlineResult) event).from().id();
+            case SHIPPING_QUERY -> ((ShippingQuery) event).from().id();
+            case PRE_CHECKOUT_QUERY -> ((PreCheckoutQuery) event).from().id();
+            case PURCHASED_PAID_MEDIA -> ((PaidMediaPurchased) event).from().id();
+            case BUSINESS_CONNECTION -> ((BusinessConnection) event).user().id();
+            case MANAGED_BOT -> ((ManagedBotUpdated) event).user().id();
+            case POLL_ANSWER -> {
+                PollAnswer answer = (PollAnswer) event;
+                yield answer.user() != null ? answer.user().id()
+                    : answer.voterChat() != null ? answer.voterChat().id()
+                    : null;
+            }
+            case POLL -> null;
+        };
+        return key != null ? key : "update:" + update.updateId();
     }
 
     /**

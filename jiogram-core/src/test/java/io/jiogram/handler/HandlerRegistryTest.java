@@ -7,6 +7,7 @@ import io.jiogram.annotation.OnMessage;
 import io.jiogram.annotation.StateFilter;
 import io.jiogram.annotation.TelegramController;
 import io.jiogram.bot.Bot;
+import io.jiogram.dispatcher.EventType;
 import io.jiogram.dispatcher.Router;
 import io.jiogram.dispatcher.UpdateContext;
 import io.jiogram.types.CallbackQuery;
@@ -24,6 +25,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,6 +39,11 @@ class HandlerRegistryTest {
     void setUp() {
         router = new Router("test");
         registry = new HandlerRegistry(router);
+    }
+
+    @Test
+    void everyEventType_hasAHandlerAnnotation() {
+        assertEquals(EnumSet.allOf(EventType.class), HandlerRegistry.boundEventTypes());
     }
 
     // -- Test controller classes --

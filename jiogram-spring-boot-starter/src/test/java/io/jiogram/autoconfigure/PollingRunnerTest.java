@@ -127,9 +127,21 @@ class PollingRunnerTest {
             {"update_id": 3, "poll": {"id": "p", "question": "?", "options": [], "total_voter_count": 0,
              "is_closed": false, "is_anonymous": true, "type": "regular", "allows_multiple_answers": false}}""");
 
+        Update anonymousVote = update("""
+            {"update_id": 4, "poll_answer": {"poll_id": "p", "voter_chat": {"id": -200, "type": "channel"},
+             "option_ids": [0]}}""");
+        Update reactionCount = update("""
+            {"update_id": 5, "message_reaction_count": {"chat": {"id": -300, "type": "channel"},
+             "message_id": 1, "date": 1775538971, "reactions": []}}""");
+        Update unknown = update("""
+            {"update_id": 6, "some_future_update": {"id": 1}}""");
+
         assertThat(PollingRunner.sequenceKey(callbackInGroup)).isEqualTo(-100L);
         assertThat(PollingRunner.sequenceKey(inlineQuery)).isEqualTo(7L);
         assertThat(PollingRunner.sequenceKey(poll)).isEqualTo("update:3");
+        assertThat(PollingRunner.sequenceKey(anonymousVote)).isEqualTo(-200L);
+        assertThat(PollingRunner.sequenceKey(reactionCount)).isEqualTo(-300L);
+        assertThat(PollingRunner.sequenceKey(unknown)).isEqualTo("update:6");
     }
 
     private Bot botServing(List<Update> firstBatch) {

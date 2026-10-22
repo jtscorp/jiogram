@@ -1,6 +1,7 @@
 package io.jiogram.fsm.middleware;
 
 import io.jiogram.bot.Bot;
+import io.jiogram.dispatcher.EventType;
 import io.jiogram.dispatcher.UpdateContext;
 import io.jiogram.fsm.FSMContext;
 import io.jiogram.fsm.FSMStrategy;
@@ -11,12 +12,21 @@ import io.jiogram.middleware.MiddlewareChain;
 import io.jiogram.types.BusinessConnection;
 import io.jiogram.types.BusinessMessagesDeleted;
 import io.jiogram.types.CallbackQuery;
+import io.jiogram.types.ChatBoostRemoved;
+import io.jiogram.types.ChatBoostUpdated;
 import io.jiogram.types.ChatJoinRequest;
 import io.jiogram.types.ChatMemberUpdated;
+import io.jiogram.types.ChosenInlineResult;
 import io.jiogram.types.InaccessibleMessage;
+import io.jiogram.types.InlineQuery;
+import io.jiogram.types.ManagedBotUpdated;
 import io.jiogram.types.Message;
+import io.jiogram.types.MessageReactionCountUpdated;
 import io.jiogram.types.MessageReactionUpdated;
+import io.jiogram.types.PaidMediaPurchased;
 import io.jiogram.types.PollAnswer;
+import io.jiogram.types.PreCheckoutQuery;
+import io.jiogram.types.ShippingQuery;
 import io.jiogram.types.Update;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
@@ -119,52 +129,62 @@ public class FSMMiddleware implements Middleware {
     ) {}
 
     private static @Nullable Scope resolveScope(Update update) {
-        Message message = firstNonNull(update.message(), update.editedMessage(), update.channelPost(),
-            update.editedChannelPost(), update.businessMessage(), update.editedBusinessMessage());
-        if (message != null) {
-            return messageScope(message, message.from() != null ? message.from().id() : null);
+        EventType type = EventType.of(update);
+        if (type == null) {
+            return null;
         }
-        if (update.callbackQuery() != null) {
-            CallbackQuery query = update.callbackQuery();
-            return switch (query.message()) {
-                case Message m -> messageScope(m, query.from().id());
-                case InaccessibleMessage m -> new Scope(m.chat().id(), query.from().id(), null, null);
-                case null -> userScope(query.from().id()); // inline message: no chat
-            };
-        }
-        if (update.inlineQuery() != null) return userScope(update.inlineQuery().from().id());
-        if (update.chosenInlineResult() != null) return userScope(update.chosenInlineResult().from().id());
-        if (update.shippingQuery() != null) return userScope(update.shippingQuery().from().id());
-        if (update.preCheckoutQuery() != null) return userScope(update.preCheckoutQuery().from().id());
-        if (update.purchasedPaidMedia() != null) return userScope(update.purchasedPaidMedia().from().id());
-        if (update.managedBot() != null) return userScope(update.managedBot().user().id());
-        if (update.myChatMember() != null) return memberScope(update.myChatMember());
-        if (update.chatMember() != null) return memberScope(update.chatMember());
-        if (update.chatJoinRequest() != null) {
-            ChatJoinRequest request = update.chatJoinRequest();
-            return new Scope(request.chat().id(), request.from().id(), null, null);
-        }
-        if (update.pollAnswer() != null) {
-            PollAnswer answer = update.pollAnswer();
-            return new Scope(answer.voterChat() != null ? answer.voterChat().id() : null,
-                answer.user() != null ? answer.user().id() : null, null, null);
-        }
-        if (update.messageReaction() != null) {
-            MessageReactionUpdated reaction = update.messageReaction();
-            return new Scope(reaction.chat().id(), reaction.user() != null ? reaction.user().id() : null, null, null);
-        }
-        if (update.messageReactionCount() != null) return chatScope(update.messageReactionCount().chat().id());
-        if (update.chatBoost() != null) return chatScope(update.chatBoost().chat().id());
-        if (update.removedChatBoost() != null) return chatScope(update.removedChatBoost().chat().id());
-        if (update.businessConnection() != null) {
-            BusinessConnection connection = update.businessConnection();
-            return new Scope(connection.userChatId(), connection.user().id(), null, connection.id());
-        }
-        if (update.deletedBusinessMessages() != null) {
-            BusinessMessagesDeleted deleted = update.deletedBusinessMessages();
-            return new Scope(deleted.chat().id(), null, null, deleted.businessConnectionId());
-        }
-        return null; // poll: no chat or user
+        Object event = type.extract(update);
+        // Exhaustive on purpose: a new event type must decide its scope here.
+        return switch (type) {
+            case MESSAGE, EDITED_MESSAGE, CHANNEL_POST, EDITED_CHANNEL_POST, BUSINESS_MESSAGE,
+                 EDITED_BUSINESS_MESSAGE -> {
+                Message message = (Message) event;
+                yield messageScope(message, message.from() != null ? message.from().id() : null);
+            }
+            case CALLBACK_QUERY -> {
+                CallbackQuery query = (CallbackQuery) event;
+                yield switch (query.message()) {
+                    case Message m -> messageScope(m, query.from().id());
+                    case InaccessibleMessage m -> new Scope(m.chat().id(), query.from().id(), null, null);
+                    case null -> userScope(query.from().id()); // inline message: no chat
+                };
+            }
+            case INLINE_QUERY -> userScope(((InlineQuery) event).from().id());
+            case CHOSEN_INLINE_RESULT -> userScope(((ChosenInlineResult) event).from().id());
+            case SHIPPING_QUERY -> userScope(((ShippingQuery) event).from().id());
+            case PRE_CHECKOUT_QUERY -> userScope(((PreCheckoutQuery) event).from().id());
+            case PURCHASED_PAID_MEDIA -> userScope(((PaidMediaPurchased) event).from().id());
+            case MANAGED_BOT -> userScope(((ManagedBotUpdated) event).user().id());
+            case MY_CHAT_MEMBER, CHAT_MEMBER -> {
+                ChatMemberUpdated updated = (ChatMemberUpdated) event;
+                yield new Scope(updated.chat().id(), updated.from().id(), null, null);
+            }
+            case CHAT_JOIN_REQUEST -> {
+                ChatJoinRequest request = (ChatJoinRequest) event;
+                yield new Scope(request.chat().id(), request.from().id(), null, null);
+            }
+            case POLL_ANSWER -> {
+                PollAnswer answer = (PollAnswer) event;
+                yield new Scope(answer.voterChat() != null ? answer.voterChat().id() : null,
+                    answer.user() != null ? answer.user().id() : null, null, null);
+            }
+            case MESSAGE_REACTION -> {
+                MessageReactionUpdated reaction = (MessageReactionUpdated) event;
+                yield new Scope(reaction.chat().id(), reaction.user() != null ? reaction.user().id() : null, null, null);
+            }
+            case MESSAGE_REACTION_COUNT -> chatScope(((MessageReactionCountUpdated) event).chat().id());
+            case CHAT_BOOST -> chatScope(((ChatBoostUpdated) event).chat().id());
+            case REMOVED_CHAT_BOOST -> chatScope(((ChatBoostRemoved) event).chat().id());
+            case BUSINESS_CONNECTION -> {
+                BusinessConnection connection = (BusinessConnection) event;
+                yield new Scope(connection.userChatId(), connection.user().id(), null, connection.id());
+            }
+            case DELETED_BUSINESS_MESSAGES -> {
+                BusinessMessagesDeleted deleted = (BusinessMessagesDeleted) event;
+                yield new Scope(deleted.chat().id(), null, null, deleted.businessConnectionId());
+            }
+            case POLL -> null; // no chat or user
+        };
     }
 
     private static Scope messageScope(Message message, @Nullable Long userId) {
@@ -173,25 +193,11 @@ public class FSMMiddleware implements Middleware {
         return new Scope(message.chat().id(), userId, threadId, message.businessConnectionId());
     }
 
-    private static Scope memberScope(ChatMemberUpdated updated) {
-        return new Scope(updated.chat().id(), updated.from().id(), null, null);
-    }
-
     private static Scope userScope(long userId) {
         return new Scope(null, userId, null, null);
     }
 
     private static Scope chatScope(long chatId) {
         return new Scope(chatId, null, null, null);
-    }
-
-    @SafeVarargs
-    private static <T> @Nullable T firstNonNull(T... values) {
-        for (T value : values) {
-            if (value != null) {
-                return value;
-            }
-        }
-        return null;
     }
 }
