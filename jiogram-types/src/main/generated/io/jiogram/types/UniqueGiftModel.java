@@ -20,4 +20,21 @@ public record UniqueGiftModel(
     @JsonProperty("sticker") Sticker sticker,
     @JsonProperty("rarity_per_mille") long rarityPerMille,
     @JsonProperty("rarity") @Nullable String rarity
-) {}
+) {
+
+    public UniqueGiftModel withName(String name) {
+        return new UniqueGiftModel(name, sticker, rarityPerMille, rarity);
+    }
+
+    public UniqueGiftModel withSticker(Sticker sticker) {
+        return new UniqueGiftModel(name, sticker, rarityPerMille, rarity);
+    }
+
+    public UniqueGiftModel withRarityPerMille(long rarityPerMille) {
+        return new UniqueGiftModel(name, sticker, rarityPerMille, rarity);
+    }
+
+    public UniqueGiftModel withRarity(@Nullable String rarity) {
+        return new UniqueGiftModel(name, sticker, rarityPerMille, rarity);
+    }
+}

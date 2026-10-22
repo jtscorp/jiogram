@@ -13,4 +13,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public record BotCommand(
     @JsonProperty("command") String command,
     @JsonProperty("description") String description
-) {}
+) {
+
+    public BotCommand withCommand(String command) {
+        return new BotCommand(command, description);
+    }
+
+    public BotCommand withDescription(String description) {
+        return new BotCommand(command, description);
+    }
+}

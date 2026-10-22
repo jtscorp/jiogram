@@ -13,4 +13,9 @@ import org.jspecify.annotations.Nullable;
  */
 public record ChatOwnerLeft(
     @JsonProperty("new_owner") @Nullable User newOwner
-) {}
+) {
+
+    public ChatOwnerLeft withNewOwner(@Nullable User newOwner) {
+        return new ChatOwnerLeft(newOwner);
+    }
+}

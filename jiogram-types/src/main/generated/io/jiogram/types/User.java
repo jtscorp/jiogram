@@ -49,4 +49,69 @@ public record User(
     @JsonProperty("has_topics_enabled") @Nullable Boolean hasTopicsEnabled,
     @JsonProperty("allows_users_to_create_topics") @Nullable Boolean allowsUsersToCreateTopics,
     @JsonProperty("can_manage_bots") @Nullable Boolean canManageBots
-) {}
+) {
+
+    public User withId(long id) {
+        return new User(id, isBot, firstName, lastName, username, languageCode, isPremium, addedToAttachmentMenu, canJoinGroups, canReadAllGroupMessages, supportsInlineQueries, canConnectToBusiness, hasMainWebApp, hasTopicsEnabled, allowsUsersToCreateTopics, canManageBots);
+    }
+
+    public User withIsBot(boolean isBot) {
+        return new User(id, isBot, firstName, lastName, username, languageCode, isPremium, addedToAttachmentMenu, canJoinGroups, canReadAllGroupMessages, supportsInlineQueries, canConnectToBusiness, hasMainWebApp, hasTopicsEnabled, allowsUsersToCreateTopics, canManageBots);
+    }
+
+    public User withFirstName(String firstName) {
+        return new User(id, isBot, firstName, lastName, username, languageCode, isPremium, addedToAttachmentMenu, canJoinGroups, canReadAllGroupMessages, supportsInlineQueries, canConnectToBusiness, hasMainWebApp, hasTopicsEnabled, allowsUsersToCreateTopics, canManageBots);
+    }
+
+    public User withLastName(@Nullable String lastName) {
+        return new User(id, isBot, firstName, lastName, username, languageCode, isPremium, addedToAttachmentMenu, canJoinGroups, canReadAllGroupMessages, supportsInlineQueries, canConnectToBusiness, hasMainWebApp, hasTopicsEnabled, allowsUsersToCreateTopics, canManageBots);
+    }
+
+    public User withUsername(@Nullable String username) {
+        return new User(id, isBot, firstName, lastName, username, languageCode, isPremium, addedToAttachmentMenu, canJoinGroups, canReadAllGroupMessages, supportsInlineQueries, canConnectToBusiness, hasMainWebApp, hasTopicsEnabled, allowsUsersToCreateTopics, canManageBots);
+    }
+
+    public User withLanguageCode(@Nullable String languageCode) {
+        return new User(id, isBot, firstName, lastName, username, languageCode, isPremium, addedToAttachmentMenu, canJoinGroups, canReadAllGroupMessages, supportsInlineQueries, canConnectToBusiness, hasMainWebApp, hasTopicsEnabled, allowsUsersToCreateTopics, canManageBots);
+    }
+
+    public User withIsPremium(@Nullable Boolean isPremium) {
+        return new User(id, isBot, firstName, lastName, username, languageCode, isPremium, addedToAttachmentMenu, canJoinGroups, canReadAllGroupMessages, supportsInlineQueries, canConnectToBusiness, hasMainWebApp, hasTopicsEnabled, allowsUsersToCreateTopics, canManageBots);
+    }
+
+    public User withAddedToAttachmentMenu(@Nullable Boolean addedToAttachmentMenu) {
+        return new User(id, isBot, firstName, lastName, username, languageCode, isPremium, addedToAttachmentMenu, canJoinGroups, canReadAllGroupMessages, supportsInlineQueries, canConnectToBusiness, hasMainWebApp, hasTopicsEnabled, allowsUsersToCreateTopics, canManageBots);
+    }
+
+    public User withCanJoinGroups(@Nullable Boolean canJoinGroups) {
+        return new User(id, isBot, firstName, lastName, username, languageCode, isPremium, addedToAttachmentMenu, canJoinGroups, canReadAllGroupMessages, supportsInlineQueries, canConnectToBusiness, hasMainWebApp, hasTopicsEnabled, allowsUsersToCreateTopics, canManageBots);
+    }
+
+    public User withCanReadAllGroupMessages(@Nullable Boolean canReadAllGroupMessages) {
+        return new User(id, isBot, firstName, lastName, username, languageCode, isPremium, addedToAttachmentMenu, canJoinGroups, canReadAllGroupMessages, supportsInlineQueries, canConnectToBusiness, hasMainWebApp, hasTopicsEnabled, allowsUsersToCreateTopics, canManageBots);
+    }
+
+    public User withSupportsInlineQueries(@Nullable Boolean supportsInlineQueries) {
+        return new User(id, isBot, firstName, lastName, username, languageCode, isPremium, addedToAttachmentMenu, canJoinGroups, canReadAllGroupMessages, supportsInlineQueries, canConnectToBusiness, hasMainWebApp, hasTopicsEnabled, allowsUsersToCreateTopics, canManageBots);
+    }
+
+    public User withCanConnectToBusiness(@Nullable Boolean canConnectToBusiness) {
+        return new User(id, isBot, firstName, lastName, username, languageCode, isPremium, addedToAttachmentMenu, canJoinGroups, canReadAllGroupMessages, supportsInlineQueries, canConnectToBusiness, hasMainWebApp, hasTopicsEnabled, allowsUsersToCreateTopics, canManageBots);
+    }
+
+    public User withHasMainWebApp(@Nullable Boolean hasMainWebApp) {
+        return new User(id, isBot, firstName, lastName, username, languageCode, isPremium, addedToAttachmentMenu, canJoinGroups, canReadAllGroupMessages, supportsInlineQueries, canConnectToBusiness, hasMainWebApp, hasTopicsEnabled, allowsUsersToCreateTopics, canManageBots);
+    }
+
+    public User withHasTopicsEnabled(@Nullable Boolean hasTopicsEnabled) {
+        return new User(id, isBot, firstName, lastName, username, languageCode, isPremium, addedToAttachmentMenu, canJoinGroups, canReadAllGroupMessages, supportsInlineQueries, canConnectToBusiness, hasMainWebApp, hasTopicsEnabled, allowsUsersToCreateTopics, canManageBots);
+    }
+
+    public User withAllowsUsersToCreateTopics(@Nullable Boolean allowsUsersToCreateTopics) {
+        return new User(id, isBot, firstName, lastName, username, languageCode, isPremium, addedToAttachmentMenu, canJoinGroups, canReadAllGroupMessages, supportsInlineQueries, canConnectToBusiness, hasMainWebApp, hasTopicsEnabled, allowsUsersToCreateTopics, canManageBots);
+    }
+
+    public User withCanManageBots(@Nullable Boolean canManageBots) {
+        return new User(id, isBot, firstName, lastName, username, languageCode, isPremium, addedToAttachmentMenu, canJoinGroups, canReadAllGroupMessages, supportsInlineQueries, canConnectToBusiness, hasMainWebApp, hasTopicsEnabled, allowsUsersToCreateTopics, canManageBots);
+    }
+}

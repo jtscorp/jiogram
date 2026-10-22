@@ -46,4 +46,24 @@ public record RestrictChatMember(
     public static RestrictChatMember of(ChatId chatId, long userId, ChatPermissions permissions) {
         return new RestrictChatMember(chatId, userId, permissions, null, null);
     }
+
+    public RestrictChatMember withChatId(ChatId chatId) {
+        return new RestrictChatMember(chatId, userId, permissions, useIndependentChatPermissions, untilDate);
+    }
+
+    public RestrictChatMember withUserId(long userId) {
+        return new RestrictChatMember(chatId, userId, permissions, useIndependentChatPermissions, untilDate);
+    }
+
+    public RestrictChatMember withPermissions(ChatPermissions permissions) {
+        return new RestrictChatMember(chatId, userId, permissions, useIndependentChatPermissions, untilDate);
+    }
+
+    public RestrictChatMember withUseIndependentChatPermissions(@Nullable Boolean useIndependentChatPermissions) {
+        return new RestrictChatMember(chatId, userId, permissions, useIndependentChatPermissions, untilDate);
+    }
+
+    public RestrictChatMember withUntilDate(@Nullable Long untilDate) {
+        return new RestrictChatMember(chatId, userId, permissions, useIndependentChatPermissions, untilDate);
+    }
 }

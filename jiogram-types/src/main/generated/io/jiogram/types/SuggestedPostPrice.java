@@ -15,4 +15,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public record SuggestedPostPrice(
     @JsonProperty("currency") String currency,
     @JsonProperty("amount") long amount
-) {}
+) {
+
+    public SuggestedPostPrice withCurrency(String currency) {
+        return new SuggestedPostPrice(currency, amount);
+    }
+
+    public SuggestedPostPrice withAmount(long amount) {
+        return new SuggestedPostPrice(currency, amount);
+    }
+}

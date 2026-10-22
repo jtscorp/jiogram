@@ -16,4 +16,17 @@ public record ShippingOption(
     @JsonProperty("id") String id,
     @JsonProperty("title") String title,
     @JsonProperty("prices") List<LabeledPrice> prices
-) {}
+) {
+
+    public ShippingOption withId(String id) {
+        return new ShippingOption(id, title, prices);
+    }
+
+    public ShippingOption withTitle(String title) {
+        return new ShippingOption(id, title, prices);
+    }
+
+    public ShippingOption withPrices(List<LabeledPrice> prices) {
+        return new ShippingOption(id, title, prices);
+    }
+}

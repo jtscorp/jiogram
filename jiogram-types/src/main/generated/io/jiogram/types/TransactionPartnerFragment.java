@@ -15,4 +15,9 @@ import org.jspecify.annotations.Nullable;
 public record TransactionPartnerFragment(
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) TransactionPartnerType type,
     @JsonProperty("withdrawal_state") @Nullable RevenueWithdrawalState withdrawalState
-) implements TransactionPartner {}
+) implements TransactionPartner {
+
+    public TransactionPartnerFragment withWithdrawalState(@Nullable RevenueWithdrawalState withdrawalState) {
+        return new TransactionPartnerFragment(type, withdrawalState);
+    }
+}

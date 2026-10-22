@@ -30,4 +30,12 @@ public record DeleteBusinessMessages(
     public String apiReturnType() {
         return "Boolean";
     }
+
+    public DeleteBusinessMessages withBusinessConnectionId(String businessConnectionId) {
+        return new DeleteBusinessMessages(businessConnectionId, messageIds);
+    }
+
+    public DeleteBusinessMessages withMessageIds(List<Long> messageIds) {
+        return new DeleteBusinessMessages(businessConnectionId, messageIds);
+    }
 }

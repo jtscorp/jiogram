@@ -12,4 +12,9 @@ import java.util.List;
  */
 public record Gifts(
     @JsonProperty("gifts") List<Gift> gifts
-) {}
+) {
+
+    public Gifts withGifts(List<Gift> gifts) {
+        return new Gifts(gifts);
+    }
+}

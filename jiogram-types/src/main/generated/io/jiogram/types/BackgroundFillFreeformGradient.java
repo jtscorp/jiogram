@@ -15,4 +15,9 @@ import java.util.List;
 public record BackgroundFillFreeformGradient(
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) BackgroundFillType type,
     @JsonProperty("colors") List<Long> colors
-) implements BackgroundFill {}
+) implements BackgroundFill {
+
+    public BackgroundFillFreeformGradient withColors(List<Long> colors) {
+        return new BackgroundFillFreeformGradient(type, colors);
+    }
+}

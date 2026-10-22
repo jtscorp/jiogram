@@ -27,4 +27,12 @@ public record ApproveChatJoinRequest(
     public String apiReturnType() {
         return "Boolean";
     }
+
+    public ApproveChatJoinRequest withChatId(ChatId chatId) {
+        return new ApproveChatJoinRequest(chatId, userId);
+    }
+
+    public ApproveChatJoinRequest withUserId(long userId) {
+        return new ApproveChatJoinRequest(chatId, userId);
+    }
 }

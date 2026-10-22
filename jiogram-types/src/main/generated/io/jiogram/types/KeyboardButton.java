@@ -52,4 +52,45 @@ public record KeyboardButton(
     @JsonProperty("request_location") @Nullable Boolean requestLocation,
     @JsonProperty("request_poll") @Nullable KeyboardButtonPollType requestPoll,
     @JsonProperty("web_app") @Nullable WebAppInfo webApp
-) {}
+) {
+
+    public KeyboardButton withText(String text) {
+        return new KeyboardButton(text, iconCustomEmojiId, style, requestUsers, requestChat, requestManagedBot, requestContact, requestLocation, requestPoll, webApp);
+    }
+
+    public KeyboardButton withIconCustomEmojiId(@Nullable String iconCustomEmojiId) {
+        return new KeyboardButton(text, iconCustomEmojiId, style, requestUsers, requestChat, requestManagedBot, requestContact, requestLocation, requestPoll, webApp);
+    }
+
+    public KeyboardButton withStyle(@Nullable String style) {
+        return new KeyboardButton(text, iconCustomEmojiId, style, requestUsers, requestChat, requestManagedBot, requestContact, requestLocation, requestPoll, webApp);
+    }
+
+    public KeyboardButton withRequestUsers(@Nullable KeyboardButtonRequestUsers requestUsers) {
+        return new KeyboardButton(text, iconCustomEmojiId, style, requestUsers, requestChat, requestManagedBot, requestContact, requestLocation, requestPoll, webApp);
+    }
+
+    public KeyboardButton withRequestChat(@Nullable KeyboardButtonRequestChat requestChat) {
+        return new KeyboardButton(text, iconCustomEmojiId, style, requestUsers, requestChat, requestManagedBot, requestContact, requestLocation, requestPoll, webApp);
+    }
+
+    public KeyboardButton withRequestManagedBot(@Nullable KeyboardButtonRequestManagedBot requestManagedBot) {
+        return new KeyboardButton(text, iconCustomEmojiId, style, requestUsers, requestChat, requestManagedBot, requestContact, requestLocation, requestPoll, webApp);
+    }
+
+    public KeyboardButton withRequestContact(@Nullable Boolean requestContact) {
+        return new KeyboardButton(text, iconCustomEmojiId, style, requestUsers, requestChat, requestManagedBot, requestContact, requestLocation, requestPoll, webApp);
+    }
+
+    public KeyboardButton withRequestLocation(@Nullable Boolean requestLocation) {
+        return new KeyboardButton(text, iconCustomEmojiId, style, requestUsers, requestChat, requestManagedBot, requestContact, requestLocation, requestPoll, webApp);
+    }
+
+    public KeyboardButton withRequestPoll(@Nullable KeyboardButtonPollType requestPoll) {
+        return new KeyboardButton(text, iconCustomEmojiId, style, requestUsers, requestChat, requestManagedBot, requestContact, requestLocation, requestPoll, webApp);
+    }
+
+    public KeyboardButton withWebApp(@Nullable WebAppInfo webApp) {
+        return new KeyboardButton(text, iconCustomEmojiId, style, requestUsers, requestChat, requestManagedBot, requestContact, requestLocation, requestPoll, webApp);
+    }
+}

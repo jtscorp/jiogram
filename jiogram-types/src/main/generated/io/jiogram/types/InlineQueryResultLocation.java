@@ -45,4 +45,57 @@ public record InlineQueryResultLocation(
     @JsonProperty("thumbnail_url") @Nullable String thumbnailUrl,
     @JsonProperty("thumbnail_width") @Nullable Long thumbnailWidth,
     @JsonProperty("thumbnail_height") @Nullable Long thumbnailHeight
-) implements InlineQueryResult {}
+) implements InlineQueryResult {
+
+    public InlineQueryResultLocation withId(String id) {
+        return new InlineQueryResultLocation(type, id, latitude, longitude, title, horizontalAccuracy, livePeriod, heading, proximityAlertRadius, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultLocation withLatitude(double latitude) {
+        return new InlineQueryResultLocation(type, id, latitude, longitude, title, horizontalAccuracy, livePeriod, heading, proximityAlertRadius, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultLocation withLongitude(double longitude) {
+        return new InlineQueryResultLocation(type, id, latitude, longitude, title, horizontalAccuracy, livePeriod, heading, proximityAlertRadius, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultLocation withTitle(String title) {
+        return new InlineQueryResultLocation(type, id, latitude, longitude, title, horizontalAccuracy, livePeriod, heading, proximityAlertRadius, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultLocation withHorizontalAccuracy(@Nullable Double horizontalAccuracy) {
+        return new InlineQueryResultLocation(type, id, latitude, longitude, title, horizontalAccuracy, livePeriod, heading, proximityAlertRadius, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultLocation withLivePeriod(@Nullable Long livePeriod) {
+        return new InlineQueryResultLocation(type, id, latitude, longitude, title, horizontalAccuracy, livePeriod, heading, proximityAlertRadius, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultLocation withHeading(@Nullable Long heading) {
+        return new InlineQueryResultLocation(type, id, latitude, longitude, title, horizontalAccuracy, livePeriod, heading, proximityAlertRadius, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultLocation withProximityAlertRadius(@Nullable Long proximityAlertRadius) {
+        return new InlineQueryResultLocation(type, id, latitude, longitude, title, horizontalAccuracy, livePeriod, heading, proximityAlertRadius, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultLocation withReplyMarkup(@Nullable InlineKeyboardMarkup replyMarkup) {
+        return new InlineQueryResultLocation(type, id, latitude, longitude, title, horizontalAccuracy, livePeriod, heading, proximityAlertRadius, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultLocation withInputMessageContent(@Nullable InputMessageContent inputMessageContent) {
+        return new InlineQueryResultLocation(type, id, latitude, longitude, title, horizontalAccuracy, livePeriod, heading, proximityAlertRadius, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultLocation withThumbnailUrl(@Nullable String thumbnailUrl) {
+        return new InlineQueryResultLocation(type, id, latitude, longitude, title, horizontalAccuracy, livePeriod, heading, proximityAlertRadius, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultLocation withThumbnailWidth(@Nullable Long thumbnailWidth) {
+        return new InlineQueryResultLocation(type, id, latitude, longitude, title, horizontalAccuracy, livePeriod, heading, proximityAlertRadius, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultLocation withThumbnailHeight(@Nullable Long thumbnailHeight) {
+        return new InlineQueryResultLocation(type, id, latitude, longitude, title, horizontalAccuracy, livePeriod, heading, proximityAlertRadius, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+}

@@ -15,4 +15,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public record LabeledPrice(
     @JsonProperty("label") String label,
     @JsonProperty("amount") long amount
-) {}
+) {
+
+    public LabeledPrice withLabel(String label) {
+        return new LabeledPrice(label, amount);
+    }
+
+    public LabeledPrice withAmount(long amount) {
+        return new LabeledPrice(label, amount);
+    }
+}

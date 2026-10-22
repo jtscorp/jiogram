@@ -35,4 +35,37 @@ public record OwnedGiftUnique(
     @JsonProperty("can_be_transferred") @Nullable Boolean canBeTransferred,
     @JsonProperty("transfer_star_count") @Nullable Long transferStarCount,
     @JsonProperty("next_transfer_date") @Nullable Long nextTransferDate
-) implements OwnedGift {}
+) implements OwnedGift {
+
+    public OwnedGiftUnique withGift(UniqueGift gift) {
+        return new OwnedGiftUnique(type, gift, ownedGiftId, senderUser, sendDate, isSaved, canBeTransferred, transferStarCount, nextTransferDate);
+    }
+
+    public OwnedGiftUnique withOwnedGiftId(@Nullable String ownedGiftId) {
+        return new OwnedGiftUnique(type, gift, ownedGiftId, senderUser, sendDate, isSaved, canBeTransferred, transferStarCount, nextTransferDate);
+    }
+
+    public OwnedGiftUnique withSenderUser(@Nullable User senderUser) {
+        return new OwnedGiftUnique(type, gift, ownedGiftId, senderUser, sendDate, isSaved, canBeTransferred, transferStarCount, nextTransferDate);
+    }
+
+    public OwnedGiftUnique withSendDate(long sendDate) {
+        return new OwnedGiftUnique(type, gift, ownedGiftId, senderUser, sendDate, isSaved, canBeTransferred, transferStarCount, nextTransferDate);
+    }
+
+    public OwnedGiftUnique withIsSaved(@Nullable Boolean isSaved) {
+        return new OwnedGiftUnique(type, gift, ownedGiftId, senderUser, sendDate, isSaved, canBeTransferred, transferStarCount, nextTransferDate);
+    }
+
+    public OwnedGiftUnique withCanBeTransferred(@Nullable Boolean canBeTransferred) {
+        return new OwnedGiftUnique(type, gift, ownedGiftId, senderUser, sendDate, isSaved, canBeTransferred, transferStarCount, nextTransferDate);
+    }
+
+    public OwnedGiftUnique withTransferStarCount(@Nullable Long transferStarCount) {
+        return new OwnedGiftUnique(type, gift, ownedGiftId, senderUser, sendDate, isSaved, canBeTransferred, transferStarCount, nextTransferDate);
+    }
+
+    public OwnedGiftUnique withNextTransferDate(@Nullable Long nextTransferDate) {
+        return new OwnedGiftUnique(type, gift, ownedGiftId, senderUser, sendDate, isSaved, canBeTransferred, transferStarCount, nextTransferDate);
+    }
+}

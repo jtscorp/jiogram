@@ -30,4 +30,12 @@ public record SetCustomEmojiStickerSetThumbnail(
     public static SetCustomEmojiStickerSetThumbnail of(String name) {
         return new SetCustomEmojiStickerSetThumbnail(name, null);
     }
+
+    public SetCustomEmojiStickerSetThumbnail withName(String name) {
+        return new SetCustomEmojiStickerSetThumbnail(name, customEmojiId);
+    }
+
+    public SetCustomEmojiStickerSetThumbnail withCustomEmojiId(@Nullable String customEmojiId) {
+        return new SetCustomEmojiStickerSetThumbnail(name, customEmojiId);
+    }
 }

@@ -53,4 +53,61 @@ public record OwnedGiftRegular(
     @JsonProperty("prepaid_upgrade_star_count") @Nullable Long prepaidUpgradeStarCount,
     @JsonProperty("is_upgrade_separate") @Nullable Boolean isUpgradeSeparate,
     @JsonProperty("unique_gift_number") @Nullable Long uniqueGiftNumber
-) implements OwnedGift {}
+) implements OwnedGift {
+
+    public OwnedGiftRegular withGift(Gift gift) {
+        return new OwnedGiftRegular(type, gift, ownedGiftId, senderUser, sendDate, text, entities, isPrivate, isSaved, canBeUpgraded, wasRefunded, convertStarCount, prepaidUpgradeStarCount, isUpgradeSeparate, uniqueGiftNumber);
+    }
+
+    public OwnedGiftRegular withOwnedGiftId(@Nullable String ownedGiftId) {
+        return new OwnedGiftRegular(type, gift, ownedGiftId, senderUser, sendDate, text, entities, isPrivate, isSaved, canBeUpgraded, wasRefunded, convertStarCount, prepaidUpgradeStarCount, isUpgradeSeparate, uniqueGiftNumber);
+    }
+
+    public OwnedGiftRegular withSenderUser(@Nullable User senderUser) {
+        return new OwnedGiftRegular(type, gift, ownedGiftId, senderUser, sendDate, text, entities, isPrivate, isSaved, canBeUpgraded, wasRefunded, convertStarCount, prepaidUpgradeStarCount, isUpgradeSeparate, uniqueGiftNumber);
+    }
+
+    public OwnedGiftRegular withSendDate(long sendDate) {
+        return new OwnedGiftRegular(type, gift, ownedGiftId, senderUser, sendDate, text, entities, isPrivate, isSaved, canBeUpgraded, wasRefunded, convertStarCount, prepaidUpgradeStarCount, isUpgradeSeparate, uniqueGiftNumber);
+    }
+
+    public OwnedGiftRegular withText(@Nullable String text) {
+        return new OwnedGiftRegular(type, gift, ownedGiftId, senderUser, sendDate, text, entities, isPrivate, isSaved, canBeUpgraded, wasRefunded, convertStarCount, prepaidUpgradeStarCount, isUpgradeSeparate, uniqueGiftNumber);
+    }
+
+    public OwnedGiftRegular withEntities(@Nullable List<MessageEntity> entities) {
+        return new OwnedGiftRegular(type, gift, ownedGiftId, senderUser, sendDate, text, entities, isPrivate, isSaved, canBeUpgraded, wasRefunded, convertStarCount, prepaidUpgradeStarCount, isUpgradeSeparate, uniqueGiftNumber);
+    }
+
+    public OwnedGiftRegular withIsPrivate(@Nullable Boolean isPrivate) {
+        return new OwnedGiftRegular(type, gift, ownedGiftId, senderUser, sendDate, text, entities, isPrivate, isSaved, canBeUpgraded, wasRefunded, convertStarCount, prepaidUpgradeStarCount, isUpgradeSeparate, uniqueGiftNumber);
+    }
+
+    public OwnedGiftRegular withIsSaved(@Nullable Boolean isSaved) {
+        return new OwnedGiftRegular(type, gift, ownedGiftId, senderUser, sendDate, text, entities, isPrivate, isSaved, canBeUpgraded, wasRefunded, convertStarCount, prepaidUpgradeStarCount, isUpgradeSeparate, uniqueGiftNumber);
+    }
+
+    public OwnedGiftRegular withCanBeUpgraded(@Nullable Boolean canBeUpgraded) {
+        return new OwnedGiftRegular(type, gift, ownedGiftId, senderUser, sendDate, text, entities, isPrivate, isSaved, canBeUpgraded, wasRefunded, convertStarCount, prepaidUpgradeStarCount, isUpgradeSeparate, uniqueGiftNumber);
+    }
+
+    public OwnedGiftRegular withWasRefunded(@Nullable Boolean wasRefunded) {
+        return new OwnedGiftRegular(type, gift, ownedGiftId, senderUser, sendDate, text, entities, isPrivate, isSaved, canBeUpgraded, wasRefunded, convertStarCount, prepaidUpgradeStarCount, isUpgradeSeparate, uniqueGiftNumber);
+    }
+
+    public OwnedGiftRegular withConvertStarCount(@Nullable Long convertStarCount) {
+        return new OwnedGiftRegular(type, gift, ownedGiftId, senderUser, sendDate, text, entities, isPrivate, isSaved, canBeUpgraded, wasRefunded, convertStarCount, prepaidUpgradeStarCount, isUpgradeSeparate, uniqueGiftNumber);
+    }
+
+    public OwnedGiftRegular withPrepaidUpgradeStarCount(@Nullable Long prepaidUpgradeStarCount) {
+        return new OwnedGiftRegular(type, gift, ownedGiftId, senderUser, sendDate, text, entities, isPrivate, isSaved, canBeUpgraded, wasRefunded, convertStarCount, prepaidUpgradeStarCount, isUpgradeSeparate, uniqueGiftNumber);
+    }
+
+    public OwnedGiftRegular withIsUpgradeSeparate(@Nullable Boolean isUpgradeSeparate) {
+        return new OwnedGiftRegular(type, gift, ownedGiftId, senderUser, sendDate, text, entities, isPrivate, isSaved, canBeUpgraded, wasRefunded, convertStarCount, prepaidUpgradeStarCount, isUpgradeSeparate, uniqueGiftNumber);
+    }
+
+    public OwnedGiftRegular withUniqueGiftNumber(@Nullable Long uniqueGiftNumber) {
+        return new OwnedGiftRegular(type, gift, ownedGiftId, senderUser, sendDate, text, entities, isPrivate, isSaved, canBeUpgraded, wasRefunded, convertStarCount, prepaidUpgradeStarCount, isUpgradeSeparate, uniqueGiftNumber);
+    }
+}

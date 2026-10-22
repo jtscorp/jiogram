@@ -12,4 +12,9 @@ import org.jspecify.annotations.Nullable;
  */
 public record GiveawayCreated(
     @JsonProperty("prize_star_count") @Nullable Long prizeStarCount
-) {}
+) {
+
+    public GiveawayCreated withPrizeStarCount(@Nullable Long prizeStarCount) {
+        return new GiveawayCreated(prizeStarCount);
+    }
+}

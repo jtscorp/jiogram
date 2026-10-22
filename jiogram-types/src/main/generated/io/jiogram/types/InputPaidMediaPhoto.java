@@ -17,4 +17,9 @@ import io.jiogram.types.InputPaidMediaType;
 public record InputPaidMediaPhoto(
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) InputPaidMediaType type,
     @JsonProperty("media") InputFileOrString media
-) implements InputPaidMedia {}
+) implements InputPaidMedia {
+
+    public InputPaidMediaPhoto withMedia(InputFileOrString media) {
+        return new InputPaidMediaPhoto(type, media);
+    }
+}

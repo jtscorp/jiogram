@@ -25,4 +25,8 @@ public record LeaveChat(
     public String apiReturnType() {
         return "Boolean";
     }
+
+    public LeaveChat withChatId(ChatId chatId) {
+        return new LeaveChat(chatId);
+    }
 }

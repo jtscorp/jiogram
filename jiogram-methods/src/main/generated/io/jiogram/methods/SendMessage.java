@@ -93,4 +93,64 @@ public record SendMessage(
     public static SendMessage reply(Message message, String text) {
         return new SendMessage(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), text, null, null, null, null, null, null, null, null, ReplyTarget.replyTo(message), null);
     }
+
+    public SendMessage withBusinessConnectionId(@Nullable String businessConnectionId) {
+        return new SendMessage(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, text, parseMode, entities, linkPreviewOptions, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendMessage withChatId(ChatId chatId) {
+        return new SendMessage(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, text, parseMode, entities, linkPreviewOptions, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendMessage withMessageThreadId(@Nullable Long messageThreadId) {
+        return new SendMessage(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, text, parseMode, entities, linkPreviewOptions, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendMessage withDirectMessagesTopicId(@Nullable Long directMessagesTopicId) {
+        return new SendMessage(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, text, parseMode, entities, linkPreviewOptions, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendMessage withText(String text) {
+        return new SendMessage(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, text, parseMode, entities, linkPreviewOptions, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendMessage withParseMode(@Nullable ParseMode parseMode) {
+        return new SendMessage(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, text, parseMode, entities, linkPreviewOptions, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendMessage withEntities(@Nullable List<MessageEntity> entities) {
+        return new SendMessage(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, text, parseMode, entities, linkPreviewOptions, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendMessage withLinkPreviewOptions(@Nullable LinkPreviewOptions linkPreviewOptions) {
+        return new SendMessage(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, text, parseMode, entities, linkPreviewOptions, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendMessage withDisableNotification(@Nullable Boolean disableNotification) {
+        return new SendMessage(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, text, parseMode, entities, linkPreviewOptions, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendMessage withProtectContent(@Nullable Boolean protectContent) {
+        return new SendMessage(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, text, parseMode, entities, linkPreviewOptions, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendMessage withAllowPaidBroadcast(@Nullable Boolean allowPaidBroadcast) {
+        return new SendMessage(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, text, parseMode, entities, linkPreviewOptions, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendMessage withMessageEffectId(@Nullable String messageEffectId) {
+        return new SendMessage(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, text, parseMode, entities, linkPreviewOptions, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendMessage withSuggestedPostParameters(@Nullable SuggestedPostParameters suggestedPostParameters) {
+        return new SendMessage(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, text, parseMode, entities, linkPreviewOptions, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendMessage withReplyParameters(@Nullable ReplyParameters replyParameters) {
+        return new SendMessage(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, text, parseMode, entities, linkPreviewOptions, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendMessage withReplyMarkup(@Nullable ReplyMarkup replyMarkup) {
+        return new SendMessage(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, text, parseMode, entities, linkPreviewOptions, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
 }

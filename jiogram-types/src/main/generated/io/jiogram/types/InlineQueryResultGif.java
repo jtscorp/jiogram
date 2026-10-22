@@ -51,4 +51,61 @@ public record InlineQueryResultGif(
     @JsonProperty("show_caption_above_media") @Nullable Boolean showCaptionAboveMedia,
     @JsonProperty("reply_markup") @Nullable InlineKeyboardMarkup replyMarkup,
     @JsonProperty("input_message_content") @Nullable InputMessageContent inputMessageContent
-) implements InlineQueryResult {}
+) implements InlineQueryResult {
+
+    public InlineQueryResultGif withId(String id) {
+        return new InlineQueryResultGif(type, id, gifUrl, gifWidth, gifHeight, gifDuration, thumbnailUrl, thumbnailMimeType, title, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultGif withGifUrl(String gifUrl) {
+        return new InlineQueryResultGif(type, id, gifUrl, gifWidth, gifHeight, gifDuration, thumbnailUrl, thumbnailMimeType, title, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultGif withGifWidth(@Nullable Long gifWidth) {
+        return new InlineQueryResultGif(type, id, gifUrl, gifWidth, gifHeight, gifDuration, thumbnailUrl, thumbnailMimeType, title, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultGif withGifHeight(@Nullable Long gifHeight) {
+        return new InlineQueryResultGif(type, id, gifUrl, gifWidth, gifHeight, gifDuration, thumbnailUrl, thumbnailMimeType, title, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultGif withGifDuration(@Nullable Long gifDuration) {
+        return new InlineQueryResultGif(type, id, gifUrl, gifWidth, gifHeight, gifDuration, thumbnailUrl, thumbnailMimeType, title, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultGif withThumbnailUrl(String thumbnailUrl) {
+        return new InlineQueryResultGif(type, id, gifUrl, gifWidth, gifHeight, gifDuration, thumbnailUrl, thumbnailMimeType, title, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultGif withThumbnailMimeType(@Nullable ThumbnailMimeType thumbnailMimeType) {
+        return new InlineQueryResultGif(type, id, gifUrl, gifWidth, gifHeight, gifDuration, thumbnailUrl, thumbnailMimeType, title, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultGif withTitle(@Nullable String title) {
+        return new InlineQueryResultGif(type, id, gifUrl, gifWidth, gifHeight, gifDuration, thumbnailUrl, thumbnailMimeType, title, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultGif withCaption(@Nullable String caption) {
+        return new InlineQueryResultGif(type, id, gifUrl, gifWidth, gifHeight, gifDuration, thumbnailUrl, thumbnailMimeType, title, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultGif withParseMode(@Nullable ParseMode parseMode) {
+        return new InlineQueryResultGif(type, id, gifUrl, gifWidth, gifHeight, gifDuration, thumbnailUrl, thumbnailMimeType, title, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultGif withCaptionEntities(@Nullable List<MessageEntity> captionEntities) {
+        return new InlineQueryResultGif(type, id, gifUrl, gifWidth, gifHeight, gifDuration, thumbnailUrl, thumbnailMimeType, title, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultGif withShowCaptionAboveMedia(@Nullable Boolean showCaptionAboveMedia) {
+        return new InlineQueryResultGif(type, id, gifUrl, gifWidth, gifHeight, gifDuration, thumbnailUrl, thumbnailMimeType, title, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultGif withReplyMarkup(@Nullable InlineKeyboardMarkup replyMarkup) {
+        return new InlineQueryResultGif(type, id, gifUrl, gifWidth, gifHeight, gifDuration, thumbnailUrl, thumbnailMimeType, title, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultGif withInputMessageContent(@Nullable InputMessageContent inputMessageContent) {
+        return new InlineQueryResultGif(type, id, gifUrl, gifWidth, gifHeight, gifDuration, thumbnailUrl, thumbnailMimeType, title, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+}

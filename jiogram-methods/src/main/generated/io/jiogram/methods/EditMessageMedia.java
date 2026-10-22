@@ -52,4 +52,28 @@ public record EditMessageMedia(
     public static EditMessageMedia of(InputMedia media) {
         return new EditMessageMedia(null, null, null, null, media, null);
     }
+
+    public EditMessageMedia withBusinessConnectionId(@Nullable String businessConnectionId) {
+        return new EditMessageMedia(businessConnectionId, chatId, messageId, inlineMessageId, media, replyMarkup);
+    }
+
+    public EditMessageMedia withChatId(@Nullable ChatId chatId) {
+        return new EditMessageMedia(businessConnectionId, chatId, messageId, inlineMessageId, media, replyMarkup);
+    }
+
+    public EditMessageMedia withMessageId(@Nullable Long messageId) {
+        return new EditMessageMedia(businessConnectionId, chatId, messageId, inlineMessageId, media, replyMarkup);
+    }
+
+    public EditMessageMedia withInlineMessageId(@Nullable String inlineMessageId) {
+        return new EditMessageMedia(businessConnectionId, chatId, messageId, inlineMessageId, media, replyMarkup);
+    }
+
+    public EditMessageMedia withMedia(InputMedia media) {
+        return new EditMessageMedia(businessConnectionId, chatId, messageId, inlineMessageId, media, replyMarkup);
+    }
+
+    public EditMessageMedia withReplyMarkup(@Nullable InlineKeyboardMarkup replyMarkup) {
+        return new EditMessageMedia(businessConnectionId, chatId, messageId, inlineMessageId, media, replyMarkup);
+    }
 }

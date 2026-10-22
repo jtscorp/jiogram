@@ -44,4 +44,65 @@ public record ChatPermissions(
     @JsonProperty("can_invite_users") @Nullable Boolean canInviteUsers,
     @JsonProperty("can_pin_messages") @Nullable Boolean canPinMessages,
     @JsonProperty("can_manage_topics") @Nullable Boolean canManageTopics
-) {}
+) {
+
+    public ChatPermissions withCanSendMessages(@Nullable Boolean canSendMessages) {
+        return new ChatPermissions(canSendMessages, canSendAudios, canSendDocuments, canSendPhotos, canSendVideos, canSendVideoNotes, canSendVoiceNotes, canSendPolls, canSendOtherMessages, canAddWebPagePreviews, canEditTag, canChangeInfo, canInviteUsers, canPinMessages, canManageTopics);
+    }
+
+    public ChatPermissions withCanSendAudios(@Nullable Boolean canSendAudios) {
+        return new ChatPermissions(canSendMessages, canSendAudios, canSendDocuments, canSendPhotos, canSendVideos, canSendVideoNotes, canSendVoiceNotes, canSendPolls, canSendOtherMessages, canAddWebPagePreviews, canEditTag, canChangeInfo, canInviteUsers, canPinMessages, canManageTopics);
+    }
+
+    public ChatPermissions withCanSendDocuments(@Nullable Boolean canSendDocuments) {
+        return new ChatPermissions(canSendMessages, canSendAudios, canSendDocuments, canSendPhotos, canSendVideos, canSendVideoNotes, canSendVoiceNotes, canSendPolls, canSendOtherMessages, canAddWebPagePreviews, canEditTag, canChangeInfo, canInviteUsers, canPinMessages, canManageTopics);
+    }
+
+    public ChatPermissions withCanSendPhotos(@Nullable Boolean canSendPhotos) {
+        return new ChatPermissions(canSendMessages, canSendAudios, canSendDocuments, canSendPhotos, canSendVideos, canSendVideoNotes, canSendVoiceNotes, canSendPolls, canSendOtherMessages, canAddWebPagePreviews, canEditTag, canChangeInfo, canInviteUsers, canPinMessages, canManageTopics);
+    }
+
+    public ChatPermissions withCanSendVideos(@Nullable Boolean canSendVideos) {
+        return new ChatPermissions(canSendMessages, canSendAudios, canSendDocuments, canSendPhotos, canSendVideos, canSendVideoNotes, canSendVoiceNotes, canSendPolls, canSendOtherMessages, canAddWebPagePreviews, canEditTag, canChangeInfo, canInviteUsers, canPinMessages, canManageTopics);
+    }
+
+    public ChatPermissions withCanSendVideoNotes(@Nullable Boolean canSendVideoNotes) {
+        return new ChatPermissions(canSendMessages, canSendAudios, canSendDocuments, canSendPhotos, canSendVideos, canSendVideoNotes, canSendVoiceNotes, canSendPolls, canSendOtherMessages, canAddWebPagePreviews, canEditTag, canChangeInfo, canInviteUsers, canPinMessages, canManageTopics);
+    }
+
+    public ChatPermissions withCanSendVoiceNotes(@Nullable Boolean canSendVoiceNotes) {
+        return new ChatPermissions(canSendMessages, canSendAudios, canSendDocuments, canSendPhotos, canSendVideos, canSendVideoNotes, canSendVoiceNotes, canSendPolls, canSendOtherMessages, canAddWebPagePreviews, canEditTag, canChangeInfo, canInviteUsers, canPinMessages, canManageTopics);
+    }
+
+    public ChatPermissions withCanSendPolls(@Nullable Boolean canSendPolls) {
+        return new ChatPermissions(canSendMessages, canSendAudios, canSendDocuments, canSendPhotos, canSendVideos, canSendVideoNotes, canSendVoiceNotes, canSendPolls, canSendOtherMessages, canAddWebPagePreviews, canEditTag, canChangeInfo, canInviteUsers, canPinMessages, canManageTopics);
+    }
+
+    public ChatPermissions withCanSendOtherMessages(@Nullable Boolean canSendOtherMessages) {
+        return new ChatPermissions(canSendMessages, canSendAudios, canSendDocuments, canSendPhotos, canSendVideos, canSendVideoNotes, canSendVoiceNotes, canSendPolls, canSendOtherMessages, canAddWebPagePreviews, canEditTag, canChangeInfo, canInviteUsers, canPinMessages, canManageTopics);
+    }
+
+    public ChatPermissions withCanAddWebPagePreviews(@Nullable Boolean canAddWebPagePreviews) {
+        return new ChatPermissions(canSendMessages, canSendAudios, canSendDocuments, canSendPhotos, canSendVideos, canSendVideoNotes, canSendVoiceNotes, canSendPolls, canSendOtherMessages, canAddWebPagePreviews, canEditTag, canChangeInfo, canInviteUsers, canPinMessages, canManageTopics);
+    }
+
+    public ChatPermissions withCanEditTag(@Nullable Boolean canEditTag) {
+        return new ChatPermissions(canSendMessages, canSendAudios, canSendDocuments, canSendPhotos, canSendVideos, canSendVideoNotes, canSendVoiceNotes, canSendPolls, canSendOtherMessages, canAddWebPagePreviews, canEditTag, canChangeInfo, canInviteUsers, canPinMessages, canManageTopics);
+    }
+
+    public ChatPermissions withCanChangeInfo(@Nullable Boolean canChangeInfo) {
+        return new ChatPermissions(canSendMessages, canSendAudios, canSendDocuments, canSendPhotos, canSendVideos, canSendVideoNotes, canSendVoiceNotes, canSendPolls, canSendOtherMessages, canAddWebPagePreviews, canEditTag, canChangeInfo, canInviteUsers, canPinMessages, canManageTopics);
+    }
+
+    public ChatPermissions withCanInviteUsers(@Nullable Boolean canInviteUsers) {
+        return new ChatPermissions(canSendMessages, canSendAudios, canSendDocuments, canSendPhotos, canSendVideos, canSendVideoNotes, canSendVoiceNotes, canSendPolls, canSendOtherMessages, canAddWebPagePreviews, canEditTag, canChangeInfo, canInviteUsers, canPinMessages, canManageTopics);
+    }
+
+    public ChatPermissions withCanPinMessages(@Nullable Boolean canPinMessages) {
+        return new ChatPermissions(canSendMessages, canSendAudios, canSendDocuments, canSendPhotos, canSendVideos, canSendVideoNotes, canSendVoiceNotes, canSendPolls, canSendOtherMessages, canAddWebPagePreviews, canEditTag, canChangeInfo, canInviteUsers, canPinMessages, canManageTopics);
+    }
+
+    public ChatPermissions withCanManageTopics(@Nullable Boolean canManageTopics) {
+        return new ChatPermissions(canSendMessages, canSendAudios, canSendDocuments, canSendPhotos, canSendVideos, canSendVideoNotes, canSendVoiceNotes, canSendPolls, canSendOtherMessages, canAddWebPagePreviews, canEditTag, canChangeInfo, canInviteUsers, canPinMessages, canManageTopics);
+    }
+}

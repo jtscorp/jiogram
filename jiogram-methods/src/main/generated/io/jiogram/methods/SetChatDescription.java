@@ -33,4 +33,12 @@ public record SetChatDescription(
     public static SetChatDescription of(ChatId chatId) {
         return new SetChatDescription(chatId, null);
     }
+
+    public SetChatDescription withChatId(ChatId chatId) {
+        return new SetChatDescription(chatId, description);
+    }
+
+    public SetChatDescription withDescription(@Nullable String description) {
+        return new SetChatDescription(chatId, description);
+    }
 }

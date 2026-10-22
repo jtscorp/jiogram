@@ -72,4 +72,44 @@ public record SendGame(
     public static SendGame reply(Message message, String gameShortName) {
         return new SendGame(ReplyTarget.businessConnectionId(message), message.chat().id(), ReplyTarget.messageThreadId(message), gameShortName, null, null, null, null, ReplyTarget.replyTo(message), null);
     }
+
+    public SendGame withBusinessConnectionId(@Nullable String businessConnectionId) {
+        return new SendGame(businessConnectionId, chatId, messageThreadId, gameShortName, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendGame withChatId(long chatId) {
+        return new SendGame(businessConnectionId, chatId, messageThreadId, gameShortName, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendGame withMessageThreadId(@Nullable Long messageThreadId) {
+        return new SendGame(businessConnectionId, chatId, messageThreadId, gameShortName, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendGame withGameShortName(String gameShortName) {
+        return new SendGame(businessConnectionId, chatId, messageThreadId, gameShortName, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendGame withDisableNotification(@Nullable Boolean disableNotification) {
+        return new SendGame(businessConnectionId, chatId, messageThreadId, gameShortName, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendGame withProtectContent(@Nullable Boolean protectContent) {
+        return new SendGame(businessConnectionId, chatId, messageThreadId, gameShortName, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendGame withAllowPaidBroadcast(@Nullable Boolean allowPaidBroadcast) {
+        return new SendGame(businessConnectionId, chatId, messageThreadId, gameShortName, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendGame withMessageEffectId(@Nullable String messageEffectId) {
+        return new SendGame(businessConnectionId, chatId, messageThreadId, gameShortName, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendGame withReplyParameters(@Nullable ReplyParameters replyParameters) {
+        return new SendGame(businessConnectionId, chatId, messageThreadId, gameShortName, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendGame withReplyMarkup(@Nullable InlineKeyboardMarkup replyMarkup) {
+        return new SendGame(businessConnectionId, chatId, messageThreadId, gameShortName, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters, replyMarkup);
+    }
 }

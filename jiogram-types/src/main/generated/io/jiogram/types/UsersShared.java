@@ -15,4 +15,13 @@ import java.util.List;
 public record UsersShared(
     @JsonProperty("request_id") long requestId,
     @JsonProperty("users") List<SharedUser> users
-) {}
+) {
+
+    public UsersShared withRequestId(long requestId) {
+        return new UsersShared(requestId, users);
+    }
+
+    public UsersShared withUsers(List<SharedUser> users) {
+        return new UsersShared(requestId, users);
+    }
+}

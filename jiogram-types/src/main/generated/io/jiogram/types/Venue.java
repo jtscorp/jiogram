@@ -25,4 +25,33 @@ public record Venue(
     @JsonProperty("foursquare_type") @Nullable String foursquareType,
     @JsonProperty("google_place_id") @Nullable String googlePlaceId,
     @JsonProperty("google_place_type") @Nullable String googlePlaceType
-) {}
+) {
+
+    public Venue withLocation(Location location) {
+        return new Venue(location, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType);
+    }
+
+    public Venue withTitle(String title) {
+        return new Venue(location, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType);
+    }
+
+    public Venue withAddress(String address) {
+        return new Venue(location, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType);
+    }
+
+    public Venue withFoursquareId(@Nullable String foursquareId) {
+        return new Venue(location, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType);
+    }
+
+    public Venue withFoursquareType(@Nullable String foursquareType) {
+        return new Venue(location, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType);
+    }
+
+    public Venue withGooglePlaceId(@Nullable String googlePlaceId) {
+        return new Venue(location, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType);
+    }
+
+    public Venue withGooglePlaceType(@Nullable String googlePlaceType) {
+        return new Venue(location, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType);
+    }
+}

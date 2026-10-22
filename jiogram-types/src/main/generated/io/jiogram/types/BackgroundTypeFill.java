@@ -16,4 +16,13 @@ public record BackgroundTypeFill(
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) BackgroundTypeType type,
     @JsonProperty("fill") BackgroundFill fill,
     @JsonProperty("dark_theme_dimming") long darkThemeDimming
-) implements BackgroundType {}
+) implements BackgroundType {
+
+    public BackgroundTypeFill withFill(BackgroundFill fill) {
+        return new BackgroundTypeFill(type, fill, darkThemeDimming);
+    }
+
+    public BackgroundTypeFill withDarkThemeDimming(long darkThemeDimming) {
+        return new BackgroundTypeFill(type, fill, darkThemeDimming);
+    }
+}

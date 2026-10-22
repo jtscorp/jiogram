@@ -25,4 +25,12 @@ public record DeleteStory(
     public String apiReturnType() {
         return "Boolean";
     }
+
+    public DeleteStory withBusinessConnectionId(String businessConnectionId) {
+        return new DeleteStory(businessConnectionId, storyId);
+    }
+
+    public DeleteStory withStoryId(long storyId) {
+        return new DeleteStory(businessConnectionId, storyId);
+    }
 }

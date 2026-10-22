@@ -25,4 +25,25 @@ public record AffiliateInfo(
     @JsonProperty("commission_per_mille") long commissionPerMille,
     @JsonProperty("amount") long amount,
     @JsonProperty("nanostar_amount") @Nullable Long nanostarAmount
-) {}
+) {
+
+    public AffiliateInfo withAffiliateUser(@Nullable User affiliateUser) {
+        return new AffiliateInfo(affiliateUser, affiliateChat, commissionPerMille, amount, nanostarAmount);
+    }
+
+    public AffiliateInfo withAffiliateChat(@Nullable Chat affiliateChat) {
+        return new AffiliateInfo(affiliateUser, affiliateChat, commissionPerMille, amount, nanostarAmount);
+    }
+
+    public AffiliateInfo withCommissionPerMille(long commissionPerMille) {
+        return new AffiliateInfo(affiliateUser, affiliateChat, commissionPerMille, amount, nanostarAmount);
+    }
+
+    public AffiliateInfo withAmount(long amount) {
+        return new AffiliateInfo(affiliateUser, affiliateChat, commissionPerMille, amount, nanostarAmount);
+    }
+
+    public AffiliateInfo withNanostarAmount(@Nullable Long nanostarAmount) {
+        return new AffiliateInfo(affiliateUser, affiliateChat, commissionPerMille, amount, nanostarAmount);
+    }
+}

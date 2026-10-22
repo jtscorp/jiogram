@@ -23,4 +23,8 @@ public record RemoveUserVerification(
     public String apiReturnType() {
         return "Boolean";
     }
+
+    public RemoveUserVerification withUserId(long userId) {
+        return new RemoveUserVerification(userId);
+    }
 }

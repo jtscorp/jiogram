@@ -26,4 +26,8 @@ public record UnpinAllGeneralForumTopicMessages(
     public String apiReturnType() {
         return "Boolean";
     }
+
+    public UnpinAllGeneralForumTopicMessages withChatId(ChatId chatId) {
+        return new UnpinAllGeneralForumTopicMessages(chatId);
+    }
 }

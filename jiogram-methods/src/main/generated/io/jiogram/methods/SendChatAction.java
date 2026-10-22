@@ -60,4 +60,20 @@ public record SendChatAction(
     public static SendChatAction answer(Message message, ChatAction action) {
         return new SendChatAction(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), action);
     }
+
+    public SendChatAction withBusinessConnectionId(@Nullable String businessConnectionId) {
+        return new SendChatAction(businessConnectionId, chatId, messageThreadId, action);
+    }
+
+    public SendChatAction withChatId(ChatId chatId) {
+        return new SendChatAction(businessConnectionId, chatId, messageThreadId, action);
+    }
+
+    public SendChatAction withMessageThreadId(@Nullable Long messageThreadId) {
+        return new SendChatAction(businessConnectionId, chatId, messageThreadId, action);
+    }
+
+    public SendChatAction withAction(ChatAction action) {
+        return new SendChatAction(businessConnectionId, chatId, messageThreadId, action);
+    }
 }

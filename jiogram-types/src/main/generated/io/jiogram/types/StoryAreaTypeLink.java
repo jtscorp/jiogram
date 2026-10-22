@@ -14,4 +14,9 @@ import io.jiogram.types.StoryAreaTypeType;
 public record StoryAreaTypeLink(
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) StoryAreaTypeType type,
     @JsonProperty("url") String url
-) implements StoryAreaType {}
+) implements StoryAreaType {
+
+    public StoryAreaTypeLink withUrl(String url) {
+        return new StoryAreaTypeLink(type, url);
+    }
+}

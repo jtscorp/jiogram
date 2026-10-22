@@ -33,4 +33,29 @@ public record InputMediaPhoto(
     @JsonProperty("caption_entities") @Nullable List<MessageEntity> captionEntities,
     @JsonProperty("show_caption_above_media") @Nullable Boolean showCaptionAboveMedia,
     @JsonProperty("has_spoiler") @Nullable Boolean hasSpoiler
-) implements InputMedia {}
+) implements InputMedia {
+
+    public InputMediaPhoto withMedia(InputFileOrString media) {
+        return new InputMediaPhoto(type, media, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler);
+    }
+
+    public InputMediaPhoto withCaption(@Nullable String caption) {
+        return new InputMediaPhoto(type, media, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler);
+    }
+
+    public InputMediaPhoto withParseMode(@Nullable ParseMode parseMode) {
+        return new InputMediaPhoto(type, media, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler);
+    }
+
+    public InputMediaPhoto withCaptionEntities(@Nullable List<MessageEntity> captionEntities) {
+        return new InputMediaPhoto(type, media, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler);
+    }
+
+    public InputMediaPhoto withShowCaptionAboveMedia(@Nullable Boolean showCaptionAboveMedia) {
+        return new InputMediaPhoto(type, media, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler);
+    }
+
+    public InputMediaPhoto withHasSpoiler(@Nullable Boolean hasSpoiler) {
+        return new InputMediaPhoto(type, media, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler);
+    }
+}

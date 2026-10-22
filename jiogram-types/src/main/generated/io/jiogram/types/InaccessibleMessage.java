@@ -15,4 +15,17 @@ public record InaccessibleMessage(
     @JsonProperty("chat") Chat chat,
     @JsonProperty("message_id") long messageId,
     @JsonProperty("date") long date
-) implements MaybeInaccessibleMessage {}
+) implements MaybeInaccessibleMessage {
+
+    public InaccessibleMessage withChat(Chat chat) {
+        return new InaccessibleMessage(chat, messageId, date);
+    }
+
+    public InaccessibleMessage withMessageId(long messageId) {
+        return new InaccessibleMessage(chat, messageId, date);
+    }
+
+    public InaccessibleMessage withDate(long date) {
+        return new InaccessibleMessage(chat, messageId, date);
+    }
+}

@@ -39,4 +39,53 @@ public record Video(
     @JsonProperty("file_name") @Nullable String fileName,
     @JsonProperty("mime_type") @Nullable String mimeType,
     @JsonProperty("file_size") @Nullable Long fileSize
-) {}
+) {
+
+    public Video withFileId(String fileId) {
+        return new Video(fileId, fileUniqueId, width, height, duration, thumbnail, cover, startTimestamp, qualities, fileName, mimeType, fileSize);
+    }
+
+    public Video withFileUniqueId(String fileUniqueId) {
+        return new Video(fileId, fileUniqueId, width, height, duration, thumbnail, cover, startTimestamp, qualities, fileName, mimeType, fileSize);
+    }
+
+    public Video withWidth(long width) {
+        return new Video(fileId, fileUniqueId, width, height, duration, thumbnail, cover, startTimestamp, qualities, fileName, mimeType, fileSize);
+    }
+
+    public Video withHeight(long height) {
+        return new Video(fileId, fileUniqueId, width, height, duration, thumbnail, cover, startTimestamp, qualities, fileName, mimeType, fileSize);
+    }
+
+    public Video withDuration(long duration) {
+        return new Video(fileId, fileUniqueId, width, height, duration, thumbnail, cover, startTimestamp, qualities, fileName, mimeType, fileSize);
+    }
+
+    public Video withThumbnail(@Nullable PhotoSize thumbnail) {
+        return new Video(fileId, fileUniqueId, width, height, duration, thumbnail, cover, startTimestamp, qualities, fileName, mimeType, fileSize);
+    }
+
+    public Video withCover(@Nullable List<PhotoSize> cover) {
+        return new Video(fileId, fileUniqueId, width, height, duration, thumbnail, cover, startTimestamp, qualities, fileName, mimeType, fileSize);
+    }
+
+    public Video withStartTimestamp(@Nullable Long startTimestamp) {
+        return new Video(fileId, fileUniqueId, width, height, duration, thumbnail, cover, startTimestamp, qualities, fileName, mimeType, fileSize);
+    }
+
+    public Video withQualities(@Nullable List<VideoQuality> qualities) {
+        return new Video(fileId, fileUniqueId, width, height, duration, thumbnail, cover, startTimestamp, qualities, fileName, mimeType, fileSize);
+    }
+
+    public Video withFileName(@Nullable String fileName) {
+        return new Video(fileId, fileUniqueId, width, height, duration, thumbnail, cover, startTimestamp, qualities, fileName, mimeType, fileSize);
+    }
+
+    public Video withMimeType(@Nullable String mimeType) {
+        return new Video(fileId, fileUniqueId, width, height, duration, thumbnail, cover, startTimestamp, qualities, fileName, mimeType, fileSize);
+    }
+
+    public Video withFileSize(@Nullable Long fileSize) {
+        return new Video(fileId, fileUniqueId, width, height, duration, thumbnail, cover, startTimestamp, qualities, fileName, mimeType, fileSize);
+    }
+}

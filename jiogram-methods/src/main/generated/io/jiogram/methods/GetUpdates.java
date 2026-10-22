@@ -54,4 +54,20 @@ public record GetUpdates(
     public static GetUpdates of() {
         return new GetUpdates(null, null, null, null);
     }
+
+    public GetUpdates withOffset(@Nullable Long offset) {
+        return new GetUpdates(offset, limit, timeout, allowedUpdates);
+    }
+
+    public GetUpdates withLimit(@Nullable Long limit) {
+        return new GetUpdates(offset, limit, timeout, allowedUpdates);
+    }
+
+    public GetUpdates withTimeout(@Nullable Long timeout) {
+        return new GetUpdates(offset, limit, timeout, allowedUpdates);
+    }
+
+    public GetUpdates withAllowedUpdates(@Nullable List<UpdateType> allowedUpdates) {
+        return new GetUpdates(offset, limit, timeout, allowedUpdates);
+    }
 }

@@ -25,4 +25,29 @@ public record Document(
     @JsonProperty("file_name") @Nullable String fileName,
     @JsonProperty("mime_type") @Nullable String mimeType,
     @JsonProperty("file_size") @Nullable Long fileSize
-) {}
+) {
+
+    public Document withFileId(String fileId) {
+        return new Document(fileId, fileUniqueId, thumbnail, fileName, mimeType, fileSize);
+    }
+
+    public Document withFileUniqueId(String fileUniqueId) {
+        return new Document(fileId, fileUniqueId, thumbnail, fileName, mimeType, fileSize);
+    }
+
+    public Document withThumbnail(@Nullable PhotoSize thumbnail) {
+        return new Document(fileId, fileUniqueId, thumbnail, fileName, mimeType, fileSize);
+    }
+
+    public Document withFileName(@Nullable String fileName) {
+        return new Document(fileId, fileUniqueId, thumbnail, fileName, mimeType, fileSize);
+    }
+
+    public Document withMimeType(@Nullable String mimeType) {
+        return new Document(fileId, fileUniqueId, thumbnail, fileName, mimeType, fileSize);
+    }
+
+    public Document withFileSize(@Nullable Long fileSize) {
+        return new Document(fileId, fileUniqueId, thumbnail, fileName, mimeType, fileSize);
+    }
+}

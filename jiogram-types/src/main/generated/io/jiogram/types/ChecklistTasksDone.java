@@ -19,4 +19,17 @@ public record ChecklistTasksDone(
     @JsonProperty("checklist_message") @Nullable Message checklistMessage,
     @JsonProperty("marked_as_done_task_ids") @Nullable List<Long> markedAsDoneTaskIds,
     @JsonProperty("marked_as_not_done_task_ids") @Nullable List<Long> markedAsNotDoneTaskIds
-) {}
+) {
+
+    public ChecklistTasksDone withChecklistMessage(@Nullable Message checklistMessage) {
+        return new ChecklistTasksDone(checklistMessage, markedAsDoneTaskIds, markedAsNotDoneTaskIds);
+    }
+
+    public ChecklistTasksDone withMarkedAsDoneTaskIds(@Nullable List<Long> markedAsDoneTaskIds) {
+        return new ChecklistTasksDone(checklistMessage, markedAsDoneTaskIds, markedAsNotDoneTaskIds);
+    }
+
+    public ChecklistTasksDone withMarkedAsNotDoneTaskIds(@Nullable List<Long> markedAsNotDoneTaskIds) {
+        return new ChecklistTasksDone(checklistMessage, markedAsDoneTaskIds, markedAsNotDoneTaskIds);
+    }
+}

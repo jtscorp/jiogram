@@ -16,4 +16,17 @@ public record UniqueGiftSymbol(
     @JsonProperty("name") String name,
     @JsonProperty("sticker") Sticker sticker,
     @JsonProperty("rarity_per_mille") long rarityPerMille
-) {}
+) {
+
+    public UniqueGiftSymbol withName(String name) {
+        return new UniqueGiftSymbol(name, sticker, rarityPerMille);
+    }
+
+    public UniqueGiftSymbol withSticker(Sticker sticker) {
+        return new UniqueGiftSymbol(name, sticker, rarityPerMille);
+    }
+
+    public UniqueGiftSymbol withRarityPerMille(long rarityPerMille) {
+        return new UniqueGiftSymbol(name, sticker, rarityPerMille);
+    }
+}

@@ -25,4 +25,12 @@ public record TransferBusinessAccountStars(
     public String apiReturnType() {
         return "Boolean";
     }
+
+    public TransferBusinessAccountStars withBusinessConnectionId(String businessConnectionId) {
+        return new TransferBusinessAccountStars(businessConnectionId, starCount);
+    }
+
+    public TransferBusinessAccountStars withStarCount(long starCount) {
+        return new TransferBusinessAccountStars(businessConnectionId, starCount);
+    }
 }

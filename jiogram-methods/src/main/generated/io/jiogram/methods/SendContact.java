@@ -87,4 +87,64 @@ public record SendContact(
     public static SendContact reply(Message message, String phoneNumber, String firstName) {
         return new SendContact(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), phoneNumber, firstName, null, null, null, null, null, null, null, ReplyTarget.replyTo(message), null);
     }
+
+    public SendContact withBusinessConnectionId(@Nullable String businessConnectionId) {
+        return new SendContact(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, phoneNumber, firstName, lastName, vcard, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendContact withChatId(ChatId chatId) {
+        return new SendContact(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, phoneNumber, firstName, lastName, vcard, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendContact withMessageThreadId(@Nullable Long messageThreadId) {
+        return new SendContact(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, phoneNumber, firstName, lastName, vcard, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendContact withDirectMessagesTopicId(@Nullable Long directMessagesTopicId) {
+        return new SendContact(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, phoneNumber, firstName, lastName, vcard, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendContact withPhoneNumber(String phoneNumber) {
+        return new SendContact(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, phoneNumber, firstName, lastName, vcard, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendContact withFirstName(String firstName) {
+        return new SendContact(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, phoneNumber, firstName, lastName, vcard, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendContact withLastName(@Nullable String lastName) {
+        return new SendContact(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, phoneNumber, firstName, lastName, vcard, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendContact withVcard(@Nullable String vcard) {
+        return new SendContact(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, phoneNumber, firstName, lastName, vcard, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendContact withDisableNotification(@Nullable Boolean disableNotification) {
+        return new SendContact(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, phoneNumber, firstName, lastName, vcard, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendContact withProtectContent(@Nullable Boolean protectContent) {
+        return new SendContact(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, phoneNumber, firstName, lastName, vcard, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendContact withAllowPaidBroadcast(@Nullable Boolean allowPaidBroadcast) {
+        return new SendContact(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, phoneNumber, firstName, lastName, vcard, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendContact withMessageEffectId(@Nullable String messageEffectId) {
+        return new SendContact(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, phoneNumber, firstName, lastName, vcard, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendContact withSuggestedPostParameters(@Nullable SuggestedPostParameters suggestedPostParameters) {
+        return new SendContact(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, phoneNumber, firstName, lastName, vcard, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendContact withReplyParameters(@Nullable ReplyParameters replyParameters) {
+        return new SendContact(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, phoneNumber, firstName, lastName, vcard, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendContact withReplyMarkup(@Nullable ReplyMarkup replyMarkup) {
+        return new SendContact(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, phoneNumber, firstName, lastName, vcard, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
 }

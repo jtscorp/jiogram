@@ -20,4 +20,21 @@ public record ChatPhoto(
     @JsonProperty("small_file_unique_id") String smallFileUniqueId,
     @JsonProperty("big_file_id") String bigFileId,
     @JsonProperty("big_file_unique_id") String bigFileUniqueId
-) {}
+) {
+
+    public ChatPhoto withSmallFileId(String smallFileId) {
+        return new ChatPhoto(smallFileId, smallFileUniqueId, bigFileId, bigFileUniqueId);
+    }
+
+    public ChatPhoto withSmallFileUniqueId(String smallFileUniqueId) {
+        return new ChatPhoto(smallFileId, smallFileUniqueId, bigFileId, bigFileUniqueId);
+    }
+
+    public ChatPhoto withBigFileId(String bigFileId) {
+        return new ChatPhoto(smallFileId, smallFileUniqueId, bigFileId, bigFileUniqueId);
+    }
+
+    public ChatPhoto withBigFileUniqueId(String bigFileUniqueId) {
+        return new ChatPhoto(smallFileId, smallFileUniqueId, bigFileId, bigFileUniqueId);
+    }
+}

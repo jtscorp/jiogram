@@ -31,4 +31,8 @@ public record ExportChatInviteLink(
     public String apiReturnType() {
         return "String";
     }
+
+    public ExportChatInviteLink withChatId(ChatId chatId) {
+        return new ExportChatInviteLink(chatId);
+    }
 }

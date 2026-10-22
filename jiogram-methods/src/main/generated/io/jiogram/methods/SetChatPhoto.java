@@ -29,4 +29,12 @@ public record SetChatPhoto(
     public String apiReturnType() {
         return "Boolean";
     }
+
+    public SetChatPhoto withChatId(ChatId chatId) {
+        return new SetChatPhoto(chatId, photo);
+    }
+
+    public SetChatPhoto withPhoto(InputFile photo) {
+        return new SetChatPhoto(chatId, photo);
+    }
 }

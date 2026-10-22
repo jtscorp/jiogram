@@ -28,4 +28,29 @@ public record InputChecklist(
     @JsonProperty("tasks") List<InputChecklistTask> tasks,
     @JsonProperty("others_can_add_tasks") @Nullable Boolean othersCanAddTasks,
     @JsonProperty("others_can_mark_tasks_as_done") @Nullable Boolean othersCanMarkTasksAsDone
-) {}
+) {
+
+    public InputChecklist withTitle(String title) {
+        return new InputChecklist(title, parseMode, titleEntities, tasks, othersCanAddTasks, othersCanMarkTasksAsDone);
+    }
+
+    public InputChecklist withParseMode(@Nullable ParseMode parseMode) {
+        return new InputChecklist(title, parseMode, titleEntities, tasks, othersCanAddTasks, othersCanMarkTasksAsDone);
+    }
+
+    public InputChecklist withTitleEntities(@Nullable List<MessageEntity> titleEntities) {
+        return new InputChecklist(title, parseMode, titleEntities, tasks, othersCanAddTasks, othersCanMarkTasksAsDone);
+    }
+
+    public InputChecklist withTasks(List<InputChecklistTask> tasks) {
+        return new InputChecklist(title, parseMode, titleEntities, tasks, othersCanAddTasks, othersCanMarkTasksAsDone);
+    }
+
+    public InputChecklist withOthersCanAddTasks(@Nullable Boolean othersCanAddTasks) {
+        return new InputChecklist(title, parseMode, titleEntities, tasks, othersCanAddTasks, othersCanMarkTasksAsDone);
+    }
+
+    public InputChecklist withOthersCanMarkTasksAsDone(@Nullable Boolean othersCanMarkTasksAsDone) {
+        return new InputChecklist(title, parseMode, titleEntities, tasks, othersCanAddTasks, othersCanMarkTasksAsDone);
+    }
+}

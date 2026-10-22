@@ -99,4 +99,92 @@ public record CreateInvoiceLink(
     public static CreateInvoiceLink of(String title, String description, String payload, String currency, List<LabeledPrice> prices) {
         return new CreateInvoiceLink(null, title, description, payload, null, currency, prices, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
     }
+
+    public CreateInvoiceLink withBusinessConnectionId(@Nullable String businessConnectionId) {
+        return new CreateInvoiceLink(businessConnectionId, title, description, payload, providerToken, currency, prices, subscriptionPeriod, maxTipAmount, suggestedTipAmounts, providerData, photoUrl, photoSize, photoWidth, photoHeight, needName, needPhoneNumber, needEmail, needShippingAddress, sendPhoneNumberToProvider, sendEmailToProvider, isFlexible);
+    }
+
+    public CreateInvoiceLink withTitle(String title) {
+        return new CreateInvoiceLink(businessConnectionId, title, description, payload, providerToken, currency, prices, subscriptionPeriod, maxTipAmount, suggestedTipAmounts, providerData, photoUrl, photoSize, photoWidth, photoHeight, needName, needPhoneNumber, needEmail, needShippingAddress, sendPhoneNumberToProvider, sendEmailToProvider, isFlexible);
+    }
+
+    public CreateInvoiceLink withDescription(String description) {
+        return new CreateInvoiceLink(businessConnectionId, title, description, payload, providerToken, currency, prices, subscriptionPeriod, maxTipAmount, suggestedTipAmounts, providerData, photoUrl, photoSize, photoWidth, photoHeight, needName, needPhoneNumber, needEmail, needShippingAddress, sendPhoneNumberToProvider, sendEmailToProvider, isFlexible);
+    }
+
+    public CreateInvoiceLink withPayload(String payload) {
+        return new CreateInvoiceLink(businessConnectionId, title, description, payload, providerToken, currency, prices, subscriptionPeriod, maxTipAmount, suggestedTipAmounts, providerData, photoUrl, photoSize, photoWidth, photoHeight, needName, needPhoneNumber, needEmail, needShippingAddress, sendPhoneNumberToProvider, sendEmailToProvider, isFlexible);
+    }
+
+    public CreateInvoiceLink withProviderToken(@Nullable String providerToken) {
+        return new CreateInvoiceLink(businessConnectionId, title, description, payload, providerToken, currency, prices, subscriptionPeriod, maxTipAmount, suggestedTipAmounts, providerData, photoUrl, photoSize, photoWidth, photoHeight, needName, needPhoneNumber, needEmail, needShippingAddress, sendPhoneNumberToProvider, sendEmailToProvider, isFlexible);
+    }
+
+    public CreateInvoiceLink withCurrency(String currency) {
+        return new CreateInvoiceLink(businessConnectionId, title, description, payload, providerToken, currency, prices, subscriptionPeriod, maxTipAmount, suggestedTipAmounts, providerData, photoUrl, photoSize, photoWidth, photoHeight, needName, needPhoneNumber, needEmail, needShippingAddress, sendPhoneNumberToProvider, sendEmailToProvider, isFlexible);
+    }
+
+    public CreateInvoiceLink withPrices(List<LabeledPrice> prices) {
+        return new CreateInvoiceLink(businessConnectionId, title, description, payload, providerToken, currency, prices, subscriptionPeriod, maxTipAmount, suggestedTipAmounts, providerData, photoUrl, photoSize, photoWidth, photoHeight, needName, needPhoneNumber, needEmail, needShippingAddress, sendPhoneNumberToProvider, sendEmailToProvider, isFlexible);
+    }
+
+    public CreateInvoiceLink withSubscriptionPeriod(@Nullable Long subscriptionPeriod) {
+        return new CreateInvoiceLink(businessConnectionId, title, description, payload, providerToken, currency, prices, subscriptionPeriod, maxTipAmount, suggestedTipAmounts, providerData, photoUrl, photoSize, photoWidth, photoHeight, needName, needPhoneNumber, needEmail, needShippingAddress, sendPhoneNumberToProvider, sendEmailToProvider, isFlexible);
+    }
+
+    public CreateInvoiceLink withMaxTipAmount(@Nullable Long maxTipAmount) {
+        return new CreateInvoiceLink(businessConnectionId, title, description, payload, providerToken, currency, prices, subscriptionPeriod, maxTipAmount, suggestedTipAmounts, providerData, photoUrl, photoSize, photoWidth, photoHeight, needName, needPhoneNumber, needEmail, needShippingAddress, sendPhoneNumberToProvider, sendEmailToProvider, isFlexible);
+    }
+
+    public CreateInvoiceLink withSuggestedTipAmounts(@Nullable List<Long> suggestedTipAmounts) {
+        return new CreateInvoiceLink(businessConnectionId, title, description, payload, providerToken, currency, prices, subscriptionPeriod, maxTipAmount, suggestedTipAmounts, providerData, photoUrl, photoSize, photoWidth, photoHeight, needName, needPhoneNumber, needEmail, needShippingAddress, sendPhoneNumberToProvider, sendEmailToProvider, isFlexible);
+    }
+
+    public CreateInvoiceLink withProviderData(@Nullable String providerData) {
+        return new CreateInvoiceLink(businessConnectionId, title, description, payload, providerToken, currency, prices, subscriptionPeriod, maxTipAmount, suggestedTipAmounts, providerData, photoUrl, photoSize, photoWidth, photoHeight, needName, needPhoneNumber, needEmail, needShippingAddress, sendPhoneNumberToProvider, sendEmailToProvider, isFlexible);
+    }
+
+    public CreateInvoiceLink withPhotoUrl(@Nullable String photoUrl) {
+        return new CreateInvoiceLink(businessConnectionId, title, description, payload, providerToken, currency, prices, subscriptionPeriod, maxTipAmount, suggestedTipAmounts, providerData, photoUrl, photoSize, photoWidth, photoHeight, needName, needPhoneNumber, needEmail, needShippingAddress, sendPhoneNumberToProvider, sendEmailToProvider, isFlexible);
+    }
+
+    public CreateInvoiceLink withPhotoSize(@Nullable Long photoSize) {
+        return new CreateInvoiceLink(businessConnectionId, title, description, payload, providerToken, currency, prices, subscriptionPeriod, maxTipAmount, suggestedTipAmounts, providerData, photoUrl, photoSize, photoWidth, photoHeight, needName, needPhoneNumber, needEmail, needShippingAddress, sendPhoneNumberToProvider, sendEmailToProvider, isFlexible);
+    }
+
+    public CreateInvoiceLink withPhotoWidth(@Nullable Long photoWidth) {
+        return new CreateInvoiceLink(businessConnectionId, title, description, payload, providerToken, currency, prices, subscriptionPeriod, maxTipAmount, suggestedTipAmounts, providerData, photoUrl, photoSize, photoWidth, photoHeight, needName, needPhoneNumber, needEmail, needShippingAddress, sendPhoneNumberToProvider, sendEmailToProvider, isFlexible);
+    }
+
+    public CreateInvoiceLink withPhotoHeight(@Nullable Long photoHeight) {
+        return new CreateInvoiceLink(businessConnectionId, title, description, payload, providerToken, currency, prices, subscriptionPeriod, maxTipAmount, suggestedTipAmounts, providerData, photoUrl, photoSize, photoWidth, photoHeight, needName, needPhoneNumber, needEmail, needShippingAddress, sendPhoneNumberToProvider, sendEmailToProvider, isFlexible);
+    }
+
+    public CreateInvoiceLink withNeedName(@Nullable Boolean needName) {
+        return new CreateInvoiceLink(businessConnectionId, title, description, payload, providerToken, currency, prices, subscriptionPeriod, maxTipAmount, suggestedTipAmounts, providerData, photoUrl, photoSize, photoWidth, photoHeight, needName, needPhoneNumber, needEmail, needShippingAddress, sendPhoneNumberToProvider, sendEmailToProvider, isFlexible);
+    }
+
+    public CreateInvoiceLink withNeedPhoneNumber(@Nullable Boolean needPhoneNumber) {
+        return new CreateInvoiceLink(businessConnectionId, title, description, payload, providerToken, currency, prices, subscriptionPeriod, maxTipAmount, suggestedTipAmounts, providerData, photoUrl, photoSize, photoWidth, photoHeight, needName, needPhoneNumber, needEmail, needShippingAddress, sendPhoneNumberToProvider, sendEmailToProvider, isFlexible);
+    }
+
+    public CreateInvoiceLink withNeedEmail(@Nullable Boolean needEmail) {
+        return new CreateInvoiceLink(businessConnectionId, title, description, payload, providerToken, currency, prices, subscriptionPeriod, maxTipAmount, suggestedTipAmounts, providerData, photoUrl, photoSize, photoWidth, photoHeight, needName, needPhoneNumber, needEmail, needShippingAddress, sendPhoneNumberToProvider, sendEmailToProvider, isFlexible);
+    }
+
+    public CreateInvoiceLink withNeedShippingAddress(@Nullable Boolean needShippingAddress) {
+        return new CreateInvoiceLink(businessConnectionId, title, description, payload, providerToken, currency, prices, subscriptionPeriod, maxTipAmount, suggestedTipAmounts, providerData, photoUrl, photoSize, photoWidth, photoHeight, needName, needPhoneNumber, needEmail, needShippingAddress, sendPhoneNumberToProvider, sendEmailToProvider, isFlexible);
+    }
+
+    public CreateInvoiceLink withSendPhoneNumberToProvider(@Nullable Boolean sendPhoneNumberToProvider) {
+        return new CreateInvoiceLink(businessConnectionId, title, description, payload, providerToken, currency, prices, subscriptionPeriod, maxTipAmount, suggestedTipAmounts, providerData, photoUrl, photoSize, photoWidth, photoHeight, needName, needPhoneNumber, needEmail, needShippingAddress, sendPhoneNumberToProvider, sendEmailToProvider, isFlexible);
+    }
+
+    public CreateInvoiceLink withSendEmailToProvider(@Nullable Boolean sendEmailToProvider) {
+        return new CreateInvoiceLink(businessConnectionId, title, description, payload, providerToken, currency, prices, subscriptionPeriod, maxTipAmount, suggestedTipAmounts, providerData, photoUrl, photoSize, photoWidth, photoHeight, needName, needPhoneNumber, needEmail, needShippingAddress, sendPhoneNumberToProvider, sendEmailToProvider, isFlexible);
+    }
+
+    public CreateInvoiceLink withIsFlexible(@Nullable Boolean isFlexible) {
+        return new CreateInvoiceLink(businessConnectionId, title, description, payload, providerToken, currency, prices, subscriptionPeriod, maxTipAmount, suggestedTipAmounts, providerData, photoUrl, photoSize, photoWidth, photoHeight, needName, needPhoneNumber, needEmail, needShippingAddress, sendPhoneNumberToProvider, sendEmailToProvider, isFlexible);
+    }
 }

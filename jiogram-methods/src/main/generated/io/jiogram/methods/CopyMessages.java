@@ -56,4 +56,36 @@ public record CopyMessages(
     public static CopyMessages of(ChatId chatId, ChatId fromChatId, List<Long> messageIds) {
         return new CopyMessages(chatId, null, null, fromChatId, messageIds, null, null, null);
     }
+
+    public CopyMessages withChatId(ChatId chatId) {
+        return new CopyMessages(chatId, messageThreadId, directMessagesTopicId, fromChatId, messageIds, disableNotification, protectContent, removeCaption);
+    }
+
+    public CopyMessages withMessageThreadId(@Nullable Long messageThreadId) {
+        return new CopyMessages(chatId, messageThreadId, directMessagesTopicId, fromChatId, messageIds, disableNotification, protectContent, removeCaption);
+    }
+
+    public CopyMessages withDirectMessagesTopicId(@Nullable Long directMessagesTopicId) {
+        return new CopyMessages(chatId, messageThreadId, directMessagesTopicId, fromChatId, messageIds, disableNotification, protectContent, removeCaption);
+    }
+
+    public CopyMessages withFromChatId(ChatId fromChatId) {
+        return new CopyMessages(chatId, messageThreadId, directMessagesTopicId, fromChatId, messageIds, disableNotification, protectContent, removeCaption);
+    }
+
+    public CopyMessages withMessageIds(List<Long> messageIds) {
+        return new CopyMessages(chatId, messageThreadId, directMessagesTopicId, fromChatId, messageIds, disableNotification, protectContent, removeCaption);
+    }
+
+    public CopyMessages withDisableNotification(@Nullable Boolean disableNotification) {
+        return new CopyMessages(chatId, messageThreadId, directMessagesTopicId, fromChatId, messageIds, disableNotification, protectContent, removeCaption);
+    }
+
+    public CopyMessages withProtectContent(@Nullable Boolean protectContent) {
+        return new CopyMessages(chatId, messageThreadId, directMessagesTopicId, fromChatId, messageIds, disableNotification, protectContent, removeCaption);
+    }
+
+    public CopyMessages withRemoveCaption(@Nullable Boolean removeCaption) {
+        return new CopyMessages(chatId, messageThreadId, directMessagesTopicId, fromChatId, messageIds, disableNotification, protectContent, removeCaption);
+    }
 }

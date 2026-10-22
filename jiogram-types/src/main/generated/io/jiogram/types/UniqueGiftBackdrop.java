@@ -16,4 +16,17 @@ public record UniqueGiftBackdrop(
     @JsonProperty("name") String name,
     @JsonProperty("colors") UniqueGiftBackdropColors colors,
     @JsonProperty("rarity_per_mille") long rarityPerMille
-) {}
+) {
+
+    public UniqueGiftBackdrop withName(String name) {
+        return new UniqueGiftBackdrop(name, colors, rarityPerMille);
+    }
+
+    public UniqueGiftBackdrop withColors(UniqueGiftBackdropColors colors) {
+        return new UniqueGiftBackdrop(name, colors, rarityPerMille);
+    }
+
+    public UniqueGiftBackdrop withRarityPerMille(long rarityPerMille) {
+        return new UniqueGiftBackdrop(name, colors, rarityPerMille);
+    }
+}

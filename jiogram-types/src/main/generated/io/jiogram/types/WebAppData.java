@@ -13,4 +13,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public record WebAppData(
     @JsonProperty("data") String data,
     @JsonProperty("button_text") String buttonText
-) {}
+) {
+
+    public WebAppData withData(String data) {
+        return new WebAppData(data, buttonText);
+    }
+
+    public WebAppData withButtonText(String buttonText) {
+        return new WebAppData(data, buttonText);
+    }
+}

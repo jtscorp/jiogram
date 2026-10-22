@@ -41,4 +41,45 @@ public record InlineQueryResultAudio(
     @JsonProperty("audio_duration") @Nullable Long audioDuration,
     @JsonProperty("reply_markup") @Nullable InlineKeyboardMarkup replyMarkup,
     @JsonProperty("input_message_content") @Nullable InputMessageContent inputMessageContent
-) implements InlineQueryResult {}
+) implements InlineQueryResult {
+
+    public InlineQueryResultAudio withId(String id) {
+        return new InlineQueryResultAudio(type, id, audioUrl, title, caption, parseMode, captionEntities, performer, audioDuration, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultAudio withAudioUrl(String audioUrl) {
+        return new InlineQueryResultAudio(type, id, audioUrl, title, caption, parseMode, captionEntities, performer, audioDuration, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultAudio withTitle(String title) {
+        return new InlineQueryResultAudio(type, id, audioUrl, title, caption, parseMode, captionEntities, performer, audioDuration, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultAudio withCaption(@Nullable String caption) {
+        return new InlineQueryResultAudio(type, id, audioUrl, title, caption, parseMode, captionEntities, performer, audioDuration, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultAudio withParseMode(@Nullable ParseMode parseMode) {
+        return new InlineQueryResultAudio(type, id, audioUrl, title, caption, parseMode, captionEntities, performer, audioDuration, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultAudio withCaptionEntities(@Nullable List<MessageEntity> captionEntities) {
+        return new InlineQueryResultAudio(type, id, audioUrl, title, caption, parseMode, captionEntities, performer, audioDuration, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultAudio withPerformer(@Nullable String performer) {
+        return new InlineQueryResultAudio(type, id, audioUrl, title, caption, parseMode, captionEntities, performer, audioDuration, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultAudio withAudioDuration(@Nullable Long audioDuration) {
+        return new InlineQueryResultAudio(type, id, audioUrl, title, caption, parseMode, captionEntities, performer, audioDuration, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultAudio withReplyMarkup(@Nullable InlineKeyboardMarkup replyMarkup) {
+        return new InlineQueryResultAudio(type, id, audioUrl, title, caption, parseMode, captionEntities, performer, audioDuration, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultAudio withInputMessageContent(@Nullable InputMessageContent inputMessageContent) {
+        return new InlineQueryResultAudio(type, id, audioUrl, title, caption, parseMode, captionEntities, performer, audioDuration, replyMarkup, inputMessageContent);
+    }
+}

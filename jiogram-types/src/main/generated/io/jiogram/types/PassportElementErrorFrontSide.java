@@ -20,4 +20,17 @@ public record PassportElementErrorFrontSide(
     @JsonProperty("type") PassportElementType type,
     @JsonProperty("file_hash") String fileHash,
     @JsonProperty("message") String message
-) implements PassportElementError {}
+) implements PassportElementError {
+
+    public PassportElementErrorFrontSide withType(PassportElementType type) {
+        return new PassportElementErrorFrontSide(source, type, fileHash, message);
+    }
+
+    public PassportElementErrorFrontSide withFileHash(String fileHash) {
+        return new PassportElementErrorFrontSide(source, type, fileHash, message);
+    }
+
+    public PassportElementErrorFrontSide withMessage(String message) {
+        return new PassportElementErrorFrontSide(source, type, fileHash, message);
+    }
+}

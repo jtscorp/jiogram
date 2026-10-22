@@ -17,4 +17,13 @@ import org.jspecify.annotations.Nullable;
 public record SuggestedPostRefunded(
     @JsonProperty("suggested_post_message") @Nullable Message suggestedPostMessage,
     @JsonProperty("reason") String reason
-) {}
+) {
+
+    public SuggestedPostRefunded withSuggestedPostMessage(@Nullable Message suggestedPostMessage) {
+        return new SuggestedPostRefunded(suggestedPostMessage, reason);
+    }
+
+    public SuggestedPostRefunded withReason(String reason) {
+        return new SuggestedPostRefunded(suggestedPostMessage, reason);
+    }
+}

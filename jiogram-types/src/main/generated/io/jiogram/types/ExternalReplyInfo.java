@@ -87,4 +87,105 @@ public record ExternalReplyInfo(
     @JsonProperty("location") @Nullable Location location,
     @JsonProperty("poll") @Nullable Poll poll,
     @JsonProperty("venue") @Nullable Venue venue
-) {}
+) {
+
+    public ExternalReplyInfo withOrigin(MessageOrigin origin) {
+        return new ExternalReplyInfo(origin, chat, messageId, linkPreviewOptions, animation, audio, document, paidMedia, photo, sticker, story, video, videoNote, voice, hasMediaSpoiler, checklist, contact, dice, game, giveaway, giveawayWinners, invoice, location, poll, venue);
+    }
+
+    public ExternalReplyInfo withChat(@Nullable Chat chat) {
+        return new ExternalReplyInfo(origin, chat, messageId, linkPreviewOptions, animation, audio, document, paidMedia, photo, sticker, story, video, videoNote, voice, hasMediaSpoiler, checklist, contact, dice, game, giveaway, giveawayWinners, invoice, location, poll, venue);
+    }
+
+    public ExternalReplyInfo withMessageId(@Nullable Long messageId) {
+        return new ExternalReplyInfo(origin, chat, messageId, linkPreviewOptions, animation, audio, document, paidMedia, photo, sticker, story, video, videoNote, voice, hasMediaSpoiler, checklist, contact, dice, game, giveaway, giveawayWinners, invoice, location, poll, venue);
+    }
+
+    public ExternalReplyInfo withLinkPreviewOptions(@Nullable LinkPreviewOptions linkPreviewOptions) {
+        return new ExternalReplyInfo(origin, chat, messageId, linkPreviewOptions, animation, audio, document, paidMedia, photo, sticker, story, video, videoNote, voice, hasMediaSpoiler, checklist, contact, dice, game, giveaway, giveawayWinners, invoice, location, poll, venue);
+    }
+
+    public ExternalReplyInfo withAnimation(@Nullable Animation animation) {
+        return new ExternalReplyInfo(origin, chat, messageId, linkPreviewOptions, animation, audio, document, paidMedia, photo, sticker, story, video, videoNote, voice, hasMediaSpoiler, checklist, contact, dice, game, giveaway, giveawayWinners, invoice, location, poll, venue);
+    }
+
+    public ExternalReplyInfo withAudio(@Nullable Audio audio) {
+        return new ExternalReplyInfo(origin, chat, messageId, linkPreviewOptions, animation, audio, document, paidMedia, photo, sticker, story, video, videoNote, voice, hasMediaSpoiler, checklist, contact, dice, game, giveaway, giveawayWinners, invoice, location, poll, venue);
+    }
+
+    public ExternalReplyInfo withDocument(@Nullable Document document) {
+        return new ExternalReplyInfo(origin, chat, messageId, linkPreviewOptions, animation, audio, document, paidMedia, photo, sticker, story, video, videoNote, voice, hasMediaSpoiler, checklist, contact, dice, game, giveaway, giveawayWinners, invoice, location, poll, venue);
+    }
+
+    public ExternalReplyInfo withPaidMedia(@Nullable PaidMediaInfo paidMedia) {
+        return new ExternalReplyInfo(origin, chat, messageId, linkPreviewOptions, animation, audio, document, paidMedia, photo, sticker, story, video, videoNote, voice, hasMediaSpoiler, checklist, contact, dice, game, giveaway, giveawayWinners, invoice, location, poll, venue);
+    }
+
+    public ExternalReplyInfo withPhoto(@Nullable List<PhotoSize> photo) {
+        return new ExternalReplyInfo(origin, chat, messageId, linkPreviewOptions, animation, audio, document, paidMedia, photo, sticker, story, video, videoNote, voice, hasMediaSpoiler, checklist, contact, dice, game, giveaway, giveawayWinners, invoice, location, poll, venue);
+    }
+
+    public ExternalReplyInfo withSticker(@Nullable Sticker sticker) {
+        return new ExternalReplyInfo(origin, chat, messageId, linkPreviewOptions, animation, audio, document, paidMedia, photo, sticker, story, video, videoNote, voice, hasMediaSpoiler, checklist, contact, dice, game, giveaway, giveawayWinners, invoice, location, poll, venue);
+    }
+
+    public ExternalReplyInfo withStory(@Nullable Story story) {
+        return new ExternalReplyInfo(origin, chat, messageId, linkPreviewOptions, animation, audio, document, paidMedia, photo, sticker, story, video, videoNote, voice, hasMediaSpoiler, checklist, contact, dice, game, giveaway, giveawayWinners, invoice, location, poll, venue);
+    }
+
+    public ExternalReplyInfo withVideo(@Nullable Video video) {
+        return new ExternalReplyInfo(origin, chat, messageId, linkPreviewOptions, animation, audio, document, paidMedia, photo, sticker, story, video, videoNote, voice, hasMediaSpoiler, checklist, contact, dice, game, giveaway, giveawayWinners, invoice, location, poll, venue);
+    }
+
+    public ExternalReplyInfo withVideoNote(@Nullable VideoNote videoNote) {
+        return new ExternalReplyInfo(origin, chat, messageId, linkPreviewOptions, animation, audio, document, paidMedia, photo, sticker, story, video, videoNote, voice, hasMediaSpoiler, checklist, contact, dice, game, giveaway, giveawayWinners, invoice, location, poll, venue);
+    }
+
+    public ExternalReplyInfo withVoice(@Nullable Voice voice) {
+        return new ExternalReplyInfo(origin, chat, messageId, linkPreviewOptions, animation, audio, document, paidMedia, photo, sticker, story, video, videoNote, voice, hasMediaSpoiler, checklist, contact, dice, game, giveaway, giveawayWinners, invoice, location, poll, venue);
+    }
+
+    public ExternalReplyInfo withHasMediaSpoiler(@Nullable Boolean hasMediaSpoiler) {
+        return new ExternalReplyInfo(origin, chat, messageId, linkPreviewOptions, animation, audio, document, paidMedia, photo, sticker, story, video, videoNote, voice, hasMediaSpoiler, checklist, contact, dice, game, giveaway, giveawayWinners, invoice, location, poll, venue);
+    }
+
+    public ExternalReplyInfo withChecklist(@Nullable Checklist checklist) {
+        return new ExternalReplyInfo(origin, chat, messageId, linkPreviewOptions, animation, audio, document, paidMedia, photo, sticker, story, video, videoNote, voice, hasMediaSpoiler, checklist, contact, dice, game, giveaway, giveawayWinners, invoice, location, poll, venue);
+    }
+
+    public ExternalReplyInfo withContact(@Nullable Contact contact) {
+        return new ExternalReplyInfo(origin, chat, messageId, linkPreviewOptions, animation, audio, document, paidMedia, photo, sticker, story, video, videoNote, voice, hasMediaSpoiler, checklist, contact, dice, game, giveaway, giveawayWinners, invoice, location, poll, venue);
+    }
+
+    public ExternalReplyInfo withDice(@Nullable Dice dice) {
+        return new ExternalReplyInfo(origin, chat, messageId, linkPreviewOptions, animation, audio, document, paidMedia, photo, sticker, story, video, videoNote, voice, hasMediaSpoiler, checklist, contact, dice, game, giveaway, giveawayWinners, invoice, location, poll, venue);
+    }
+
+    public ExternalReplyInfo withGame(@Nullable Game game) {
+        return new ExternalReplyInfo(origin, chat, messageId, linkPreviewOptions, animation, audio, document, paidMedia, photo, sticker, story, video, videoNote, voice, hasMediaSpoiler, checklist, contact, dice, game, giveaway, giveawayWinners, invoice, location, poll, venue);
+    }
+
+    public ExternalReplyInfo withGiveaway(@Nullable Giveaway giveaway) {
+        return new ExternalReplyInfo(origin, chat, messageId, linkPreviewOptions, animation, audio, document, paidMedia, photo, sticker, story, video, videoNote, voice, hasMediaSpoiler, checklist, contact, dice, game, giveaway, giveawayWinners, invoice, location, poll, venue);
+    }
+
+    public ExternalReplyInfo withGiveawayWinners(@Nullable GiveawayWinners giveawayWinners) {
+        return new ExternalReplyInfo(origin, chat, messageId, linkPreviewOptions, animation, audio, document, paidMedia, photo, sticker, story, video, videoNote, voice, hasMediaSpoiler, checklist, contact, dice, game, giveaway, giveawayWinners, invoice, location, poll, venue);
+    }
+
+    public ExternalReplyInfo withInvoice(@Nullable Invoice invoice) {
+        return new ExternalReplyInfo(origin, chat, messageId, linkPreviewOptions, animation, audio, document, paidMedia, photo, sticker, story, video, videoNote, voice, hasMediaSpoiler, checklist, contact, dice, game, giveaway, giveawayWinners, invoice, location, poll, venue);
+    }
+
+    public ExternalReplyInfo withLocation(@Nullable Location location) {
+        return new ExternalReplyInfo(origin, chat, messageId, linkPreviewOptions, animation, audio, document, paidMedia, photo, sticker, story, video, videoNote, voice, hasMediaSpoiler, checklist, contact, dice, game, giveaway, giveawayWinners, invoice, location, poll, venue);
+    }
+
+    public ExternalReplyInfo withPoll(@Nullable Poll poll) {
+        return new ExternalReplyInfo(origin, chat, messageId, linkPreviewOptions, animation, audio, document, paidMedia, photo, sticker, story, video, videoNote, voice, hasMediaSpoiler, checklist, contact, dice, game, giveaway, giveawayWinners, invoice, location, poll, venue);
+    }
+
+    public ExternalReplyInfo withVenue(@Nullable Venue venue) {
+        return new ExternalReplyInfo(origin, chat, messageId, linkPreviewOptions, animation, audio, document, paidMedia, photo, sticker, story, video, videoNote, voice, hasMediaSpoiler, checklist, contact, dice, game, giveaway, giveawayWinners, invoice, location, poll, venue);
+    }
+}

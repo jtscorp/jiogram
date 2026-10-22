@@ -29,4 +29,16 @@ public record AddStickerToSet(
     public String apiReturnType() {
         return "Boolean";
     }
+
+    public AddStickerToSet withUserId(long userId) {
+        return new AddStickerToSet(userId, name, sticker);
+    }
+
+    public AddStickerToSet withName(String name) {
+        return new AddStickerToSet(userId, name, sticker);
+    }
+
+    public AddStickerToSet withSticker(InputSticker sticker) {
+        return new AddStickerToSet(userId, name, sticker);
+    }
 }

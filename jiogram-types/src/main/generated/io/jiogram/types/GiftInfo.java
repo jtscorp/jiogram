@@ -37,4 +37,45 @@ public record GiftInfo(
     @JsonProperty("entities") @Nullable List<MessageEntity> entities,
     @JsonProperty("is_private") @Nullable Boolean isPrivate,
     @JsonProperty("unique_gift_number") @Nullable Long uniqueGiftNumber
-) {}
+) {
+
+    public GiftInfo withGift(Gift gift) {
+        return new GiftInfo(gift, ownedGiftId, convertStarCount, prepaidUpgradeStarCount, isUpgradeSeparate, canBeUpgraded, text, entities, isPrivate, uniqueGiftNumber);
+    }
+
+    public GiftInfo withOwnedGiftId(@Nullable String ownedGiftId) {
+        return new GiftInfo(gift, ownedGiftId, convertStarCount, prepaidUpgradeStarCount, isUpgradeSeparate, canBeUpgraded, text, entities, isPrivate, uniqueGiftNumber);
+    }
+
+    public GiftInfo withConvertStarCount(@Nullable Long convertStarCount) {
+        return new GiftInfo(gift, ownedGiftId, convertStarCount, prepaidUpgradeStarCount, isUpgradeSeparate, canBeUpgraded, text, entities, isPrivate, uniqueGiftNumber);
+    }
+
+    public GiftInfo withPrepaidUpgradeStarCount(@Nullable Long prepaidUpgradeStarCount) {
+        return new GiftInfo(gift, ownedGiftId, convertStarCount, prepaidUpgradeStarCount, isUpgradeSeparate, canBeUpgraded, text, entities, isPrivate, uniqueGiftNumber);
+    }
+
+    public GiftInfo withIsUpgradeSeparate(@Nullable Boolean isUpgradeSeparate) {
+        return new GiftInfo(gift, ownedGiftId, convertStarCount, prepaidUpgradeStarCount, isUpgradeSeparate, canBeUpgraded, text, entities, isPrivate, uniqueGiftNumber);
+    }
+
+    public GiftInfo withCanBeUpgraded(@Nullable Boolean canBeUpgraded) {
+        return new GiftInfo(gift, ownedGiftId, convertStarCount, prepaidUpgradeStarCount, isUpgradeSeparate, canBeUpgraded, text, entities, isPrivate, uniqueGiftNumber);
+    }
+
+    public GiftInfo withText(@Nullable String text) {
+        return new GiftInfo(gift, ownedGiftId, convertStarCount, prepaidUpgradeStarCount, isUpgradeSeparate, canBeUpgraded, text, entities, isPrivate, uniqueGiftNumber);
+    }
+
+    public GiftInfo withEntities(@Nullable List<MessageEntity> entities) {
+        return new GiftInfo(gift, ownedGiftId, convertStarCount, prepaidUpgradeStarCount, isUpgradeSeparate, canBeUpgraded, text, entities, isPrivate, uniqueGiftNumber);
+    }
+
+    public GiftInfo withIsPrivate(@Nullable Boolean isPrivate) {
+        return new GiftInfo(gift, ownedGiftId, convertStarCount, prepaidUpgradeStarCount, isUpgradeSeparate, canBeUpgraded, text, entities, isPrivate, uniqueGiftNumber);
+    }
+
+    public GiftInfo withUniqueGiftNumber(@Nullable Long uniqueGiftNumber) {
+        return new GiftInfo(gift, ownedGiftId, convertStarCount, prepaidUpgradeStarCount, isUpgradeSeparate, canBeUpgraded, text, entities, isPrivate, uniqueGiftNumber);
+    }
+}

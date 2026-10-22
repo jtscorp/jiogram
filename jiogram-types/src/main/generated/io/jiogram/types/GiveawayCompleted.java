@@ -20,4 +20,21 @@ public record GiveawayCompleted(
     @JsonProperty("unclaimed_prize_count") @Nullable Long unclaimedPrizeCount,
     @JsonProperty("giveaway_message") @Nullable Message giveawayMessage,
     @JsonProperty("is_star_giveaway") @Nullable Boolean isStarGiveaway
-) {}
+) {
+
+    public GiveawayCompleted withWinnerCount(long winnerCount) {
+        return new GiveawayCompleted(winnerCount, unclaimedPrizeCount, giveawayMessage, isStarGiveaway);
+    }
+
+    public GiveawayCompleted withUnclaimedPrizeCount(@Nullable Long unclaimedPrizeCount) {
+        return new GiveawayCompleted(winnerCount, unclaimedPrizeCount, giveawayMessage, isStarGiveaway);
+    }
+
+    public GiveawayCompleted withGiveawayMessage(@Nullable Message giveawayMessage) {
+        return new GiveawayCompleted(winnerCount, unclaimedPrizeCount, giveawayMessage, isStarGiveaway);
+    }
+
+    public GiveawayCompleted withIsStarGiveaway(@Nullable Boolean isStarGiveaway) {
+        return new GiveawayCompleted(winnerCount, unclaimedPrizeCount, giveawayMessage, isStarGiveaway);
+    }
+}

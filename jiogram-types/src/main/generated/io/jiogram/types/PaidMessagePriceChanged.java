@@ -11,4 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public record PaidMessagePriceChanged(
     @JsonProperty("paid_message_star_count") long paidMessageStarCount
-) {}
+) {
+
+    public PaidMessagePriceChanged withPaidMessageStarCount(long paidMessageStarCount) {
+        return new PaidMessagePriceChanged(paidMessageStarCount);
+    }
+}

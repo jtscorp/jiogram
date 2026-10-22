@@ -13,4 +13,13 @@ import io.jiogram.types.Chat;
 public record Story(
     @JsonProperty("chat") Chat chat,
     @JsonProperty("id") long id
-) {}
+) {
+
+    public Story withChat(Chat chat) {
+        return new Story(chat, id);
+    }
+
+    public Story withId(long id) {
+        return new Story(chat, id);
+    }
+}

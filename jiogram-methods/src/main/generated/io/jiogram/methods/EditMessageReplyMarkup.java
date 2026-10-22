@@ -45,4 +45,24 @@ public record EditMessageReplyMarkup(
     public static EditMessageReplyMarkup of() {
         return new EditMessageReplyMarkup(null, null, null, null, null);
     }
+
+    public EditMessageReplyMarkup withBusinessConnectionId(@Nullable String businessConnectionId) {
+        return new EditMessageReplyMarkup(businessConnectionId, chatId, messageId, inlineMessageId, replyMarkup);
+    }
+
+    public EditMessageReplyMarkup withChatId(@Nullable ChatId chatId) {
+        return new EditMessageReplyMarkup(businessConnectionId, chatId, messageId, inlineMessageId, replyMarkup);
+    }
+
+    public EditMessageReplyMarkup withMessageId(@Nullable Long messageId) {
+        return new EditMessageReplyMarkup(businessConnectionId, chatId, messageId, inlineMessageId, replyMarkup);
+    }
+
+    public EditMessageReplyMarkup withInlineMessageId(@Nullable String inlineMessageId) {
+        return new EditMessageReplyMarkup(businessConnectionId, chatId, messageId, inlineMessageId, replyMarkup);
+    }
+
+    public EditMessageReplyMarkup withReplyMarkup(@Nullable InlineKeyboardMarkup replyMarkup) {
+        return new EditMessageReplyMarkup(businessConnectionId, chatId, messageId, inlineMessageId, replyMarkup);
+    }
 }

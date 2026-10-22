@@ -23,4 +23,21 @@ public record TextQuote(
     @JsonProperty("entities") @Nullable List<MessageEntity> entities,
     @JsonProperty("position") long position,
     @JsonProperty("is_manual") @Nullable Boolean isManual
-) {}
+) {
+
+    public TextQuote withText(String text) {
+        return new TextQuote(text, entities, position, isManual);
+    }
+
+    public TextQuote withEntities(@Nullable List<MessageEntity> entities) {
+        return new TextQuote(text, entities, position, isManual);
+    }
+
+    public TextQuote withPosition(long position) {
+        return new TextQuote(text, entities, position, isManual);
+    }
+
+    public TextQuote withIsManual(@Nullable Boolean isManual) {
+        return new TextQuote(text, entities, position, isManual);
+    }
+}

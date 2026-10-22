@@ -28,4 +28,12 @@ public record SavePreparedKeyboardButton(
     public String apiReturnType() {
         return "PreparedKeyboardButton";
     }
+
+    public SavePreparedKeyboardButton withUserId(long userId) {
+        return new SavePreparedKeyboardButton(userId, button);
+    }
+
+    public SavePreparedKeyboardButton withButton(KeyboardButton button) {
+        return new SavePreparedKeyboardButton(userId, button);
+    }
 }

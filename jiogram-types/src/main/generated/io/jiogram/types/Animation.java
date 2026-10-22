@@ -31,4 +31,41 @@ public record Animation(
     @JsonProperty("file_name") @Nullable String fileName,
     @JsonProperty("mime_type") @Nullable String mimeType,
     @JsonProperty("file_size") @Nullable Long fileSize
-) {}
+) {
+
+    public Animation withFileId(String fileId) {
+        return new Animation(fileId, fileUniqueId, width, height, duration, thumbnail, fileName, mimeType, fileSize);
+    }
+
+    public Animation withFileUniqueId(String fileUniqueId) {
+        return new Animation(fileId, fileUniqueId, width, height, duration, thumbnail, fileName, mimeType, fileSize);
+    }
+
+    public Animation withWidth(long width) {
+        return new Animation(fileId, fileUniqueId, width, height, duration, thumbnail, fileName, mimeType, fileSize);
+    }
+
+    public Animation withHeight(long height) {
+        return new Animation(fileId, fileUniqueId, width, height, duration, thumbnail, fileName, mimeType, fileSize);
+    }
+
+    public Animation withDuration(long duration) {
+        return new Animation(fileId, fileUniqueId, width, height, duration, thumbnail, fileName, mimeType, fileSize);
+    }
+
+    public Animation withThumbnail(@Nullable PhotoSize thumbnail) {
+        return new Animation(fileId, fileUniqueId, width, height, duration, thumbnail, fileName, mimeType, fileSize);
+    }
+
+    public Animation withFileName(@Nullable String fileName) {
+        return new Animation(fileId, fileUniqueId, width, height, duration, thumbnail, fileName, mimeType, fileSize);
+    }
+
+    public Animation withMimeType(@Nullable String mimeType) {
+        return new Animation(fileId, fileUniqueId, width, height, duration, thumbnail, fileName, mimeType, fileSize);
+    }
+
+    public Animation withFileSize(@Nullable Long fileSize) {
+        return new Animation(fileId, fileUniqueId, width, height, duration, thumbnail, fileName, mimeType, fileSize);
+    }
+}

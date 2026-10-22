@@ -22,4 +22,8 @@ public record GetManagedBotToken(
     public String apiReturnType() {
         return "String";
     }
+
+    public GetManagedBotToken withUserId(long userId) {
+        return new GetManagedBotToken(userId);
+    }
 }

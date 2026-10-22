@@ -32,4 +32,12 @@ public record SetStickerKeywords(
     public static SetStickerKeywords of(String sticker) {
         return new SetStickerKeywords(sticker, null);
     }
+
+    public SetStickerKeywords withSticker(String sticker) {
+        return new SetStickerKeywords(sticker, keywords);
+    }
+
+    public SetStickerKeywords withKeywords(@Nullable List<String> keywords) {
+        return new SetStickerKeywords(sticker, keywords);
+    }
 }

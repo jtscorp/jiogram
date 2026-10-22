@@ -17,4 +17,13 @@ import org.jspecify.annotations.Nullable;
 public record DirectMessagesTopic(
     @JsonProperty("topic_id") long topicId,
     @JsonProperty("user") @Nullable User user
-) {}
+) {
+
+    public DirectMessagesTopic withTopicId(long topicId) {
+        return new DirectMessagesTopic(topicId, user);
+    }
+
+    public DirectMessagesTopic withUser(@Nullable User user) {
+        return new DirectMessagesTopic(topicId, user);
+    }
+}

@@ -17,4 +17,21 @@ public record InputContactMessageContent(
     @JsonProperty("first_name") String firstName,
     @JsonProperty("last_name") @Nullable String lastName,
     @JsonProperty("vcard") @Nullable String vcard
-) implements InputMessageContent {}
+) implements InputMessageContent {
+
+    public InputContactMessageContent withPhoneNumber(String phoneNumber) {
+        return new InputContactMessageContent(phoneNumber, firstName, lastName, vcard);
+    }
+
+    public InputContactMessageContent withFirstName(String firstName) {
+        return new InputContactMessageContent(phoneNumber, firstName, lastName, vcard);
+    }
+
+    public InputContactMessageContent withLastName(@Nullable String lastName) {
+        return new InputContactMessageContent(phoneNumber, firstName, lastName, vcard);
+    }
+
+    public InputContactMessageContent withVcard(@Nullable String vcard) {
+        return new InputContactMessageContent(phoneNumber, firstName, lastName, vcard);
+    }
+}

@@ -18,4 +18,13 @@ public record TransactionPartnerChat(
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) TransactionPartnerType type,
     @JsonProperty("chat") Chat chat,
     @JsonProperty("gift") @Nullable Gift gift
-) implements TransactionPartner {}
+) implements TransactionPartner {
+
+    public TransactionPartnerChat withChat(Chat chat) {
+        return new TransactionPartnerChat(type, chat, gift);
+    }
+
+    public TransactionPartnerChat withGift(@Nullable Gift gift) {
+        return new TransactionPartnerChat(type, chat, gift);
+    }
+}

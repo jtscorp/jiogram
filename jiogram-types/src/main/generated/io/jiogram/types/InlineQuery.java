@@ -28,4 +28,29 @@ public record InlineQuery(
     @JsonProperty("offset") String offset,
     @JsonProperty("chat_type") @Nullable InlineQueryChatType chatType,
     @JsonProperty("location") @Nullable Location location
-) {}
+) {
+
+    public InlineQuery withId(String id) {
+        return new InlineQuery(id, from, query, offset, chatType, location);
+    }
+
+    public InlineQuery withFrom(User from) {
+        return new InlineQuery(id, from, query, offset, chatType, location);
+    }
+
+    public InlineQuery withQuery(String query) {
+        return new InlineQuery(id, from, query, offset, chatType, location);
+    }
+
+    public InlineQuery withOffset(String offset) {
+        return new InlineQuery(id, from, query, offset, chatType, location);
+    }
+
+    public InlineQuery withChatType(@Nullable InlineQueryChatType chatType) {
+        return new InlineQuery(id, from, query, offset, chatType, location);
+    }
+
+    public InlineQuery withLocation(@Nullable Location location) {
+        return new InlineQuery(id, from, query, offset, chatType, location);
+    }
+}

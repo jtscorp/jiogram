@@ -17,4 +17,13 @@ import org.jspecify.annotations.Nullable;
 public record SuggestedPostParameters(
     @JsonProperty("price") @Nullable SuggestedPostPrice price,
     @JsonProperty("send_date") @Nullable Long sendDate
-) {}
+) {
+
+    public SuggestedPostParameters withPrice(@Nullable SuggestedPostPrice price) {
+        return new SuggestedPostParameters(price, sendDate);
+    }
+
+    public SuggestedPostParameters withSendDate(@Nullable Long sendDate) {
+        return new SuggestedPostParameters(price, sendDate);
+    }
+}

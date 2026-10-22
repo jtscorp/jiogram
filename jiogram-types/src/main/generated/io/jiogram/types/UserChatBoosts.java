@@ -12,4 +12,9 @@ import java.util.List;
  */
 public record UserChatBoosts(
     @JsonProperty("boosts") List<ChatBoost> boosts
-) {}
+) {
+
+    public UserChatBoosts withBoosts(List<ChatBoost> boosts) {
+        return new UserChatBoosts(boosts);
+    }
+}

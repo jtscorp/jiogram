@@ -29,4 +29,12 @@ public record UnpinAllForumTopicMessages(
     public String apiReturnType() {
         return "Boolean";
     }
+
+    public UnpinAllForumTopicMessages withChatId(ChatId chatId) {
+        return new UnpinAllForumTopicMessages(chatId, messageThreadId);
+    }
+
+    public UnpinAllForumTopicMessages withMessageThreadId(long messageThreadId) {
+        return new UnpinAllForumTopicMessages(chatId, messageThreadId);
+    }
 }

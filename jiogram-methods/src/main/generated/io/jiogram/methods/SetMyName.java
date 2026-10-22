@@ -31,4 +31,12 @@ public record SetMyName(
     public static SetMyName of() {
         return new SetMyName(null, null);
     }
+
+    public SetMyName withName(@Nullable String name) {
+        return new SetMyName(name, languageCode);
+    }
+
+    public SetMyName withLanguageCode(@Nullable String languageCode) {
+        return new SetMyName(name, languageCode);
+    }
 }

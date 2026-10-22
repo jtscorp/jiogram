@@ -27,4 +27,33 @@ public record KeyboardButtonRequestUsers(
     @JsonProperty("request_name") @Nullable Boolean requestName,
     @JsonProperty("request_username") @Nullable Boolean requestUsername,
     @JsonProperty("request_photo") @Nullable Boolean requestPhoto
-) {}
+) {
+
+    public KeyboardButtonRequestUsers withRequestId(long requestId) {
+        return new KeyboardButtonRequestUsers(requestId, userIsBot, userIsPremium, maxQuantity, requestName, requestUsername, requestPhoto);
+    }
+
+    public KeyboardButtonRequestUsers withUserIsBot(@Nullable Boolean userIsBot) {
+        return new KeyboardButtonRequestUsers(requestId, userIsBot, userIsPremium, maxQuantity, requestName, requestUsername, requestPhoto);
+    }
+
+    public KeyboardButtonRequestUsers withUserIsPremium(@Nullable Boolean userIsPremium) {
+        return new KeyboardButtonRequestUsers(requestId, userIsBot, userIsPremium, maxQuantity, requestName, requestUsername, requestPhoto);
+    }
+
+    public KeyboardButtonRequestUsers withMaxQuantity(@Nullable Long maxQuantity) {
+        return new KeyboardButtonRequestUsers(requestId, userIsBot, userIsPremium, maxQuantity, requestName, requestUsername, requestPhoto);
+    }
+
+    public KeyboardButtonRequestUsers withRequestName(@Nullable Boolean requestName) {
+        return new KeyboardButtonRequestUsers(requestId, userIsBot, userIsPremium, maxQuantity, requestName, requestUsername, requestPhoto);
+    }
+
+    public KeyboardButtonRequestUsers withRequestUsername(@Nullable Boolean requestUsername) {
+        return new KeyboardButtonRequestUsers(requestId, userIsBot, userIsPremium, maxQuantity, requestName, requestUsername, requestPhoto);
+    }
+
+    public KeyboardButtonRequestUsers withRequestPhoto(@Nullable Boolean requestPhoto) {
+        return new KeyboardButtonRequestUsers(requestId, userIsBot, userIsPremium, maxQuantity, requestName, requestUsername, requestPhoto);
+    }
+}

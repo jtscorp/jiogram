@@ -26,4 +26,25 @@ public record ChatShared(
     @JsonProperty("title") @Nullable String title,
     @JsonProperty("username") @Nullable String username,
     @JsonProperty("photo") @Nullable List<PhotoSize> photo
-) {}
+) {
+
+    public ChatShared withRequestId(long requestId) {
+        return new ChatShared(requestId, chatId, title, username, photo);
+    }
+
+    public ChatShared withChatId(long chatId) {
+        return new ChatShared(requestId, chatId, title, username, photo);
+    }
+
+    public ChatShared withTitle(@Nullable String title) {
+        return new ChatShared(requestId, chatId, title, username, photo);
+    }
+
+    public ChatShared withUsername(@Nullable String username) {
+        return new ChatShared(requestId, chatId, title, username, photo);
+    }
+
+    public ChatShared withPhoto(@Nullable List<PhotoSize> photo) {
+        return new ChatShared(requestId, chatId, title, username, photo);
+    }
+}

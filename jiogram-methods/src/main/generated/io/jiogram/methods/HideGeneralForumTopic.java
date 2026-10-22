@@ -26,4 +26,8 @@ public record HideGeneralForumTopic(
     public String apiReturnType() {
         return "Boolean";
     }
+
+    public HideGeneralForumTopic withChatId(ChatId chatId) {
+        return new HideGeneralForumTopic(chatId);
+    }
 }

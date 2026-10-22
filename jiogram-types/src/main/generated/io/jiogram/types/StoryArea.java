@@ -14,4 +14,13 @@ import io.jiogram.types.StoryAreaType;
 public record StoryArea(
     @JsonProperty("position") StoryAreaPosition position,
     @JsonProperty("type") StoryAreaType type
-) {}
+) {
+
+    public StoryArea withPosition(StoryAreaPosition position) {
+        return new StoryArea(position, type);
+    }
+
+    public StoryArea withType(StoryAreaType type) {
+        return new StoryArea(position, type);
+    }
+}

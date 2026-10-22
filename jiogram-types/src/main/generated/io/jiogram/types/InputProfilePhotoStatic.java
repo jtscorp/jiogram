@@ -16,4 +16,9 @@ import io.jiogram.types.InputProfilePhotoType;
 public record InputProfilePhotoStatic(
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) InputProfilePhotoType type,
     @JsonProperty("photo") InputFileOrString photo
-) implements InputProfilePhoto {}
+) implements InputProfilePhoto {
+
+    public InputProfilePhotoStatic withPhoto(InputFileOrString photo) {
+        return new InputProfilePhotoStatic(type, photo);
+    }
+}

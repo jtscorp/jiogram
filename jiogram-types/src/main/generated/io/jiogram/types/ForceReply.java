@@ -33,4 +33,17 @@ public record ForceReply(
     @JsonProperty("force_reply") boolean forceReply,
     @JsonProperty("input_field_placeholder") @Nullable String inputFieldPlaceholder,
     @JsonProperty("selective") @Nullable Boolean selective
-) implements ReplyMarkup {}
+) implements ReplyMarkup {
+
+    public ForceReply withForceReply(boolean forceReply) {
+        return new ForceReply(forceReply, inputFieldPlaceholder, selective);
+    }
+
+    public ForceReply withInputFieldPlaceholder(@Nullable String inputFieldPlaceholder) {
+        return new ForceReply(forceReply, inputFieldPlaceholder, selective);
+    }
+
+    public ForceReply withSelective(@Nullable Boolean selective) {
+        return new ForceReply(forceReply, inputFieldPlaceholder, selective);
+    }
+}

@@ -55,4 +55,48 @@ public record GetBusinessAccountGifts(
     public static GetBusinessAccountGifts of(String businessConnectionId) {
         return new GetBusinessAccountGifts(businessConnectionId, null, null, null, null, null, null, null, null, null, null);
     }
+
+    public GetBusinessAccountGifts withBusinessConnectionId(String businessConnectionId) {
+        return new GetBusinessAccountGifts(businessConnectionId, excludeUnsaved, excludeSaved, excludeUnlimited, excludeLimitedUpgradable, excludeLimitedNonUpgradable, excludeUnique, excludeFromBlockchain, sortByPrice, offset, limit);
+    }
+
+    public GetBusinessAccountGifts withExcludeUnsaved(@Nullable Boolean excludeUnsaved) {
+        return new GetBusinessAccountGifts(businessConnectionId, excludeUnsaved, excludeSaved, excludeUnlimited, excludeLimitedUpgradable, excludeLimitedNonUpgradable, excludeUnique, excludeFromBlockchain, sortByPrice, offset, limit);
+    }
+
+    public GetBusinessAccountGifts withExcludeSaved(@Nullable Boolean excludeSaved) {
+        return new GetBusinessAccountGifts(businessConnectionId, excludeUnsaved, excludeSaved, excludeUnlimited, excludeLimitedUpgradable, excludeLimitedNonUpgradable, excludeUnique, excludeFromBlockchain, sortByPrice, offset, limit);
+    }
+
+    public GetBusinessAccountGifts withExcludeUnlimited(@Nullable Boolean excludeUnlimited) {
+        return new GetBusinessAccountGifts(businessConnectionId, excludeUnsaved, excludeSaved, excludeUnlimited, excludeLimitedUpgradable, excludeLimitedNonUpgradable, excludeUnique, excludeFromBlockchain, sortByPrice, offset, limit);
+    }
+
+    public GetBusinessAccountGifts withExcludeLimitedUpgradable(@Nullable Boolean excludeLimitedUpgradable) {
+        return new GetBusinessAccountGifts(businessConnectionId, excludeUnsaved, excludeSaved, excludeUnlimited, excludeLimitedUpgradable, excludeLimitedNonUpgradable, excludeUnique, excludeFromBlockchain, sortByPrice, offset, limit);
+    }
+
+    public GetBusinessAccountGifts withExcludeLimitedNonUpgradable(@Nullable Boolean excludeLimitedNonUpgradable) {
+        return new GetBusinessAccountGifts(businessConnectionId, excludeUnsaved, excludeSaved, excludeUnlimited, excludeLimitedUpgradable, excludeLimitedNonUpgradable, excludeUnique, excludeFromBlockchain, sortByPrice, offset, limit);
+    }
+
+    public GetBusinessAccountGifts withExcludeUnique(@Nullable Boolean excludeUnique) {
+        return new GetBusinessAccountGifts(businessConnectionId, excludeUnsaved, excludeSaved, excludeUnlimited, excludeLimitedUpgradable, excludeLimitedNonUpgradable, excludeUnique, excludeFromBlockchain, sortByPrice, offset, limit);
+    }
+
+    public GetBusinessAccountGifts withExcludeFromBlockchain(@Nullable Boolean excludeFromBlockchain) {
+        return new GetBusinessAccountGifts(businessConnectionId, excludeUnsaved, excludeSaved, excludeUnlimited, excludeLimitedUpgradable, excludeLimitedNonUpgradable, excludeUnique, excludeFromBlockchain, sortByPrice, offset, limit);
+    }
+
+    public GetBusinessAccountGifts withSortByPrice(@Nullable Boolean sortByPrice) {
+        return new GetBusinessAccountGifts(businessConnectionId, excludeUnsaved, excludeSaved, excludeUnlimited, excludeLimitedUpgradable, excludeLimitedNonUpgradable, excludeUnique, excludeFromBlockchain, sortByPrice, offset, limit);
+    }
+
+    public GetBusinessAccountGifts withOffset(@Nullable String offset) {
+        return new GetBusinessAccountGifts(businessConnectionId, excludeUnsaved, excludeSaved, excludeUnlimited, excludeLimitedUpgradable, excludeLimitedNonUpgradable, excludeUnique, excludeFromBlockchain, sortByPrice, offset, limit);
+    }
+
+    public GetBusinessAccountGifts withLimit(@Nullable Long limit) {
+        return new GetBusinessAccountGifts(businessConnectionId, excludeUnsaved, excludeSaved, excludeUnlimited, excludeLimitedUpgradable, excludeLimitedNonUpgradable, excludeUnique, excludeFromBlockchain, sortByPrice, offset, limit);
+    }
 }

@@ -26,4 +26,8 @@ public record ReopenGeneralForumTopic(
     public String apiReturnType() {
         return "Boolean";
     }
+
+    public ReopenGeneralForumTopic withChatId(ChatId chatId) {
+        return new ReopenGeneralForumTopic(chatId);
+    }
 }

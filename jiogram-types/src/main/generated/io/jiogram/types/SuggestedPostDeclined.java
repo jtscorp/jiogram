@@ -15,4 +15,13 @@ import org.jspecify.annotations.Nullable;
 public record SuggestedPostDeclined(
     @JsonProperty("suggested_post_message") @Nullable Message suggestedPostMessage,
     @JsonProperty("comment") @Nullable String comment
-) {}
+) {
+
+    public SuggestedPostDeclined withSuggestedPostMessage(@Nullable Message suggestedPostMessage) {
+        return new SuggestedPostDeclined(suggestedPostMessage, comment);
+    }
+
+    public SuggestedPostDeclined withComment(@Nullable String comment) {
+        return new SuggestedPostDeclined(suggestedPostMessage, comment);
+    }
+}

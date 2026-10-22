@@ -32,4 +32,12 @@ public record SetMyDescription(
     public static SetMyDescription of() {
         return new SetMyDescription(null, null);
     }
+
+    public SetMyDescription withDescription(@Nullable String description) {
+        return new SetMyDescription(description, languageCode);
+    }
+
+    public SetMyDescription withLanguageCode(@Nullable String languageCode) {
+        return new SetMyDescription(description, languageCode);
+    }
 }

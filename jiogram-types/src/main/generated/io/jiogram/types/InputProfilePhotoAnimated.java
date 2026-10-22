@@ -21,4 +21,13 @@ public record InputProfilePhotoAnimated(
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) InputProfilePhotoType type,
     @JsonProperty("animation") InputFileOrString animation,
     @JsonProperty("main_frame_timestamp") @Nullable Double mainFrameTimestamp
-) implements InputProfilePhoto {}
+) implements InputProfilePhoto {
+
+    public InputProfilePhotoAnimated withAnimation(InputFileOrString animation) {
+        return new InputProfilePhotoAnimated(type, animation, mainFrameTimestamp);
+    }
+
+    public InputProfilePhotoAnimated withMainFrameTimestamp(@Nullable Double mainFrameTimestamp) {
+        return new InputProfilePhotoAnimated(type, animation, mainFrameTimestamp);
+    }
+}

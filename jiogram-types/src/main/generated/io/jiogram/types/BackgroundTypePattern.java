@@ -27,4 +27,25 @@ public record BackgroundTypePattern(
     @JsonProperty("intensity") long intensity,
     @JsonProperty("is_inverted") @Nullable Boolean isInverted,
     @JsonProperty("is_moving") @Nullable Boolean isMoving
-) implements BackgroundType {}
+) implements BackgroundType {
+
+    public BackgroundTypePattern withDocument(Document document) {
+        return new BackgroundTypePattern(type, document, fill, intensity, isInverted, isMoving);
+    }
+
+    public BackgroundTypePattern withFill(BackgroundFill fill) {
+        return new BackgroundTypePattern(type, document, fill, intensity, isInverted, isMoving);
+    }
+
+    public BackgroundTypePattern withIntensity(long intensity) {
+        return new BackgroundTypePattern(type, document, fill, intensity, isInverted, isMoving);
+    }
+
+    public BackgroundTypePattern withIsInverted(@Nullable Boolean isInverted) {
+        return new BackgroundTypePattern(type, document, fill, intensity, isInverted, isMoving);
+    }
+
+    public BackgroundTypePattern withIsMoving(@Nullable Boolean isMoving) {
+        return new BackgroundTypePattern(type, document, fill, intensity, isInverted, isMoving);
+    }
+}

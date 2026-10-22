@@ -47,4 +47,28 @@ public record CreateNewStickerSet(
     public static CreateNewStickerSet of(long userId, String name, String title, List<InputSticker> stickers) {
         return new CreateNewStickerSet(userId, name, title, stickers, null, null);
     }
+
+    public CreateNewStickerSet withUserId(long userId) {
+        return new CreateNewStickerSet(userId, name, title, stickers, stickerType, needsRepainting);
+    }
+
+    public CreateNewStickerSet withName(String name) {
+        return new CreateNewStickerSet(userId, name, title, stickers, stickerType, needsRepainting);
+    }
+
+    public CreateNewStickerSet withTitle(String title) {
+        return new CreateNewStickerSet(userId, name, title, stickers, stickerType, needsRepainting);
+    }
+
+    public CreateNewStickerSet withStickers(List<InputSticker> stickers) {
+        return new CreateNewStickerSet(userId, name, title, stickers, stickerType, needsRepainting);
+    }
+
+    public CreateNewStickerSet withStickerType(@Nullable StickerType stickerType) {
+        return new CreateNewStickerSet(userId, name, title, stickers, stickerType, needsRepainting);
+    }
+
+    public CreateNewStickerSet withNeedsRepainting(@Nullable Boolean needsRepainting) {
+        return new CreateNewStickerSet(userId, name, title, stickers, stickerType, needsRepainting);
+    }
 }

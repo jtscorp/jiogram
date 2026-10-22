@@ -47,4 +47,24 @@ public record AnswerCallbackQuery(
     public static AnswerCallbackQuery of(String callbackQueryId) {
         return new AnswerCallbackQuery(callbackQueryId, null, null, null, null);
     }
+
+    public AnswerCallbackQuery withCallbackQueryId(String callbackQueryId) {
+        return new AnswerCallbackQuery(callbackQueryId, text, showAlert, url, cacheTime);
+    }
+
+    public AnswerCallbackQuery withText(@Nullable String text) {
+        return new AnswerCallbackQuery(callbackQueryId, text, showAlert, url, cacheTime);
+    }
+
+    public AnswerCallbackQuery withShowAlert(@Nullable Boolean showAlert) {
+        return new AnswerCallbackQuery(callbackQueryId, text, showAlert, url, cacheTime);
+    }
+
+    public AnswerCallbackQuery withUrl(@Nullable String url) {
+        return new AnswerCallbackQuery(callbackQueryId, text, showAlert, url, cacheTime);
+    }
+
+    public AnswerCallbackQuery withCacheTime(@Nullable Long cacheTime) {
+        return new AnswerCallbackQuery(callbackQueryId, text, showAlert, url, cacheTime);
+    }
 }

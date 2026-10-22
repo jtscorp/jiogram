@@ -28,4 +28,33 @@ public record PreCheckoutQuery(
     @JsonProperty("invoice_payload") String invoicePayload,
     @JsonProperty("shipping_option_id") @Nullable String shippingOptionId,
     @JsonProperty("order_info") @Nullable OrderInfo orderInfo
-) {}
+) {
+
+    public PreCheckoutQuery withId(String id) {
+        return new PreCheckoutQuery(id, from, currency, totalAmount, invoicePayload, shippingOptionId, orderInfo);
+    }
+
+    public PreCheckoutQuery withFrom(User from) {
+        return new PreCheckoutQuery(id, from, currency, totalAmount, invoicePayload, shippingOptionId, orderInfo);
+    }
+
+    public PreCheckoutQuery withCurrency(String currency) {
+        return new PreCheckoutQuery(id, from, currency, totalAmount, invoicePayload, shippingOptionId, orderInfo);
+    }
+
+    public PreCheckoutQuery withTotalAmount(long totalAmount) {
+        return new PreCheckoutQuery(id, from, currency, totalAmount, invoicePayload, shippingOptionId, orderInfo);
+    }
+
+    public PreCheckoutQuery withInvoicePayload(String invoicePayload) {
+        return new PreCheckoutQuery(id, from, currency, totalAmount, invoicePayload, shippingOptionId, orderInfo);
+    }
+
+    public PreCheckoutQuery withShippingOptionId(@Nullable String shippingOptionId) {
+        return new PreCheckoutQuery(id, from, currency, totalAmount, invoicePayload, shippingOptionId, orderInfo);
+    }
+
+    public PreCheckoutQuery withOrderInfo(@Nullable OrderInfo orderInfo) {
+        return new PreCheckoutQuery(id, from, currency, totalAmount, invoicePayload, shippingOptionId, orderInfo);
+    }
+}

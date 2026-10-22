@@ -14,4 +14,13 @@ import org.jspecify.annotations.Nullable;
 public record StarAmount(
     @JsonProperty("amount") long amount,
     @JsonProperty("nanostar_amount") @Nullable Long nanostarAmount
-) {}
+) {
+
+    public StarAmount withAmount(long amount) {
+        return new StarAmount(amount, nanostarAmount);
+    }
+
+    public StarAmount withNanostarAmount(@Nullable Long nanostarAmount) {
+        return new StarAmount(amount, nanostarAmount);
+    }
+}

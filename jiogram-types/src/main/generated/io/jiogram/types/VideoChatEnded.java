@@ -10,4 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public record VideoChatEnded(
     @JsonProperty("duration") long duration
-) {}
+) {
+
+    public VideoChatEnded withDuration(long duration) {
+        return new VideoChatEnded(duration);
+    }
+}

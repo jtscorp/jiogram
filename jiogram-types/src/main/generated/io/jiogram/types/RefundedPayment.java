@@ -23,4 +23,25 @@ public record RefundedPayment(
     @JsonProperty("invoice_payload") String invoicePayload,
     @JsonProperty("telegram_payment_charge_id") String telegramPaymentChargeId,
     @JsonProperty("provider_payment_charge_id") @Nullable String providerPaymentChargeId
-) {}
+) {
+
+    public RefundedPayment withCurrency(String currency) {
+        return new RefundedPayment(currency, totalAmount, invoicePayload, telegramPaymentChargeId, providerPaymentChargeId);
+    }
+
+    public RefundedPayment withTotalAmount(long totalAmount) {
+        return new RefundedPayment(currency, totalAmount, invoicePayload, telegramPaymentChargeId, providerPaymentChargeId);
+    }
+
+    public RefundedPayment withInvoicePayload(String invoicePayload) {
+        return new RefundedPayment(currency, totalAmount, invoicePayload, telegramPaymentChargeId, providerPaymentChargeId);
+    }
+
+    public RefundedPayment withTelegramPaymentChargeId(String telegramPaymentChargeId) {
+        return new RefundedPayment(currency, totalAmount, invoicePayload, telegramPaymentChargeId, providerPaymentChargeId);
+    }
+
+    public RefundedPayment withProviderPaymentChargeId(@Nullable String providerPaymentChargeId) {
+        return new RefundedPayment(currency, totalAmount, invoicePayload, telegramPaymentChargeId, providerPaymentChargeId);
+    }
+}

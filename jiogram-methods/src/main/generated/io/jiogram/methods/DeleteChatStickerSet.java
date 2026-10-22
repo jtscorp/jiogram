@@ -27,4 +27,8 @@ public record DeleteChatStickerSet(
     public String apiReturnType() {
         return "Boolean";
     }
+
+    public DeleteChatStickerSet withChatId(ChatId chatId) {
+        return new DeleteChatStickerSet(chatId);
+    }
 }

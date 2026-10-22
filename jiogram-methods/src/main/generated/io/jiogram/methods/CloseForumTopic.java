@@ -28,4 +28,12 @@ public record CloseForumTopic(
     public String apiReturnType() {
         return "Boolean";
     }
+
+    public CloseForumTopic withChatId(ChatId chatId) {
+        return new CloseForumTopic(chatId, messageThreadId);
+    }
+
+    public CloseForumTopic withMessageThreadId(long messageThreadId) {
+        return new CloseForumTopic(chatId, messageThreadId);
+    }
 }

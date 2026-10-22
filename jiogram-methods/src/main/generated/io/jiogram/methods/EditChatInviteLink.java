@@ -44,4 +44,28 @@ public record EditChatInviteLink(
     public static EditChatInviteLink of(ChatId chatId, String inviteLink) {
         return new EditChatInviteLink(chatId, inviteLink, null, null, null, null);
     }
+
+    public EditChatInviteLink withChatId(ChatId chatId) {
+        return new EditChatInviteLink(chatId, inviteLink, name, expireDate, memberLimit, createsJoinRequest);
+    }
+
+    public EditChatInviteLink withInviteLink(String inviteLink) {
+        return new EditChatInviteLink(chatId, inviteLink, name, expireDate, memberLimit, createsJoinRequest);
+    }
+
+    public EditChatInviteLink withName(@Nullable String name) {
+        return new EditChatInviteLink(chatId, inviteLink, name, expireDate, memberLimit, createsJoinRequest);
+    }
+
+    public EditChatInviteLink withExpireDate(@Nullable Long expireDate) {
+        return new EditChatInviteLink(chatId, inviteLink, name, expireDate, memberLimit, createsJoinRequest);
+    }
+
+    public EditChatInviteLink withMemberLimit(@Nullable Long memberLimit) {
+        return new EditChatInviteLink(chatId, inviteLink, name, expireDate, memberLimit, createsJoinRequest);
+    }
+
+    public EditChatInviteLink withCreatesJoinRequest(@Nullable Boolean createsJoinRequest) {
+        return new EditChatInviteLink(chatId, inviteLink, name, expireDate, memberLimit, createsJoinRequest);
+    }
 }

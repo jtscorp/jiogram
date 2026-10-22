@@ -29,4 +29,8 @@ public record GetMyDescription(
     public static GetMyDescription of() {
         return new GetMyDescription(null);
     }
+
+    public GetMyDescription withLanguageCode(@Nullable String languageCode) {
+        return new GetMyDescription(languageCode);
+    }
 }

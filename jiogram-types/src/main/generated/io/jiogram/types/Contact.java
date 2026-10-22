@@ -22,4 +22,25 @@ public record Contact(
     @JsonProperty("last_name") @Nullable String lastName,
     @JsonProperty("user_id") @Nullable Long userId,
     @JsonProperty("vcard") @Nullable String vcard
-) {}
+) {
+
+    public Contact withPhoneNumber(String phoneNumber) {
+        return new Contact(phoneNumber, firstName, lastName, userId, vcard);
+    }
+
+    public Contact withFirstName(String firstName) {
+        return new Contact(phoneNumber, firstName, lastName, userId, vcard);
+    }
+
+    public Contact withLastName(@Nullable String lastName) {
+        return new Contact(phoneNumber, firstName, lastName, userId, vcard);
+    }
+
+    public Contact withUserId(@Nullable Long userId) {
+        return new Contact(phoneNumber, firstName, lastName, userId, vcard);
+    }
+
+    public Contact withVcard(@Nullable String vcard) {
+        return new Contact(phoneNumber, firstName, lastName, userId, vcard);
+    }
+}

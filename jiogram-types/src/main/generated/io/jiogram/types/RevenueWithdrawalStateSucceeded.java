@@ -15,4 +15,13 @@ public record RevenueWithdrawalStateSucceeded(
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) RevenueWithdrawalStateType type,
     @JsonProperty("date") long date,
     @JsonProperty("url") String url
-) implements RevenueWithdrawalState {}
+) implements RevenueWithdrawalState {
+
+    public RevenueWithdrawalStateSucceeded withDate(long date) {
+        return new RevenueWithdrawalStateSucceeded(type, date, url);
+    }
+
+    public RevenueWithdrawalStateSucceeded withUrl(String url) {
+        return new RevenueWithdrawalStateSucceeded(type, date, url);
+    }
+}

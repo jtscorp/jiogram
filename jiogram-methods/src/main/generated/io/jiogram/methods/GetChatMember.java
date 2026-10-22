@@ -29,4 +29,12 @@ public record GetChatMember(
     public String apiReturnType() {
         return "ChatMember";
     }
+
+    public GetChatMember withChatId(ChatId chatId) {
+        return new GetChatMember(chatId, userId);
+    }
+
+    public GetChatMember withUserId(long userId) {
+        return new GetChatMember(chatId, userId);
+    }
 }

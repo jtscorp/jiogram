@@ -41,4 +41,20 @@ public record PinChatMessage(
     public static PinChatMessage of(ChatId chatId, long messageId) {
         return new PinChatMessage(null, chatId, messageId, null);
     }
+
+    public PinChatMessage withBusinessConnectionId(@Nullable String businessConnectionId) {
+        return new PinChatMessage(businessConnectionId, chatId, messageId, disableNotification);
+    }
+
+    public PinChatMessage withChatId(ChatId chatId) {
+        return new PinChatMessage(businessConnectionId, chatId, messageId, disableNotification);
+    }
+
+    public PinChatMessage withMessageId(long messageId) {
+        return new PinChatMessage(businessConnectionId, chatId, messageId, disableNotification);
+    }
+
+    public PinChatMessage withDisableNotification(@Nullable Boolean disableNotification) {
+        return new PinChatMessage(businessConnectionId, chatId, messageId, disableNotification);
+    }
 }

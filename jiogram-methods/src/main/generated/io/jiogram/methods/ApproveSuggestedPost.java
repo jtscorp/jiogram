@@ -35,4 +35,16 @@ public record ApproveSuggestedPost(
     public static ApproveSuggestedPost of(long chatId, long messageId) {
         return new ApproveSuggestedPost(chatId, messageId, null);
     }
+
+    public ApproveSuggestedPost withChatId(long chatId) {
+        return new ApproveSuggestedPost(chatId, messageId, sendDate);
+    }
+
+    public ApproveSuggestedPost withMessageId(long messageId) {
+        return new ApproveSuggestedPost(chatId, messageId, sendDate);
+    }
+
+    public ApproveSuggestedPost withSendDate(@Nullable Long sendDate) {
+        return new ApproveSuggestedPost(chatId, messageId, sendDate);
+    }
 }

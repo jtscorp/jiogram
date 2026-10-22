@@ -20,4 +20,17 @@ public record PassportElementErrorSelfie(
     @JsonProperty("type") PassportElementType type,
     @JsonProperty("file_hash") String fileHash,
     @JsonProperty("message") String message
-) implements PassportElementError {}
+) implements PassportElementError {
+
+    public PassportElementErrorSelfie withType(PassportElementType type) {
+        return new PassportElementErrorSelfie(source, type, fileHash, message);
+    }
+
+    public PassportElementErrorSelfie withFileHash(String fileHash) {
+        return new PassportElementErrorSelfie(source, type, fileHash, message);
+    }
+
+    public PassportElementErrorSelfie withMessage(String message) {
+        return new PassportElementErrorSelfie(source, type, fileHash, message);
+    }
+}

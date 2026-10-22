@@ -37,4 +37,29 @@ public record ReplyKeyboardMarkup(
     @JsonProperty("one_time_keyboard") @Nullable Boolean oneTimeKeyboard,
     @JsonProperty("input_field_placeholder") @Nullable String inputFieldPlaceholder,
     @JsonProperty("selective") @Nullable Boolean selective
-) implements ReplyMarkup {}
+) implements ReplyMarkup {
+
+    public ReplyKeyboardMarkup withKeyboard(List<List<KeyboardButton>> keyboard) {
+        return new ReplyKeyboardMarkup(keyboard, isPersistent, resizeKeyboard, oneTimeKeyboard, inputFieldPlaceholder, selective);
+    }
+
+    public ReplyKeyboardMarkup withIsPersistent(@Nullable Boolean isPersistent) {
+        return new ReplyKeyboardMarkup(keyboard, isPersistent, resizeKeyboard, oneTimeKeyboard, inputFieldPlaceholder, selective);
+    }
+
+    public ReplyKeyboardMarkup withResizeKeyboard(@Nullable Boolean resizeKeyboard) {
+        return new ReplyKeyboardMarkup(keyboard, isPersistent, resizeKeyboard, oneTimeKeyboard, inputFieldPlaceholder, selective);
+    }
+
+    public ReplyKeyboardMarkup withOneTimeKeyboard(@Nullable Boolean oneTimeKeyboard) {
+        return new ReplyKeyboardMarkup(keyboard, isPersistent, resizeKeyboard, oneTimeKeyboard, inputFieldPlaceholder, selective);
+    }
+
+    public ReplyKeyboardMarkup withInputFieldPlaceholder(@Nullable String inputFieldPlaceholder) {
+        return new ReplyKeyboardMarkup(keyboard, isPersistent, resizeKeyboard, oneTimeKeyboard, inputFieldPlaceholder, selective);
+    }
+
+    public ReplyKeyboardMarkup withSelective(@Nullable Boolean selective) {
+        return new ReplyKeyboardMarkup(keyboard, isPersistent, resizeKeyboard, oneTimeKeyboard, inputFieldPlaceholder, selective);
+    }
+}

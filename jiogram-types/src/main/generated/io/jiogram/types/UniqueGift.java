@@ -43,4 +43,53 @@ public record UniqueGift(
     @JsonProperty("is_from_blockchain") @Nullable Boolean isFromBlockchain,
     @JsonProperty("colors") @Nullable UniqueGiftColors colors,
     @JsonProperty("publisher_chat") @Nullable Chat publisherChat
-) {}
+) {
+
+    public UniqueGift withGiftId(String giftId) {
+        return new UniqueGift(giftId, baseName, name, number, model, symbol, backdrop, isPremium, isBurned, isFromBlockchain, colors, publisherChat);
+    }
+
+    public UniqueGift withBaseName(String baseName) {
+        return new UniqueGift(giftId, baseName, name, number, model, symbol, backdrop, isPremium, isBurned, isFromBlockchain, colors, publisherChat);
+    }
+
+    public UniqueGift withName(String name) {
+        return new UniqueGift(giftId, baseName, name, number, model, symbol, backdrop, isPremium, isBurned, isFromBlockchain, colors, publisherChat);
+    }
+
+    public UniqueGift withNumber(long number) {
+        return new UniqueGift(giftId, baseName, name, number, model, symbol, backdrop, isPremium, isBurned, isFromBlockchain, colors, publisherChat);
+    }
+
+    public UniqueGift withModel(UniqueGiftModel model) {
+        return new UniqueGift(giftId, baseName, name, number, model, symbol, backdrop, isPremium, isBurned, isFromBlockchain, colors, publisherChat);
+    }
+
+    public UniqueGift withSymbol(UniqueGiftSymbol symbol) {
+        return new UniqueGift(giftId, baseName, name, number, model, symbol, backdrop, isPremium, isBurned, isFromBlockchain, colors, publisherChat);
+    }
+
+    public UniqueGift withBackdrop(UniqueGiftBackdrop backdrop) {
+        return new UniqueGift(giftId, baseName, name, number, model, symbol, backdrop, isPremium, isBurned, isFromBlockchain, colors, publisherChat);
+    }
+
+    public UniqueGift withIsPremium(@Nullable Boolean isPremium) {
+        return new UniqueGift(giftId, baseName, name, number, model, symbol, backdrop, isPremium, isBurned, isFromBlockchain, colors, publisherChat);
+    }
+
+    public UniqueGift withIsBurned(@Nullable Boolean isBurned) {
+        return new UniqueGift(giftId, baseName, name, number, model, symbol, backdrop, isPremium, isBurned, isFromBlockchain, colors, publisherChat);
+    }
+
+    public UniqueGift withIsFromBlockchain(@Nullable Boolean isFromBlockchain) {
+        return new UniqueGift(giftId, baseName, name, number, model, symbol, backdrop, isPremium, isBurned, isFromBlockchain, colors, publisherChat);
+    }
+
+    public UniqueGift withColors(@Nullable UniqueGiftColors colors) {
+        return new UniqueGift(giftId, baseName, name, number, model, symbol, backdrop, isPremium, isBurned, isFromBlockchain, colors, publisherChat);
+    }
+
+    public UniqueGift withPublisherChat(@Nullable Chat publisherChat) {
+        return new UniqueGift(giftId, baseName, name, number, model, symbol, backdrop, isPremium, isBurned, isFromBlockchain, colors, publisherChat);
+    }
+}

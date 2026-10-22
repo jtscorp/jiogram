@@ -25,4 +25,12 @@ public record SetStickerPositionInSet(
     public String apiReturnType() {
         return "Boolean";
     }
+
+    public SetStickerPositionInSet withSticker(String sticker) {
+        return new SetStickerPositionInSet(sticker, position);
+    }
+
+    public SetStickerPositionInSet withPosition(long position) {
+        return new SetStickerPositionInSet(sticker, position);
+    }
 }

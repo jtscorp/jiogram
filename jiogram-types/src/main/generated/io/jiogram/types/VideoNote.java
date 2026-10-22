@@ -23,4 +23,29 @@ public record VideoNote(
     @JsonProperty("duration") long duration,
     @JsonProperty("thumbnail") @Nullable PhotoSize thumbnail,
     @JsonProperty("file_size") @Nullable Long fileSize
-) {}
+) {
+
+    public VideoNote withFileId(String fileId) {
+        return new VideoNote(fileId, fileUniqueId, length, duration, thumbnail, fileSize);
+    }
+
+    public VideoNote withFileUniqueId(String fileUniqueId) {
+        return new VideoNote(fileId, fileUniqueId, length, duration, thumbnail, fileSize);
+    }
+
+    public VideoNote withLength(long length) {
+        return new VideoNote(fileId, fileUniqueId, length, duration, thumbnail, fileSize);
+    }
+
+    public VideoNote withDuration(long duration) {
+        return new VideoNote(fileId, fileUniqueId, length, duration, thumbnail, fileSize);
+    }
+
+    public VideoNote withThumbnail(@Nullable PhotoSize thumbnail) {
+        return new VideoNote(fileId, fileUniqueId, length, duration, thumbnail, fileSize);
+    }
+
+    public VideoNote withFileSize(@Nullable Long fileSize) {
+        return new VideoNote(fileId, fileUniqueId, length, duration, thumbnail, fileSize);
+    }
+}

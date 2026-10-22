@@ -47,4 +47,32 @@ public record SetGameScore(
     public static SetGameScore of(long userId, long score) {
         return new SetGameScore(userId, score, null, null, null, null, null);
     }
+
+    public SetGameScore withUserId(long userId) {
+        return new SetGameScore(userId, score, force, disableEditMessage, chatId, messageId, inlineMessageId);
+    }
+
+    public SetGameScore withScore(long score) {
+        return new SetGameScore(userId, score, force, disableEditMessage, chatId, messageId, inlineMessageId);
+    }
+
+    public SetGameScore withForce(@Nullable Boolean force) {
+        return new SetGameScore(userId, score, force, disableEditMessage, chatId, messageId, inlineMessageId);
+    }
+
+    public SetGameScore withDisableEditMessage(@Nullable Boolean disableEditMessage) {
+        return new SetGameScore(userId, score, force, disableEditMessage, chatId, messageId, inlineMessageId);
+    }
+
+    public SetGameScore withChatId(@Nullable Long chatId) {
+        return new SetGameScore(userId, score, force, disableEditMessage, chatId, messageId, inlineMessageId);
+    }
+
+    public SetGameScore withMessageId(@Nullable Long messageId) {
+        return new SetGameScore(userId, score, force, disableEditMessage, chatId, messageId, inlineMessageId);
+    }
+
+    public SetGameScore withInlineMessageId(@Nullable String inlineMessageId) {
+        return new SetGameScore(userId, score, force, disableEditMessage, chatId, messageId, inlineMessageId);
+    }
 }

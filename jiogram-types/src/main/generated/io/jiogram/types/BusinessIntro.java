@@ -16,4 +16,17 @@ public record BusinessIntro(
     @JsonProperty("title") @Nullable String title,
     @JsonProperty("message") @Nullable String message,
     @JsonProperty("sticker") @Nullable Sticker sticker
-) {}
+) {
+
+    public BusinessIntro withTitle(@Nullable String title) {
+        return new BusinessIntro(title, message, sticker);
+    }
+
+    public BusinessIntro withMessage(@Nullable String message) {
+        return new BusinessIntro(title, message, sticker);
+    }
+
+    public BusinessIntro withSticker(@Nullable Sticker sticker) {
+        return new BusinessIntro(title, message, sticker);
+    }
+}

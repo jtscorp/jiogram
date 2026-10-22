@@ -20,4 +20,21 @@ public record UserRating(
     @JsonProperty("rating") long rating,
     @JsonProperty("current_level_rating") long currentLevelRating,
     @JsonProperty("next_level_rating") @Nullable Long nextLevelRating
-) {}
+) {
+
+    public UserRating withLevel(long level) {
+        return new UserRating(level, rating, currentLevelRating, nextLevelRating);
+    }
+
+    public UserRating withRating(long rating) {
+        return new UserRating(level, rating, currentLevelRating, nextLevelRating);
+    }
+
+    public UserRating withCurrentLevelRating(long currentLevelRating) {
+        return new UserRating(level, rating, currentLevelRating, nextLevelRating);
+    }
+
+    public UserRating withNextLevelRating(@Nullable Long nextLevelRating) {
+        return new UserRating(level, rating, currentLevelRating, nextLevelRating);
+    }
+}

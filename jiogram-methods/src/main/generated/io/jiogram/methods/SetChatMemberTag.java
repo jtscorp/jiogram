@@ -35,4 +35,16 @@ public record SetChatMemberTag(
     public static SetChatMemberTag of(ChatId chatId, long userId) {
         return new SetChatMemberTag(chatId, userId, null);
     }
+
+    public SetChatMemberTag withChatId(ChatId chatId) {
+        return new SetChatMemberTag(chatId, userId, tag);
+    }
+
+    public SetChatMemberTag withUserId(long userId) {
+        return new SetChatMemberTag(chatId, userId, tag);
+    }
+
+    public SetChatMemberTag withTag(@Nullable String tag) {
+        return new SetChatMemberTag(chatId, userId, tag);
+    }
 }

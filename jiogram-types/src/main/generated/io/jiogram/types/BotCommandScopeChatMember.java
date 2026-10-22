@@ -18,4 +18,13 @@ public record BotCommandScopeChatMember(
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) BotCommandScopeType type,
     @JsonProperty("chat_id") ChatId chatId,
     @JsonProperty("user_id") long userId
-) implements BotCommandScope {}
+) implements BotCommandScope {
+
+    public BotCommandScopeChatMember withChatId(ChatId chatId) {
+        return new BotCommandScopeChatMember(type, chatId, userId);
+    }
+
+    public BotCommandScopeChatMember withUserId(long userId) {
+        return new BotCommandScopeChatMember(type, chatId, userId);
+    }
+}

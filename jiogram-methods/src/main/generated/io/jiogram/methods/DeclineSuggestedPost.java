@@ -33,4 +33,16 @@ public record DeclineSuggestedPost(
     public static DeclineSuggestedPost of(long chatId, long messageId) {
         return new DeclineSuggestedPost(chatId, messageId, null);
     }
+
+    public DeclineSuggestedPost withChatId(long chatId) {
+        return new DeclineSuggestedPost(chatId, messageId, comment);
+    }
+
+    public DeclineSuggestedPost withMessageId(long messageId) {
+        return new DeclineSuggestedPost(chatId, messageId, comment);
+    }
+
+    public DeclineSuggestedPost withComment(@Nullable String comment) {
+        return new DeclineSuggestedPost(chatId, messageId, comment);
+    }
 }

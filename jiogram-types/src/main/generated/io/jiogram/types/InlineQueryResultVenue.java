@@ -44,4 +44,61 @@ public record InlineQueryResultVenue(
     @JsonProperty("thumbnail_url") @Nullable String thumbnailUrl,
     @JsonProperty("thumbnail_width") @Nullable Long thumbnailWidth,
     @JsonProperty("thumbnail_height") @Nullable Long thumbnailHeight
-) implements InlineQueryResult {}
+) implements InlineQueryResult {
+
+    public InlineQueryResultVenue withId(String id) {
+        return new InlineQueryResultVenue(type, id, latitude, longitude, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultVenue withLatitude(double latitude) {
+        return new InlineQueryResultVenue(type, id, latitude, longitude, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultVenue withLongitude(double longitude) {
+        return new InlineQueryResultVenue(type, id, latitude, longitude, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultVenue withTitle(String title) {
+        return new InlineQueryResultVenue(type, id, latitude, longitude, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultVenue withAddress(String address) {
+        return new InlineQueryResultVenue(type, id, latitude, longitude, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultVenue withFoursquareId(@Nullable String foursquareId) {
+        return new InlineQueryResultVenue(type, id, latitude, longitude, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultVenue withFoursquareType(@Nullable String foursquareType) {
+        return new InlineQueryResultVenue(type, id, latitude, longitude, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultVenue withGooglePlaceId(@Nullable String googlePlaceId) {
+        return new InlineQueryResultVenue(type, id, latitude, longitude, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultVenue withGooglePlaceType(@Nullable String googlePlaceType) {
+        return new InlineQueryResultVenue(type, id, latitude, longitude, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultVenue withReplyMarkup(@Nullable InlineKeyboardMarkup replyMarkup) {
+        return new InlineQueryResultVenue(type, id, latitude, longitude, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultVenue withInputMessageContent(@Nullable InputMessageContent inputMessageContent) {
+        return new InlineQueryResultVenue(type, id, latitude, longitude, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultVenue withThumbnailUrl(@Nullable String thumbnailUrl) {
+        return new InlineQueryResultVenue(type, id, latitude, longitude, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultVenue withThumbnailWidth(@Nullable Long thumbnailWidth) {
+        return new InlineQueryResultVenue(type, id, latitude, longitude, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultVenue withThumbnailHeight(@Nullable Long thumbnailHeight) {
+        return new InlineQueryResultVenue(type, id, latitude, longitude, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+}

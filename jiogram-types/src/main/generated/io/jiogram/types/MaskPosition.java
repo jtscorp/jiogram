@@ -20,4 +20,21 @@ public record MaskPosition(
     @JsonProperty("x_shift") double xShift,
     @JsonProperty("y_shift") double yShift,
     @JsonProperty("scale") double scale
-) {}
+) {
+
+    public MaskPosition withPoint(String point) {
+        return new MaskPosition(point, xShift, yShift, scale);
+    }
+
+    public MaskPosition withXShift(double xShift) {
+        return new MaskPosition(point, xShift, yShift, scale);
+    }
+
+    public MaskPosition withYShift(double yShift) {
+        return new MaskPosition(point, xShift, yShift, scale);
+    }
+
+    public MaskPosition withScale(double scale) {
+        return new MaskPosition(point, xShift, yShift, scale);
+    }
+}

@@ -30,4 +30,21 @@ public record LoginUrl(
     @JsonProperty("forward_text") @Nullable String forwardText,
     @JsonProperty("bot_username") @Nullable String botUsername,
     @JsonProperty("request_write_access") @Nullable Boolean requestWriteAccess
-) {}
+) {
+
+    public LoginUrl withUrl(String url) {
+        return new LoginUrl(url, forwardText, botUsername, requestWriteAccess);
+    }
+
+    public LoginUrl withForwardText(@Nullable String forwardText) {
+        return new LoginUrl(url, forwardText, botUsername, requestWriteAccess);
+    }
+
+    public LoginUrl withBotUsername(@Nullable String botUsername) {
+        return new LoginUrl(url, forwardText, botUsername, requestWriteAccess);
+    }
+
+    public LoginUrl withRequestWriteAccess(@Nullable Boolean requestWriteAccess) {
+        return new LoginUrl(url, forwardText, botUsername, requestWriteAccess);
+    }
+}

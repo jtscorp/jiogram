@@ -49,4 +49,57 @@ public record InlineQueryResultDocument(
     @JsonProperty("thumbnail_url") @Nullable String thumbnailUrl,
     @JsonProperty("thumbnail_width") @Nullable Long thumbnailWidth,
     @JsonProperty("thumbnail_height") @Nullable Long thumbnailHeight
-) implements InlineQueryResult {}
+) implements InlineQueryResult {
+
+    public InlineQueryResultDocument withId(String id) {
+        return new InlineQueryResultDocument(type, id, title, caption, parseMode, captionEntities, documentUrl, mimeType, description, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultDocument withTitle(String title) {
+        return new InlineQueryResultDocument(type, id, title, caption, parseMode, captionEntities, documentUrl, mimeType, description, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultDocument withCaption(@Nullable String caption) {
+        return new InlineQueryResultDocument(type, id, title, caption, parseMode, captionEntities, documentUrl, mimeType, description, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultDocument withParseMode(@Nullable ParseMode parseMode) {
+        return new InlineQueryResultDocument(type, id, title, caption, parseMode, captionEntities, documentUrl, mimeType, description, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultDocument withCaptionEntities(@Nullable List<MessageEntity> captionEntities) {
+        return new InlineQueryResultDocument(type, id, title, caption, parseMode, captionEntities, documentUrl, mimeType, description, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultDocument withDocumentUrl(String documentUrl) {
+        return new InlineQueryResultDocument(type, id, title, caption, parseMode, captionEntities, documentUrl, mimeType, description, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultDocument withMimeType(DocumentMimeType mimeType) {
+        return new InlineQueryResultDocument(type, id, title, caption, parseMode, captionEntities, documentUrl, mimeType, description, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultDocument withDescription(@Nullable String description) {
+        return new InlineQueryResultDocument(type, id, title, caption, parseMode, captionEntities, documentUrl, mimeType, description, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultDocument withReplyMarkup(@Nullable InlineKeyboardMarkup replyMarkup) {
+        return new InlineQueryResultDocument(type, id, title, caption, parseMode, captionEntities, documentUrl, mimeType, description, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultDocument withInputMessageContent(@Nullable InputMessageContent inputMessageContent) {
+        return new InlineQueryResultDocument(type, id, title, caption, parseMode, captionEntities, documentUrl, mimeType, description, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultDocument withThumbnailUrl(@Nullable String thumbnailUrl) {
+        return new InlineQueryResultDocument(type, id, title, caption, parseMode, captionEntities, documentUrl, mimeType, description, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultDocument withThumbnailWidth(@Nullable Long thumbnailWidth) {
+        return new InlineQueryResultDocument(type, id, title, caption, parseMode, captionEntities, documentUrl, mimeType, description, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultDocument withThumbnailHeight(@Nullable Long thumbnailHeight) {
+        return new InlineQueryResultDocument(type, id, title, caption, parseMode, captionEntities, documentUrl, mimeType, description, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+}

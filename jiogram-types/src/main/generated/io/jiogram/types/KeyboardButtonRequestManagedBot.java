@@ -17,4 +17,17 @@ public record KeyboardButtonRequestManagedBot(
     @JsonProperty("request_id") long requestId,
     @JsonProperty("suggested_name") @Nullable String suggestedName,
     @JsonProperty("suggested_username") @Nullable String suggestedUsername
-) {}
+) {
+
+    public KeyboardButtonRequestManagedBot withRequestId(long requestId) {
+        return new KeyboardButtonRequestManagedBot(requestId, suggestedName, suggestedUsername);
+    }
+
+    public KeyboardButtonRequestManagedBot withSuggestedName(@Nullable String suggestedName) {
+        return new KeyboardButtonRequestManagedBot(requestId, suggestedName, suggestedUsername);
+    }
+
+    public KeyboardButtonRequestManagedBot withSuggestedUsername(@Nullable String suggestedUsername) {
+        return new KeyboardButtonRequestManagedBot(requestId, suggestedName, suggestedUsername);
+    }
+}

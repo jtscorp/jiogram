@@ -20,4 +20,13 @@ public record MenuButtonWebApp(
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) MenuButtonType type,
     @JsonProperty("text") String text,
     @JsonProperty("web_app") WebAppInfo webApp
-) implements MenuButton {}
+) implements MenuButton {
+
+    public MenuButtonWebApp withText(String text) {
+        return new MenuButtonWebApp(type, text, webApp);
+    }
+
+    public MenuButtonWebApp withWebApp(WebAppInfo webApp) {
+        return new MenuButtonWebApp(type, text, webApp);
+    }
+}

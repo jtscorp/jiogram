@@ -23,4 +23,21 @@ public record SuggestedPostPaid(
     @JsonProperty("currency") String currency,
     @JsonProperty("amount") @Nullable Long amount,
     @JsonProperty("star_amount") @Nullable StarAmount starAmount
-) {}
+) {
+
+    public SuggestedPostPaid withSuggestedPostMessage(@Nullable Message suggestedPostMessage) {
+        return new SuggestedPostPaid(suggestedPostMessage, currency, amount, starAmount);
+    }
+
+    public SuggestedPostPaid withCurrency(String currency) {
+        return new SuggestedPostPaid(suggestedPostMessage, currency, amount, starAmount);
+    }
+
+    public SuggestedPostPaid withAmount(@Nullable Long amount) {
+        return new SuggestedPostPaid(suggestedPostMessage, currency, amount, starAmount);
+    }
+
+    public SuggestedPostPaid withStarAmount(@Nullable StarAmount starAmount) {
+        return new SuggestedPostPaid(suggestedPostMessage, currency, amount, starAmount);
+    }
+}

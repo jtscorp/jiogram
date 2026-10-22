@@ -23,4 +23,21 @@ public record InputTextMessageContent(
     @JsonProperty("parse_mode") @Nullable ParseMode parseMode,
     @JsonProperty("entities") @Nullable List<MessageEntity> entities,
     @JsonProperty("link_preview_options") @Nullable LinkPreviewOptions linkPreviewOptions
-) implements InputMessageContent {}
+) implements InputMessageContent {
+
+    public InputTextMessageContent withMessageText(String messageText) {
+        return new InputTextMessageContent(messageText, parseMode, entities, linkPreviewOptions);
+    }
+
+    public InputTextMessageContent withParseMode(@Nullable ParseMode parseMode) {
+        return new InputTextMessageContent(messageText, parseMode, entities, linkPreviewOptions);
+    }
+
+    public InputTextMessageContent withEntities(@Nullable List<MessageEntity> entities) {
+        return new InputTextMessageContent(messageText, parseMode, entities, linkPreviewOptions);
+    }
+
+    public InputTextMessageContent withLinkPreviewOptions(@Nullable LinkPreviewOptions linkPreviewOptions) {
+        return new InputTextMessageContent(messageText, parseMode, entities, linkPreviewOptions);
+    }
+}

@@ -22,4 +22,8 @@ public record DeleteStickerSet(
     public String apiReturnType() {
         return "Boolean";
     }
+
+    public DeleteStickerSet withName(String name) {
+        return new DeleteStickerSet(name);
+    }
 }

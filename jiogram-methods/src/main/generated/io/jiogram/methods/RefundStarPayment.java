@@ -24,4 +24,12 @@ public record RefundStarPayment(
     public String apiReturnType() {
         return "Boolean";
     }
+
+    public RefundStarPayment withUserId(long userId) {
+        return new RefundStarPayment(userId, telegramPaymentChargeId);
+    }
+
+    public RefundStarPayment withTelegramPaymentChargeId(String telegramPaymentChargeId) {
+        return new RefundStarPayment(userId, telegramPaymentChargeId);
+    }
 }

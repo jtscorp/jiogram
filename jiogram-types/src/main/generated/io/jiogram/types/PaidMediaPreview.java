@@ -18,4 +18,17 @@ public record PaidMediaPreview(
     @JsonProperty("width") @Nullable Long width,
     @JsonProperty("height") @Nullable Long height,
     @JsonProperty("duration") @Nullable Long duration
-) implements PaidMedia {}
+) implements PaidMedia {
+
+    public PaidMediaPreview withWidth(@Nullable Long width) {
+        return new PaidMediaPreview(type, width, height, duration);
+    }
+
+    public PaidMediaPreview withHeight(@Nullable Long height) {
+        return new PaidMediaPreview(type, width, height, duration);
+    }
+
+    public PaidMediaPreview withDuration(@Nullable Long duration) {
+        return new PaidMediaPreview(type, width, height, duration);
+    }
+}

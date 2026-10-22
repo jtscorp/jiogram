@@ -43,4 +43,28 @@ public record RepostStory(
     public static RepostStory of(String businessConnectionId, long fromChatId, long fromStoryId, long activePeriod) {
         return new RepostStory(businessConnectionId, fromChatId, fromStoryId, activePeriod, null, null);
     }
+
+    public RepostStory withBusinessConnectionId(String businessConnectionId) {
+        return new RepostStory(businessConnectionId, fromChatId, fromStoryId, activePeriod, postToChatPage, protectContent);
+    }
+
+    public RepostStory withFromChatId(long fromChatId) {
+        return new RepostStory(businessConnectionId, fromChatId, fromStoryId, activePeriod, postToChatPage, protectContent);
+    }
+
+    public RepostStory withFromStoryId(long fromStoryId) {
+        return new RepostStory(businessConnectionId, fromChatId, fromStoryId, activePeriod, postToChatPage, protectContent);
+    }
+
+    public RepostStory withActivePeriod(long activePeriod) {
+        return new RepostStory(businessConnectionId, fromChatId, fromStoryId, activePeriod, postToChatPage, protectContent);
+    }
+
+    public RepostStory withPostToChatPage(@Nullable Boolean postToChatPage) {
+        return new RepostStory(businessConnectionId, fromChatId, fromStoryId, activePeriod, postToChatPage, protectContent);
+    }
+
+    public RepostStory withProtectContent(@Nullable Boolean protectContent) {
+        return new RepostStory(businessConnectionId, fromChatId, fromStoryId, activePeriod, postToChatPage, protectContent);
+    }
 }

@@ -26,4 +26,12 @@ public record SetStickerEmojiList(
     public String apiReturnType() {
         return "Boolean";
     }
+
+    public SetStickerEmojiList withSticker(String sticker) {
+        return new SetStickerEmojiList(sticker, emojiList);
+    }
+
+    public SetStickerEmojiList withEmojiList(List<String> emojiList) {
+        return new SetStickerEmojiList(sticker, emojiList);
+    }
 }

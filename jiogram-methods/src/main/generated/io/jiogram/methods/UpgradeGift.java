@@ -38,4 +38,20 @@ public record UpgradeGift(
     public static UpgradeGift of(String businessConnectionId, String ownedGiftId) {
         return new UpgradeGift(businessConnectionId, ownedGiftId, null, null);
     }
+
+    public UpgradeGift withBusinessConnectionId(String businessConnectionId) {
+        return new UpgradeGift(businessConnectionId, ownedGiftId, keepOriginalDetails, starCount);
+    }
+
+    public UpgradeGift withOwnedGiftId(String ownedGiftId) {
+        return new UpgradeGift(businessConnectionId, ownedGiftId, keepOriginalDetails, starCount);
+    }
+
+    public UpgradeGift withKeepOriginalDetails(@Nullable Boolean keepOriginalDetails) {
+        return new UpgradeGift(businessConnectionId, ownedGiftId, keepOriginalDetails, starCount);
+    }
+
+    public UpgradeGift withStarCount(@Nullable Long starCount) {
+        return new UpgradeGift(businessConnectionId, ownedGiftId, keepOriginalDetails, starCount);
+    }
 }

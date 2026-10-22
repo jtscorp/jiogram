@@ -35,4 +35,12 @@ public record SetMyDefaultAdministratorRights(
     public static SetMyDefaultAdministratorRights of() {
         return new SetMyDefaultAdministratorRights(null, null);
     }
+
+    public SetMyDefaultAdministratorRights withRights(@Nullable ChatAdministratorRights rights) {
+        return new SetMyDefaultAdministratorRights(rights, forChannels);
+    }
+
+    public SetMyDefaultAdministratorRights withForChannels(@Nullable Boolean forChannels) {
+        return new SetMyDefaultAdministratorRights(rights, forChannels);
+    }
 }

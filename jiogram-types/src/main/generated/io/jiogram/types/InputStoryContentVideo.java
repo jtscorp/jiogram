@@ -26,4 +26,21 @@ public record InputStoryContentVideo(
     @JsonProperty("duration") @Nullable Double duration,
     @JsonProperty("cover_frame_timestamp") @Nullable Double coverFrameTimestamp,
     @JsonProperty("is_animation") @Nullable Boolean isAnimation
-) implements InputStoryContent {}
+) implements InputStoryContent {
+
+    public InputStoryContentVideo withVideo(InputFileOrString video) {
+        return new InputStoryContentVideo(type, video, duration, coverFrameTimestamp, isAnimation);
+    }
+
+    public InputStoryContentVideo withDuration(@Nullable Double duration) {
+        return new InputStoryContentVideo(type, video, duration, coverFrameTimestamp, isAnimation);
+    }
+
+    public InputStoryContentVideo withCoverFrameTimestamp(@Nullable Double coverFrameTimestamp) {
+        return new InputStoryContentVideo(type, video, duration, coverFrameTimestamp, isAnimation);
+    }
+
+    public InputStoryContentVideo withIsAnimation(@Nullable Boolean isAnimation) {
+        return new InputStoryContentVideo(type, video, duration, coverFrameTimestamp, isAnimation);
+    }
+}

@@ -17,4 +17,13 @@ import org.jspecify.annotations.Nullable;
 public record DirectMessagePriceChanged(
     @JsonProperty("are_direct_messages_enabled") boolean areDirectMessagesEnabled,
     @JsonProperty("direct_message_star_count") @Nullable Long directMessageStarCount
-) {}
+) {
+
+    public DirectMessagePriceChanged withAreDirectMessagesEnabled(boolean areDirectMessagesEnabled) {
+        return new DirectMessagePriceChanged(areDirectMessagesEnabled, directMessageStarCount);
+    }
+
+    public DirectMessagePriceChanged withDirectMessageStarCount(@Nullable Long directMessageStarCount) {
+        return new DirectMessagePriceChanged(areDirectMessagesEnabled, directMessageStarCount);
+    }
+}

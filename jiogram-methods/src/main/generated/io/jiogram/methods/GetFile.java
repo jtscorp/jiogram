@@ -30,4 +30,8 @@ public record GetFile(
     public String apiReturnType() {
         return "File";
     }
+
+    public GetFile withFileId(String fileId) {
+        return new GetFile(fileId);
+    }
 }

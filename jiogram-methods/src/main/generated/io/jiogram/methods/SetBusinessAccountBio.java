@@ -30,4 +30,12 @@ public record SetBusinessAccountBio(
     public static SetBusinessAccountBio of(String businessConnectionId) {
         return new SetBusinessAccountBio(businessConnectionId, null);
     }
+
+    public SetBusinessAccountBio withBusinessConnectionId(String businessConnectionId) {
+        return new SetBusinessAccountBio(businessConnectionId, bio);
+    }
+
+    public SetBusinessAccountBio withBio(@Nullable String bio) {
+        return new SetBusinessAccountBio(businessConnectionId, bio);
+    }
 }

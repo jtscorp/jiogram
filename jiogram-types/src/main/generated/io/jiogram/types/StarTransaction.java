@@ -30,4 +30,29 @@ public record StarTransaction(
     @JsonProperty("date") long date,
     @JsonProperty("source") @Nullable TransactionPartner source,
     @JsonProperty("receiver") @Nullable TransactionPartner receiver
-) {}
+) {
+
+    public StarTransaction withId(String id) {
+        return new StarTransaction(id, amount, nanostarAmount, date, source, receiver);
+    }
+
+    public StarTransaction withAmount(long amount) {
+        return new StarTransaction(id, amount, nanostarAmount, date, source, receiver);
+    }
+
+    public StarTransaction withNanostarAmount(@Nullable Long nanostarAmount) {
+        return new StarTransaction(id, amount, nanostarAmount, date, source, receiver);
+    }
+
+    public StarTransaction withDate(long date) {
+        return new StarTransaction(id, amount, nanostarAmount, date, source, receiver);
+    }
+
+    public StarTransaction withSource(@Nullable TransactionPartner source) {
+        return new StarTransaction(id, amount, nanostarAmount, date, source, receiver);
+    }
+
+    public StarTransaction withReceiver(@Nullable TransactionPartner receiver) {
+        return new StarTransaction(id, amount, nanostarAmount, date, source, receiver);
+    }
+}

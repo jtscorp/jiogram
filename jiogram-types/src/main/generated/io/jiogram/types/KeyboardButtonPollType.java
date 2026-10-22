@@ -15,4 +15,9 @@ import org.jspecify.annotations.Nullable;
  */
 public record KeyboardButtonPollType(
     @JsonProperty("type") @Nullable PollType type
-) {}
+) {
+
+    public KeyboardButtonPollType withType(@Nullable PollType type) {
+        return new KeyboardButtonPollType(type);
+    }
+}

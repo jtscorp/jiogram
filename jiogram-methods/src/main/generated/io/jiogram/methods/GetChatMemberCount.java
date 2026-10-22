@@ -24,4 +24,8 @@ public record GetChatMemberCount(
     public String apiReturnType() {
         return "Int";
     }
+
+    public GetChatMemberCount withChatId(ChatId chatId) {
+        return new GetChatMemberCount(chatId);
+    }
 }

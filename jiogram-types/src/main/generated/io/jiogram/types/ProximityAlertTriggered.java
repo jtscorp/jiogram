@@ -16,4 +16,17 @@ public record ProximityAlertTriggered(
     @JsonProperty("traveler") User traveler,
     @JsonProperty("watcher") User watcher,
     @JsonProperty("distance") long distance
-) {}
+) {
+
+    public ProximityAlertTriggered withTraveler(User traveler) {
+        return new ProximityAlertTriggered(traveler, watcher, distance);
+    }
+
+    public ProximityAlertTriggered withWatcher(User watcher) {
+        return new ProximityAlertTriggered(traveler, watcher, distance);
+    }
+
+    public ProximityAlertTriggered withDistance(long distance) {
+        return new ProximityAlertTriggered(traveler, watcher, distance);
+    }
+}

@@ -19,4 +19,17 @@ public record ChatMemberOwner(
     @JsonProperty("user") User user,
     @JsonProperty("is_anonymous") boolean isAnonymous,
     @JsonProperty("custom_title") @Nullable String customTitle
-) implements ChatMember {}
+) implements ChatMember {
+
+    public ChatMemberOwner withUser(User user) {
+        return new ChatMemberOwner(status, user, isAnonymous, customTitle);
+    }
+
+    public ChatMemberOwner withIsAnonymous(boolean isAnonymous) {
+        return new ChatMemberOwner(status, user, isAnonymous, customTitle);
+    }
+
+    public ChatMemberOwner withCustomTitle(@Nullable String customTitle) {
+        return new ChatMemberOwner(status, user, isAnonymous, customTitle);
+    }
+}

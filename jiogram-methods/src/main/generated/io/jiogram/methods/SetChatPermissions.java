@@ -40,4 +40,16 @@ public record SetChatPermissions(
     public static SetChatPermissions of(ChatId chatId, ChatPermissions permissions) {
         return new SetChatPermissions(chatId, permissions, null);
     }
+
+    public SetChatPermissions withChatId(ChatId chatId) {
+        return new SetChatPermissions(chatId, permissions, useIndependentChatPermissions);
+    }
+
+    public SetChatPermissions withPermissions(ChatPermissions permissions) {
+        return new SetChatPermissions(chatId, permissions, useIndependentChatPermissions);
+    }
+
+    public SetChatPermissions withUseIndependentChatPermissions(@Nullable Boolean useIndependentChatPermissions) {
+        return new SetChatPermissions(chatId, permissions, useIndependentChatPermissions);
+    }
 }

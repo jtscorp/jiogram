@@ -48,4 +48,65 @@ public record Sticker(
     @JsonProperty("custom_emoji_id") @Nullable String customEmojiId,
     @JsonProperty("needs_repainting") @Nullable Boolean needsRepainting,
     @JsonProperty("file_size") @Nullable Long fileSize
-) {}
+) {
+
+    public Sticker withFileId(String fileId) {
+        return new Sticker(fileId, fileUniqueId, type, width, height, isAnimated, isVideo, thumbnail, emoji, setName, premiumAnimation, maskPosition, customEmojiId, needsRepainting, fileSize);
+    }
+
+    public Sticker withFileUniqueId(String fileUniqueId) {
+        return new Sticker(fileId, fileUniqueId, type, width, height, isAnimated, isVideo, thumbnail, emoji, setName, premiumAnimation, maskPosition, customEmojiId, needsRepainting, fileSize);
+    }
+
+    public Sticker withType(StickerType type) {
+        return new Sticker(fileId, fileUniqueId, type, width, height, isAnimated, isVideo, thumbnail, emoji, setName, premiumAnimation, maskPosition, customEmojiId, needsRepainting, fileSize);
+    }
+
+    public Sticker withWidth(long width) {
+        return new Sticker(fileId, fileUniqueId, type, width, height, isAnimated, isVideo, thumbnail, emoji, setName, premiumAnimation, maskPosition, customEmojiId, needsRepainting, fileSize);
+    }
+
+    public Sticker withHeight(long height) {
+        return new Sticker(fileId, fileUniqueId, type, width, height, isAnimated, isVideo, thumbnail, emoji, setName, premiumAnimation, maskPosition, customEmojiId, needsRepainting, fileSize);
+    }
+
+    public Sticker withIsAnimated(boolean isAnimated) {
+        return new Sticker(fileId, fileUniqueId, type, width, height, isAnimated, isVideo, thumbnail, emoji, setName, premiumAnimation, maskPosition, customEmojiId, needsRepainting, fileSize);
+    }
+
+    public Sticker withIsVideo(boolean isVideo) {
+        return new Sticker(fileId, fileUniqueId, type, width, height, isAnimated, isVideo, thumbnail, emoji, setName, premiumAnimation, maskPosition, customEmojiId, needsRepainting, fileSize);
+    }
+
+    public Sticker withThumbnail(@Nullable PhotoSize thumbnail) {
+        return new Sticker(fileId, fileUniqueId, type, width, height, isAnimated, isVideo, thumbnail, emoji, setName, premiumAnimation, maskPosition, customEmojiId, needsRepainting, fileSize);
+    }
+
+    public Sticker withEmoji(@Nullable String emoji) {
+        return new Sticker(fileId, fileUniqueId, type, width, height, isAnimated, isVideo, thumbnail, emoji, setName, premiumAnimation, maskPosition, customEmojiId, needsRepainting, fileSize);
+    }
+
+    public Sticker withSetName(@Nullable String setName) {
+        return new Sticker(fileId, fileUniqueId, type, width, height, isAnimated, isVideo, thumbnail, emoji, setName, premiumAnimation, maskPosition, customEmojiId, needsRepainting, fileSize);
+    }
+
+    public Sticker withPremiumAnimation(@Nullable File premiumAnimation) {
+        return new Sticker(fileId, fileUniqueId, type, width, height, isAnimated, isVideo, thumbnail, emoji, setName, premiumAnimation, maskPosition, customEmojiId, needsRepainting, fileSize);
+    }
+
+    public Sticker withMaskPosition(@Nullable MaskPosition maskPosition) {
+        return new Sticker(fileId, fileUniqueId, type, width, height, isAnimated, isVideo, thumbnail, emoji, setName, premiumAnimation, maskPosition, customEmojiId, needsRepainting, fileSize);
+    }
+
+    public Sticker withCustomEmojiId(@Nullable String customEmojiId) {
+        return new Sticker(fileId, fileUniqueId, type, width, height, isAnimated, isVideo, thumbnail, emoji, setName, premiumAnimation, maskPosition, customEmojiId, needsRepainting, fileSize);
+    }
+
+    public Sticker withNeedsRepainting(@Nullable Boolean needsRepainting) {
+        return new Sticker(fileId, fileUniqueId, type, width, height, isAnimated, isVideo, thumbnail, emoji, setName, premiumAnimation, maskPosition, customEmojiId, needsRepainting, fileSize);
+    }
+
+    public Sticker withFileSize(@Nullable Long fileSize) {
+        return new Sticker(fileId, fileUniqueId, type, width, height, isAnimated, isVideo, thumbnail, emoji, setName, premiumAnimation, maskPosition, customEmojiId, needsRepainting, fileSize);
+    }
+}

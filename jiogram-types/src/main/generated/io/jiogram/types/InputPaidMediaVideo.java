@@ -40,4 +40,37 @@ public record InputPaidMediaVideo(
     @JsonProperty("height") @Nullable Long height,
     @JsonProperty("duration") @Nullable Long duration,
     @JsonProperty("supports_streaming") @Nullable Boolean supportsStreaming
-) implements InputPaidMedia {}
+) implements InputPaidMedia {
+
+    public InputPaidMediaVideo withMedia(InputFileOrString media) {
+        return new InputPaidMediaVideo(type, media, thumbnail, cover, startTimestamp, width, height, duration, supportsStreaming);
+    }
+
+    public InputPaidMediaVideo withThumbnail(@Nullable InputFileOrString thumbnail) {
+        return new InputPaidMediaVideo(type, media, thumbnail, cover, startTimestamp, width, height, duration, supportsStreaming);
+    }
+
+    public InputPaidMediaVideo withCover(@Nullable InputFileOrString cover) {
+        return new InputPaidMediaVideo(type, media, thumbnail, cover, startTimestamp, width, height, duration, supportsStreaming);
+    }
+
+    public InputPaidMediaVideo withStartTimestamp(@Nullable Long startTimestamp) {
+        return new InputPaidMediaVideo(type, media, thumbnail, cover, startTimestamp, width, height, duration, supportsStreaming);
+    }
+
+    public InputPaidMediaVideo withWidth(@Nullable Long width) {
+        return new InputPaidMediaVideo(type, media, thumbnail, cover, startTimestamp, width, height, duration, supportsStreaming);
+    }
+
+    public InputPaidMediaVideo withHeight(@Nullable Long height) {
+        return new InputPaidMediaVideo(type, media, thumbnail, cover, startTimestamp, width, height, duration, supportsStreaming);
+    }
+
+    public InputPaidMediaVideo withDuration(@Nullable Long duration) {
+        return new InputPaidMediaVideo(type, media, thumbnail, cover, startTimestamp, width, height, duration, supportsStreaming);
+    }
+
+    public InputPaidMediaVideo withSupportsStreaming(@Nullable Boolean supportsStreaming) {
+        return new InputPaidMediaVideo(type, media, thumbnail, cover, startTimestamp, width, height, duration, supportsStreaming);
+    }
+}

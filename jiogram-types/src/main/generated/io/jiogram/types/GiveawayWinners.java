@@ -41,4 +41,53 @@ public record GiveawayWinners(
     @JsonProperty("only_new_members") @Nullable Boolean onlyNewMembers,
     @JsonProperty("was_refunded") @Nullable Boolean wasRefunded,
     @JsonProperty("prize_description") @Nullable String prizeDescription
-) {}
+) {
+
+    public GiveawayWinners withChat(Chat chat) {
+        return new GiveawayWinners(chat, giveawayMessageId, winnersSelectionDate, winnerCount, winners, additionalChatCount, prizeStarCount, premiumSubscriptionMonthCount, unclaimedPrizeCount, onlyNewMembers, wasRefunded, prizeDescription);
+    }
+
+    public GiveawayWinners withGiveawayMessageId(long giveawayMessageId) {
+        return new GiveawayWinners(chat, giveawayMessageId, winnersSelectionDate, winnerCount, winners, additionalChatCount, prizeStarCount, premiumSubscriptionMonthCount, unclaimedPrizeCount, onlyNewMembers, wasRefunded, prizeDescription);
+    }
+
+    public GiveawayWinners withWinnersSelectionDate(long winnersSelectionDate) {
+        return new GiveawayWinners(chat, giveawayMessageId, winnersSelectionDate, winnerCount, winners, additionalChatCount, prizeStarCount, premiumSubscriptionMonthCount, unclaimedPrizeCount, onlyNewMembers, wasRefunded, prizeDescription);
+    }
+
+    public GiveawayWinners withWinnerCount(long winnerCount) {
+        return new GiveawayWinners(chat, giveawayMessageId, winnersSelectionDate, winnerCount, winners, additionalChatCount, prizeStarCount, premiumSubscriptionMonthCount, unclaimedPrizeCount, onlyNewMembers, wasRefunded, prizeDescription);
+    }
+
+    public GiveawayWinners withWinners(List<User> winners) {
+        return new GiveawayWinners(chat, giveawayMessageId, winnersSelectionDate, winnerCount, winners, additionalChatCount, prizeStarCount, premiumSubscriptionMonthCount, unclaimedPrizeCount, onlyNewMembers, wasRefunded, prizeDescription);
+    }
+
+    public GiveawayWinners withAdditionalChatCount(@Nullable Long additionalChatCount) {
+        return new GiveawayWinners(chat, giveawayMessageId, winnersSelectionDate, winnerCount, winners, additionalChatCount, prizeStarCount, premiumSubscriptionMonthCount, unclaimedPrizeCount, onlyNewMembers, wasRefunded, prizeDescription);
+    }
+
+    public GiveawayWinners withPrizeStarCount(@Nullable Long prizeStarCount) {
+        return new GiveawayWinners(chat, giveawayMessageId, winnersSelectionDate, winnerCount, winners, additionalChatCount, prizeStarCount, premiumSubscriptionMonthCount, unclaimedPrizeCount, onlyNewMembers, wasRefunded, prizeDescription);
+    }
+
+    public GiveawayWinners withPremiumSubscriptionMonthCount(@Nullable Long premiumSubscriptionMonthCount) {
+        return new GiveawayWinners(chat, giveawayMessageId, winnersSelectionDate, winnerCount, winners, additionalChatCount, prizeStarCount, premiumSubscriptionMonthCount, unclaimedPrizeCount, onlyNewMembers, wasRefunded, prizeDescription);
+    }
+
+    public GiveawayWinners withUnclaimedPrizeCount(@Nullable Long unclaimedPrizeCount) {
+        return new GiveawayWinners(chat, giveawayMessageId, winnersSelectionDate, winnerCount, winners, additionalChatCount, prizeStarCount, premiumSubscriptionMonthCount, unclaimedPrizeCount, onlyNewMembers, wasRefunded, prizeDescription);
+    }
+
+    public GiveawayWinners withOnlyNewMembers(@Nullable Boolean onlyNewMembers) {
+        return new GiveawayWinners(chat, giveawayMessageId, winnersSelectionDate, winnerCount, winners, additionalChatCount, prizeStarCount, premiumSubscriptionMonthCount, unclaimedPrizeCount, onlyNewMembers, wasRefunded, prizeDescription);
+    }
+
+    public GiveawayWinners withWasRefunded(@Nullable Boolean wasRefunded) {
+        return new GiveawayWinners(chat, giveawayMessageId, winnersSelectionDate, winnerCount, winners, additionalChatCount, prizeStarCount, premiumSubscriptionMonthCount, unclaimedPrizeCount, onlyNewMembers, wasRefunded, prizeDescription);
+    }
+
+    public GiveawayWinners withPrizeDescription(@Nullable String prizeDescription) {
+        return new GiveawayWinners(chat, giveawayMessageId, winnersSelectionDate, winnerCount, winners, additionalChatCount, prizeStarCount, premiumSubscriptionMonthCount, unclaimedPrizeCount, onlyNewMembers, wasRefunded, prizeDescription);
+    }
+}

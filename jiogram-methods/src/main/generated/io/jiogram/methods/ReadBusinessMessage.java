@@ -29,4 +29,16 @@ public record ReadBusinessMessage(
     public String apiReturnType() {
         return "Boolean";
     }
+
+    public ReadBusinessMessage withBusinessConnectionId(String businessConnectionId) {
+        return new ReadBusinessMessage(businessConnectionId, chatId, messageId);
+    }
+
+    public ReadBusinessMessage withChatId(long chatId) {
+        return new ReadBusinessMessage(businessConnectionId, chatId, messageId);
+    }
+
+    public ReadBusinessMessage withMessageId(long messageId) {
+        return new ReadBusinessMessage(businessConnectionId, chatId, messageId);
+    }
 }

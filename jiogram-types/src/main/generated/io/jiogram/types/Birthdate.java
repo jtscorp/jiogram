@@ -15,4 +15,17 @@ public record Birthdate(
     @JsonProperty("day") long day,
     @JsonProperty("month") long month,
     @JsonProperty("year") @Nullable Long year
-) {}
+) {
+
+    public Birthdate withDay(long day) {
+        return new Birthdate(day, month, year);
+    }
+
+    public Birthdate withMonth(long month) {
+        return new Birthdate(day, month, year);
+    }
+
+    public Birthdate withYear(@Nullable Long year) {
+        return new Birthdate(day, month, year);
+    }
+}

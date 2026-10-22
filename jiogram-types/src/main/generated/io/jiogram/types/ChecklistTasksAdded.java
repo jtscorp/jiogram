@@ -18,4 +18,13 @@ import org.jspecify.annotations.Nullable;
 public record ChecklistTasksAdded(
     @JsonProperty("checklist_message") @Nullable Message checklistMessage,
     @JsonProperty("tasks") List<ChecklistTask> tasks
-) {}
+) {
+
+    public ChecklistTasksAdded withChecklistMessage(@Nullable Message checklistMessage) {
+        return new ChecklistTasksAdded(checklistMessage, tasks);
+    }
+
+    public ChecklistTasksAdded withTasks(List<ChecklistTask> tasks) {
+        return new ChecklistTasksAdded(checklistMessage, tasks);
+    }
+}

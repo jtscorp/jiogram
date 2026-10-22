@@ -22,4 +22,17 @@ public record PassportElementErrorFiles(
     @JsonProperty("type") PassportElementType type,
     @JsonProperty("file_hashes") List<String> fileHashes,
     @JsonProperty("message") String message
-) implements PassportElementError {}
+) implements PassportElementError {
+
+    public PassportElementErrorFiles withType(PassportElementType type) {
+        return new PassportElementErrorFiles(source, type, fileHashes, message);
+    }
+
+    public PassportElementErrorFiles withFileHashes(List<String> fileHashes) {
+        return new PassportElementErrorFiles(source, type, fileHashes, message);
+    }
+
+    public PassportElementErrorFiles withMessage(String message) {
+        return new PassportElementErrorFiles(source, type, fileHashes, message);
+    }
+}

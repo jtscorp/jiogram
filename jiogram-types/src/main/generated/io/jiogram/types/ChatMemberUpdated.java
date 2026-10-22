@@ -31,4 +31,37 @@ public record ChatMemberUpdated(
     @JsonProperty("invite_link") @Nullable ChatInviteLink inviteLink,
     @JsonProperty("via_join_request") @Nullable Boolean viaJoinRequest,
     @JsonProperty("via_chat_folder_invite_link") @Nullable Boolean viaChatFolderInviteLink
-) {}
+) {
+
+    public ChatMemberUpdated withChat(Chat chat) {
+        return new ChatMemberUpdated(chat, from, date, oldChatMember, newChatMember, inviteLink, viaJoinRequest, viaChatFolderInviteLink);
+    }
+
+    public ChatMemberUpdated withFrom(User from) {
+        return new ChatMemberUpdated(chat, from, date, oldChatMember, newChatMember, inviteLink, viaJoinRequest, viaChatFolderInviteLink);
+    }
+
+    public ChatMemberUpdated withDate(long date) {
+        return new ChatMemberUpdated(chat, from, date, oldChatMember, newChatMember, inviteLink, viaJoinRequest, viaChatFolderInviteLink);
+    }
+
+    public ChatMemberUpdated withOldChatMember(ChatMember oldChatMember) {
+        return new ChatMemberUpdated(chat, from, date, oldChatMember, newChatMember, inviteLink, viaJoinRequest, viaChatFolderInviteLink);
+    }
+
+    public ChatMemberUpdated withNewChatMember(ChatMember newChatMember) {
+        return new ChatMemberUpdated(chat, from, date, oldChatMember, newChatMember, inviteLink, viaJoinRequest, viaChatFolderInviteLink);
+    }
+
+    public ChatMemberUpdated withInviteLink(@Nullable ChatInviteLink inviteLink) {
+        return new ChatMemberUpdated(chat, from, date, oldChatMember, newChatMember, inviteLink, viaJoinRequest, viaChatFolderInviteLink);
+    }
+
+    public ChatMemberUpdated withViaJoinRequest(@Nullable Boolean viaJoinRequest) {
+        return new ChatMemberUpdated(chat, from, date, oldChatMember, newChatMember, inviteLink, viaJoinRequest, viaChatFolderInviteLink);
+    }
+
+    public ChatMemberUpdated withViaChatFolderInviteLink(@Nullable Boolean viaChatFolderInviteLink) {
+        return new ChatMemberUpdated(chat, from, date, oldChatMember, newChatMember, inviteLink, viaJoinRequest, viaChatFolderInviteLink);
+    }
+}

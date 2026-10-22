@@ -48,4 +48,36 @@ public record SendChecklist(
     public static SendChecklist of(String businessConnectionId, long chatId, InputChecklist checklist) {
         return new SendChecklist(businessConnectionId, chatId, checklist, null, null, null, null, null);
     }
+
+    public SendChecklist withBusinessConnectionId(String businessConnectionId) {
+        return new SendChecklist(businessConnectionId, chatId, checklist, disableNotification, protectContent, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendChecklist withChatId(long chatId) {
+        return new SendChecklist(businessConnectionId, chatId, checklist, disableNotification, protectContent, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendChecklist withChecklist(InputChecklist checklist) {
+        return new SendChecklist(businessConnectionId, chatId, checklist, disableNotification, protectContent, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendChecklist withDisableNotification(@Nullable Boolean disableNotification) {
+        return new SendChecklist(businessConnectionId, chatId, checklist, disableNotification, protectContent, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendChecklist withProtectContent(@Nullable Boolean protectContent) {
+        return new SendChecklist(businessConnectionId, chatId, checklist, disableNotification, protectContent, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendChecklist withMessageEffectId(@Nullable String messageEffectId) {
+        return new SendChecklist(businessConnectionId, chatId, checklist, disableNotification, protectContent, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendChecklist withReplyParameters(@Nullable ReplyParameters replyParameters) {
+        return new SendChecklist(businessConnectionId, chatId, checklist, disableNotification, protectContent, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendChecklist withReplyMarkup(@Nullable InlineKeyboardMarkup replyMarkup) {
+        return new SendChecklist(businessConnectionId, chatId, checklist, disableNotification, protectContent, messageEffectId, replyParameters, replyMarkup);
+    }
 }

@@ -116,4 +116,88 @@ public record SendAnimation(
     public static SendAnimation reply(Message message, InputFileOrString animation) {
         return new SendAnimation(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), animation, null, null, null, null, null, null, null, null, null, null, null, null, null, null, ReplyTarget.replyTo(message), null);
     }
+
+    public SendAnimation withBusinessConnectionId(@Nullable String businessConnectionId) {
+        return new SendAnimation(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, animation, duration, width, height, thumbnail, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendAnimation withChatId(ChatId chatId) {
+        return new SendAnimation(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, animation, duration, width, height, thumbnail, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendAnimation withMessageThreadId(@Nullable Long messageThreadId) {
+        return new SendAnimation(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, animation, duration, width, height, thumbnail, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendAnimation withDirectMessagesTopicId(@Nullable Long directMessagesTopicId) {
+        return new SendAnimation(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, animation, duration, width, height, thumbnail, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendAnimation withAnimation(InputFileOrString animation) {
+        return new SendAnimation(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, animation, duration, width, height, thumbnail, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendAnimation withDuration(@Nullable Long duration) {
+        return new SendAnimation(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, animation, duration, width, height, thumbnail, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendAnimation withWidth(@Nullable Long width) {
+        return new SendAnimation(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, animation, duration, width, height, thumbnail, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendAnimation withHeight(@Nullable Long height) {
+        return new SendAnimation(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, animation, duration, width, height, thumbnail, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendAnimation withThumbnail(@Nullable InputFileOrString thumbnail) {
+        return new SendAnimation(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, animation, duration, width, height, thumbnail, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendAnimation withCaption(@Nullable String caption) {
+        return new SendAnimation(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, animation, duration, width, height, thumbnail, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendAnimation withParseMode(@Nullable ParseMode parseMode) {
+        return new SendAnimation(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, animation, duration, width, height, thumbnail, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendAnimation withCaptionEntities(@Nullable List<MessageEntity> captionEntities) {
+        return new SendAnimation(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, animation, duration, width, height, thumbnail, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendAnimation withShowCaptionAboveMedia(@Nullable Boolean showCaptionAboveMedia) {
+        return new SendAnimation(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, animation, duration, width, height, thumbnail, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendAnimation withHasSpoiler(@Nullable Boolean hasSpoiler) {
+        return new SendAnimation(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, animation, duration, width, height, thumbnail, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendAnimation withDisableNotification(@Nullable Boolean disableNotification) {
+        return new SendAnimation(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, animation, duration, width, height, thumbnail, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendAnimation withProtectContent(@Nullable Boolean protectContent) {
+        return new SendAnimation(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, animation, duration, width, height, thumbnail, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendAnimation withAllowPaidBroadcast(@Nullable Boolean allowPaidBroadcast) {
+        return new SendAnimation(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, animation, duration, width, height, thumbnail, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendAnimation withMessageEffectId(@Nullable String messageEffectId) {
+        return new SendAnimation(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, animation, duration, width, height, thumbnail, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendAnimation withSuggestedPostParameters(@Nullable SuggestedPostParameters suggestedPostParameters) {
+        return new SendAnimation(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, animation, duration, width, height, thumbnail, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendAnimation withReplyParameters(@Nullable ReplyParameters replyParameters) {
+        return new SendAnimation(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, animation, duration, width, height, thumbnail, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendAnimation withReplyMarkup(@Nullable ReplyMarkup replyMarkup) {
+        return new SendAnimation(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, animation, duration, width, height, thumbnail, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
 }

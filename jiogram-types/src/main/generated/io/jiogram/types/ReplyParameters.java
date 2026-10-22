@@ -42,4 +42,41 @@ public record ReplyParameters(
     @JsonProperty("quote_position") @Nullable Long quotePosition,
     @JsonProperty("checklist_task_id") @Nullable Long checklistTaskId,
     @JsonProperty("poll_option_id") @Nullable String pollOptionId
-) {}
+) {
+
+    public ReplyParameters withMessageId(long messageId) {
+        return new ReplyParameters(messageId, chatId, allowSendingWithoutReply, quote, quoteParseMode, quoteEntities, quotePosition, checklistTaskId, pollOptionId);
+    }
+
+    public ReplyParameters withChatId(@Nullable ChatId chatId) {
+        return new ReplyParameters(messageId, chatId, allowSendingWithoutReply, quote, quoteParseMode, quoteEntities, quotePosition, checklistTaskId, pollOptionId);
+    }
+
+    public ReplyParameters withAllowSendingWithoutReply(@Nullable Boolean allowSendingWithoutReply) {
+        return new ReplyParameters(messageId, chatId, allowSendingWithoutReply, quote, quoteParseMode, quoteEntities, quotePosition, checklistTaskId, pollOptionId);
+    }
+
+    public ReplyParameters withQuote(@Nullable String quote) {
+        return new ReplyParameters(messageId, chatId, allowSendingWithoutReply, quote, quoteParseMode, quoteEntities, quotePosition, checklistTaskId, pollOptionId);
+    }
+
+    public ReplyParameters withQuoteParseMode(@Nullable ParseMode quoteParseMode) {
+        return new ReplyParameters(messageId, chatId, allowSendingWithoutReply, quote, quoteParseMode, quoteEntities, quotePosition, checklistTaskId, pollOptionId);
+    }
+
+    public ReplyParameters withQuoteEntities(@Nullable List<MessageEntity> quoteEntities) {
+        return new ReplyParameters(messageId, chatId, allowSendingWithoutReply, quote, quoteParseMode, quoteEntities, quotePosition, checklistTaskId, pollOptionId);
+    }
+
+    public ReplyParameters withQuotePosition(@Nullable Long quotePosition) {
+        return new ReplyParameters(messageId, chatId, allowSendingWithoutReply, quote, quoteParseMode, quoteEntities, quotePosition, checklistTaskId, pollOptionId);
+    }
+
+    public ReplyParameters withChecklistTaskId(@Nullable Long checklistTaskId) {
+        return new ReplyParameters(messageId, chatId, allowSendingWithoutReply, quote, quoteParseMode, quoteEntities, quotePosition, checklistTaskId, pollOptionId);
+    }
+
+    public ReplyParameters withPollOptionId(@Nullable String pollOptionId) {
+        return new ReplyParameters(messageId, chatId, allowSendingWithoutReply, quote, quoteParseMode, quoteEntities, quotePosition, checklistTaskId, pollOptionId);
+    }
+}

@@ -10,4 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public record PreparedKeyboardButton(
     @JsonProperty("id") String id
-) {}
+) {
+
+    public PreparedKeyboardButton withId(String id) {
+        return new PreparedKeyboardButton(id);
+    }
+}

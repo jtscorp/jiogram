@@ -63,4 +63,48 @@ public record EditMessageLiveLocation(
     public static EditMessageLiveLocation of(double latitude, double longitude) {
         return new EditMessageLiveLocation(null, null, null, null, latitude, longitude, null, null, null, null, null);
     }
+
+    public EditMessageLiveLocation withBusinessConnectionId(@Nullable String businessConnectionId) {
+        return new EditMessageLiveLocation(businessConnectionId, chatId, messageId, inlineMessageId, latitude, longitude, livePeriod, horizontalAccuracy, heading, proximityAlertRadius, replyMarkup);
+    }
+
+    public EditMessageLiveLocation withChatId(@Nullable ChatId chatId) {
+        return new EditMessageLiveLocation(businessConnectionId, chatId, messageId, inlineMessageId, latitude, longitude, livePeriod, horizontalAccuracy, heading, proximityAlertRadius, replyMarkup);
+    }
+
+    public EditMessageLiveLocation withMessageId(@Nullable Long messageId) {
+        return new EditMessageLiveLocation(businessConnectionId, chatId, messageId, inlineMessageId, latitude, longitude, livePeriod, horizontalAccuracy, heading, proximityAlertRadius, replyMarkup);
+    }
+
+    public EditMessageLiveLocation withInlineMessageId(@Nullable String inlineMessageId) {
+        return new EditMessageLiveLocation(businessConnectionId, chatId, messageId, inlineMessageId, latitude, longitude, livePeriod, horizontalAccuracy, heading, proximityAlertRadius, replyMarkup);
+    }
+
+    public EditMessageLiveLocation withLatitude(double latitude) {
+        return new EditMessageLiveLocation(businessConnectionId, chatId, messageId, inlineMessageId, latitude, longitude, livePeriod, horizontalAccuracy, heading, proximityAlertRadius, replyMarkup);
+    }
+
+    public EditMessageLiveLocation withLongitude(double longitude) {
+        return new EditMessageLiveLocation(businessConnectionId, chatId, messageId, inlineMessageId, latitude, longitude, livePeriod, horizontalAccuracy, heading, proximityAlertRadius, replyMarkup);
+    }
+
+    public EditMessageLiveLocation withLivePeriod(@Nullable Long livePeriod) {
+        return new EditMessageLiveLocation(businessConnectionId, chatId, messageId, inlineMessageId, latitude, longitude, livePeriod, horizontalAccuracy, heading, proximityAlertRadius, replyMarkup);
+    }
+
+    public EditMessageLiveLocation withHorizontalAccuracy(@Nullable Double horizontalAccuracy) {
+        return new EditMessageLiveLocation(businessConnectionId, chatId, messageId, inlineMessageId, latitude, longitude, livePeriod, horizontalAccuracy, heading, proximityAlertRadius, replyMarkup);
+    }
+
+    public EditMessageLiveLocation withHeading(@Nullable Long heading) {
+        return new EditMessageLiveLocation(businessConnectionId, chatId, messageId, inlineMessageId, latitude, longitude, livePeriod, horizontalAccuracy, heading, proximityAlertRadius, replyMarkup);
+    }
+
+    public EditMessageLiveLocation withProximityAlertRadius(@Nullable Long proximityAlertRadius) {
+        return new EditMessageLiveLocation(businessConnectionId, chatId, messageId, inlineMessageId, latitude, longitude, livePeriod, horizontalAccuracy, heading, proximityAlertRadius, replyMarkup);
+    }
+
+    public EditMessageLiveLocation withReplyMarkup(@Nullable InlineKeyboardMarkup replyMarkup) {
+        return new EditMessageLiveLocation(businessConnectionId, chatId, messageId, inlineMessageId, latitude, longitude, livePeriod, horizontalAccuracy, heading, proximityAlertRadius, replyMarkup);
+    }
 }

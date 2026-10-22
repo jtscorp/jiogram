@@ -39,4 +39,41 @@ public record InlineQueryResultVoice(
     @JsonProperty("voice_duration") @Nullable Long voiceDuration,
     @JsonProperty("reply_markup") @Nullable InlineKeyboardMarkup replyMarkup,
     @JsonProperty("input_message_content") @Nullable InputMessageContent inputMessageContent
-) implements InlineQueryResult {}
+) implements InlineQueryResult {
+
+    public InlineQueryResultVoice withId(String id) {
+        return new InlineQueryResultVoice(type, id, voiceUrl, title, caption, parseMode, captionEntities, voiceDuration, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultVoice withVoiceUrl(String voiceUrl) {
+        return new InlineQueryResultVoice(type, id, voiceUrl, title, caption, parseMode, captionEntities, voiceDuration, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultVoice withTitle(String title) {
+        return new InlineQueryResultVoice(type, id, voiceUrl, title, caption, parseMode, captionEntities, voiceDuration, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultVoice withCaption(@Nullable String caption) {
+        return new InlineQueryResultVoice(type, id, voiceUrl, title, caption, parseMode, captionEntities, voiceDuration, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultVoice withParseMode(@Nullable ParseMode parseMode) {
+        return new InlineQueryResultVoice(type, id, voiceUrl, title, caption, parseMode, captionEntities, voiceDuration, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultVoice withCaptionEntities(@Nullable List<MessageEntity> captionEntities) {
+        return new InlineQueryResultVoice(type, id, voiceUrl, title, caption, parseMode, captionEntities, voiceDuration, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultVoice withVoiceDuration(@Nullable Long voiceDuration) {
+        return new InlineQueryResultVoice(type, id, voiceUrl, title, caption, parseMode, captionEntities, voiceDuration, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultVoice withReplyMarkup(@Nullable InlineKeyboardMarkup replyMarkup) {
+        return new InlineQueryResultVoice(type, id, voiceUrl, title, caption, parseMode, captionEntities, voiceDuration, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultVoice withInputMessageContent(@Nullable InputMessageContent inputMessageContent) {
+        return new InlineQueryResultVoice(type, id, voiceUrl, title, caption, parseMode, captionEntities, voiceDuration, replyMarkup, inputMessageContent);
+    }
+}

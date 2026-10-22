@@ -24,4 +24,25 @@ public record Checklist(
     @JsonProperty("tasks") List<ChecklistTask> tasks,
     @JsonProperty("others_can_add_tasks") @Nullable Boolean othersCanAddTasks,
     @JsonProperty("others_can_mark_tasks_as_done") @Nullable Boolean othersCanMarkTasksAsDone
-) {}
+) {
+
+    public Checklist withTitle(String title) {
+        return new Checklist(title, titleEntities, tasks, othersCanAddTasks, othersCanMarkTasksAsDone);
+    }
+
+    public Checklist withTitleEntities(@Nullable List<MessageEntity> titleEntities) {
+        return new Checklist(title, titleEntities, tasks, othersCanAddTasks, othersCanMarkTasksAsDone);
+    }
+
+    public Checklist withTasks(List<ChecklistTask> tasks) {
+        return new Checklist(title, titleEntities, tasks, othersCanAddTasks, othersCanMarkTasksAsDone);
+    }
+
+    public Checklist withOthersCanAddTasks(@Nullable Boolean othersCanAddTasks) {
+        return new Checklist(title, titleEntities, tasks, othersCanAddTasks, othersCanMarkTasksAsDone);
+    }
+
+    public Checklist withOthersCanMarkTasksAsDone(@Nullable Boolean othersCanMarkTasksAsDone) {
+        return new Checklist(title, titleEntities, tasks, othersCanAddTasks, othersCanMarkTasksAsDone);
+    }
+}

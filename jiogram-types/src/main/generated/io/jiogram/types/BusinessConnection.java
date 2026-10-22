@@ -26,4 +26,29 @@ public record BusinessConnection(
     @JsonProperty("date") long date,
     @JsonProperty("rights") @Nullable BusinessBotRights rights,
     @JsonProperty("is_enabled") boolean isEnabled
-) {}
+) {
+
+    public BusinessConnection withId(String id) {
+        return new BusinessConnection(id, user, userChatId, date, rights, isEnabled);
+    }
+
+    public BusinessConnection withUser(User user) {
+        return new BusinessConnection(id, user, userChatId, date, rights, isEnabled);
+    }
+
+    public BusinessConnection withUserChatId(long userChatId) {
+        return new BusinessConnection(id, user, userChatId, date, rights, isEnabled);
+    }
+
+    public BusinessConnection withDate(long date) {
+        return new BusinessConnection(id, user, userChatId, date, rights, isEnabled);
+    }
+
+    public BusinessConnection withRights(@Nullable BusinessBotRights rights) {
+        return new BusinessConnection(id, user, userChatId, date, rights, isEnabled);
+    }
+
+    public BusinessConnection withIsEnabled(boolean isEnabled) {
+        return new BusinessConnection(id, user, userChatId, date, rights, isEnabled);
+    }
+}

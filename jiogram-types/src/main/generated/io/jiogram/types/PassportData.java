@@ -16,4 +16,13 @@ import java.util.List;
 public record PassportData(
     @JsonProperty("data") List<EncryptedPassportElement> data,
     @JsonProperty("credentials") EncryptedCredentials credentials
-) {}
+) {
+
+    public PassportData withData(List<EncryptedPassportElement> data) {
+        return new PassportData(data, credentials);
+    }
+
+    public PassportData withCredentials(EncryptedCredentials credentials) {
+        return new PassportData(data, credentials);
+    }
+}

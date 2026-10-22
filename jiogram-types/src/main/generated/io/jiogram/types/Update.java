@@ -104,4 +104,105 @@ public record Update(
     @JsonProperty("chat_boost") @Nullable ChatBoostUpdated chatBoost,
     @JsonProperty("removed_chat_boost") @Nullable ChatBoostRemoved removedChatBoost,
     @JsonProperty("managed_bot") @Nullable ManagedBotUpdated managedBot
-) {}
+) {
+
+    public Update withUpdateId(long updateId) {
+        return new Update(updateId, message, editedMessage, channelPost, editedChannelPost, businessConnection, businessMessage, editedBusinessMessage, deletedBusinessMessages, messageReaction, messageReactionCount, inlineQuery, chosenInlineResult, callbackQuery, shippingQuery, preCheckoutQuery, purchasedPaidMedia, poll, pollAnswer, myChatMember, chatMember, chatJoinRequest, chatBoost, removedChatBoost, managedBot);
+    }
+
+    public Update withMessage(@Nullable Message message) {
+        return new Update(updateId, message, editedMessage, channelPost, editedChannelPost, businessConnection, businessMessage, editedBusinessMessage, deletedBusinessMessages, messageReaction, messageReactionCount, inlineQuery, chosenInlineResult, callbackQuery, shippingQuery, preCheckoutQuery, purchasedPaidMedia, poll, pollAnswer, myChatMember, chatMember, chatJoinRequest, chatBoost, removedChatBoost, managedBot);
+    }
+
+    public Update withEditedMessage(@Nullable Message editedMessage) {
+        return new Update(updateId, message, editedMessage, channelPost, editedChannelPost, businessConnection, businessMessage, editedBusinessMessage, deletedBusinessMessages, messageReaction, messageReactionCount, inlineQuery, chosenInlineResult, callbackQuery, shippingQuery, preCheckoutQuery, purchasedPaidMedia, poll, pollAnswer, myChatMember, chatMember, chatJoinRequest, chatBoost, removedChatBoost, managedBot);
+    }
+
+    public Update withChannelPost(@Nullable Message channelPost) {
+        return new Update(updateId, message, editedMessage, channelPost, editedChannelPost, businessConnection, businessMessage, editedBusinessMessage, deletedBusinessMessages, messageReaction, messageReactionCount, inlineQuery, chosenInlineResult, callbackQuery, shippingQuery, preCheckoutQuery, purchasedPaidMedia, poll, pollAnswer, myChatMember, chatMember, chatJoinRequest, chatBoost, removedChatBoost, managedBot);
+    }
+
+    public Update withEditedChannelPost(@Nullable Message editedChannelPost) {
+        return new Update(updateId, message, editedMessage, channelPost, editedChannelPost, businessConnection, businessMessage, editedBusinessMessage, deletedBusinessMessages, messageReaction, messageReactionCount, inlineQuery, chosenInlineResult, callbackQuery, shippingQuery, preCheckoutQuery, purchasedPaidMedia, poll, pollAnswer, myChatMember, chatMember, chatJoinRequest, chatBoost, removedChatBoost, managedBot);
+    }
+
+    public Update withBusinessConnection(@Nullable BusinessConnection businessConnection) {
+        return new Update(updateId, message, editedMessage, channelPost, editedChannelPost, businessConnection, businessMessage, editedBusinessMessage, deletedBusinessMessages, messageReaction, messageReactionCount, inlineQuery, chosenInlineResult, callbackQuery, shippingQuery, preCheckoutQuery, purchasedPaidMedia, poll, pollAnswer, myChatMember, chatMember, chatJoinRequest, chatBoost, removedChatBoost, managedBot);
+    }
+
+    public Update withBusinessMessage(@Nullable Message businessMessage) {
+        return new Update(updateId, message, editedMessage, channelPost, editedChannelPost, businessConnection, businessMessage, editedBusinessMessage, deletedBusinessMessages, messageReaction, messageReactionCount, inlineQuery, chosenInlineResult, callbackQuery, shippingQuery, preCheckoutQuery, purchasedPaidMedia, poll, pollAnswer, myChatMember, chatMember, chatJoinRequest, chatBoost, removedChatBoost, managedBot);
+    }
+
+    public Update withEditedBusinessMessage(@Nullable Message editedBusinessMessage) {
+        return new Update(updateId, message, editedMessage, channelPost, editedChannelPost, businessConnection, businessMessage, editedBusinessMessage, deletedBusinessMessages, messageReaction, messageReactionCount, inlineQuery, chosenInlineResult, callbackQuery, shippingQuery, preCheckoutQuery, purchasedPaidMedia, poll, pollAnswer, myChatMember, chatMember, chatJoinRequest, chatBoost, removedChatBoost, managedBot);
+    }
+
+    public Update withDeletedBusinessMessages(@Nullable BusinessMessagesDeleted deletedBusinessMessages) {
+        return new Update(updateId, message, editedMessage, channelPost, editedChannelPost, businessConnection, businessMessage, editedBusinessMessage, deletedBusinessMessages, messageReaction, messageReactionCount, inlineQuery, chosenInlineResult, callbackQuery, shippingQuery, preCheckoutQuery, purchasedPaidMedia, poll, pollAnswer, myChatMember, chatMember, chatJoinRequest, chatBoost, removedChatBoost, managedBot);
+    }
+
+    public Update withMessageReaction(@Nullable MessageReactionUpdated messageReaction) {
+        return new Update(updateId, message, editedMessage, channelPost, editedChannelPost, businessConnection, businessMessage, editedBusinessMessage, deletedBusinessMessages, messageReaction, messageReactionCount, inlineQuery, chosenInlineResult, callbackQuery, shippingQuery, preCheckoutQuery, purchasedPaidMedia, poll, pollAnswer, myChatMember, chatMember, chatJoinRequest, chatBoost, removedChatBoost, managedBot);
+    }
+
+    public Update withMessageReactionCount(@Nullable MessageReactionCountUpdated messageReactionCount) {
+        return new Update(updateId, message, editedMessage, channelPost, editedChannelPost, businessConnection, businessMessage, editedBusinessMessage, deletedBusinessMessages, messageReaction, messageReactionCount, inlineQuery, chosenInlineResult, callbackQuery, shippingQuery, preCheckoutQuery, purchasedPaidMedia, poll, pollAnswer, myChatMember, chatMember, chatJoinRequest, chatBoost, removedChatBoost, managedBot);
+    }
+
+    public Update withInlineQuery(@Nullable InlineQuery inlineQuery) {
+        return new Update(updateId, message, editedMessage, channelPost, editedChannelPost, businessConnection, businessMessage, editedBusinessMessage, deletedBusinessMessages, messageReaction, messageReactionCount, inlineQuery, chosenInlineResult, callbackQuery, shippingQuery, preCheckoutQuery, purchasedPaidMedia, poll, pollAnswer, myChatMember, chatMember, chatJoinRequest, chatBoost, removedChatBoost, managedBot);
+    }
+
+    public Update withChosenInlineResult(@Nullable ChosenInlineResult chosenInlineResult) {
+        return new Update(updateId, message, editedMessage, channelPost, editedChannelPost, businessConnection, businessMessage, editedBusinessMessage, deletedBusinessMessages, messageReaction, messageReactionCount, inlineQuery, chosenInlineResult, callbackQuery, shippingQuery, preCheckoutQuery, purchasedPaidMedia, poll, pollAnswer, myChatMember, chatMember, chatJoinRequest, chatBoost, removedChatBoost, managedBot);
+    }
+
+    public Update withCallbackQuery(@Nullable CallbackQuery callbackQuery) {
+        return new Update(updateId, message, editedMessage, channelPost, editedChannelPost, businessConnection, businessMessage, editedBusinessMessage, deletedBusinessMessages, messageReaction, messageReactionCount, inlineQuery, chosenInlineResult, callbackQuery, shippingQuery, preCheckoutQuery, purchasedPaidMedia, poll, pollAnswer, myChatMember, chatMember, chatJoinRequest, chatBoost, removedChatBoost, managedBot);
+    }
+
+    public Update withShippingQuery(@Nullable ShippingQuery shippingQuery) {
+        return new Update(updateId, message, editedMessage, channelPost, editedChannelPost, businessConnection, businessMessage, editedBusinessMessage, deletedBusinessMessages, messageReaction, messageReactionCount, inlineQuery, chosenInlineResult, callbackQuery, shippingQuery, preCheckoutQuery, purchasedPaidMedia, poll, pollAnswer, myChatMember, chatMember, chatJoinRequest, chatBoost, removedChatBoost, managedBot);
+    }
+
+    public Update withPreCheckoutQuery(@Nullable PreCheckoutQuery preCheckoutQuery) {
+        return new Update(updateId, message, editedMessage, channelPost, editedChannelPost, businessConnection, businessMessage, editedBusinessMessage, deletedBusinessMessages, messageReaction, messageReactionCount, inlineQuery, chosenInlineResult, callbackQuery, shippingQuery, preCheckoutQuery, purchasedPaidMedia, poll, pollAnswer, myChatMember, chatMember, chatJoinRequest, chatBoost, removedChatBoost, managedBot);
+    }
+
+    public Update withPurchasedPaidMedia(@Nullable PaidMediaPurchased purchasedPaidMedia) {
+        return new Update(updateId, message, editedMessage, channelPost, editedChannelPost, businessConnection, businessMessage, editedBusinessMessage, deletedBusinessMessages, messageReaction, messageReactionCount, inlineQuery, chosenInlineResult, callbackQuery, shippingQuery, preCheckoutQuery, purchasedPaidMedia, poll, pollAnswer, myChatMember, chatMember, chatJoinRequest, chatBoost, removedChatBoost, managedBot);
+    }
+
+    public Update withPoll(@Nullable Poll poll) {
+        return new Update(updateId, message, editedMessage, channelPost, editedChannelPost, businessConnection, businessMessage, editedBusinessMessage, deletedBusinessMessages, messageReaction, messageReactionCount, inlineQuery, chosenInlineResult, callbackQuery, shippingQuery, preCheckoutQuery, purchasedPaidMedia, poll, pollAnswer, myChatMember, chatMember, chatJoinRequest, chatBoost, removedChatBoost, managedBot);
+    }
+
+    public Update withPollAnswer(@Nullable PollAnswer pollAnswer) {
+        return new Update(updateId, message, editedMessage, channelPost, editedChannelPost, businessConnection, businessMessage, editedBusinessMessage, deletedBusinessMessages, messageReaction, messageReactionCount, inlineQuery, chosenInlineResult, callbackQuery, shippingQuery, preCheckoutQuery, purchasedPaidMedia, poll, pollAnswer, myChatMember, chatMember, chatJoinRequest, chatBoost, removedChatBoost, managedBot);
+    }
+
+    public Update withMyChatMember(@Nullable ChatMemberUpdated myChatMember) {
+        return new Update(updateId, message, editedMessage, channelPost, editedChannelPost, businessConnection, businessMessage, editedBusinessMessage, deletedBusinessMessages, messageReaction, messageReactionCount, inlineQuery, chosenInlineResult, callbackQuery, shippingQuery, preCheckoutQuery, purchasedPaidMedia, poll, pollAnswer, myChatMember, chatMember, chatJoinRequest, chatBoost, removedChatBoost, managedBot);
+    }
+
+    public Update withChatMember(@Nullable ChatMemberUpdated chatMember) {
+        return new Update(updateId, message, editedMessage, channelPost, editedChannelPost, businessConnection, businessMessage, editedBusinessMessage, deletedBusinessMessages, messageReaction, messageReactionCount, inlineQuery, chosenInlineResult, callbackQuery, shippingQuery, preCheckoutQuery, purchasedPaidMedia, poll, pollAnswer, myChatMember, chatMember, chatJoinRequest, chatBoost, removedChatBoost, managedBot);
+    }
+
+    public Update withChatJoinRequest(@Nullable ChatJoinRequest chatJoinRequest) {
+        return new Update(updateId, message, editedMessage, channelPost, editedChannelPost, businessConnection, businessMessage, editedBusinessMessage, deletedBusinessMessages, messageReaction, messageReactionCount, inlineQuery, chosenInlineResult, callbackQuery, shippingQuery, preCheckoutQuery, purchasedPaidMedia, poll, pollAnswer, myChatMember, chatMember, chatJoinRequest, chatBoost, removedChatBoost, managedBot);
+    }
+
+    public Update withChatBoost(@Nullable ChatBoostUpdated chatBoost) {
+        return new Update(updateId, message, editedMessage, channelPost, editedChannelPost, businessConnection, businessMessage, editedBusinessMessage, deletedBusinessMessages, messageReaction, messageReactionCount, inlineQuery, chosenInlineResult, callbackQuery, shippingQuery, preCheckoutQuery, purchasedPaidMedia, poll, pollAnswer, myChatMember, chatMember, chatJoinRequest, chatBoost, removedChatBoost, managedBot);
+    }
+
+    public Update withRemovedChatBoost(@Nullable ChatBoostRemoved removedChatBoost) {
+        return new Update(updateId, message, editedMessage, channelPost, editedChannelPost, businessConnection, businessMessage, editedBusinessMessage, deletedBusinessMessages, messageReaction, messageReactionCount, inlineQuery, chosenInlineResult, callbackQuery, shippingQuery, preCheckoutQuery, purchasedPaidMedia, poll, pollAnswer, myChatMember, chatMember, chatJoinRequest, chatBoost, removedChatBoost, managedBot);
+    }
+
+    public Update withManagedBot(@Nullable ManagedBotUpdated managedBot) {
+        return new Update(updateId, message, editedMessage, channelPost, editedChannelPost, businessConnection, businessMessage, editedBusinessMessage, deletedBusinessMessages, messageReaction, messageReactionCount, inlineQuery, chosenInlineResult, callbackQuery, shippingQuery, preCheckoutQuery, purchasedPaidMedia, poll, pollAnswer, myChatMember, chatMember, chatJoinRequest, chatBoost, removedChatBoost, managedBot);
+    }
+}

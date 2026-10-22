@@ -23,4 +23,8 @@ public record SetMyProfilePhoto(
     public String apiReturnType() {
         return "Boolean";
     }
+
+    public SetMyProfilePhoto withPhoto(InputProfilePhoto photo) {
+        return new SetMyProfilePhoto(photo);
+    }
 }

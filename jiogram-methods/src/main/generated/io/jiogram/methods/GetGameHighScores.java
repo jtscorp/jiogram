@@ -41,4 +41,20 @@ public record GetGameHighScores(
     public static GetGameHighScores of(long userId) {
         return new GetGameHighScores(userId, null, null, null);
     }
+
+    public GetGameHighScores withUserId(long userId) {
+        return new GetGameHighScores(userId, chatId, messageId, inlineMessageId);
+    }
+
+    public GetGameHighScores withChatId(@Nullable Long chatId) {
+        return new GetGameHighScores(userId, chatId, messageId, inlineMessageId);
+    }
+
+    public GetGameHighScores withMessageId(@Nullable Long messageId) {
+        return new GetGameHighScores(userId, chatId, messageId, inlineMessageId);
+    }
+
+    public GetGameHighScores withInlineMessageId(@Nullable String inlineMessageId) {
+        return new GetGameHighScores(userId, chatId, messageId, inlineMessageId);
+    }
 }

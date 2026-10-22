@@ -13,4 +13,9 @@ import java.util.List;
  */
 public record InlineKeyboardMarkup(
     @JsonProperty("inline_keyboard") List<List<InlineKeyboardButton>> inlineKeyboard
-) implements ReplyMarkup {}
+) implements ReplyMarkup {
+
+    public InlineKeyboardMarkup withInlineKeyboard(List<List<InlineKeyboardButton>> inlineKeyboard) {
+        return new InlineKeyboardMarkup(inlineKeyboard);
+    }
+}

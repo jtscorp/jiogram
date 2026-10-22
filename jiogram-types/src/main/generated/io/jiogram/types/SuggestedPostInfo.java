@@ -19,4 +19,17 @@ public record SuggestedPostInfo(
     @JsonProperty("state") String state,
     @JsonProperty("price") @Nullable SuggestedPostPrice price,
     @JsonProperty("send_date") @Nullable Long sendDate
-) {}
+) {
+
+    public SuggestedPostInfo withState(String state) {
+        return new SuggestedPostInfo(state, price, sendDate);
+    }
+
+    public SuggestedPostInfo withPrice(@Nullable SuggestedPostPrice price) {
+        return new SuggestedPostInfo(state, price, sendDate);
+    }
+
+    public SuggestedPostInfo withSendDate(@Nullable Long sendDate) {
+        return new SuggestedPostInfo(state, price, sendDate);
+    }
+}

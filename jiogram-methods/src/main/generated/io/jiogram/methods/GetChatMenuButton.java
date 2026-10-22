@@ -30,4 +30,8 @@ public record GetChatMenuButton(
     public static GetChatMenuButton of() {
         return new GetChatMenuButton(null);
     }
+
+    public GetChatMenuButton withChatId(@Nullable Long chatId) {
+        return new GetChatMenuButton(chatId);
+    }
 }

@@ -18,4 +18,21 @@ public record ShippingQuery(
     @JsonProperty("from") User from,
     @JsonProperty("invoice_payload") String invoicePayload,
     @JsonProperty("shipping_address") ShippingAddress shippingAddress
-) {}
+) {
+
+    public ShippingQuery withId(String id) {
+        return new ShippingQuery(id, from, invoicePayload, shippingAddress);
+    }
+
+    public ShippingQuery withFrom(User from) {
+        return new ShippingQuery(id, from, invoicePayload, shippingAddress);
+    }
+
+    public ShippingQuery withInvoicePayload(String invoicePayload) {
+        return new ShippingQuery(id, from, invoicePayload, shippingAddress);
+    }
+
+    public ShippingQuery withShippingAddress(ShippingAddress shippingAddress) {
+        return new ShippingQuery(id, from, invoicePayload, shippingAddress);
+    }
+}

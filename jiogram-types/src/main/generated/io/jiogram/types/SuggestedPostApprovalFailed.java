@@ -18,4 +18,13 @@ import org.jspecify.annotations.Nullable;
 public record SuggestedPostApprovalFailed(
     @JsonProperty("suggested_post_message") @Nullable Message suggestedPostMessage,
     @JsonProperty("price") SuggestedPostPrice price
-) {}
+) {
+
+    public SuggestedPostApprovalFailed withSuggestedPostMessage(@Nullable Message suggestedPostMessage) {
+        return new SuggestedPostApprovalFailed(suggestedPostMessage, price);
+    }
+
+    public SuggestedPostApprovalFailed withPrice(SuggestedPostPrice price) {
+        return new SuggestedPostApprovalFailed(suggestedPostMessage, price);
+    }
+}

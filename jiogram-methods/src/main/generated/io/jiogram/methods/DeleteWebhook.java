@@ -28,4 +28,8 @@ public record DeleteWebhook(
     public static DeleteWebhook of() {
         return new DeleteWebhook(null);
     }
+
+    public DeleteWebhook withDropPendingUpdates(@Nullable Boolean dropPendingUpdates) {
+        return new DeleteWebhook(dropPendingUpdates);
+    }
 }

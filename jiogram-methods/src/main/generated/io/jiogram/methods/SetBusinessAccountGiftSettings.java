@@ -29,4 +29,16 @@ public record SetBusinessAccountGiftSettings(
     public String apiReturnType() {
         return "Boolean";
     }
+
+    public SetBusinessAccountGiftSettings withBusinessConnectionId(String businessConnectionId) {
+        return new SetBusinessAccountGiftSettings(businessConnectionId, showGiftButton, acceptedGiftTypes);
+    }
+
+    public SetBusinessAccountGiftSettings withShowGiftButton(boolean showGiftButton) {
+        return new SetBusinessAccountGiftSettings(businessConnectionId, showGiftButton, acceptedGiftTypes);
+    }
+
+    public SetBusinessAccountGiftSettings withAcceptedGiftTypes(AcceptedGiftTypes acceptedGiftTypes) {
+        return new SetBusinessAccountGiftSettings(businessConnectionId, showGiftButton, acceptedGiftTypes);
+    }
 }

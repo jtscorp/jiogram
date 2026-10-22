@@ -132,4 +132,124 @@ public record SendPoll(
     public static SendPoll reply(Message message, String question, List<InputPollOption> options) {
         return new SendPoll(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), question, null, null, options, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, ReplyTarget.replyTo(message), null);
     }
+
+    public SendPoll withBusinessConnectionId(@Nullable String businessConnectionId) {
+        return new SendPoll(businessConnectionId, chatId, messageThreadId, question, questionParseMode, questionEntities, options, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, shuffleOptions, allowAddingOptions, hideResultsUntilCloses, correctOptionIds, explanation, explanationParseMode, explanationEntities, openPeriod, closeDate, isClosed, description, descriptionParseMode, descriptionEntities, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendPoll withChatId(ChatId chatId) {
+        return new SendPoll(businessConnectionId, chatId, messageThreadId, question, questionParseMode, questionEntities, options, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, shuffleOptions, allowAddingOptions, hideResultsUntilCloses, correctOptionIds, explanation, explanationParseMode, explanationEntities, openPeriod, closeDate, isClosed, description, descriptionParseMode, descriptionEntities, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendPoll withMessageThreadId(@Nullable Long messageThreadId) {
+        return new SendPoll(businessConnectionId, chatId, messageThreadId, question, questionParseMode, questionEntities, options, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, shuffleOptions, allowAddingOptions, hideResultsUntilCloses, correctOptionIds, explanation, explanationParseMode, explanationEntities, openPeriod, closeDate, isClosed, description, descriptionParseMode, descriptionEntities, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendPoll withQuestion(String question) {
+        return new SendPoll(businessConnectionId, chatId, messageThreadId, question, questionParseMode, questionEntities, options, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, shuffleOptions, allowAddingOptions, hideResultsUntilCloses, correctOptionIds, explanation, explanationParseMode, explanationEntities, openPeriod, closeDate, isClosed, description, descriptionParseMode, descriptionEntities, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendPoll withQuestionParseMode(@Nullable ParseMode questionParseMode) {
+        return new SendPoll(businessConnectionId, chatId, messageThreadId, question, questionParseMode, questionEntities, options, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, shuffleOptions, allowAddingOptions, hideResultsUntilCloses, correctOptionIds, explanation, explanationParseMode, explanationEntities, openPeriod, closeDate, isClosed, description, descriptionParseMode, descriptionEntities, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendPoll withQuestionEntities(@Nullable List<MessageEntity> questionEntities) {
+        return new SendPoll(businessConnectionId, chatId, messageThreadId, question, questionParseMode, questionEntities, options, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, shuffleOptions, allowAddingOptions, hideResultsUntilCloses, correctOptionIds, explanation, explanationParseMode, explanationEntities, openPeriod, closeDate, isClosed, description, descriptionParseMode, descriptionEntities, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendPoll withOptions(List<InputPollOption> options) {
+        return new SendPoll(businessConnectionId, chatId, messageThreadId, question, questionParseMode, questionEntities, options, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, shuffleOptions, allowAddingOptions, hideResultsUntilCloses, correctOptionIds, explanation, explanationParseMode, explanationEntities, openPeriod, closeDate, isClosed, description, descriptionParseMode, descriptionEntities, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendPoll withIsAnonymous(@Nullable Boolean isAnonymous) {
+        return new SendPoll(businessConnectionId, chatId, messageThreadId, question, questionParseMode, questionEntities, options, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, shuffleOptions, allowAddingOptions, hideResultsUntilCloses, correctOptionIds, explanation, explanationParseMode, explanationEntities, openPeriod, closeDate, isClosed, description, descriptionParseMode, descriptionEntities, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendPoll withType(@Nullable PollType type) {
+        return new SendPoll(businessConnectionId, chatId, messageThreadId, question, questionParseMode, questionEntities, options, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, shuffleOptions, allowAddingOptions, hideResultsUntilCloses, correctOptionIds, explanation, explanationParseMode, explanationEntities, openPeriod, closeDate, isClosed, description, descriptionParseMode, descriptionEntities, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendPoll withAllowsMultipleAnswers(@Nullable Boolean allowsMultipleAnswers) {
+        return new SendPoll(businessConnectionId, chatId, messageThreadId, question, questionParseMode, questionEntities, options, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, shuffleOptions, allowAddingOptions, hideResultsUntilCloses, correctOptionIds, explanation, explanationParseMode, explanationEntities, openPeriod, closeDate, isClosed, description, descriptionParseMode, descriptionEntities, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendPoll withAllowsRevoting(@Nullable Boolean allowsRevoting) {
+        return new SendPoll(businessConnectionId, chatId, messageThreadId, question, questionParseMode, questionEntities, options, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, shuffleOptions, allowAddingOptions, hideResultsUntilCloses, correctOptionIds, explanation, explanationParseMode, explanationEntities, openPeriod, closeDate, isClosed, description, descriptionParseMode, descriptionEntities, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendPoll withShuffleOptions(@Nullable Boolean shuffleOptions) {
+        return new SendPoll(businessConnectionId, chatId, messageThreadId, question, questionParseMode, questionEntities, options, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, shuffleOptions, allowAddingOptions, hideResultsUntilCloses, correctOptionIds, explanation, explanationParseMode, explanationEntities, openPeriod, closeDate, isClosed, description, descriptionParseMode, descriptionEntities, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendPoll withAllowAddingOptions(@Nullable Boolean allowAddingOptions) {
+        return new SendPoll(businessConnectionId, chatId, messageThreadId, question, questionParseMode, questionEntities, options, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, shuffleOptions, allowAddingOptions, hideResultsUntilCloses, correctOptionIds, explanation, explanationParseMode, explanationEntities, openPeriod, closeDate, isClosed, description, descriptionParseMode, descriptionEntities, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendPoll withHideResultsUntilCloses(@Nullable Boolean hideResultsUntilCloses) {
+        return new SendPoll(businessConnectionId, chatId, messageThreadId, question, questionParseMode, questionEntities, options, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, shuffleOptions, allowAddingOptions, hideResultsUntilCloses, correctOptionIds, explanation, explanationParseMode, explanationEntities, openPeriod, closeDate, isClosed, description, descriptionParseMode, descriptionEntities, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendPoll withCorrectOptionIds(@Nullable List<Long> correctOptionIds) {
+        return new SendPoll(businessConnectionId, chatId, messageThreadId, question, questionParseMode, questionEntities, options, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, shuffleOptions, allowAddingOptions, hideResultsUntilCloses, correctOptionIds, explanation, explanationParseMode, explanationEntities, openPeriod, closeDate, isClosed, description, descriptionParseMode, descriptionEntities, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendPoll withExplanation(@Nullable String explanation) {
+        return new SendPoll(businessConnectionId, chatId, messageThreadId, question, questionParseMode, questionEntities, options, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, shuffleOptions, allowAddingOptions, hideResultsUntilCloses, correctOptionIds, explanation, explanationParseMode, explanationEntities, openPeriod, closeDate, isClosed, description, descriptionParseMode, descriptionEntities, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendPoll withExplanationParseMode(@Nullable ParseMode explanationParseMode) {
+        return new SendPoll(businessConnectionId, chatId, messageThreadId, question, questionParseMode, questionEntities, options, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, shuffleOptions, allowAddingOptions, hideResultsUntilCloses, correctOptionIds, explanation, explanationParseMode, explanationEntities, openPeriod, closeDate, isClosed, description, descriptionParseMode, descriptionEntities, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendPoll withExplanationEntities(@Nullable List<MessageEntity> explanationEntities) {
+        return new SendPoll(businessConnectionId, chatId, messageThreadId, question, questionParseMode, questionEntities, options, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, shuffleOptions, allowAddingOptions, hideResultsUntilCloses, correctOptionIds, explanation, explanationParseMode, explanationEntities, openPeriod, closeDate, isClosed, description, descriptionParseMode, descriptionEntities, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendPoll withOpenPeriod(@Nullable Long openPeriod) {
+        return new SendPoll(businessConnectionId, chatId, messageThreadId, question, questionParseMode, questionEntities, options, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, shuffleOptions, allowAddingOptions, hideResultsUntilCloses, correctOptionIds, explanation, explanationParseMode, explanationEntities, openPeriod, closeDate, isClosed, description, descriptionParseMode, descriptionEntities, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendPoll withCloseDate(@Nullable Long closeDate) {
+        return new SendPoll(businessConnectionId, chatId, messageThreadId, question, questionParseMode, questionEntities, options, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, shuffleOptions, allowAddingOptions, hideResultsUntilCloses, correctOptionIds, explanation, explanationParseMode, explanationEntities, openPeriod, closeDate, isClosed, description, descriptionParseMode, descriptionEntities, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendPoll withIsClosed(@Nullable Boolean isClosed) {
+        return new SendPoll(businessConnectionId, chatId, messageThreadId, question, questionParseMode, questionEntities, options, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, shuffleOptions, allowAddingOptions, hideResultsUntilCloses, correctOptionIds, explanation, explanationParseMode, explanationEntities, openPeriod, closeDate, isClosed, description, descriptionParseMode, descriptionEntities, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendPoll withDescription(@Nullable String description) {
+        return new SendPoll(businessConnectionId, chatId, messageThreadId, question, questionParseMode, questionEntities, options, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, shuffleOptions, allowAddingOptions, hideResultsUntilCloses, correctOptionIds, explanation, explanationParseMode, explanationEntities, openPeriod, closeDate, isClosed, description, descriptionParseMode, descriptionEntities, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendPoll withDescriptionParseMode(@Nullable ParseMode descriptionParseMode) {
+        return new SendPoll(businessConnectionId, chatId, messageThreadId, question, questionParseMode, questionEntities, options, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, shuffleOptions, allowAddingOptions, hideResultsUntilCloses, correctOptionIds, explanation, explanationParseMode, explanationEntities, openPeriod, closeDate, isClosed, description, descriptionParseMode, descriptionEntities, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendPoll withDescriptionEntities(@Nullable List<MessageEntity> descriptionEntities) {
+        return new SendPoll(businessConnectionId, chatId, messageThreadId, question, questionParseMode, questionEntities, options, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, shuffleOptions, allowAddingOptions, hideResultsUntilCloses, correctOptionIds, explanation, explanationParseMode, explanationEntities, openPeriod, closeDate, isClosed, description, descriptionParseMode, descriptionEntities, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendPoll withDisableNotification(@Nullable Boolean disableNotification) {
+        return new SendPoll(businessConnectionId, chatId, messageThreadId, question, questionParseMode, questionEntities, options, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, shuffleOptions, allowAddingOptions, hideResultsUntilCloses, correctOptionIds, explanation, explanationParseMode, explanationEntities, openPeriod, closeDate, isClosed, description, descriptionParseMode, descriptionEntities, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendPoll withProtectContent(@Nullable Boolean protectContent) {
+        return new SendPoll(businessConnectionId, chatId, messageThreadId, question, questionParseMode, questionEntities, options, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, shuffleOptions, allowAddingOptions, hideResultsUntilCloses, correctOptionIds, explanation, explanationParseMode, explanationEntities, openPeriod, closeDate, isClosed, description, descriptionParseMode, descriptionEntities, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendPoll withAllowPaidBroadcast(@Nullable Boolean allowPaidBroadcast) {
+        return new SendPoll(businessConnectionId, chatId, messageThreadId, question, questionParseMode, questionEntities, options, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, shuffleOptions, allowAddingOptions, hideResultsUntilCloses, correctOptionIds, explanation, explanationParseMode, explanationEntities, openPeriod, closeDate, isClosed, description, descriptionParseMode, descriptionEntities, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendPoll withMessageEffectId(@Nullable String messageEffectId) {
+        return new SendPoll(businessConnectionId, chatId, messageThreadId, question, questionParseMode, questionEntities, options, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, shuffleOptions, allowAddingOptions, hideResultsUntilCloses, correctOptionIds, explanation, explanationParseMode, explanationEntities, openPeriod, closeDate, isClosed, description, descriptionParseMode, descriptionEntities, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendPoll withReplyParameters(@Nullable ReplyParameters replyParameters) {
+        return new SendPoll(businessConnectionId, chatId, messageThreadId, question, questionParseMode, questionEntities, options, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, shuffleOptions, allowAddingOptions, hideResultsUntilCloses, correctOptionIds, explanation, explanationParseMode, explanationEntities, openPeriod, closeDate, isClosed, description, descriptionParseMode, descriptionEntities, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters, replyMarkup);
+    }
+
+    public SendPoll withReplyMarkup(@Nullable ReplyMarkup replyMarkup) {
+        return new SendPoll(businessConnectionId, chatId, messageThreadId, question, questionParseMode, questionEntities, options, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, shuffleOptions, allowAddingOptions, hideResultsUntilCloses, correctOptionIds, explanation, explanationParseMode, explanationEntities, openPeriod, closeDate, isClosed, description, descriptionParseMode, descriptionEntities, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters, replyMarkup);
+    }
 }

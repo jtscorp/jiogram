@@ -30,4 +30,29 @@ public record Game(
     @JsonProperty("text") @Nullable String text,
     @JsonProperty("text_entities") @Nullable List<MessageEntity> textEntities,
     @JsonProperty("animation") @Nullable Animation animation
-) {}
+) {
+
+    public Game withTitle(String title) {
+        return new Game(title, description, photo, text, textEntities, animation);
+    }
+
+    public Game withDescription(String description) {
+        return new Game(title, description, photo, text, textEntities, animation);
+    }
+
+    public Game withPhoto(List<PhotoSize> photo) {
+        return new Game(title, description, photo, text, textEntities, animation);
+    }
+
+    public Game withText(@Nullable String text) {
+        return new Game(title, description, photo, text, textEntities, animation);
+    }
+
+    public Game withTextEntities(@Nullable List<MessageEntity> textEntities) {
+        return new Game(title, description, photo, text, textEntities, animation);
+    }
+
+    public Game withAnimation(@Nullable Animation animation) {
+        return new Game(title, description, photo, text, textEntities, animation);
+    }
+}

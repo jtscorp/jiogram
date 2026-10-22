@@ -54,4 +54,40 @@ public record PostStory(
     public static PostStory of(String businessConnectionId, InputStoryContent content, long activePeriod) {
         return new PostStory(businessConnectionId, content, activePeriod, null, null, null, null, null, null);
     }
+
+    public PostStory withBusinessConnectionId(String businessConnectionId) {
+        return new PostStory(businessConnectionId, content, activePeriod, caption, parseMode, captionEntities, areas, postToChatPage, protectContent);
+    }
+
+    public PostStory withContent(InputStoryContent content) {
+        return new PostStory(businessConnectionId, content, activePeriod, caption, parseMode, captionEntities, areas, postToChatPage, protectContent);
+    }
+
+    public PostStory withActivePeriod(long activePeriod) {
+        return new PostStory(businessConnectionId, content, activePeriod, caption, parseMode, captionEntities, areas, postToChatPage, protectContent);
+    }
+
+    public PostStory withCaption(@Nullable String caption) {
+        return new PostStory(businessConnectionId, content, activePeriod, caption, parseMode, captionEntities, areas, postToChatPage, protectContent);
+    }
+
+    public PostStory withParseMode(@Nullable ParseMode parseMode) {
+        return new PostStory(businessConnectionId, content, activePeriod, caption, parseMode, captionEntities, areas, postToChatPage, protectContent);
+    }
+
+    public PostStory withCaptionEntities(@Nullable List<MessageEntity> captionEntities) {
+        return new PostStory(businessConnectionId, content, activePeriod, caption, parseMode, captionEntities, areas, postToChatPage, protectContent);
+    }
+
+    public PostStory withAreas(@Nullable List<StoryArea> areas) {
+        return new PostStory(businessConnectionId, content, activePeriod, caption, parseMode, captionEntities, areas, postToChatPage, protectContent);
+    }
+
+    public PostStory withPostToChatPage(@Nullable Boolean postToChatPage) {
+        return new PostStory(businessConnectionId, content, activePeriod, caption, parseMode, captionEntities, areas, postToChatPage, protectContent);
+    }
+
+    public PostStory withProtectContent(@Nullable Boolean protectContent) {
+        return new PostStory(businessConnectionId, content, activePeriod, caption, parseMode, captionEntities, areas, postToChatPage, protectContent);
+    }
 }

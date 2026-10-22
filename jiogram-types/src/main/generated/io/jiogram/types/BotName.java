@@ -10,4 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public record BotName(
     @JsonProperty("name") String name
-) {}
+) {
+
+    public BotName withName(String name) {
+        return new BotName(name);
+    }
+}

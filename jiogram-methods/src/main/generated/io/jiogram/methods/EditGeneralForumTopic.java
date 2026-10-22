@@ -28,4 +28,12 @@ public record EditGeneralForumTopic(
     public String apiReturnType() {
         return "Boolean";
     }
+
+    public EditGeneralForumTopic withChatId(ChatId chatId) {
+        return new EditGeneralForumTopic(chatId, name);
+    }
+
+    public EditGeneralForumTopic withName(String name) {
+        return new EditGeneralForumTopic(chatId, name);
+    }
 }

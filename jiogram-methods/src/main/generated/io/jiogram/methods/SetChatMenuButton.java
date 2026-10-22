@@ -33,4 +33,12 @@ public record SetChatMenuButton(
     public static SetChatMenuButton of() {
         return new SetChatMenuButton(null, null);
     }
+
+    public SetChatMenuButton withChatId(@Nullable Long chatId) {
+        return new SetChatMenuButton(chatId, menuButton);
+    }
+
+    public SetChatMenuButton withMenuButton(@Nullable MenuButton menuButton) {
+        return new SetChatMenuButton(chatId, menuButton);
+    }
 }

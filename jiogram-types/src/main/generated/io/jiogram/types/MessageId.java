@@ -13,4 +13,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public record MessageId(
     @JsonProperty("message_id") long messageId
-) {}
+) {
+
+    public MessageId withMessageId(long messageId) {
+        return new MessageId(messageId);
+    }
+}

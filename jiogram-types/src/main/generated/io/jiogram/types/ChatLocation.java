@@ -13,4 +13,13 @@ import io.jiogram.types.Location;
 public record ChatLocation(
     @JsonProperty("location") Location location,
     @JsonProperty("address") String address
-) {}
+) {
+
+    public ChatLocation withLocation(Location location) {
+        return new ChatLocation(location, address);
+    }
+
+    public ChatLocation withAddress(String address) {
+        return new ChatLocation(location, address);
+    }
+}

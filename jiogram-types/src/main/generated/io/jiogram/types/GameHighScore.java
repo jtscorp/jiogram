@@ -17,4 +17,17 @@ public record GameHighScore(
     @JsonProperty("position") long position,
     @JsonProperty("user") User user,
     @JsonProperty("score") long score
-) {}
+) {
+
+    public GameHighScore withPosition(long position) {
+        return new GameHighScore(position, user, score);
+    }
+
+    public GameHighScore withUser(User user) {
+        return new GameHighScore(position, user, score);
+    }
+
+    public GameHighScore withScore(long score) {
+        return new GameHighScore(position, user, score);
+    }
+}

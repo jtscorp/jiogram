@@ -29,4 +29,12 @@ public record DeleteMessages(
     public String apiReturnType() {
         return "Boolean";
     }
+
+    public DeleteMessages withChatId(ChatId chatId) {
+        return new DeleteMessages(chatId, messageIds);
+    }
+
+    public DeleteMessages withMessageIds(List<Long> messageIds) {
+        return new DeleteMessages(chatId, messageIds);
+    }
 }

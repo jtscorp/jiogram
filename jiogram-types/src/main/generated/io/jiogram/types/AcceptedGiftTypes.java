@@ -19,4 +19,25 @@ public record AcceptedGiftTypes(
     @JsonProperty("unique_gifts") boolean uniqueGifts,
     @JsonProperty("premium_subscription") boolean premiumSubscription,
     @JsonProperty("gifts_from_channels") boolean giftsFromChannels
-) {}
+) {
+
+    public AcceptedGiftTypes withUnlimitedGifts(boolean unlimitedGifts) {
+        return new AcceptedGiftTypes(unlimitedGifts, limitedGifts, uniqueGifts, premiumSubscription, giftsFromChannels);
+    }
+
+    public AcceptedGiftTypes withLimitedGifts(boolean limitedGifts) {
+        return new AcceptedGiftTypes(unlimitedGifts, limitedGifts, uniqueGifts, premiumSubscription, giftsFromChannels);
+    }
+
+    public AcceptedGiftTypes withUniqueGifts(boolean uniqueGifts) {
+        return new AcceptedGiftTypes(unlimitedGifts, limitedGifts, uniqueGifts, premiumSubscription, giftsFromChannels);
+    }
+
+    public AcceptedGiftTypes withPremiumSubscription(boolean premiumSubscription) {
+        return new AcceptedGiftTypes(unlimitedGifts, limitedGifts, uniqueGifts, premiumSubscription, giftsFromChannels);
+    }
+
+    public AcceptedGiftTypes withGiftsFromChannels(boolean giftsFromChannels) {
+        return new AcceptedGiftTypes(unlimitedGifts, limitedGifts, uniqueGifts, premiumSubscription, giftsFromChannels);
+    }
+}

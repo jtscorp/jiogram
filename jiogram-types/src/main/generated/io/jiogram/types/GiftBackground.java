@@ -14,4 +14,17 @@ public record GiftBackground(
     @JsonProperty("center_color") long centerColor,
     @JsonProperty("edge_color") long edgeColor,
     @JsonProperty("text_color") long textColor
-) {}
+) {
+
+    public GiftBackground withCenterColor(long centerColor) {
+        return new GiftBackground(centerColor, edgeColor, textColor);
+    }
+
+    public GiftBackground withEdgeColor(long edgeColor) {
+        return new GiftBackground(centerColor, edgeColor, textColor);
+    }
+
+    public GiftBackground withTextColor(long textColor) {
+        return new GiftBackground(centerColor, edgeColor, textColor);
+    }
+}

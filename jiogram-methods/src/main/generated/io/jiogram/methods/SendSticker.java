@@ -89,4 +89,56 @@ public record SendSticker(
     public static SendSticker reply(Message message, InputFileOrString sticker) {
         return new SendSticker(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), sticker, null, null, null, null, null, null, ReplyTarget.replyTo(message), null);
     }
+
+    public SendSticker withBusinessConnectionId(@Nullable String businessConnectionId) {
+        return new SendSticker(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, sticker, emoji, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendSticker withChatId(ChatId chatId) {
+        return new SendSticker(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, sticker, emoji, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendSticker withMessageThreadId(@Nullable Long messageThreadId) {
+        return new SendSticker(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, sticker, emoji, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendSticker withDirectMessagesTopicId(@Nullable Long directMessagesTopicId) {
+        return new SendSticker(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, sticker, emoji, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendSticker withSticker(InputFileOrString sticker) {
+        return new SendSticker(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, sticker, emoji, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendSticker withEmoji(@Nullable String emoji) {
+        return new SendSticker(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, sticker, emoji, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendSticker withDisableNotification(@Nullable Boolean disableNotification) {
+        return new SendSticker(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, sticker, emoji, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendSticker withProtectContent(@Nullable Boolean protectContent) {
+        return new SendSticker(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, sticker, emoji, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendSticker withAllowPaidBroadcast(@Nullable Boolean allowPaidBroadcast) {
+        return new SendSticker(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, sticker, emoji, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendSticker withMessageEffectId(@Nullable String messageEffectId) {
+        return new SendSticker(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, sticker, emoji, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendSticker withSuggestedPostParameters(@Nullable SuggestedPostParameters suggestedPostParameters) {
+        return new SendSticker(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, sticker, emoji, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendSticker withReplyParameters(@Nullable ReplyParameters replyParameters) {
+        return new SendSticker(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, sticker, emoji, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendSticker withReplyMarkup(@Nullable ReplyMarkup replyMarkup) {
+        return new SendSticker(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, sticker, emoji, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
 }

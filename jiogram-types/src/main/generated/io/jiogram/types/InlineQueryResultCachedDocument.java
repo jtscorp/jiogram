@@ -39,4 +39,41 @@ public record InlineQueryResultCachedDocument(
     @JsonProperty("caption_entities") @Nullable List<MessageEntity> captionEntities,
     @JsonProperty("reply_markup") @Nullable InlineKeyboardMarkup replyMarkup,
     @JsonProperty("input_message_content") @Nullable InputMessageContent inputMessageContent
-) implements InlineQueryResult {}
+) implements InlineQueryResult {
+
+    public InlineQueryResultCachedDocument withId(String id) {
+        return new InlineQueryResultCachedDocument(type, id, title, documentFileId, description, caption, parseMode, captionEntities, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultCachedDocument withTitle(String title) {
+        return new InlineQueryResultCachedDocument(type, id, title, documentFileId, description, caption, parseMode, captionEntities, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultCachedDocument withDocumentFileId(String documentFileId) {
+        return new InlineQueryResultCachedDocument(type, id, title, documentFileId, description, caption, parseMode, captionEntities, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultCachedDocument withDescription(@Nullable String description) {
+        return new InlineQueryResultCachedDocument(type, id, title, documentFileId, description, caption, parseMode, captionEntities, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultCachedDocument withCaption(@Nullable String caption) {
+        return new InlineQueryResultCachedDocument(type, id, title, documentFileId, description, caption, parseMode, captionEntities, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultCachedDocument withParseMode(@Nullable ParseMode parseMode) {
+        return new InlineQueryResultCachedDocument(type, id, title, documentFileId, description, caption, parseMode, captionEntities, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultCachedDocument withCaptionEntities(@Nullable List<MessageEntity> captionEntities) {
+        return new InlineQueryResultCachedDocument(type, id, title, documentFileId, description, caption, parseMode, captionEntities, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultCachedDocument withReplyMarkup(@Nullable InlineKeyboardMarkup replyMarkup) {
+        return new InlineQueryResultCachedDocument(type, id, title, documentFileId, description, caption, parseMode, captionEntities, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultCachedDocument withInputMessageContent(@Nullable InputMessageContent inputMessageContent) {
+        return new InlineQueryResultCachedDocument(type, id, title, documentFileId, description, caption, parseMode, captionEntities, replyMarkup, inputMessageContent);
+    }
+}

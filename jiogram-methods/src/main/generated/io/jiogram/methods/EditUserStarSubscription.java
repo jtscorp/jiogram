@@ -29,4 +29,16 @@ public record EditUserStarSubscription(
     public String apiReturnType() {
         return "Boolean";
     }
+
+    public EditUserStarSubscription withUserId(long userId) {
+        return new EditUserStarSubscription(userId, telegramPaymentChargeId, isCanceled);
+    }
+
+    public EditUserStarSubscription withTelegramPaymentChargeId(String telegramPaymentChargeId) {
+        return new EditUserStarSubscription(userId, telegramPaymentChargeId, isCanceled);
+    }
+
+    public EditUserStarSubscription withIsCanceled(boolean isCanceled) {
+        return new EditUserStarSubscription(userId, telegramPaymentChargeId, isCanceled);
+    }
 }

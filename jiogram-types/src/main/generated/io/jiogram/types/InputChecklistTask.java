@@ -23,4 +23,21 @@ public record InputChecklistTask(
     @JsonProperty("text") String text,
     @JsonProperty("parse_mode") @Nullable ParseMode parseMode,
     @JsonProperty("text_entities") @Nullable List<MessageEntity> textEntities
-) {}
+) {
+
+    public InputChecklistTask withId(long id) {
+        return new InputChecklistTask(id, text, parseMode, textEntities);
+    }
+
+    public InputChecklistTask withText(String text) {
+        return new InputChecklistTask(id, text, parseMode, textEntities);
+    }
+
+    public InputChecklistTask withParseMode(@Nullable ParseMode parseMode) {
+        return new InputChecklistTask(id, text, parseMode, textEntities);
+    }
+
+    public InputChecklistTask withTextEntities(@Nullable List<MessageEntity> textEntities) {
+        return new InputChecklistTask(id, text, parseMode, textEntities);
+    }
+}

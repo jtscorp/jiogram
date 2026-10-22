@@ -26,4 +26,21 @@ public record ChatBoostSourceGiveaway(
     @JsonProperty("user") @Nullable User user,
     @JsonProperty("prize_star_count") @Nullable Long prizeStarCount,
     @JsonProperty("is_unclaimed") @Nullable Boolean isUnclaimed
-) implements ChatBoostSource {}
+) implements ChatBoostSource {
+
+    public ChatBoostSourceGiveaway withGiveawayMessageId(long giveawayMessageId) {
+        return new ChatBoostSourceGiveaway(source, giveawayMessageId, user, prizeStarCount, isUnclaimed);
+    }
+
+    public ChatBoostSourceGiveaway withUser(@Nullable User user) {
+        return new ChatBoostSourceGiveaway(source, giveawayMessageId, user, prizeStarCount, isUnclaimed);
+    }
+
+    public ChatBoostSourceGiveaway withPrizeStarCount(@Nullable Long prizeStarCount) {
+        return new ChatBoostSourceGiveaway(source, giveawayMessageId, user, prizeStarCount, isUnclaimed);
+    }
+
+    public ChatBoostSourceGiveaway withIsUnclaimed(@Nullable Boolean isUnclaimed) {
+        return new ChatBoostSourceGiveaway(source, giveawayMessageId, user, prizeStarCount, isUnclaimed);
+    }
+}

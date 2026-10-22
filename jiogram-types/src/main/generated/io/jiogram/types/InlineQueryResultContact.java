@@ -36,4 +36,45 @@ public record InlineQueryResultContact(
     @JsonProperty("thumbnail_url") @Nullable String thumbnailUrl,
     @JsonProperty("thumbnail_width") @Nullable Long thumbnailWidth,
     @JsonProperty("thumbnail_height") @Nullable Long thumbnailHeight
-) implements InlineQueryResult {}
+) implements InlineQueryResult {
+
+    public InlineQueryResultContact withId(String id) {
+        return new InlineQueryResultContact(type, id, phoneNumber, firstName, lastName, vcard, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultContact withPhoneNumber(String phoneNumber) {
+        return new InlineQueryResultContact(type, id, phoneNumber, firstName, lastName, vcard, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultContact withFirstName(String firstName) {
+        return new InlineQueryResultContact(type, id, phoneNumber, firstName, lastName, vcard, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultContact withLastName(@Nullable String lastName) {
+        return new InlineQueryResultContact(type, id, phoneNumber, firstName, lastName, vcard, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultContact withVcard(@Nullable String vcard) {
+        return new InlineQueryResultContact(type, id, phoneNumber, firstName, lastName, vcard, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultContact withReplyMarkup(@Nullable InlineKeyboardMarkup replyMarkup) {
+        return new InlineQueryResultContact(type, id, phoneNumber, firstName, lastName, vcard, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultContact withInputMessageContent(@Nullable InputMessageContent inputMessageContent) {
+        return new InlineQueryResultContact(type, id, phoneNumber, firstName, lastName, vcard, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultContact withThumbnailUrl(@Nullable String thumbnailUrl) {
+        return new InlineQueryResultContact(type, id, phoneNumber, firstName, lastName, vcard, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultContact withThumbnailWidth(@Nullable Long thumbnailWidth) {
+        return new InlineQueryResultContact(type, id, phoneNumber, firstName, lastName, vcard, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+
+    public InlineQueryResultContact withThumbnailHeight(@Nullable Long thumbnailHeight) {
+        return new InlineQueryResultContact(type, id, phoneNumber, firstName, lastName, vcard, replyMarkup, inputMessageContent, thumbnailUrl, thumbnailWidth, thumbnailHeight);
+    }
+}

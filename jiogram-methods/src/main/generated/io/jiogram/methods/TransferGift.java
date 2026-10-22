@@ -38,4 +38,20 @@ public record TransferGift(
     public static TransferGift of(String businessConnectionId, String ownedGiftId, long newOwnerChatId) {
         return new TransferGift(businessConnectionId, ownedGiftId, newOwnerChatId, null);
     }
+
+    public TransferGift withBusinessConnectionId(String businessConnectionId) {
+        return new TransferGift(businessConnectionId, ownedGiftId, newOwnerChatId, starCount);
+    }
+
+    public TransferGift withOwnedGiftId(String ownedGiftId) {
+        return new TransferGift(businessConnectionId, ownedGiftId, newOwnerChatId, starCount);
+    }
+
+    public TransferGift withNewOwnerChatId(long newOwnerChatId) {
+        return new TransferGift(businessConnectionId, ownedGiftId, newOwnerChatId, starCount);
+    }
+
+    public TransferGift withStarCount(@Nullable Long starCount) {
+        return new TransferGift(businessConnectionId, ownedGiftId, newOwnerChatId, starCount);
+    }
 }

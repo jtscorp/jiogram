@@ -26,4 +26,8 @@ public record GetCustomEmojiStickers(
     public String apiReturnType() {
         return "Array of Sticker";
     }
+
+    public GetCustomEmojiStickers withCustomEmojiIds(List<String> customEmojiIds) {
+        return new GetCustomEmojiStickers(customEmojiIds);
+    }
 }

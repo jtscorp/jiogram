@@ -24,4 +24,29 @@ public record VideoQuality(
     @JsonProperty("height") long height,
     @JsonProperty("codec") String codec,
     @JsonProperty("file_size") @Nullable Long fileSize
-) {}
+) {
+
+    public VideoQuality withFileId(String fileId) {
+        return new VideoQuality(fileId, fileUniqueId, width, height, codec, fileSize);
+    }
+
+    public VideoQuality withFileUniqueId(String fileUniqueId) {
+        return new VideoQuality(fileId, fileUniqueId, width, height, codec, fileSize);
+    }
+
+    public VideoQuality withWidth(long width) {
+        return new VideoQuality(fileId, fileUniqueId, width, height, codec, fileSize);
+    }
+
+    public VideoQuality withHeight(long height) {
+        return new VideoQuality(fileId, fileUniqueId, width, height, codec, fileSize);
+    }
+
+    public VideoQuality withCodec(String codec) {
+        return new VideoQuality(fileId, fileUniqueId, width, height, codec, fileSize);
+    }
+
+    public VideoQuality withFileSize(@Nullable Long fileSize) {
+        return new VideoQuality(fileId, fileUniqueId, width, height, codec, fileSize);
+    }
+}

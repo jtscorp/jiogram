@@ -24,4 +24,13 @@ import org.jspecify.annotations.Nullable;
 public record ReplyKeyboardRemove(
     @JsonProperty("remove_keyboard") boolean removeKeyboard,
     @JsonProperty("selective") @Nullable Boolean selective
-) implements ReplyMarkup {}
+) implements ReplyMarkup {
+
+    public ReplyKeyboardRemove withRemoveKeyboard(boolean removeKeyboard) {
+        return new ReplyKeyboardRemove(removeKeyboard, selective);
+    }
+
+    public ReplyKeyboardRemove withSelective(@Nullable Boolean selective) {
+        return new ReplyKeyboardRemove(removeKeyboard, selective);
+    }
+}

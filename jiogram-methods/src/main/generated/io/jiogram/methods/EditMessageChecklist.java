@@ -40,4 +40,24 @@ public record EditMessageChecklist(
     public static EditMessageChecklist of(String businessConnectionId, long chatId, long messageId, InputChecklist checklist) {
         return new EditMessageChecklist(businessConnectionId, chatId, messageId, checklist, null);
     }
+
+    public EditMessageChecklist withBusinessConnectionId(String businessConnectionId) {
+        return new EditMessageChecklist(businessConnectionId, chatId, messageId, checklist, replyMarkup);
+    }
+
+    public EditMessageChecklist withChatId(long chatId) {
+        return new EditMessageChecklist(businessConnectionId, chatId, messageId, checklist, replyMarkup);
+    }
+
+    public EditMessageChecklist withMessageId(long messageId) {
+        return new EditMessageChecklist(businessConnectionId, chatId, messageId, checklist, replyMarkup);
+    }
+
+    public EditMessageChecklist withChecklist(InputChecklist checklist) {
+        return new EditMessageChecklist(businessConnectionId, chatId, messageId, checklist, replyMarkup);
+    }
+
+    public EditMessageChecklist withReplyMarkup(@Nullable InlineKeyboardMarkup replyMarkup) {
+        return new EditMessageChecklist(businessConnectionId, chatId, messageId, checklist, replyMarkup);
+    }
 }

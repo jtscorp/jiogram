@@ -19,4 +19,21 @@ public record MessageReactionCountUpdated(
     @JsonProperty("message_id") long messageId,
     @JsonProperty("date") long date,
     @JsonProperty("reactions") List<ReactionCount> reactions
-) {}
+) {
+
+    public MessageReactionCountUpdated withChat(Chat chat) {
+        return new MessageReactionCountUpdated(chat, messageId, date, reactions);
+    }
+
+    public MessageReactionCountUpdated withMessageId(long messageId) {
+        return new MessageReactionCountUpdated(chat, messageId, date, reactions);
+    }
+
+    public MessageReactionCountUpdated withDate(long date) {
+        return new MessageReactionCountUpdated(chat, messageId, date, reactions);
+    }
+
+    public MessageReactionCountUpdated withReactions(List<ReactionCount> reactions) {
+        return new MessageReactionCountUpdated(chat, messageId, date, reactions);
+    }
+}

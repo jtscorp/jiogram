@@ -14,4 +14,9 @@ import io.jiogram.types.StoryAreaTypeType;
 public record StoryAreaTypeUniqueGift(
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) StoryAreaTypeType type,
     @JsonProperty("name") String name
-) implements StoryAreaType {}
+) implements StoryAreaType {
+
+    public StoryAreaTypeUniqueGift withName(String name) {
+        return new StoryAreaTypeUniqueGift(type, name);
+    }
+}

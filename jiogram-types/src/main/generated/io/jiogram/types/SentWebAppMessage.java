@@ -12,4 +12,9 @@ import org.jspecify.annotations.Nullable;
  */
 public record SentWebAppMessage(
     @JsonProperty("inline_message_id") @Nullable String inlineMessageId
-) {}
+) {
+
+    public SentWebAppMessage withInlineMessageId(@Nullable String inlineMessageId) {
+        return new SentWebAppMessage(inlineMessageId);
+    }
+}

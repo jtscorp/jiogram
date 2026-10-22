@@ -24,4 +24,25 @@ public record PollAnswer(
     @JsonProperty("user") @Nullable User user,
     @JsonProperty("option_ids") List<Long> optionIds,
     @JsonProperty("option_persistent_ids") List<String> optionPersistentIds
-) {}
+) {
+
+    public PollAnswer withPollId(String pollId) {
+        return new PollAnswer(pollId, voterChat, user, optionIds, optionPersistentIds);
+    }
+
+    public PollAnswer withVoterChat(@Nullable Chat voterChat) {
+        return new PollAnswer(pollId, voterChat, user, optionIds, optionPersistentIds);
+    }
+
+    public PollAnswer withUser(@Nullable User user) {
+        return new PollAnswer(pollId, voterChat, user, optionIds, optionPersistentIds);
+    }
+
+    public PollAnswer withOptionIds(List<Long> optionIds) {
+        return new PollAnswer(pollId, voterChat, user, optionIds, optionPersistentIds);
+    }
+
+    public PollAnswer withOptionPersistentIds(List<String> optionPersistentIds) {
+        return new PollAnswer(pollId, voterChat, user, optionIds, optionPersistentIds);
+    }
+}

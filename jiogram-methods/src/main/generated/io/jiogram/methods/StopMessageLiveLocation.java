@@ -44,4 +44,24 @@ public record StopMessageLiveLocation(
     public static StopMessageLiveLocation of() {
         return new StopMessageLiveLocation(null, null, null, null, null);
     }
+
+    public StopMessageLiveLocation withBusinessConnectionId(@Nullable String businessConnectionId) {
+        return new StopMessageLiveLocation(businessConnectionId, chatId, messageId, inlineMessageId, replyMarkup);
+    }
+
+    public StopMessageLiveLocation withChatId(@Nullable ChatId chatId) {
+        return new StopMessageLiveLocation(businessConnectionId, chatId, messageId, inlineMessageId, replyMarkup);
+    }
+
+    public StopMessageLiveLocation withMessageId(@Nullable Long messageId) {
+        return new StopMessageLiveLocation(businessConnectionId, chatId, messageId, inlineMessageId, replyMarkup);
+    }
+
+    public StopMessageLiveLocation withInlineMessageId(@Nullable String inlineMessageId) {
+        return new StopMessageLiveLocation(businessConnectionId, chatId, messageId, inlineMessageId, replyMarkup);
+    }
+
+    public StopMessageLiveLocation withReplyMarkup(@Nullable InlineKeyboardMarkup replyMarkup) {
+        return new StopMessageLiveLocation(businessConnectionId, chatId, messageId, inlineMessageId, replyMarkup);
+    }
 }

@@ -21,4 +21,21 @@ public record MessageOriginChannel(
     @JsonProperty("chat") Chat chat,
     @JsonProperty("message_id") long messageId,
     @JsonProperty("author_signature") @Nullable String authorSignature
-) implements MessageOrigin {}
+) implements MessageOrigin {
+
+    public MessageOriginChannel withDate(long date) {
+        return new MessageOriginChannel(type, date, chat, messageId, authorSignature);
+    }
+
+    public MessageOriginChannel withChat(Chat chat) {
+        return new MessageOriginChannel(type, date, chat, messageId, authorSignature);
+    }
+
+    public MessageOriginChannel withMessageId(long messageId) {
+        return new MessageOriginChannel(type, date, chat, messageId, authorSignature);
+    }
+
+    public MessageOriginChannel withAuthorSignature(@Nullable String authorSignature) {
+        return new MessageOriginChannel(type, date, chat, messageId, authorSignature);
+    }
+}

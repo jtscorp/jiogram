@@ -48,4 +48,32 @@ public record EditStory(
     public static EditStory of(String businessConnectionId, long storyId, InputStoryContent content) {
         return new EditStory(businessConnectionId, storyId, content, null, null, null, null);
     }
+
+    public EditStory withBusinessConnectionId(String businessConnectionId) {
+        return new EditStory(businessConnectionId, storyId, content, caption, parseMode, captionEntities, areas);
+    }
+
+    public EditStory withStoryId(long storyId) {
+        return new EditStory(businessConnectionId, storyId, content, caption, parseMode, captionEntities, areas);
+    }
+
+    public EditStory withContent(InputStoryContent content) {
+        return new EditStory(businessConnectionId, storyId, content, caption, parseMode, captionEntities, areas);
+    }
+
+    public EditStory withCaption(@Nullable String caption) {
+        return new EditStory(businessConnectionId, storyId, content, caption, parseMode, captionEntities, areas);
+    }
+
+    public EditStory withParseMode(@Nullable ParseMode parseMode) {
+        return new EditStory(businessConnectionId, storyId, content, caption, parseMode, captionEntities, areas);
+    }
+
+    public EditStory withCaptionEntities(@Nullable List<MessageEntity> captionEntities) {
+        return new EditStory(businessConnectionId, storyId, content, caption, parseMode, captionEntities, areas);
+    }
+
+    public EditStory withAreas(@Nullable List<StoryArea> areas) {
+        return new EditStory(businessConnectionId, storyId, content, caption, parseMode, captionEntities, areas);
+    }
 }

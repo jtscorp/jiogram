@@ -10,4 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public record ChatBoostAdded(
     @JsonProperty("boost_count") long boostCount
-) {}
+) {
+
+    public ChatBoostAdded withBoostCount(long boostCount) {
+        return new ChatBoostAdded(boostCount);
+    }
+}

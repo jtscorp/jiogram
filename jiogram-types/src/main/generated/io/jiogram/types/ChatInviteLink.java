@@ -37,4 +37,49 @@ public record ChatInviteLink(
     @JsonProperty("pending_join_request_count") @Nullable Long pendingJoinRequestCount,
     @JsonProperty("subscription_period") @Nullable Long subscriptionPeriod,
     @JsonProperty("subscription_price") @Nullable Long subscriptionPrice
-) {}
+) {
+
+    public ChatInviteLink withInviteLink(String inviteLink) {
+        return new ChatInviteLink(inviteLink, creator, createsJoinRequest, isPrimary, isRevoked, name, expireDate, memberLimit, pendingJoinRequestCount, subscriptionPeriod, subscriptionPrice);
+    }
+
+    public ChatInviteLink withCreator(User creator) {
+        return new ChatInviteLink(inviteLink, creator, createsJoinRequest, isPrimary, isRevoked, name, expireDate, memberLimit, pendingJoinRequestCount, subscriptionPeriod, subscriptionPrice);
+    }
+
+    public ChatInviteLink withCreatesJoinRequest(boolean createsJoinRequest) {
+        return new ChatInviteLink(inviteLink, creator, createsJoinRequest, isPrimary, isRevoked, name, expireDate, memberLimit, pendingJoinRequestCount, subscriptionPeriod, subscriptionPrice);
+    }
+
+    public ChatInviteLink withIsPrimary(boolean isPrimary) {
+        return new ChatInviteLink(inviteLink, creator, createsJoinRequest, isPrimary, isRevoked, name, expireDate, memberLimit, pendingJoinRequestCount, subscriptionPeriod, subscriptionPrice);
+    }
+
+    public ChatInviteLink withIsRevoked(boolean isRevoked) {
+        return new ChatInviteLink(inviteLink, creator, createsJoinRequest, isPrimary, isRevoked, name, expireDate, memberLimit, pendingJoinRequestCount, subscriptionPeriod, subscriptionPrice);
+    }
+
+    public ChatInviteLink withName(@Nullable String name) {
+        return new ChatInviteLink(inviteLink, creator, createsJoinRequest, isPrimary, isRevoked, name, expireDate, memberLimit, pendingJoinRequestCount, subscriptionPeriod, subscriptionPrice);
+    }
+
+    public ChatInviteLink withExpireDate(@Nullable Long expireDate) {
+        return new ChatInviteLink(inviteLink, creator, createsJoinRequest, isPrimary, isRevoked, name, expireDate, memberLimit, pendingJoinRequestCount, subscriptionPeriod, subscriptionPrice);
+    }
+
+    public ChatInviteLink withMemberLimit(@Nullable Long memberLimit) {
+        return new ChatInviteLink(inviteLink, creator, createsJoinRequest, isPrimary, isRevoked, name, expireDate, memberLimit, pendingJoinRequestCount, subscriptionPeriod, subscriptionPrice);
+    }
+
+    public ChatInviteLink withPendingJoinRequestCount(@Nullable Long pendingJoinRequestCount) {
+        return new ChatInviteLink(inviteLink, creator, createsJoinRequest, isPrimary, isRevoked, name, expireDate, memberLimit, pendingJoinRequestCount, subscriptionPeriod, subscriptionPrice);
+    }
+
+    public ChatInviteLink withSubscriptionPeriod(@Nullable Long subscriptionPeriod) {
+        return new ChatInviteLink(inviteLink, creator, createsJoinRequest, isPrimary, isRevoked, name, expireDate, memberLimit, pendingJoinRequestCount, subscriptionPeriod, subscriptionPrice);
+    }
+
+    public ChatInviteLink withSubscriptionPrice(@Nullable Long subscriptionPrice) {
+        return new ChatInviteLink(inviteLink, creator, createsJoinRequest, isPrimary, isRevoked, name, expireDate, memberLimit, pendingJoinRequestCount, subscriptionPeriod, subscriptionPrice);
+    }
+}

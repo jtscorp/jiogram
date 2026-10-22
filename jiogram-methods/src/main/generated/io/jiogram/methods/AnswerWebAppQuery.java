@@ -28,4 +28,12 @@ public record AnswerWebAppQuery(
     public String apiReturnType() {
         return "SentWebAppMessage";
     }
+
+    public AnswerWebAppQuery withWebAppQueryId(String webAppQueryId) {
+        return new AnswerWebAppQuery(webAppQueryId, result);
+    }
+
+    public AnswerWebAppQuery withResult(InlineQueryResult result) {
+        return new AnswerWebAppQuery(webAppQueryId, result);
+    }
 }

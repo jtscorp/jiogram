@@ -75,4 +75,44 @@ public record SendMediaGroup(
     public static SendMediaGroup reply(Message message, List<InputMedia> media) {
         return new SendMediaGroup(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), media, null, null, null, null, ReplyTarget.replyTo(message));
     }
+
+    public SendMediaGroup withBusinessConnectionId(@Nullable String businessConnectionId) {
+        return new SendMediaGroup(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, media, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters);
+    }
+
+    public SendMediaGroup withChatId(ChatId chatId) {
+        return new SendMediaGroup(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, media, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters);
+    }
+
+    public SendMediaGroup withMessageThreadId(@Nullable Long messageThreadId) {
+        return new SendMediaGroup(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, media, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters);
+    }
+
+    public SendMediaGroup withDirectMessagesTopicId(@Nullable Long directMessagesTopicId) {
+        return new SendMediaGroup(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, media, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters);
+    }
+
+    public SendMediaGroup withMedia(List<InputMedia> media) {
+        return new SendMediaGroup(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, media, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters);
+    }
+
+    public SendMediaGroup withDisableNotification(@Nullable Boolean disableNotification) {
+        return new SendMediaGroup(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, media, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters);
+    }
+
+    public SendMediaGroup withProtectContent(@Nullable Boolean protectContent) {
+        return new SendMediaGroup(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, media, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters);
+    }
+
+    public SendMediaGroup withAllowPaidBroadcast(@Nullable Boolean allowPaidBroadcast) {
+        return new SendMediaGroup(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, media, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters);
+    }
+
+    public SendMediaGroup withMessageEffectId(@Nullable String messageEffectId) {
+        return new SendMediaGroup(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, media, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters);
+    }
+
+    public SendMediaGroup withReplyParameters(@Nullable ReplyParameters replyParameters) {
+        return new SendMediaGroup(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, media, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, replyParameters);
+    }
 }

@@ -95,4 +95,72 @@ public record SendLocation(
     public static SendLocation reply(Message message, double latitude, double longitude) {
         return new SendLocation(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), latitude, longitude, null, null, null, null, null, null, null, null, null, ReplyTarget.replyTo(message), null);
     }
+
+    public SendLocation withBusinessConnectionId(@Nullable String businessConnectionId) {
+        return new SendLocation(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, latitude, longitude, horizontalAccuracy, livePeriod, heading, proximityAlertRadius, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendLocation withChatId(ChatId chatId) {
+        return new SendLocation(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, latitude, longitude, horizontalAccuracy, livePeriod, heading, proximityAlertRadius, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendLocation withMessageThreadId(@Nullable Long messageThreadId) {
+        return new SendLocation(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, latitude, longitude, horizontalAccuracy, livePeriod, heading, proximityAlertRadius, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendLocation withDirectMessagesTopicId(@Nullable Long directMessagesTopicId) {
+        return new SendLocation(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, latitude, longitude, horizontalAccuracy, livePeriod, heading, proximityAlertRadius, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendLocation withLatitude(double latitude) {
+        return new SendLocation(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, latitude, longitude, horizontalAccuracy, livePeriod, heading, proximityAlertRadius, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendLocation withLongitude(double longitude) {
+        return new SendLocation(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, latitude, longitude, horizontalAccuracy, livePeriod, heading, proximityAlertRadius, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendLocation withHorizontalAccuracy(@Nullable Double horizontalAccuracy) {
+        return new SendLocation(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, latitude, longitude, horizontalAccuracy, livePeriod, heading, proximityAlertRadius, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendLocation withLivePeriod(@Nullable Long livePeriod) {
+        return new SendLocation(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, latitude, longitude, horizontalAccuracy, livePeriod, heading, proximityAlertRadius, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendLocation withHeading(@Nullable Long heading) {
+        return new SendLocation(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, latitude, longitude, horizontalAccuracy, livePeriod, heading, proximityAlertRadius, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendLocation withProximityAlertRadius(@Nullable Long proximityAlertRadius) {
+        return new SendLocation(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, latitude, longitude, horizontalAccuracy, livePeriod, heading, proximityAlertRadius, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendLocation withDisableNotification(@Nullable Boolean disableNotification) {
+        return new SendLocation(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, latitude, longitude, horizontalAccuracy, livePeriod, heading, proximityAlertRadius, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendLocation withProtectContent(@Nullable Boolean protectContent) {
+        return new SendLocation(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, latitude, longitude, horizontalAccuracy, livePeriod, heading, proximityAlertRadius, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendLocation withAllowPaidBroadcast(@Nullable Boolean allowPaidBroadcast) {
+        return new SendLocation(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, latitude, longitude, horizontalAccuracy, livePeriod, heading, proximityAlertRadius, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendLocation withMessageEffectId(@Nullable String messageEffectId) {
+        return new SendLocation(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, latitude, longitude, horizontalAccuracy, livePeriod, heading, proximityAlertRadius, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendLocation withSuggestedPostParameters(@Nullable SuggestedPostParameters suggestedPostParameters) {
+        return new SendLocation(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, latitude, longitude, horizontalAccuracy, livePeriod, heading, proximityAlertRadius, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendLocation withReplyParameters(@Nullable ReplyParameters replyParameters) {
+        return new SendLocation(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, latitude, longitude, horizontalAccuracy, livePeriod, heading, proximityAlertRadius, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendLocation withReplyMarkup(@Nullable ReplyMarkup replyMarkup) {
+        return new SendLocation(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, latitude, longitude, horizontalAccuracy, livePeriod, heading, proximityAlertRadius, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
 }

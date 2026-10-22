@@ -37,4 +37,37 @@ public record InlineQueryResultCachedVoice(
     @JsonProperty("caption_entities") @Nullable List<MessageEntity> captionEntities,
     @JsonProperty("reply_markup") @Nullable InlineKeyboardMarkup replyMarkup,
     @JsonProperty("input_message_content") @Nullable InputMessageContent inputMessageContent
-) implements InlineQueryResult {}
+) implements InlineQueryResult {
+
+    public InlineQueryResultCachedVoice withId(String id) {
+        return new InlineQueryResultCachedVoice(type, id, voiceFileId, title, caption, parseMode, captionEntities, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultCachedVoice withVoiceFileId(String voiceFileId) {
+        return new InlineQueryResultCachedVoice(type, id, voiceFileId, title, caption, parseMode, captionEntities, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultCachedVoice withTitle(String title) {
+        return new InlineQueryResultCachedVoice(type, id, voiceFileId, title, caption, parseMode, captionEntities, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultCachedVoice withCaption(@Nullable String caption) {
+        return new InlineQueryResultCachedVoice(type, id, voiceFileId, title, caption, parseMode, captionEntities, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultCachedVoice withParseMode(@Nullable ParseMode parseMode) {
+        return new InlineQueryResultCachedVoice(type, id, voiceFileId, title, caption, parseMode, captionEntities, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultCachedVoice withCaptionEntities(@Nullable List<MessageEntity> captionEntities) {
+        return new InlineQueryResultCachedVoice(type, id, voiceFileId, title, caption, parseMode, captionEntities, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultCachedVoice withReplyMarkup(@Nullable InlineKeyboardMarkup replyMarkup) {
+        return new InlineQueryResultCachedVoice(type, id, voiceFileId, title, caption, parseMode, captionEntities, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultCachedVoice withInputMessageContent(@Nullable InputMessageContent inputMessageContent) {
+        return new InlineQueryResultCachedVoice(type, id, voiceFileId, title, caption, parseMode, captionEntities, replyMarkup, inputMessageContent);
+    }
+}

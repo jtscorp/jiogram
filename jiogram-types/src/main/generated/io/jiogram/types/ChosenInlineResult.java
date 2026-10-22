@@ -26,4 +26,25 @@ public record ChosenInlineResult(
     @JsonProperty("location") @Nullable Location location,
     @JsonProperty("inline_message_id") @Nullable String inlineMessageId,
     @JsonProperty("query") String query
-) {}
+) {
+
+    public ChosenInlineResult withResultId(String resultId) {
+        return new ChosenInlineResult(resultId, from, location, inlineMessageId, query);
+    }
+
+    public ChosenInlineResult withFrom(User from) {
+        return new ChosenInlineResult(resultId, from, location, inlineMessageId, query);
+    }
+
+    public ChosenInlineResult withLocation(@Nullable Location location) {
+        return new ChosenInlineResult(resultId, from, location, inlineMessageId, query);
+    }
+
+    public ChosenInlineResult withInlineMessageId(@Nullable String inlineMessageId) {
+        return new ChosenInlineResult(resultId, from, location, inlineMessageId, query);
+    }
+
+    public ChosenInlineResult withQuery(String query) {
+        return new ChosenInlineResult(resultId, from, location, inlineMessageId, query);
+    }
+}

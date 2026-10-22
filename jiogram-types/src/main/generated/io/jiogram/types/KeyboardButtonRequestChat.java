@@ -45,4 +45,49 @@ public record KeyboardButtonRequestChat(
     @JsonProperty("request_title") @Nullable Boolean requestTitle,
     @JsonProperty("request_username") @Nullable Boolean requestUsername,
     @JsonProperty("request_photo") @Nullable Boolean requestPhoto
-) {}
+) {
+
+    public KeyboardButtonRequestChat withRequestId(long requestId) {
+        return new KeyboardButtonRequestChat(requestId, chatIsChannel, chatIsForum, chatHasUsername, chatIsCreated, userAdministratorRights, botAdministratorRights, botIsMember, requestTitle, requestUsername, requestPhoto);
+    }
+
+    public KeyboardButtonRequestChat withChatIsChannel(boolean chatIsChannel) {
+        return new KeyboardButtonRequestChat(requestId, chatIsChannel, chatIsForum, chatHasUsername, chatIsCreated, userAdministratorRights, botAdministratorRights, botIsMember, requestTitle, requestUsername, requestPhoto);
+    }
+
+    public KeyboardButtonRequestChat withChatIsForum(@Nullable Boolean chatIsForum) {
+        return new KeyboardButtonRequestChat(requestId, chatIsChannel, chatIsForum, chatHasUsername, chatIsCreated, userAdministratorRights, botAdministratorRights, botIsMember, requestTitle, requestUsername, requestPhoto);
+    }
+
+    public KeyboardButtonRequestChat withChatHasUsername(@Nullable Boolean chatHasUsername) {
+        return new KeyboardButtonRequestChat(requestId, chatIsChannel, chatIsForum, chatHasUsername, chatIsCreated, userAdministratorRights, botAdministratorRights, botIsMember, requestTitle, requestUsername, requestPhoto);
+    }
+
+    public KeyboardButtonRequestChat withChatIsCreated(@Nullable Boolean chatIsCreated) {
+        return new KeyboardButtonRequestChat(requestId, chatIsChannel, chatIsForum, chatHasUsername, chatIsCreated, userAdministratorRights, botAdministratorRights, botIsMember, requestTitle, requestUsername, requestPhoto);
+    }
+
+    public KeyboardButtonRequestChat withUserAdministratorRights(@Nullable ChatAdministratorRights userAdministratorRights) {
+        return new KeyboardButtonRequestChat(requestId, chatIsChannel, chatIsForum, chatHasUsername, chatIsCreated, userAdministratorRights, botAdministratorRights, botIsMember, requestTitle, requestUsername, requestPhoto);
+    }
+
+    public KeyboardButtonRequestChat withBotAdministratorRights(@Nullable ChatAdministratorRights botAdministratorRights) {
+        return new KeyboardButtonRequestChat(requestId, chatIsChannel, chatIsForum, chatHasUsername, chatIsCreated, userAdministratorRights, botAdministratorRights, botIsMember, requestTitle, requestUsername, requestPhoto);
+    }
+
+    public KeyboardButtonRequestChat withBotIsMember(@Nullable Boolean botIsMember) {
+        return new KeyboardButtonRequestChat(requestId, chatIsChannel, chatIsForum, chatHasUsername, chatIsCreated, userAdministratorRights, botAdministratorRights, botIsMember, requestTitle, requestUsername, requestPhoto);
+    }
+
+    public KeyboardButtonRequestChat withRequestTitle(@Nullable Boolean requestTitle) {
+        return new KeyboardButtonRequestChat(requestId, chatIsChannel, chatIsForum, chatHasUsername, chatIsCreated, userAdministratorRights, botAdministratorRights, botIsMember, requestTitle, requestUsername, requestPhoto);
+    }
+
+    public KeyboardButtonRequestChat withRequestUsername(@Nullable Boolean requestUsername) {
+        return new KeyboardButtonRequestChat(requestId, chatIsChannel, chatIsForum, chatHasUsername, chatIsCreated, userAdministratorRights, botAdministratorRights, botIsMember, requestTitle, requestUsername, requestPhoto);
+    }
+
+    public KeyboardButtonRequestChat withRequestPhoto(@Nullable Boolean requestPhoto) {
+        return new KeyboardButtonRequestChat(requestId, chatIsChannel, chatIsForum, chatHasUsername, chatIsCreated, userAdministratorRights, botAdministratorRights, botIsMember, requestTitle, requestUsername, requestPhoto);
+    }
+}

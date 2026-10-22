@@ -34,4 +34,16 @@ public record GetUserProfilePhotos(
     public static GetUserProfilePhotos of(long userId) {
         return new GetUserProfilePhotos(userId, null, null);
     }
+
+    public GetUserProfilePhotos withUserId(long userId) {
+        return new GetUserProfilePhotos(userId, offset, limit);
+    }
+
+    public GetUserProfilePhotos withOffset(@Nullable Long offset) {
+        return new GetUserProfilePhotos(userId, offset, limit);
+    }
+
+    public GetUserProfilePhotos withLimit(@Nullable Long limit) {
+        return new GetUserProfilePhotos(userId, offset, limit);
+    }
 }

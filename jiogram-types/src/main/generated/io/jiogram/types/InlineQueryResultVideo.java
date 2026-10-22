@@ -56,4 +56,65 @@ public record InlineQueryResultVideo(
     @JsonProperty("description") @Nullable String description,
     @JsonProperty("reply_markup") @Nullable InlineKeyboardMarkup replyMarkup,
     @JsonProperty("input_message_content") @Nullable InputMessageContent inputMessageContent
-) implements InlineQueryResult {}
+) implements InlineQueryResult {
+
+    public InlineQueryResultVideo withId(String id) {
+        return new InlineQueryResultVideo(type, id, videoUrl, mimeType, thumbnailUrl, title, caption, parseMode, captionEntities, showCaptionAboveMedia, videoWidth, videoHeight, videoDuration, description, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultVideo withVideoUrl(String videoUrl) {
+        return new InlineQueryResultVideo(type, id, videoUrl, mimeType, thumbnailUrl, title, caption, parseMode, captionEntities, showCaptionAboveMedia, videoWidth, videoHeight, videoDuration, description, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultVideo withMimeType(VideoMimeType mimeType) {
+        return new InlineQueryResultVideo(type, id, videoUrl, mimeType, thumbnailUrl, title, caption, parseMode, captionEntities, showCaptionAboveMedia, videoWidth, videoHeight, videoDuration, description, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultVideo withThumbnailUrl(String thumbnailUrl) {
+        return new InlineQueryResultVideo(type, id, videoUrl, mimeType, thumbnailUrl, title, caption, parseMode, captionEntities, showCaptionAboveMedia, videoWidth, videoHeight, videoDuration, description, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultVideo withTitle(String title) {
+        return new InlineQueryResultVideo(type, id, videoUrl, mimeType, thumbnailUrl, title, caption, parseMode, captionEntities, showCaptionAboveMedia, videoWidth, videoHeight, videoDuration, description, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultVideo withCaption(@Nullable String caption) {
+        return new InlineQueryResultVideo(type, id, videoUrl, mimeType, thumbnailUrl, title, caption, parseMode, captionEntities, showCaptionAboveMedia, videoWidth, videoHeight, videoDuration, description, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultVideo withParseMode(@Nullable ParseMode parseMode) {
+        return new InlineQueryResultVideo(type, id, videoUrl, mimeType, thumbnailUrl, title, caption, parseMode, captionEntities, showCaptionAboveMedia, videoWidth, videoHeight, videoDuration, description, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultVideo withCaptionEntities(@Nullable List<MessageEntity> captionEntities) {
+        return new InlineQueryResultVideo(type, id, videoUrl, mimeType, thumbnailUrl, title, caption, parseMode, captionEntities, showCaptionAboveMedia, videoWidth, videoHeight, videoDuration, description, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultVideo withShowCaptionAboveMedia(@Nullable Boolean showCaptionAboveMedia) {
+        return new InlineQueryResultVideo(type, id, videoUrl, mimeType, thumbnailUrl, title, caption, parseMode, captionEntities, showCaptionAboveMedia, videoWidth, videoHeight, videoDuration, description, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultVideo withVideoWidth(@Nullable Long videoWidth) {
+        return new InlineQueryResultVideo(type, id, videoUrl, mimeType, thumbnailUrl, title, caption, parseMode, captionEntities, showCaptionAboveMedia, videoWidth, videoHeight, videoDuration, description, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultVideo withVideoHeight(@Nullable Long videoHeight) {
+        return new InlineQueryResultVideo(type, id, videoUrl, mimeType, thumbnailUrl, title, caption, parseMode, captionEntities, showCaptionAboveMedia, videoWidth, videoHeight, videoDuration, description, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultVideo withVideoDuration(@Nullable Long videoDuration) {
+        return new InlineQueryResultVideo(type, id, videoUrl, mimeType, thumbnailUrl, title, caption, parseMode, captionEntities, showCaptionAboveMedia, videoWidth, videoHeight, videoDuration, description, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultVideo withDescription(@Nullable String description) {
+        return new InlineQueryResultVideo(type, id, videoUrl, mimeType, thumbnailUrl, title, caption, parseMode, captionEntities, showCaptionAboveMedia, videoWidth, videoHeight, videoDuration, description, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultVideo withReplyMarkup(@Nullable InlineKeyboardMarkup replyMarkup) {
+        return new InlineQueryResultVideo(type, id, videoUrl, mimeType, thumbnailUrl, title, caption, parseMode, captionEntities, showCaptionAboveMedia, videoWidth, videoHeight, videoDuration, description, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultVideo withInputMessageContent(@Nullable InputMessageContent inputMessageContent) {
+        return new InlineQueryResultVideo(type, id, videoUrl, mimeType, thumbnailUrl, title, caption, parseMode, captionEntities, showCaptionAboveMedia, videoWidth, videoHeight, videoDuration, description, replyMarkup, inputMessageContent);
+    }
+}

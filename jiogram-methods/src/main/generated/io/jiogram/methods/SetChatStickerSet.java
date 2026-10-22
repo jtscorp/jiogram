@@ -29,4 +29,12 @@ public record SetChatStickerSet(
     public String apiReturnType() {
         return "Boolean";
     }
+
+    public SetChatStickerSet withChatId(ChatId chatId) {
+        return new SetChatStickerSet(chatId, stickerSetName);
+    }
+
+    public SetChatStickerSet withStickerSetName(String stickerSetName) {
+        return new SetChatStickerSet(chatId, stickerSetName);
+    }
 }

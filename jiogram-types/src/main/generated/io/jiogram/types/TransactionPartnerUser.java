@@ -45,4 +45,41 @@ public record TransactionPartnerUser(
     @JsonProperty("paid_media_payload") @Nullable String paidMediaPayload,
     @JsonProperty("gift") @Nullable Gift gift,
     @JsonProperty("premium_subscription_duration") @Nullable Long premiumSubscriptionDuration
-) implements TransactionPartner {}
+) implements TransactionPartner {
+
+    public TransactionPartnerUser withTransactionType(TransactionType transactionType) {
+        return new TransactionPartnerUser(type, transactionType, user, affiliate, invoicePayload, subscriptionPeriod, paidMedia, paidMediaPayload, gift, premiumSubscriptionDuration);
+    }
+
+    public TransactionPartnerUser withUser(User user) {
+        return new TransactionPartnerUser(type, transactionType, user, affiliate, invoicePayload, subscriptionPeriod, paidMedia, paidMediaPayload, gift, premiumSubscriptionDuration);
+    }
+
+    public TransactionPartnerUser withAffiliate(@Nullable AffiliateInfo affiliate) {
+        return new TransactionPartnerUser(type, transactionType, user, affiliate, invoicePayload, subscriptionPeriod, paidMedia, paidMediaPayload, gift, premiumSubscriptionDuration);
+    }
+
+    public TransactionPartnerUser withInvoicePayload(@Nullable String invoicePayload) {
+        return new TransactionPartnerUser(type, transactionType, user, affiliate, invoicePayload, subscriptionPeriod, paidMedia, paidMediaPayload, gift, premiumSubscriptionDuration);
+    }
+
+    public TransactionPartnerUser withSubscriptionPeriod(@Nullable Long subscriptionPeriod) {
+        return new TransactionPartnerUser(type, transactionType, user, affiliate, invoicePayload, subscriptionPeriod, paidMedia, paidMediaPayload, gift, premiumSubscriptionDuration);
+    }
+
+    public TransactionPartnerUser withPaidMedia(@Nullable List<PaidMedia> paidMedia) {
+        return new TransactionPartnerUser(type, transactionType, user, affiliate, invoicePayload, subscriptionPeriod, paidMedia, paidMediaPayload, gift, premiumSubscriptionDuration);
+    }
+
+    public TransactionPartnerUser withPaidMediaPayload(@Nullable String paidMediaPayload) {
+        return new TransactionPartnerUser(type, transactionType, user, affiliate, invoicePayload, subscriptionPeriod, paidMedia, paidMediaPayload, gift, premiumSubscriptionDuration);
+    }
+
+    public TransactionPartnerUser withGift(@Nullable Gift gift) {
+        return new TransactionPartnerUser(type, transactionType, user, affiliate, invoicePayload, subscriptionPeriod, paidMedia, paidMediaPayload, gift, premiumSubscriptionDuration);
+    }
+
+    public TransactionPartnerUser withPremiumSubscriptionDuration(@Nullable Long premiumSubscriptionDuration) {
+        return new TransactionPartnerUser(type, transactionType, user, affiliate, invoicePayload, subscriptionPeriod, paidMedia, paidMediaPayload, gift, premiumSubscriptionDuration);
+    }
+}

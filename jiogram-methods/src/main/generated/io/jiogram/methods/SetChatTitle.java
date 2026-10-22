@@ -28,4 +28,12 @@ public record SetChatTitle(
     public String apiReturnType() {
         return "Boolean";
     }
+
+    public SetChatTitle withChatId(ChatId chatId) {
+        return new SetChatTitle(chatId, title);
+    }
+
+    public SetChatTitle withTitle(String title) {
+        return new SetChatTitle(chatId, title);
+    }
 }

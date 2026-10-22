@@ -17,4 +17,13 @@ import org.jspecify.annotations.Nullable;
 public record ResponseParameters(
     @JsonProperty("migrate_to_chat_id") @Nullable Long migrateToChatId,
     @JsonProperty("retry_after") @Nullable Long retryAfter
-) {}
+) {
+
+    public ResponseParameters withMigrateToChatId(@Nullable Long migrateToChatId) {
+        return new ResponseParameters(migrateToChatId, retryAfter);
+    }
+
+    public ResponseParameters withRetryAfter(@Nullable Long retryAfter) {
+        return new ResponseParameters(migrateToChatId, retryAfter);
+    }
+}

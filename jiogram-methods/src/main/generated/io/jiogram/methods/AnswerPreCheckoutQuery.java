@@ -39,4 +39,16 @@ public record AnswerPreCheckoutQuery(
     public static AnswerPreCheckoutQuery of(String preCheckoutQueryId, boolean ok) {
         return new AnswerPreCheckoutQuery(preCheckoutQueryId, ok, null);
     }
+
+    public AnswerPreCheckoutQuery withPreCheckoutQueryId(String preCheckoutQueryId) {
+        return new AnswerPreCheckoutQuery(preCheckoutQueryId, ok, errorMessage);
+    }
+
+    public AnswerPreCheckoutQuery withOk(boolean ok) {
+        return new AnswerPreCheckoutQuery(preCheckoutQueryId, ok, errorMessage);
+    }
+
+    public AnswerPreCheckoutQuery withErrorMessage(@Nullable String errorMessage) {
+        return new AnswerPreCheckoutQuery(preCheckoutQueryId, ok, errorMessage);
+    }
 }

@@ -35,4 +35,41 @@ public record WebhookInfo(
     @JsonProperty("last_synchronization_error_date") @Nullable Long lastSynchronizationErrorDate,
     @JsonProperty("max_connections") @Nullable Long maxConnections,
     @JsonProperty("allowed_updates") @Nullable List<UpdateType> allowedUpdates
-) {}
+) {
+
+    public WebhookInfo withUrl(String url) {
+        return new WebhookInfo(url, hasCustomCertificate, pendingUpdateCount, ipAddress, lastErrorDate, lastErrorMessage, lastSynchronizationErrorDate, maxConnections, allowedUpdates);
+    }
+
+    public WebhookInfo withHasCustomCertificate(boolean hasCustomCertificate) {
+        return new WebhookInfo(url, hasCustomCertificate, pendingUpdateCount, ipAddress, lastErrorDate, lastErrorMessage, lastSynchronizationErrorDate, maxConnections, allowedUpdates);
+    }
+
+    public WebhookInfo withPendingUpdateCount(long pendingUpdateCount) {
+        return new WebhookInfo(url, hasCustomCertificate, pendingUpdateCount, ipAddress, lastErrorDate, lastErrorMessage, lastSynchronizationErrorDate, maxConnections, allowedUpdates);
+    }
+
+    public WebhookInfo withIpAddress(@Nullable String ipAddress) {
+        return new WebhookInfo(url, hasCustomCertificate, pendingUpdateCount, ipAddress, lastErrorDate, lastErrorMessage, lastSynchronizationErrorDate, maxConnections, allowedUpdates);
+    }
+
+    public WebhookInfo withLastErrorDate(@Nullable Long lastErrorDate) {
+        return new WebhookInfo(url, hasCustomCertificate, pendingUpdateCount, ipAddress, lastErrorDate, lastErrorMessage, lastSynchronizationErrorDate, maxConnections, allowedUpdates);
+    }
+
+    public WebhookInfo withLastErrorMessage(@Nullable String lastErrorMessage) {
+        return new WebhookInfo(url, hasCustomCertificate, pendingUpdateCount, ipAddress, lastErrorDate, lastErrorMessage, lastSynchronizationErrorDate, maxConnections, allowedUpdates);
+    }
+
+    public WebhookInfo withLastSynchronizationErrorDate(@Nullable Long lastSynchronizationErrorDate) {
+        return new WebhookInfo(url, hasCustomCertificate, pendingUpdateCount, ipAddress, lastErrorDate, lastErrorMessage, lastSynchronizationErrorDate, maxConnections, allowedUpdates);
+    }
+
+    public WebhookInfo withMaxConnections(@Nullable Long maxConnections) {
+        return new WebhookInfo(url, hasCustomCertificate, pendingUpdateCount, ipAddress, lastErrorDate, lastErrorMessage, lastSynchronizationErrorDate, maxConnections, allowedUpdates);
+    }
+
+    public WebhookInfo withAllowedUpdates(@Nullable List<UpdateType> allowedUpdates) {
+        return new WebhookInfo(url, hasCustomCertificate, pendingUpdateCount, ipAddress, lastErrorDate, lastErrorMessage, lastSynchronizationErrorDate, maxConnections, allowedUpdates);
+    }
+}

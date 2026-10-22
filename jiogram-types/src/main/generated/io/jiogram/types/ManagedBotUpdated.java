@@ -15,4 +15,13 @@ import io.jiogram.types.User;
 public record ManagedBotUpdated(
     @JsonProperty("user") User user,
     @JsonProperty("bot") User bot
-) {}
+) {
+
+    public ManagedBotUpdated withUser(User user) {
+        return new ManagedBotUpdated(user, bot);
+    }
+
+    public ManagedBotUpdated withBot(User bot) {
+        return new ManagedBotUpdated(user, bot);
+    }
+}

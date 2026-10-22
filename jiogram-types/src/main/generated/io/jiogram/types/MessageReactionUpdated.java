@@ -27,4 +27,33 @@ public record MessageReactionUpdated(
     @JsonProperty("date") long date,
     @JsonProperty("old_reaction") List<ReactionType> oldReaction,
     @JsonProperty("new_reaction") List<ReactionType> newReaction
-) {}
+) {
+
+    public MessageReactionUpdated withChat(Chat chat) {
+        return new MessageReactionUpdated(chat, messageId, user, actorChat, date, oldReaction, newReaction);
+    }
+
+    public MessageReactionUpdated withMessageId(long messageId) {
+        return new MessageReactionUpdated(chat, messageId, user, actorChat, date, oldReaction, newReaction);
+    }
+
+    public MessageReactionUpdated withUser(@Nullable User user) {
+        return new MessageReactionUpdated(chat, messageId, user, actorChat, date, oldReaction, newReaction);
+    }
+
+    public MessageReactionUpdated withActorChat(@Nullable Chat actorChat) {
+        return new MessageReactionUpdated(chat, messageId, user, actorChat, date, oldReaction, newReaction);
+    }
+
+    public MessageReactionUpdated withDate(long date) {
+        return new MessageReactionUpdated(chat, messageId, user, actorChat, date, oldReaction, newReaction);
+    }
+
+    public MessageReactionUpdated withOldReaction(List<ReactionType> oldReaction) {
+        return new MessageReactionUpdated(chat, messageId, user, actorChat, date, oldReaction, newReaction);
+    }
+
+    public MessageReactionUpdated withNewReaction(List<ReactionType> newReaction) {
+        return new MessageReactionUpdated(chat, messageId, user, actorChat, date, oldReaction, newReaction);
+    }
+}

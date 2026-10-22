@@ -10,4 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public record BotDescription(
     @JsonProperty("description") String description
-) {}
+) {
+
+    public BotDescription withDescription(String description) {
+        return new BotDescription(description);
+    }
+}

@@ -35,4 +35,12 @@ public record GetMyCommands(
     public static GetMyCommands of() {
         return new GetMyCommands(null, null);
     }
+
+    public GetMyCommands withScope(@Nullable BotCommandScope scope) {
+        return new GetMyCommands(scope, languageCode);
+    }
+
+    public GetMyCommands withLanguageCode(@Nullable String languageCode) {
+        return new GetMyCommands(scope, languageCode);
+    }
 }

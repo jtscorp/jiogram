@@ -31,4 +31,33 @@ public record PollOption(
     @JsonProperty("added_by_user") @Nullable User addedByUser,
     @JsonProperty("added_by_chat") @Nullable Chat addedByChat,
     @JsonProperty("addition_date") @Nullable Long additionDate
-) {}
+) {
+
+    public PollOption withPersistentId(String persistentId) {
+        return new PollOption(persistentId, text, textEntities, voterCount, addedByUser, addedByChat, additionDate);
+    }
+
+    public PollOption withText(String text) {
+        return new PollOption(persistentId, text, textEntities, voterCount, addedByUser, addedByChat, additionDate);
+    }
+
+    public PollOption withTextEntities(@Nullable List<MessageEntity> textEntities) {
+        return new PollOption(persistentId, text, textEntities, voterCount, addedByUser, addedByChat, additionDate);
+    }
+
+    public PollOption withVoterCount(long voterCount) {
+        return new PollOption(persistentId, text, textEntities, voterCount, addedByUser, addedByChat, additionDate);
+    }
+
+    public PollOption withAddedByUser(@Nullable User addedByUser) {
+        return new PollOption(persistentId, text, textEntities, voterCount, addedByUser, addedByChat, additionDate);
+    }
+
+    public PollOption withAddedByChat(@Nullable Chat addedByChat) {
+        return new PollOption(persistentId, text, textEntities, voterCount, addedByUser, addedByChat, additionDate);
+    }
+
+    public PollOption withAdditionDate(@Nullable Long additionDate) {
+        return new PollOption(persistentId, text, textEntities, voterCount, addedByUser, addedByChat, additionDate);
+    }
+}

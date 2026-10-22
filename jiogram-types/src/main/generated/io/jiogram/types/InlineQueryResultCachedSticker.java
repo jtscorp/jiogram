@@ -24,4 +24,21 @@ public record InlineQueryResultCachedSticker(
     @JsonProperty("sticker_file_id") String stickerFileId,
     @JsonProperty("reply_markup") @Nullable InlineKeyboardMarkup replyMarkup,
     @JsonProperty("input_message_content") @Nullable InputMessageContent inputMessageContent
-) implements InlineQueryResult {}
+) implements InlineQueryResult {
+
+    public InlineQueryResultCachedSticker withId(String id) {
+        return new InlineQueryResultCachedSticker(type, id, stickerFileId, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultCachedSticker withStickerFileId(String stickerFileId) {
+        return new InlineQueryResultCachedSticker(type, id, stickerFileId, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultCachedSticker withReplyMarkup(@Nullable InlineKeyboardMarkup replyMarkup) {
+        return new InlineQueryResultCachedSticker(type, id, stickerFileId, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultCachedSticker withInputMessageContent(@Nullable InputMessageContent inputMessageContent) {
+        return new InlineQueryResultCachedSticker(type, id, stickerFileId, replyMarkup, inputMessageContent);
+    }
+}

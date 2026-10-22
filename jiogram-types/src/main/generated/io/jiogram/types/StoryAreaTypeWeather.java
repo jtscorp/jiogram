@@ -18,4 +18,17 @@ public record StoryAreaTypeWeather(
     @JsonProperty("temperature") double temperature,
     @JsonProperty("emoji") String emoji,
     @JsonProperty("background_color") long backgroundColor
-) implements StoryAreaType {}
+) implements StoryAreaType {
+
+    public StoryAreaTypeWeather withTemperature(double temperature) {
+        return new StoryAreaTypeWeather(type, temperature, emoji, backgroundColor);
+    }
+
+    public StoryAreaTypeWeather withEmoji(String emoji) {
+        return new StoryAreaTypeWeather(type, temperature, emoji, backgroundColor);
+    }
+
+    public StoryAreaTypeWeather withBackgroundColor(long backgroundColor) {
+        return new StoryAreaTypeWeather(type, temperature, emoji, backgroundColor);
+    }
+}

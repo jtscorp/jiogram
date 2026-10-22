@@ -13,4 +13,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public record PreparedInlineMessage(
     @JsonProperty("id") String id,
     @JsonProperty("expiration_date") long expirationDate
-) {}
+) {
+
+    public PreparedInlineMessage withId(String id) {
+        return new PreparedInlineMessage(id, expirationDate);
+    }
+
+    public PreparedInlineMessage withExpirationDate(long expirationDate) {
+        return new PreparedInlineMessage(id, expirationDate);
+    }
+}

@@ -51,4 +51,32 @@ public record ForwardMessages(
     public static ForwardMessages of(ChatId chatId, ChatId fromChatId, List<Long> messageIds) {
         return new ForwardMessages(chatId, null, null, fromChatId, messageIds, null, null);
     }
+
+    public ForwardMessages withChatId(ChatId chatId) {
+        return new ForwardMessages(chatId, messageThreadId, directMessagesTopicId, fromChatId, messageIds, disableNotification, protectContent);
+    }
+
+    public ForwardMessages withMessageThreadId(@Nullable Long messageThreadId) {
+        return new ForwardMessages(chatId, messageThreadId, directMessagesTopicId, fromChatId, messageIds, disableNotification, protectContent);
+    }
+
+    public ForwardMessages withDirectMessagesTopicId(@Nullable Long directMessagesTopicId) {
+        return new ForwardMessages(chatId, messageThreadId, directMessagesTopicId, fromChatId, messageIds, disableNotification, protectContent);
+    }
+
+    public ForwardMessages withFromChatId(ChatId fromChatId) {
+        return new ForwardMessages(chatId, messageThreadId, directMessagesTopicId, fromChatId, messageIds, disableNotification, protectContent);
+    }
+
+    public ForwardMessages withMessageIds(List<Long> messageIds) {
+        return new ForwardMessages(chatId, messageThreadId, directMessagesTopicId, fromChatId, messageIds, disableNotification, protectContent);
+    }
+
+    public ForwardMessages withDisableNotification(@Nullable Boolean disableNotification) {
+        return new ForwardMessages(chatId, messageThreadId, directMessagesTopicId, fromChatId, messageIds, disableNotification, protectContent);
+    }
+
+    public ForwardMessages withProtectContent(@Nullable Boolean protectContent) {
+        return new ForwardMessages(chatId, messageThreadId, directMessagesTopicId, fromChatId, messageIds, disableNotification, protectContent);
+    }
 }

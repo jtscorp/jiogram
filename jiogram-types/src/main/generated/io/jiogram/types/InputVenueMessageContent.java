@@ -26,4 +26,37 @@ public record InputVenueMessageContent(
     @JsonProperty("foursquare_type") @Nullable String foursquareType,
     @JsonProperty("google_place_id") @Nullable String googlePlaceId,
     @JsonProperty("google_place_type") @Nullable String googlePlaceType
-) implements InputMessageContent {}
+) implements InputMessageContent {
+
+    public InputVenueMessageContent withLatitude(double latitude) {
+        return new InputVenueMessageContent(latitude, longitude, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType);
+    }
+
+    public InputVenueMessageContent withLongitude(double longitude) {
+        return new InputVenueMessageContent(latitude, longitude, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType);
+    }
+
+    public InputVenueMessageContent withTitle(String title) {
+        return new InputVenueMessageContent(latitude, longitude, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType);
+    }
+
+    public InputVenueMessageContent withAddress(String address) {
+        return new InputVenueMessageContent(latitude, longitude, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType);
+    }
+
+    public InputVenueMessageContent withFoursquareId(@Nullable String foursquareId) {
+        return new InputVenueMessageContent(latitude, longitude, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType);
+    }
+
+    public InputVenueMessageContent withFoursquareType(@Nullable String foursquareType) {
+        return new InputVenueMessageContent(latitude, longitude, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType);
+    }
+
+    public InputVenueMessageContent withGooglePlaceId(@Nullable String googlePlaceId) {
+        return new InputVenueMessageContent(latitude, longitude, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType);
+    }
+
+    public InputVenueMessageContent withGooglePlaceType(@Nullable String googlePlaceType) {
+        return new InputVenueMessageContent(latitude, longitude, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType);
+    }
+}

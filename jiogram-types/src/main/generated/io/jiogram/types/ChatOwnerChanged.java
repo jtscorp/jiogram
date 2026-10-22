@@ -11,4 +11,9 @@ import io.jiogram.types.User;
  */
 public record ChatOwnerChanged(
     @JsonProperty("new_owner") User newOwner
-) {}
+) {
+
+    public ChatOwnerChanged withNewOwner(User newOwner) {
+        return new ChatOwnerChanged(newOwner);
+    }
+}

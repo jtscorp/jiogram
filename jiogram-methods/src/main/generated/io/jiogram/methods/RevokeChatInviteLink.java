@@ -30,4 +30,12 @@ public record RevokeChatInviteLink(
     public String apiReturnType() {
         return "ChatInviteLink";
     }
+
+    public RevokeChatInviteLink withChatId(ChatId chatId) {
+        return new RevokeChatInviteLink(chatId, inviteLink);
+    }
+
+    public RevokeChatInviteLink withInviteLink(String inviteLink) {
+        return new RevokeChatInviteLink(chatId, inviteLink);
+    }
 }

@@ -15,4 +15,13 @@ public record MessageOriginHiddenUser(
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) MessageOriginType type,
     @JsonProperty("date") long date,
     @JsonProperty("sender_user_name") String senderUserName
-) implements MessageOrigin {}
+) implements MessageOrigin {
+
+    public MessageOriginHiddenUser withDate(long date) {
+        return new MessageOriginHiddenUser(type, date, senderUserName);
+    }
+
+    public MessageOriginHiddenUser withSenderUserName(String senderUserName) {
+        return new MessageOriginHiddenUser(type, date, senderUserName);
+    }
+}

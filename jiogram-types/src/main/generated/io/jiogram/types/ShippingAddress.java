@@ -20,4 +20,29 @@ public record ShippingAddress(
     @JsonProperty("street_line1") String streetLine1,
     @JsonProperty("street_line2") String streetLine2,
     @JsonProperty("post_code") String postCode
-) {}
+) {
+
+    public ShippingAddress withCountryCode(String countryCode) {
+        return new ShippingAddress(countryCode, state, city, streetLine1, streetLine2, postCode);
+    }
+
+    public ShippingAddress withState(String state) {
+        return new ShippingAddress(countryCode, state, city, streetLine1, streetLine2, postCode);
+    }
+
+    public ShippingAddress withCity(String city) {
+        return new ShippingAddress(countryCode, state, city, streetLine1, streetLine2, postCode);
+    }
+
+    public ShippingAddress withStreetLine1(String streetLine1) {
+        return new ShippingAddress(countryCode, state, city, streetLine1, streetLine2, postCode);
+    }
+
+    public ShippingAddress withStreetLine2(String streetLine2) {
+        return new ShippingAddress(countryCode, state, city, streetLine1, streetLine2, postCode);
+    }
+
+    public ShippingAddress withPostCode(String postCode) {
+        return new ShippingAddress(countryCode, state, city, streetLine1, streetLine2, postCode);
+    }
+}

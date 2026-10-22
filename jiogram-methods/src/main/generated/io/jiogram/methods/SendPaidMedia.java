@@ -100,4 +100,72 @@ public record SendPaidMedia(
     public static SendPaidMedia reply(Message message, long starCount, List<InputPaidMedia> media) {
         return new SendPaidMedia(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), starCount, media, null, null, null, null, null, null, null, null, null, ReplyTarget.replyTo(message), null);
     }
+
+    public SendPaidMedia withBusinessConnectionId(@Nullable String businessConnectionId) {
+        return new SendPaidMedia(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, starCount, media, payload, caption, parseMode, captionEntities, showCaptionAboveMedia, disableNotification, protectContent, allowPaidBroadcast, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendPaidMedia withChatId(ChatId chatId) {
+        return new SendPaidMedia(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, starCount, media, payload, caption, parseMode, captionEntities, showCaptionAboveMedia, disableNotification, protectContent, allowPaidBroadcast, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendPaidMedia withMessageThreadId(@Nullable Long messageThreadId) {
+        return new SendPaidMedia(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, starCount, media, payload, caption, parseMode, captionEntities, showCaptionAboveMedia, disableNotification, protectContent, allowPaidBroadcast, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendPaidMedia withDirectMessagesTopicId(@Nullable Long directMessagesTopicId) {
+        return new SendPaidMedia(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, starCount, media, payload, caption, parseMode, captionEntities, showCaptionAboveMedia, disableNotification, protectContent, allowPaidBroadcast, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendPaidMedia withStarCount(long starCount) {
+        return new SendPaidMedia(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, starCount, media, payload, caption, parseMode, captionEntities, showCaptionAboveMedia, disableNotification, protectContent, allowPaidBroadcast, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendPaidMedia withMedia(List<InputPaidMedia> media) {
+        return new SendPaidMedia(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, starCount, media, payload, caption, parseMode, captionEntities, showCaptionAboveMedia, disableNotification, protectContent, allowPaidBroadcast, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendPaidMedia withPayload(@Nullable String payload) {
+        return new SendPaidMedia(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, starCount, media, payload, caption, parseMode, captionEntities, showCaptionAboveMedia, disableNotification, protectContent, allowPaidBroadcast, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendPaidMedia withCaption(@Nullable String caption) {
+        return new SendPaidMedia(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, starCount, media, payload, caption, parseMode, captionEntities, showCaptionAboveMedia, disableNotification, protectContent, allowPaidBroadcast, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendPaidMedia withParseMode(@Nullable ParseMode parseMode) {
+        return new SendPaidMedia(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, starCount, media, payload, caption, parseMode, captionEntities, showCaptionAboveMedia, disableNotification, protectContent, allowPaidBroadcast, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendPaidMedia withCaptionEntities(@Nullable List<MessageEntity> captionEntities) {
+        return new SendPaidMedia(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, starCount, media, payload, caption, parseMode, captionEntities, showCaptionAboveMedia, disableNotification, protectContent, allowPaidBroadcast, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendPaidMedia withShowCaptionAboveMedia(@Nullable Boolean showCaptionAboveMedia) {
+        return new SendPaidMedia(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, starCount, media, payload, caption, parseMode, captionEntities, showCaptionAboveMedia, disableNotification, protectContent, allowPaidBroadcast, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendPaidMedia withDisableNotification(@Nullable Boolean disableNotification) {
+        return new SendPaidMedia(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, starCount, media, payload, caption, parseMode, captionEntities, showCaptionAboveMedia, disableNotification, protectContent, allowPaidBroadcast, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendPaidMedia withProtectContent(@Nullable Boolean protectContent) {
+        return new SendPaidMedia(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, starCount, media, payload, caption, parseMode, captionEntities, showCaptionAboveMedia, disableNotification, protectContent, allowPaidBroadcast, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendPaidMedia withAllowPaidBroadcast(@Nullable Boolean allowPaidBroadcast) {
+        return new SendPaidMedia(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, starCount, media, payload, caption, parseMode, captionEntities, showCaptionAboveMedia, disableNotification, protectContent, allowPaidBroadcast, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendPaidMedia withSuggestedPostParameters(@Nullable SuggestedPostParameters suggestedPostParameters) {
+        return new SendPaidMedia(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, starCount, media, payload, caption, parseMode, captionEntities, showCaptionAboveMedia, disableNotification, protectContent, allowPaidBroadcast, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendPaidMedia withReplyParameters(@Nullable ReplyParameters replyParameters) {
+        return new SendPaidMedia(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, starCount, media, payload, caption, parseMode, captionEntities, showCaptionAboveMedia, disableNotification, protectContent, allowPaidBroadcast, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendPaidMedia withReplyMarkup(@Nullable ReplyMarkup replyMarkup) {
+        return new SendPaidMedia(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, starCount, media, payload, caption, parseMode, captionEntities, showCaptionAboveMedia, disableNotification, protectContent, allowPaidBroadcast, suggestedPostParameters, replyParameters, replyMarkup);
+    }
 }

@@ -73,4 +73,85 @@ public record InputInvoiceMessageContent(
     @JsonProperty("send_phone_number_to_provider") @Nullable Boolean sendPhoneNumberToProvider,
     @JsonProperty("send_email_to_provider") @Nullable Boolean sendEmailToProvider,
     @JsonProperty("is_flexible") @Nullable Boolean isFlexible
-) implements InputMessageContent {}
+) implements InputMessageContent {
+
+    public InputInvoiceMessageContent withTitle(String title) {
+        return new InputInvoiceMessageContent(title, description, payload, providerToken, currency, prices, maxTipAmount, suggestedTipAmounts, providerData, photoUrl, photoSize, photoWidth, photoHeight, needName, needPhoneNumber, needEmail, needShippingAddress, sendPhoneNumberToProvider, sendEmailToProvider, isFlexible);
+    }
+
+    public InputInvoiceMessageContent withDescription(String description) {
+        return new InputInvoiceMessageContent(title, description, payload, providerToken, currency, prices, maxTipAmount, suggestedTipAmounts, providerData, photoUrl, photoSize, photoWidth, photoHeight, needName, needPhoneNumber, needEmail, needShippingAddress, sendPhoneNumberToProvider, sendEmailToProvider, isFlexible);
+    }
+
+    public InputInvoiceMessageContent withPayload(String payload) {
+        return new InputInvoiceMessageContent(title, description, payload, providerToken, currency, prices, maxTipAmount, suggestedTipAmounts, providerData, photoUrl, photoSize, photoWidth, photoHeight, needName, needPhoneNumber, needEmail, needShippingAddress, sendPhoneNumberToProvider, sendEmailToProvider, isFlexible);
+    }
+
+    public InputInvoiceMessageContent withProviderToken(@Nullable String providerToken) {
+        return new InputInvoiceMessageContent(title, description, payload, providerToken, currency, prices, maxTipAmount, suggestedTipAmounts, providerData, photoUrl, photoSize, photoWidth, photoHeight, needName, needPhoneNumber, needEmail, needShippingAddress, sendPhoneNumberToProvider, sendEmailToProvider, isFlexible);
+    }
+
+    public InputInvoiceMessageContent withCurrency(String currency) {
+        return new InputInvoiceMessageContent(title, description, payload, providerToken, currency, prices, maxTipAmount, suggestedTipAmounts, providerData, photoUrl, photoSize, photoWidth, photoHeight, needName, needPhoneNumber, needEmail, needShippingAddress, sendPhoneNumberToProvider, sendEmailToProvider, isFlexible);
+    }
+
+    public InputInvoiceMessageContent withPrices(List<LabeledPrice> prices) {
+        return new InputInvoiceMessageContent(title, description, payload, providerToken, currency, prices, maxTipAmount, suggestedTipAmounts, providerData, photoUrl, photoSize, photoWidth, photoHeight, needName, needPhoneNumber, needEmail, needShippingAddress, sendPhoneNumberToProvider, sendEmailToProvider, isFlexible);
+    }
+
+    public InputInvoiceMessageContent withMaxTipAmount(@Nullable Long maxTipAmount) {
+        return new InputInvoiceMessageContent(title, description, payload, providerToken, currency, prices, maxTipAmount, suggestedTipAmounts, providerData, photoUrl, photoSize, photoWidth, photoHeight, needName, needPhoneNumber, needEmail, needShippingAddress, sendPhoneNumberToProvider, sendEmailToProvider, isFlexible);
+    }
+
+    public InputInvoiceMessageContent withSuggestedTipAmounts(@Nullable List<Long> suggestedTipAmounts) {
+        return new InputInvoiceMessageContent(title, description, payload, providerToken, currency, prices, maxTipAmount, suggestedTipAmounts, providerData, photoUrl, photoSize, photoWidth, photoHeight, needName, needPhoneNumber, needEmail, needShippingAddress, sendPhoneNumberToProvider, sendEmailToProvider, isFlexible);
+    }
+
+    public InputInvoiceMessageContent withProviderData(@Nullable String providerData) {
+        return new InputInvoiceMessageContent(title, description, payload, providerToken, currency, prices, maxTipAmount, suggestedTipAmounts, providerData, photoUrl, photoSize, photoWidth, photoHeight, needName, needPhoneNumber, needEmail, needShippingAddress, sendPhoneNumberToProvider, sendEmailToProvider, isFlexible);
+    }
+
+    public InputInvoiceMessageContent withPhotoUrl(@Nullable String photoUrl) {
+        return new InputInvoiceMessageContent(title, description, payload, providerToken, currency, prices, maxTipAmount, suggestedTipAmounts, providerData, photoUrl, photoSize, photoWidth, photoHeight, needName, needPhoneNumber, needEmail, needShippingAddress, sendPhoneNumberToProvider, sendEmailToProvider, isFlexible);
+    }
+
+    public InputInvoiceMessageContent withPhotoSize(@Nullable Long photoSize) {
+        return new InputInvoiceMessageContent(title, description, payload, providerToken, currency, prices, maxTipAmount, suggestedTipAmounts, providerData, photoUrl, photoSize, photoWidth, photoHeight, needName, needPhoneNumber, needEmail, needShippingAddress, sendPhoneNumberToProvider, sendEmailToProvider, isFlexible);
+    }
+
+    public InputInvoiceMessageContent withPhotoWidth(@Nullable Long photoWidth) {
+        return new InputInvoiceMessageContent(title, description, payload, providerToken, currency, prices, maxTipAmount, suggestedTipAmounts, providerData, photoUrl, photoSize, photoWidth, photoHeight, needName, needPhoneNumber, needEmail, needShippingAddress, sendPhoneNumberToProvider, sendEmailToProvider, isFlexible);
+    }
+
+    public InputInvoiceMessageContent withPhotoHeight(@Nullable Long photoHeight) {
+        return new InputInvoiceMessageContent(title, description, payload, providerToken, currency, prices, maxTipAmount, suggestedTipAmounts, providerData, photoUrl, photoSize, photoWidth, photoHeight, needName, needPhoneNumber, needEmail, needShippingAddress, sendPhoneNumberToProvider, sendEmailToProvider, isFlexible);
+    }
+
+    public InputInvoiceMessageContent withNeedName(@Nullable Boolean needName) {
+        return new InputInvoiceMessageContent(title, description, payload, providerToken, currency, prices, maxTipAmount, suggestedTipAmounts, providerData, photoUrl, photoSize, photoWidth, photoHeight, needName, needPhoneNumber, needEmail, needShippingAddress, sendPhoneNumberToProvider, sendEmailToProvider, isFlexible);
+    }
+
+    public InputInvoiceMessageContent withNeedPhoneNumber(@Nullable Boolean needPhoneNumber) {
+        return new InputInvoiceMessageContent(title, description, payload, providerToken, currency, prices, maxTipAmount, suggestedTipAmounts, providerData, photoUrl, photoSize, photoWidth, photoHeight, needName, needPhoneNumber, needEmail, needShippingAddress, sendPhoneNumberToProvider, sendEmailToProvider, isFlexible);
+    }
+
+    public InputInvoiceMessageContent withNeedEmail(@Nullable Boolean needEmail) {
+        return new InputInvoiceMessageContent(title, description, payload, providerToken, currency, prices, maxTipAmount, suggestedTipAmounts, providerData, photoUrl, photoSize, photoWidth, photoHeight, needName, needPhoneNumber, needEmail, needShippingAddress, sendPhoneNumberToProvider, sendEmailToProvider, isFlexible);
+    }
+
+    public InputInvoiceMessageContent withNeedShippingAddress(@Nullable Boolean needShippingAddress) {
+        return new InputInvoiceMessageContent(title, description, payload, providerToken, currency, prices, maxTipAmount, suggestedTipAmounts, providerData, photoUrl, photoSize, photoWidth, photoHeight, needName, needPhoneNumber, needEmail, needShippingAddress, sendPhoneNumberToProvider, sendEmailToProvider, isFlexible);
+    }
+
+    public InputInvoiceMessageContent withSendPhoneNumberToProvider(@Nullable Boolean sendPhoneNumberToProvider) {
+        return new InputInvoiceMessageContent(title, description, payload, providerToken, currency, prices, maxTipAmount, suggestedTipAmounts, providerData, photoUrl, photoSize, photoWidth, photoHeight, needName, needPhoneNumber, needEmail, needShippingAddress, sendPhoneNumberToProvider, sendEmailToProvider, isFlexible);
+    }
+
+    public InputInvoiceMessageContent withSendEmailToProvider(@Nullable Boolean sendEmailToProvider) {
+        return new InputInvoiceMessageContent(title, description, payload, providerToken, currency, prices, maxTipAmount, suggestedTipAmounts, providerData, photoUrl, photoSize, photoWidth, photoHeight, needName, needPhoneNumber, needEmail, needShippingAddress, sendPhoneNumberToProvider, sendEmailToProvider, isFlexible);
+    }
+
+    public InputInvoiceMessageContent withIsFlexible(@Nullable Boolean isFlexible) {
+        return new InputInvoiceMessageContent(title, description, payload, providerToken, currency, prices, maxTipAmount, suggestedTipAmounts, providerData, photoUrl, photoSize, photoWidth, photoHeight, needName, needPhoneNumber, needEmail, needShippingAddress, sendPhoneNumberToProvider, sendEmailToProvider, isFlexible);
+    }
+}

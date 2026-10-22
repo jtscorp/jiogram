@@ -102,4 +102,72 @@ public record SendPhoto(
     public static SendPhoto reply(Message message, InputFileOrString photo) {
         return new SendPhoto(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), photo, null, null, null, null, null, null, null, null, null, null, ReplyTarget.replyTo(message), null);
     }
+
+    public SendPhoto withBusinessConnectionId(@Nullable String businessConnectionId) {
+        return new SendPhoto(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, photo, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendPhoto withChatId(ChatId chatId) {
+        return new SendPhoto(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, photo, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendPhoto withMessageThreadId(@Nullable Long messageThreadId) {
+        return new SendPhoto(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, photo, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendPhoto withDirectMessagesTopicId(@Nullable Long directMessagesTopicId) {
+        return new SendPhoto(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, photo, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendPhoto withPhoto(InputFileOrString photo) {
+        return new SendPhoto(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, photo, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendPhoto withCaption(@Nullable String caption) {
+        return new SendPhoto(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, photo, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendPhoto withParseMode(@Nullable ParseMode parseMode) {
+        return new SendPhoto(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, photo, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendPhoto withCaptionEntities(@Nullable List<MessageEntity> captionEntities) {
+        return new SendPhoto(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, photo, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendPhoto withShowCaptionAboveMedia(@Nullable Boolean showCaptionAboveMedia) {
+        return new SendPhoto(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, photo, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendPhoto withHasSpoiler(@Nullable Boolean hasSpoiler) {
+        return new SendPhoto(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, photo, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendPhoto withDisableNotification(@Nullable Boolean disableNotification) {
+        return new SendPhoto(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, photo, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendPhoto withProtectContent(@Nullable Boolean protectContent) {
+        return new SendPhoto(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, photo, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendPhoto withAllowPaidBroadcast(@Nullable Boolean allowPaidBroadcast) {
+        return new SendPhoto(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, photo, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendPhoto withMessageEffectId(@Nullable String messageEffectId) {
+        return new SendPhoto(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, photo, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendPhoto withSuggestedPostParameters(@Nullable SuggestedPostParameters suggestedPostParameters) {
+        return new SendPhoto(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, photo, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendPhoto withReplyParameters(@Nullable ReplyParameters replyParameters) {
+        return new SendPhoto(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, photo, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendPhoto withReplyMarkup(@Nullable ReplyMarkup replyMarkup) {
+        return new SendPhoto(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, photo, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
 }

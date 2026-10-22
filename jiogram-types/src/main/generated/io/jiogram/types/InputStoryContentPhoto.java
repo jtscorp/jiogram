@@ -17,4 +17,9 @@ import io.jiogram.types.InputStoryContentType;
 public record InputStoryContentPhoto(
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) InputStoryContentType type,
     @JsonProperty("photo") InputFileOrString photo
-) implements InputStoryContent {}
+) implements InputStoryContent {
+
+    public InputStoryContentPhoto withPhoto(InputFileOrString photo) {
+        return new InputStoryContentPhoto(type, photo);
+    }
+}

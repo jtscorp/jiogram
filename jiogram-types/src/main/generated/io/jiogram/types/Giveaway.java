@@ -37,4 +37,41 @@ public record Giveaway(
     @JsonProperty("country_codes") @Nullable List<String> countryCodes,
     @JsonProperty("prize_star_count") @Nullable Long prizeStarCount,
     @JsonProperty("premium_subscription_month_count") @Nullable Long premiumSubscriptionMonthCount
-) {}
+) {
+
+    public Giveaway withChats(List<Chat> chats) {
+        return new Giveaway(chats, winnersSelectionDate, winnerCount, onlyNewMembers, hasPublicWinners, prizeDescription, countryCodes, prizeStarCount, premiumSubscriptionMonthCount);
+    }
+
+    public Giveaway withWinnersSelectionDate(long winnersSelectionDate) {
+        return new Giveaway(chats, winnersSelectionDate, winnerCount, onlyNewMembers, hasPublicWinners, prizeDescription, countryCodes, prizeStarCount, premiumSubscriptionMonthCount);
+    }
+
+    public Giveaway withWinnerCount(long winnerCount) {
+        return new Giveaway(chats, winnersSelectionDate, winnerCount, onlyNewMembers, hasPublicWinners, prizeDescription, countryCodes, prizeStarCount, premiumSubscriptionMonthCount);
+    }
+
+    public Giveaway withOnlyNewMembers(@Nullable Boolean onlyNewMembers) {
+        return new Giveaway(chats, winnersSelectionDate, winnerCount, onlyNewMembers, hasPublicWinners, prizeDescription, countryCodes, prizeStarCount, premiumSubscriptionMonthCount);
+    }
+
+    public Giveaway withHasPublicWinners(@Nullable Boolean hasPublicWinners) {
+        return new Giveaway(chats, winnersSelectionDate, winnerCount, onlyNewMembers, hasPublicWinners, prizeDescription, countryCodes, prizeStarCount, premiumSubscriptionMonthCount);
+    }
+
+    public Giveaway withPrizeDescription(@Nullable String prizeDescription) {
+        return new Giveaway(chats, winnersSelectionDate, winnerCount, onlyNewMembers, hasPublicWinners, prizeDescription, countryCodes, prizeStarCount, premiumSubscriptionMonthCount);
+    }
+
+    public Giveaway withCountryCodes(@Nullable List<String> countryCodes) {
+        return new Giveaway(chats, winnersSelectionDate, winnerCount, onlyNewMembers, hasPublicWinners, prizeDescription, countryCodes, prizeStarCount, premiumSubscriptionMonthCount);
+    }
+
+    public Giveaway withPrizeStarCount(@Nullable Long prizeStarCount) {
+        return new Giveaway(chats, winnersSelectionDate, winnerCount, onlyNewMembers, hasPublicWinners, prizeDescription, countryCodes, prizeStarCount, premiumSubscriptionMonthCount);
+    }
+
+    public Giveaway withPremiumSubscriptionMonthCount(@Nullable Long premiumSubscriptionMonthCount) {
+        return new Giveaway(chats, winnersSelectionDate, winnerCount, onlyNewMembers, hasPublicWinners, prizeDescription, countryCodes, prizeStarCount, premiumSubscriptionMonthCount);
+    }
+}

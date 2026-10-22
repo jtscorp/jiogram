@@ -39,4 +39,20 @@ public record StopPoll(
     public static StopPoll of(ChatId chatId, long messageId) {
         return new StopPoll(null, chatId, messageId, null);
     }
+
+    public StopPoll withBusinessConnectionId(@Nullable String businessConnectionId) {
+        return new StopPoll(businessConnectionId, chatId, messageId, replyMarkup);
+    }
+
+    public StopPoll withChatId(ChatId chatId) {
+        return new StopPoll(businessConnectionId, chatId, messageId, replyMarkup);
+    }
+
+    public StopPoll withMessageId(long messageId) {
+        return new StopPoll(businessConnectionId, chatId, messageId, replyMarkup);
+    }
+
+    public StopPoll withReplyMarkup(@Nullable InlineKeyboardMarkup replyMarkup) {
+        return new StopPoll(businessConnectionId, chatId, messageId, replyMarkup);
+    }
 }

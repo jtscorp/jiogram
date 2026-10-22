@@ -26,4 +26,8 @@ public record CloseGeneralForumTopic(
     public String apiReturnType() {
         return "Boolean";
     }
+
+    public CloseGeneralForumTopic withChatId(ChatId chatId) {
+        return new CloseGeneralForumTopic(chatId);
+    }
 }

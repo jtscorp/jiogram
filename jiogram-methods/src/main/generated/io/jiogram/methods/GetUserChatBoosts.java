@@ -28,4 +28,12 @@ public record GetUserChatBoosts(
     public String apiReturnType() {
         return "UserChatBoosts";
     }
+
+    public GetUserChatBoosts withChatId(ChatId chatId) {
+        return new GetUserChatBoosts(chatId, userId);
+    }
+
+    public GetUserChatBoosts withUserId(long userId) {
+        return new GetUserChatBoosts(chatId, userId);
+    }
 }

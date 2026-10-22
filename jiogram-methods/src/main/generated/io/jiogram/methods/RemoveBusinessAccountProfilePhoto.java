@@ -32,4 +32,12 @@ public record RemoveBusinessAccountProfilePhoto(
     public static RemoveBusinessAccountProfilePhoto of(String businessConnectionId) {
         return new RemoveBusinessAccountProfilePhoto(businessConnectionId, null);
     }
+
+    public RemoveBusinessAccountProfilePhoto withBusinessConnectionId(String businessConnectionId) {
+        return new RemoveBusinessAccountProfilePhoto(businessConnectionId, isPublic);
+    }
+
+    public RemoveBusinessAccountProfilePhoto withIsPublic(@Nullable Boolean isPublic) {
+        return new RemoveBusinessAccountProfilePhoto(businessConnectionId, isPublic);
+    }
 }

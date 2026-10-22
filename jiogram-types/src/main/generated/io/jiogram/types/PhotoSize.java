@@ -20,4 +20,25 @@ public record PhotoSize(
     @JsonProperty("width") long width,
     @JsonProperty("height") long height,
     @JsonProperty("file_size") @Nullable Long fileSize
-) {}
+) {
+
+    public PhotoSize withFileId(String fileId) {
+        return new PhotoSize(fileId, fileUniqueId, width, height, fileSize);
+    }
+
+    public PhotoSize withFileUniqueId(String fileUniqueId) {
+        return new PhotoSize(fileId, fileUniqueId, width, height, fileSize);
+    }
+
+    public PhotoSize withWidth(long width) {
+        return new PhotoSize(fileId, fileUniqueId, width, height, fileSize);
+    }
+
+    public PhotoSize withHeight(long height) {
+        return new PhotoSize(fileId, fileUniqueId, width, height, fileSize);
+    }
+
+    public PhotoSize withFileSize(@Nullable Long fileSize) {
+        return new PhotoSize(fileId, fileUniqueId, width, height, fileSize);
+    }
+}

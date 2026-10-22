@@ -32,4 +32,12 @@ public record SetStickerMaskPosition(
     public static SetStickerMaskPosition of(String sticker) {
         return new SetStickerMaskPosition(sticker, null);
     }
+
+    public SetStickerMaskPosition withSticker(String sticker) {
+        return new SetStickerMaskPosition(sticker, maskPosition);
+    }
+
+    public SetStickerMaskPosition withMaskPosition(@Nullable MaskPosition maskPosition) {
+        return new SetStickerMaskPosition(sticker, maskPosition);
+    }
 }

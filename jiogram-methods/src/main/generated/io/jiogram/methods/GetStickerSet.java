@@ -23,4 +23,8 @@ public record GetStickerSet(
     public String apiReturnType() {
         return "StickerSet";
     }
+
+    public GetStickerSet withName(String name) {
+        return new GetStickerSet(name);
+    }
 }

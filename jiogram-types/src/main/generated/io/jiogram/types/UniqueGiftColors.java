@@ -22,4 +22,29 @@ public record UniqueGiftColors(
     @JsonProperty("light_theme_other_colors") List<Long> lightThemeOtherColors,
     @JsonProperty("dark_theme_main_color") long darkThemeMainColor,
     @JsonProperty("dark_theme_other_colors") List<Long> darkThemeOtherColors
-) {}
+) {
+
+    public UniqueGiftColors withModelCustomEmojiId(String modelCustomEmojiId) {
+        return new UniqueGiftColors(modelCustomEmojiId, symbolCustomEmojiId, lightThemeMainColor, lightThemeOtherColors, darkThemeMainColor, darkThemeOtherColors);
+    }
+
+    public UniqueGiftColors withSymbolCustomEmojiId(String symbolCustomEmojiId) {
+        return new UniqueGiftColors(modelCustomEmojiId, symbolCustomEmojiId, lightThemeMainColor, lightThemeOtherColors, darkThemeMainColor, darkThemeOtherColors);
+    }
+
+    public UniqueGiftColors withLightThemeMainColor(long lightThemeMainColor) {
+        return new UniqueGiftColors(modelCustomEmojiId, symbolCustomEmojiId, lightThemeMainColor, lightThemeOtherColors, darkThemeMainColor, darkThemeOtherColors);
+    }
+
+    public UniqueGiftColors withLightThemeOtherColors(List<Long> lightThemeOtherColors) {
+        return new UniqueGiftColors(modelCustomEmojiId, symbolCustomEmojiId, lightThemeMainColor, lightThemeOtherColors, darkThemeMainColor, darkThemeOtherColors);
+    }
+
+    public UniqueGiftColors withDarkThemeMainColor(long darkThemeMainColor) {
+        return new UniqueGiftColors(modelCustomEmojiId, symbolCustomEmojiId, lightThemeMainColor, lightThemeOtherColors, darkThemeMainColor, darkThemeOtherColors);
+    }
+
+    public UniqueGiftColors withDarkThemeOtherColors(List<Long> darkThemeOtherColors) {
+        return new UniqueGiftColors(modelCustomEmojiId, symbolCustomEmojiId, lightThemeMainColor, lightThemeOtherColors, darkThemeMainColor, darkThemeOtherColors);
+    }
+}

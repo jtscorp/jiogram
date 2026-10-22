@@ -41,4 +41,20 @@ public record EditForumTopic(
     public static EditForumTopic of(ChatId chatId, long messageThreadId) {
         return new EditForumTopic(chatId, messageThreadId, null, null);
     }
+
+    public EditForumTopic withChatId(ChatId chatId) {
+        return new EditForumTopic(chatId, messageThreadId, name, iconCustomEmojiId);
+    }
+
+    public EditForumTopic withMessageThreadId(long messageThreadId) {
+        return new EditForumTopic(chatId, messageThreadId, name, iconCustomEmojiId);
+    }
+
+    public EditForumTopic withName(@Nullable String name) {
+        return new EditForumTopic(chatId, messageThreadId, name, iconCustomEmojiId);
+    }
+
+    public EditForumTopic withIconCustomEmojiId(@Nullable String iconCustomEmojiId) {
+        return new EditForumTopic(chatId, messageThreadId, name, iconCustomEmojiId);
+    }
 }

@@ -24,4 +24,12 @@ public record SetStickerSetTitle(
     public String apiReturnType() {
         return "Boolean";
     }
+
+    public SetStickerSetTitle withName(String name) {
+        return new SetStickerSetTitle(name, title);
+    }
+
+    public SetStickerSetTitle withTitle(String title) {
+        return new SetStickerSetTitle(name, title);
+    }
 }

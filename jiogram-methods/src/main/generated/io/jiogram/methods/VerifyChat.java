@@ -33,4 +33,12 @@ public record VerifyChat(
     public static VerifyChat of(ChatId chatId) {
         return new VerifyChat(chatId, null);
     }
+
+    public VerifyChat withChatId(ChatId chatId) {
+        return new VerifyChat(chatId, customDescription);
+    }
+
+    public VerifyChat withCustomDescription(@Nullable String customDescription) {
+        return new VerifyChat(chatId, customDescription);
+    }
 }

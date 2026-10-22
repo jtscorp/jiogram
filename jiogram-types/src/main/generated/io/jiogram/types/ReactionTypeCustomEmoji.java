@@ -13,4 +13,9 @@ import io.jiogram.types.ReactionTypeType;
 public record ReactionTypeCustomEmoji(
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) ReactionTypeType type,
     @JsonProperty("custom_emoji_id") String customEmojiId
-) implements ReactionType {}
+) implements ReactionType {
+
+    public ReactionTypeCustomEmoji withCustomEmojiId(String customEmojiId) {
+        return new ReactionTypeCustomEmoji(type, customEmojiId);
+    }
+}

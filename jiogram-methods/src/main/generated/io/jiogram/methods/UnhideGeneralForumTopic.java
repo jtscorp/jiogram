@@ -26,4 +26,8 @@ public record UnhideGeneralForumTopic(
     public String apiReturnType() {
         return "Boolean";
     }
+
+    public UnhideGeneralForumTopic withChatId(ChatId chatId) {
+        return new UnhideGeneralForumTopic(chatId);
+    }
 }

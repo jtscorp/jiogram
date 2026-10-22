@@ -13,4 +13,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public record Dice(
     @JsonProperty("emoji") String emoji,
     @JsonProperty("value") long value
-) {}
+) {
+
+    public Dice withEmoji(String emoji) {
+        return new Dice(emoji, value);
+    }
+
+    public Dice withValue(long value) {
+        return new Dice(emoji, value);
+    }
+}

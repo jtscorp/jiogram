@@ -42,4 +42,37 @@ public record InputMediaAudio(
     @JsonProperty("duration") @Nullable Long duration,
     @JsonProperty("performer") @Nullable String performer,
     @JsonProperty("title") @Nullable String title
-) implements InputMedia {}
+) implements InputMedia {
+
+    public InputMediaAudio withMedia(InputFileOrString media) {
+        return new InputMediaAudio(type, media, thumbnail, caption, parseMode, captionEntities, duration, performer, title);
+    }
+
+    public InputMediaAudio withThumbnail(@Nullable InputFileOrString thumbnail) {
+        return new InputMediaAudio(type, media, thumbnail, caption, parseMode, captionEntities, duration, performer, title);
+    }
+
+    public InputMediaAudio withCaption(@Nullable String caption) {
+        return new InputMediaAudio(type, media, thumbnail, caption, parseMode, captionEntities, duration, performer, title);
+    }
+
+    public InputMediaAudio withParseMode(@Nullable ParseMode parseMode) {
+        return new InputMediaAudio(type, media, thumbnail, caption, parseMode, captionEntities, duration, performer, title);
+    }
+
+    public InputMediaAudio withCaptionEntities(@Nullable List<MessageEntity> captionEntities) {
+        return new InputMediaAudio(type, media, thumbnail, caption, parseMode, captionEntities, duration, performer, title);
+    }
+
+    public InputMediaAudio withDuration(@Nullable Long duration) {
+        return new InputMediaAudio(type, media, thumbnail, caption, parseMode, captionEntities, duration, performer, title);
+    }
+
+    public InputMediaAudio withPerformer(@Nullable String performer) {
+        return new InputMediaAudio(type, media, thumbnail, caption, parseMode, captionEntities, duration, performer, title);
+    }
+
+    public InputMediaAudio withTitle(@Nullable String title) {
+        return new InputMediaAudio(type, media, thumbnail, caption, parseMode, captionEntities, duration, performer, title);
+    }
+}

@@ -27,4 +27,12 @@ public record DeclineChatJoinRequest(
     public String apiReturnType() {
         return "Boolean";
     }
+
+    public DeclineChatJoinRequest withChatId(ChatId chatId) {
+        return new DeclineChatJoinRequest(chatId, userId);
+    }
+
+    public DeclineChatJoinRequest withUserId(long userId) {
+        return new DeclineChatJoinRequest(chatId, userId);
+    }
 }

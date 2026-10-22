@@ -12,4 +12,9 @@ import io.jiogram.types.User;
  */
 public record ManagedBotCreated(
     @JsonProperty("bot") User bot
-) {}
+) {
+
+    public ManagedBotCreated withBot(User bot) {
+        return new ManagedBotCreated(bot);
+    }
+}

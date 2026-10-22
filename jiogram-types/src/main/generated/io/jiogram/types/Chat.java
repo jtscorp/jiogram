@@ -29,4 +29,37 @@ public record Chat(
     @JsonProperty("last_name") @Nullable String lastName,
     @JsonProperty("is_forum") @Nullable Boolean isForum,
     @JsonProperty("is_direct_messages") @Nullable Boolean isDirectMessages
-) {}
+) {
+
+    public Chat withId(long id) {
+        return new Chat(id, type, title, username, firstName, lastName, isForum, isDirectMessages);
+    }
+
+    public Chat withType(ChatType type) {
+        return new Chat(id, type, title, username, firstName, lastName, isForum, isDirectMessages);
+    }
+
+    public Chat withTitle(@Nullable String title) {
+        return new Chat(id, type, title, username, firstName, lastName, isForum, isDirectMessages);
+    }
+
+    public Chat withUsername(@Nullable String username) {
+        return new Chat(id, type, title, username, firstName, lastName, isForum, isDirectMessages);
+    }
+
+    public Chat withFirstName(@Nullable String firstName) {
+        return new Chat(id, type, title, username, firstName, lastName, isForum, isDirectMessages);
+    }
+
+    public Chat withLastName(@Nullable String lastName) {
+        return new Chat(id, type, title, username, firstName, lastName, isForum, isDirectMessages);
+    }
+
+    public Chat withIsForum(@Nullable Boolean isForum) {
+        return new Chat(id, type, title, username, firstName, lastName, isForum, isDirectMessages);
+    }
+
+    public Chat withIsDirectMessages(@Nullable Boolean isDirectMessages) {
+        return new Chat(id, type, title, username, firstName, lastName, isForum, isDirectMessages);
+    }
+}

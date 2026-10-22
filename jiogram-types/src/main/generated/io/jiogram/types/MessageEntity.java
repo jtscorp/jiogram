@@ -40,4 +40,41 @@ public record MessageEntity(
     @JsonProperty("custom_emoji_id") @Nullable String customEmojiId,
     @JsonProperty("unix_time") @Nullable Long unixTime,
     @JsonProperty("date_time_format") @Nullable String dateTimeFormat
-) {}
+) {
+
+    public MessageEntity withType(MessageEntityType type) {
+        return new MessageEntity(type, offset, length, url, user, language, customEmojiId, unixTime, dateTimeFormat);
+    }
+
+    public MessageEntity withOffset(long offset) {
+        return new MessageEntity(type, offset, length, url, user, language, customEmojiId, unixTime, dateTimeFormat);
+    }
+
+    public MessageEntity withLength(long length) {
+        return new MessageEntity(type, offset, length, url, user, language, customEmojiId, unixTime, dateTimeFormat);
+    }
+
+    public MessageEntity withUrl(@Nullable String url) {
+        return new MessageEntity(type, offset, length, url, user, language, customEmojiId, unixTime, dateTimeFormat);
+    }
+
+    public MessageEntity withUser(@Nullable User user) {
+        return new MessageEntity(type, offset, length, url, user, language, customEmojiId, unixTime, dateTimeFormat);
+    }
+
+    public MessageEntity withLanguage(@Nullable String language) {
+        return new MessageEntity(type, offset, length, url, user, language, customEmojiId, unixTime, dateTimeFormat);
+    }
+
+    public MessageEntity withCustomEmojiId(@Nullable String customEmojiId) {
+        return new MessageEntity(type, offset, length, url, user, language, customEmojiId, unixTime, dateTimeFormat);
+    }
+
+    public MessageEntity withUnixTime(@Nullable Long unixTime) {
+        return new MessageEntity(type, offset, length, url, user, language, customEmojiId, unixTime, dateTimeFormat);
+    }
+
+    public MessageEntity withDateTimeFormat(@Nullable String dateTimeFormat) {
+        return new MessageEntity(type, offset, length, url, user, language, customEmojiId, unixTime, dateTimeFormat);
+    }
+}

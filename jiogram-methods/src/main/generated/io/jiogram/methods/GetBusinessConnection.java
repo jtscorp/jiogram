@@ -24,4 +24,8 @@ public record GetBusinessConnection(
     public String apiReturnType() {
         return "BusinessConnection";
     }
+
+    public GetBusinessConnection withBusinessConnectionId(String businessConnectionId) {
+        return new GetBusinessConnection(businessConnectionId);
+    }
 }

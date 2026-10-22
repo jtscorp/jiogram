@@ -29,4 +29,16 @@ public record SetChatAdministratorCustomTitle(
     public String apiReturnType() {
         return "Boolean";
     }
+
+    public SetChatAdministratorCustomTitle withChatId(ChatId chatId) {
+        return new SetChatAdministratorCustomTitle(chatId, userId, customTitle);
+    }
+
+    public SetChatAdministratorCustomTitle withUserId(long userId) {
+        return new SetChatAdministratorCustomTitle(chatId, userId, customTitle);
+    }
+
+    public SetChatAdministratorCustomTitle withCustomTitle(String customTitle) {
+        return new SetChatAdministratorCustomTitle(chatId, userId, customTitle);
+    }
 }

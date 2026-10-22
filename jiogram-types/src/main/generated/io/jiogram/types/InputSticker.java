@@ -28,4 +28,25 @@ public record InputSticker(
     @JsonProperty("emoji_list") List<String> emojiList,
     @JsonProperty("mask_position") @Nullable MaskPosition maskPosition,
     @JsonProperty("keywords") @Nullable List<String> keywords
-) {}
+) {
+
+    public InputSticker withSticker(InputFileOrString sticker) {
+        return new InputSticker(sticker, format, emojiList, maskPosition, keywords);
+    }
+
+    public InputSticker withFormat(String format) {
+        return new InputSticker(sticker, format, emojiList, maskPosition, keywords);
+    }
+
+    public InputSticker withEmojiList(List<String> emojiList) {
+        return new InputSticker(sticker, format, emojiList, maskPosition, keywords);
+    }
+
+    public InputSticker withMaskPosition(@Nullable MaskPosition maskPosition) {
+        return new InputSticker(sticker, format, emojiList, maskPosition, keywords);
+    }
+
+    public InputSticker withKeywords(@Nullable List<String> keywords) {
+        return new InputSticker(sticker, format, emojiList, maskPosition, keywords);
+    }
+}

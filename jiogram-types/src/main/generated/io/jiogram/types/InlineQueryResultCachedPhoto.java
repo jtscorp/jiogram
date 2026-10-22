@@ -41,4 +41,45 @@ public record InlineQueryResultCachedPhoto(
     @JsonProperty("show_caption_above_media") @Nullable Boolean showCaptionAboveMedia,
     @JsonProperty("reply_markup") @Nullable InlineKeyboardMarkup replyMarkup,
     @JsonProperty("input_message_content") @Nullable InputMessageContent inputMessageContent
-) implements InlineQueryResult {}
+) implements InlineQueryResult {
+
+    public InlineQueryResultCachedPhoto withId(String id) {
+        return new InlineQueryResultCachedPhoto(type, id, photoFileId, title, description, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultCachedPhoto withPhotoFileId(String photoFileId) {
+        return new InlineQueryResultCachedPhoto(type, id, photoFileId, title, description, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultCachedPhoto withTitle(@Nullable String title) {
+        return new InlineQueryResultCachedPhoto(type, id, photoFileId, title, description, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultCachedPhoto withDescription(@Nullable String description) {
+        return new InlineQueryResultCachedPhoto(type, id, photoFileId, title, description, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultCachedPhoto withCaption(@Nullable String caption) {
+        return new InlineQueryResultCachedPhoto(type, id, photoFileId, title, description, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultCachedPhoto withParseMode(@Nullable ParseMode parseMode) {
+        return new InlineQueryResultCachedPhoto(type, id, photoFileId, title, description, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultCachedPhoto withCaptionEntities(@Nullable List<MessageEntity> captionEntities) {
+        return new InlineQueryResultCachedPhoto(type, id, photoFileId, title, description, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultCachedPhoto withShowCaptionAboveMedia(@Nullable Boolean showCaptionAboveMedia) {
+        return new InlineQueryResultCachedPhoto(type, id, photoFileId, title, description, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultCachedPhoto withReplyMarkup(@Nullable InlineKeyboardMarkup replyMarkup) {
+        return new InlineQueryResultCachedPhoto(type, id, photoFileId, title, description, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultCachedPhoto withInputMessageContent(@Nullable InputMessageContent inputMessageContent) {
+        return new InlineQueryResultCachedPhoto(type, id, photoFileId, title, description, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+}

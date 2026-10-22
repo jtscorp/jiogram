@@ -19,4 +19,13 @@ public record TransactionPartnerAffiliateProgram(
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) TransactionPartnerType type,
     @JsonProperty("sponsor_user") @Nullable User sponsorUser,
     @JsonProperty("commission_per_mille") long commissionPerMille
-) implements TransactionPartner {}
+) implements TransactionPartner {
+
+    public TransactionPartnerAffiliateProgram withSponsorUser(@Nullable User sponsorUser) {
+        return new TransactionPartnerAffiliateProgram(type, sponsorUser, commissionPerMille);
+    }
+
+    public TransactionPartnerAffiliateProgram withCommissionPerMille(long commissionPerMille) {
+        return new TransactionPartnerAffiliateProgram(type, sponsorUser, commissionPerMille);
+    }
+}

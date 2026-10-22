@@ -36,4 +36,45 @@ public record SuccessfulPayment(
     @JsonProperty("order_info") @Nullable OrderInfo orderInfo,
     @JsonProperty("telegram_payment_charge_id") String telegramPaymentChargeId,
     @JsonProperty("provider_payment_charge_id") String providerPaymentChargeId
-) {}
+) {
+
+    public SuccessfulPayment withCurrency(String currency) {
+        return new SuccessfulPayment(currency, totalAmount, invoicePayload, subscriptionExpirationDate, isRecurring, isFirstRecurring, shippingOptionId, orderInfo, telegramPaymentChargeId, providerPaymentChargeId);
+    }
+
+    public SuccessfulPayment withTotalAmount(long totalAmount) {
+        return new SuccessfulPayment(currency, totalAmount, invoicePayload, subscriptionExpirationDate, isRecurring, isFirstRecurring, shippingOptionId, orderInfo, telegramPaymentChargeId, providerPaymentChargeId);
+    }
+
+    public SuccessfulPayment withInvoicePayload(String invoicePayload) {
+        return new SuccessfulPayment(currency, totalAmount, invoicePayload, subscriptionExpirationDate, isRecurring, isFirstRecurring, shippingOptionId, orderInfo, telegramPaymentChargeId, providerPaymentChargeId);
+    }
+
+    public SuccessfulPayment withSubscriptionExpirationDate(@Nullable Long subscriptionExpirationDate) {
+        return new SuccessfulPayment(currency, totalAmount, invoicePayload, subscriptionExpirationDate, isRecurring, isFirstRecurring, shippingOptionId, orderInfo, telegramPaymentChargeId, providerPaymentChargeId);
+    }
+
+    public SuccessfulPayment withIsRecurring(@Nullable Boolean isRecurring) {
+        return new SuccessfulPayment(currency, totalAmount, invoicePayload, subscriptionExpirationDate, isRecurring, isFirstRecurring, shippingOptionId, orderInfo, telegramPaymentChargeId, providerPaymentChargeId);
+    }
+
+    public SuccessfulPayment withIsFirstRecurring(@Nullable Boolean isFirstRecurring) {
+        return new SuccessfulPayment(currency, totalAmount, invoicePayload, subscriptionExpirationDate, isRecurring, isFirstRecurring, shippingOptionId, orderInfo, telegramPaymentChargeId, providerPaymentChargeId);
+    }
+
+    public SuccessfulPayment withShippingOptionId(@Nullable String shippingOptionId) {
+        return new SuccessfulPayment(currency, totalAmount, invoicePayload, subscriptionExpirationDate, isRecurring, isFirstRecurring, shippingOptionId, orderInfo, telegramPaymentChargeId, providerPaymentChargeId);
+    }
+
+    public SuccessfulPayment withOrderInfo(@Nullable OrderInfo orderInfo) {
+        return new SuccessfulPayment(currency, totalAmount, invoicePayload, subscriptionExpirationDate, isRecurring, isFirstRecurring, shippingOptionId, orderInfo, telegramPaymentChargeId, providerPaymentChargeId);
+    }
+
+    public SuccessfulPayment withTelegramPaymentChargeId(String telegramPaymentChargeId) {
+        return new SuccessfulPayment(currency, totalAmount, invoicePayload, subscriptionExpirationDate, isRecurring, isFirstRecurring, shippingOptionId, orderInfo, telegramPaymentChargeId, providerPaymentChargeId);
+    }
+
+    public SuccessfulPayment withProviderPaymentChargeId(String providerPaymentChargeId) {
+        return new SuccessfulPayment(currency, totalAmount, invoicePayload, subscriptionExpirationDate, isRecurring, isFirstRecurring, shippingOptionId, orderInfo, telegramPaymentChargeId, providerPaymentChargeId);
+    }
+}

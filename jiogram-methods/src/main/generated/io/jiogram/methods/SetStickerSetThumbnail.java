@@ -45,4 +45,20 @@ public record SetStickerSetThumbnail(
     public static SetStickerSetThumbnail of(String name, long userId, String format) {
         return new SetStickerSetThumbnail(name, userId, null, format);
     }
+
+    public SetStickerSetThumbnail withName(String name) {
+        return new SetStickerSetThumbnail(name, userId, thumbnail, format);
+    }
+
+    public SetStickerSetThumbnail withUserId(long userId) {
+        return new SetStickerSetThumbnail(name, userId, thumbnail, format);
+    }
+
+    public SetStickerSetThumbnail withThumbnail(@Nullable InputFileOrString thumbnail) {
+        return new SetStickerSetThumbnail(name, userId, thumbnail, format);
+    }
+
+    public SetStickerSetThumbnail withFormat(String format) {
+        return new SetStickerSetThumbnail(name, userId, thumbnail, format);
+    }
 }

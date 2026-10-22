@@ -107,4 +107,72 @@ public record SendDocument(
     public static SendDocument reply(Message message, InputFileOrString document) {
         return new SendDocument(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), document, null, null, null, null, null, null, null, null, null, null, ReplyTarget.replyTo(message), null);
     }
+
+    public SendDocument withBusinessConnectionId(@Nullable String businessConnectionId) {
+        return new SendDocument(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, document, thumbnail, caption, parseMode, captionEntities, disableContentTypeDetection, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendDocument withChatId(ChatId chatId) {
+        return new SendDocument(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, document, thumbnail, caption, parseMode, captionEntities, disableContentTypeDetection, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendDocument withMessageThreadId(@Nullable Long messageThreadId) {
+        return new SendDocument(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, document, thumbnail, caption, parseMode, captionEntities, disableContentTypeDetection, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendDocument withDirectMessagesTopicId(@Nullable Long directMessagesTopicId) {
+        return new SendDocument(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, document, thumbnail, caption, parseMode, captionEntities, disableContentTypeDetection, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendDocument withDocument(InputFileOrString document) {
+        return new SendDocument(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, document, thumbnail, caption, parseMode, captionEntities, disableContentTypeDetection, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendDocument withThumbnail(@Nullable InputFileOrString thumbnail) {
+        return new SendDocument(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, document, thumbnail, caption, parseMode, captionEntities, disableContentTypeDetection, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendDocument withCaption(@Nullable String caption) {
+        return new SendDocument(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, document, thumbnail, caption, parseMode, captionEntities, disableContentTypeDetection, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendDocument withParseMode(@Nullable ParseMode parseMode) {
+        return new SendDocument(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, document, thumbnail, caption, parseMode, captionEntities, disableContentTypeDetection, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendDocument withCaptionEntities(@Nullable List<MessageEntity> captionEntities) {
+        return new SendDocument(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, document, thumbnail, caption, parseMode, captionEntities, disableContentTypeDetection, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendDocument withDisableContentTypeDetection(@Nullable Boolean disableContentTypeDetection) {
+        return new SendDocument(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, document, thumbnail, caption, parseMode, captionEntities, disableContentTypeDetection, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendDocument withDisableNotification(@Nullable Boolean disableNotification) {
+        return new SendDocument(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, document, thumbnail, caption, parseMode, captionEntities, disableContentTypeDetection, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendDocument withProtectContent(@Nullable Boolean protectContent) {
+        return new SendDocument(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, document, thumbnail, caption, parseMode, captionEntities, disableContentTypeDetection, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendDocument withAllowPaidBroadcast(@Nullable Boolean allowPaidBroadcast) {
+        return new SendDocument(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, document, thumbnail, caption, parseMode, captionEntities, disableContentTypeDetection, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendDocument withMessageEffectId(@Nullable String messageEffectId) {
+        return new SendDocument(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, document, thumbnail, caption, parseMode, captionEntities, disableContentTypeDetection, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendDocument withSuggestedPostParameters(@Nullable SuggestedPostParameters suggestedPostParameters) {
+        return new SendDocument(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, document, thumbnail, caption, parseMode, captionEntities, disableContentTypeDetection, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendDocument withReplyParameters(@Nullable ReplyParameters replyParameters) {
+        return new SendDocument(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, document, thumbnail, caption, parseMode, captionEntities, disableContentTypeDetection, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendDocument withReplyMarkup(@Nullable ReplyMarkup replyMarkup) {
+        return new SendDocument(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, document, thumbnail, caption, parseMode, captionEntities, disableContentTypeDetection, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
 }

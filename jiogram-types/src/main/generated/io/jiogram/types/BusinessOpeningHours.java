@@ -14,4 +14,13 @@ import java.util.List;
 public record BusinessOpeningHours(
     @JsonProperty("time_zone_name") String timeZoneName,
     @JsonProperty("opening_hours") List<BusinessOpeningHoursInterval> openingHours
-) {}
+) {
+
+    public BusinessOpeningHours withTimeZoneName(String timeZoneName) {
+        return new BusinessOpeningHours(timeZoneName, openingHours);
+    }
+
+    public BusinessOpeningHours withOpeningHours(List<BusinessOpeningHoursInterval> openingHours) {
+        return new BusinessOpeningHours(timeZoneName, openingHours);
+    }
+}

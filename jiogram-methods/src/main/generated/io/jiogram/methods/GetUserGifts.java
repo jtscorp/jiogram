@@ -50,4 +50,40 @@ public record GetUserGifts(
     public static GetUserGifts of(long userId) {
         return new GetUserGifts(userId, null, null, null, null, null, null, null, null);
     }
+
+    public GetUserGifts withUserId(long userId) {
+        return new GetUserGifts(userId, excludeUnlimited, excludeLimitedUpgradable, excludeLimitedNonUpgradable, excludeFromBlockchain, excludeUnique, sortByPrice, offset, limit);
+    }
+
+    public GetUserGifts withExcludeUnlimited(@Nullable Boolean excludeUnlimited) {
+        return new GetUserGifts(userId, excludeUnlimited, excludeLimitedUpgradable, excludeLimitedNonUpgradable, excludeFromBlockchain, excludeUnique, sortByPrice, offset, limit);
+    }
+
+    public GetUserGifts withExcludeLimitedUpgradable(@Nullable Boolean excludeLimitedUpgradable) {
+        return new GetUserGifts(userId, excludeUnlimited, excludeLimitedUpgradable, excludeLimitedNonUpgradable, excludeFromBlockchain, excludeUnique, sortByPrice, offset, limit);
+    }
+
+    public GetUserGifts withExcludeLimitedNonUpgradable(@Nullable Boolean excludeLimitedNonUpgradable) {
+        return new GetUserGifts(userId, excludeUnlimited, excludeLimitedUpgradable, excludeLimitedNonUpgradable, excludeFromBlockchain, excludeUnique, sortByPrice, offset, limit);
+    }
+
+    public GetUserGifts withExcludeFromBlockchain(@Nullable Boolean excludeFromBlockchain) {
+        return new GetUserGifts(userId, excludeUnlimited, excludeLimitedUpgradable, excludeLimitedNonUpgradable, excludeFromBlockchain, excludeUnique, sortByPrice, offset, limit);
+    }
+
+    public GetUserGifts withExcludeUnique(@Nullable Boolean excludeUnique) {
+        return new GetUserGifts(userId, excludeUnlimited, excludeLimitedUpgradable, excludeLimitedNonUpgradable, excludeFromBlockchain, excludeUnique, sortByPrice, offset, limit);
+    }
+
+    public GetUserGifts withSortByPrice(@Nullable Boolean sortByPrice) {
+        return new GetUserGifts(userId, excludeUnlimited, excludeLimitedUpgradable, excludeLimitedNonUpgradable, excludeFromBlockchain, excludeUnique, sortByPrice, offset, limit);
+    }
+
+    public GetUserGifts withOffset(@Nullable String offset) {
+        return new GetUserGifts(userId, excludeUnlimited, excludeLimitedUpgradable, excludeLimitedNonUpgradable, excludeFromBlockchain, excludeUnique, sortByPrice, offset, limit);
+    }
+
+    public GetUserGifts withLimit(@Nullable Long limit) {
+        return new GetUserGifts(userId, excludeUnlimited, excludeLimitedUpgradable, excludeLimitedNonUpgradable, excludeFromBlockchain, excludeUnique, sortByPrice, offset, limit);
+    }
 }

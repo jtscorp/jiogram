@@ -96,4 +96,80 @@ public record SendVenue(
     public static SendVenue reply(Message message, double latitude, double longitude, String title, String address) {
         return new SendVenue(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), latitude, longitude, title, address, null, null, null, null, null, null, null, null, null, ReplyTarget.replyTo(message), null);
     }
+
+    public SendVenue withBusinessConnectionId(@Nullable String businessConnectionId) {
+        return new SendVenue(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, latitude, longitude, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVenue withChatId(ChatId chatId) {
+        return new SendVenue(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, latitude, longitude, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVenue withMessageThreadId(@Nullable Long messageThreadId) {
+        return new SendVenue(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, latitude, longitude, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVenue withDirectMessagesTopicId(@Nullable Long directMessagesTopicId) {
+        return new SendVenue(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, latitude, longitude, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVenue withLatitude(double latitude) {
+        return new SendVenue(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, latitude, longitude, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVenue withLongitude(double longitude) {
+        return new SendVenue(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, latitude, longitude, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVenue withTitle(String title) {
+        return new SendVenue(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, latitude, longitude, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVenue withAddress(String address) {
+        return new SendVenue(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, latitude, longitude, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVenue withFoursquareId(@Nullable String foursquareId) {
+        return new SendVenue(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, latitude, longitude, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVenue withFoursquareType(@Nullable String foursquareType) {
+        return new SendVenue(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, latitude, longitude, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVenue withGooglePlaceId(@Nullable String googlePlaceId) {
+        return new SendVenue(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, latitude, longitude, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVenue withGooglePlaceType(@Nullable String googlePlaceType) {
+        return new SendVenue(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, latitude, longitude, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVenue withDisableNotification(@Nullable Boolean disableNotification) {
+        return new SendVenue(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, latitude, longitude, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVenue withProtectContent(@Nullable Boolean protectContent) {
+        return new SendVenue(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, latitude, longitude, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVenue withAllowPaidBroadcast(@Nullable Boolean allowPaidBroadcast) {
+        return new SendVenue(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, latitude, longitude, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVenue withMessageEffectId(@Nullable String messageEffectId) {
+        return new SendVenue(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, latitude, longitude, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVenue withSuggestedPostParameters(@Nullable SuggestedPostParameters suggestedPostParameters) {
+        return new SendVenue(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, latitude, longitude, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVenue withReplyParameters(@Nullable ReplyParameters replyParameters) {
+        return new SendVenue(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, latitude, longitude, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVenue withReplyMarkup(@Nullable ReplyMarkup replyMarkup) {
+        return new SendVenue(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, latitude, longitude, title, address, foursquareId, foursquareType, googlePlaceId, googlePlaceType, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
 }

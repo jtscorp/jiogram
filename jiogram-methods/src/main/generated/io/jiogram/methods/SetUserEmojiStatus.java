@@ -33,4 +33,16 @@ public record SetUserEmojiStatus(
     public static SetUserEmojiStatus of(long userId) {
         return new SetUserEmojiStatus(userId, null, null);
     }
+
+    public SetUserEmojiStatus withUserId(long userId) {
+        return new SetUserEmojiStatus(userId, emojiStatusCustomEmojiId, emojiStatusExpirationDate);
+    }
+
+    public SetUserEmojiStatus withEmojiStatusCustomEmojiId(@Nullable String emojiStatusCustomEmojiId) {
+        return new SetUserEmojiStatus(userId, emojiStatusCustomEmojiId, emojiStatusExpirationDate);
+    }
+
+    public SetUserEmojiStatus withEmojiStatusExpirationDate(@Nullable Long emojiStatusExpirationDate) {
+        return new SetUserEmojiStatus(userId, emojiStatusCustomEmojiId, emojiStatusExpirationDate);
+    }
 }

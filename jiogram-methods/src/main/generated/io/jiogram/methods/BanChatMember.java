@@ -42,4 +42,20 @@ public record BanChatMember(
     public static BanChatMember of(ChatId chatId, long userId) {
         return new BanChatMember(chatId, userId, null, null);
     }
+
+    public BanChatMember withChatId(ChatId chatId) {
+        return new BanChatMember(chatId, userId, untilDate, revokeMessages);
+    }
+
+    public BanChatMember withUserId(long userId) {
+        return new BanChatMember(chatId, userId, untilDate, revokeMessages);
+    }
+
+    public BanChatMember withUntilDate(@Nullable Long untilDate) {
+        return new BanChatMember(chatId, userId, untilDate, revokeMessages);
+    }
+
+    public BanChatMember withRevokeMessages(@Nullable Boolean revokeMessages) {
+        return new BanChatMember(chatId, userId, untilDate, revokeMessages);
+    }
 }

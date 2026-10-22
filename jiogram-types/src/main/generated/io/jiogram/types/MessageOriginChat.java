@@ -20,4 +20,17 @@ public record MessageOriginChat(
     @JsonProperty("date") long date,
     @JsonProperty("sender_chat") Chat senderChat,
     @JsonProperty("author_signature") @Nullable String authorSignature
-) implements MessageOrigin {}
+) implements MessageOrigin {
+
+    public MessageOriginChat withDate(long date) {
+        return new MessageOriginChat(type, date, senderChat, authorSignature);
+    }
+
+    public MessageOriginChat withSenderChat(Chat senderChat) {
+        return new MessageOriginChat(type, date, senderChat, authorSignature);
+    }
+
+    public MessageOriginChat withAuthorSignature(@Nullable String authorSignature) {
+        return new MessageOriginChat(type, date, senderChat, authorSignature);
+    }
+}

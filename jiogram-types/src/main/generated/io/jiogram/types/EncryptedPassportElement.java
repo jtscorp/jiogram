@@ -52,4 +52,45 @@ public record EncryptedPassportElement(
     @JsonProperty("selfie") @Nullable PassportFile selfie,
     @JsonProperty("translation") @Nullable List<PassportFile> translation,
     @JsonProperty("hash") String hash
-) {}
+) {
+
+    public EncryptedPassportElement withType(PassportElementType type) {
+        return new EncryptedPassportElement(type, data, phoneNumber, email, files, frontSide, reverseSide, selfie, translation, hash);
+    }
+
+    public EncryptedPassportElement withData(@Nullable String data) {
+        return new EncryptedPassportElement(type, data, phoneNumber, email, files, frontSide, reverseSide, selfie, translation, hash);
+    }
+
+    public EncryptedPassportElement withPhoneNumber(@Nullable String phoneNumber) {
+        return new EncryptedPassportElement(type, data, phoneNumber, email, files, frontSide, reverseSide, selfie, translation, hash);
+    }
+
+    public EncryptedPassportElement withEmail(@Nullable String email) {
+        return new EncryptedPassportElement(type, data, phoneNumber, email, files, frontSide, reverseSide, selfie, translation, hash);
+    }
+
+    public EncryptedPassportElement withFiles(@Nullable List<PassportFile> files) {
+        return new EncryptedPassportElement(type, data, phoneNumber, email, files, frontSide, reverseSide, selfie, translation, hash);
+    }
+
+    public EncryptedPassportElement withFrontSide(@Nullable PassportFile frontSide) {
+        return new EncryptedPassportElement(type, data, phoneNumber, email, files, frontSide, reverseSide, selfie, translation, hash);
+    }
+
+    public EncryptedPassportElement withReverseSide(@Nullable PassportFile reverseSide) {
+        return new EncryptedPassportElement(type, data, phoneNumber, email, files, frontSide, reverseSide, selfie, translation, hash);
+    }
+
+    public EncryptedPassportElement withSelfie(@Nullable PassportFile selfie) {
+        return new EncryptedPassportElement(type, data, phoneNumber, email, files, frontSide, reverseSide, selfie, translation, hash);
+    }
+
+    public EncryptedPassportElement withTranslation(@Nullable List<PassportFile> translation) {
+        return new EncryptedPassportElement(type, data, phoneNumber, email, files, frontSide, reverseSide, selfie, translation, hash);
+    }
+
+    public EncryptedPassportElement withHash(String hash) {
+        return new EncryptedPassportElement(type, data, phoneNumber, email, files, frontSide, reverseSide, selfie, translation, hash);
+    }
+}

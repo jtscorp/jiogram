@@ -31,4 +31,8 @@ public record GetMyDefaultAdministratorRights(
     public static GetMyDefaultAdministratorRights of() {
         return new GetMyDefaultAdministratorRights(null);
     }
+
+    public GetMyDefaultAdministratorRights withForChannels(@Nullable Boolean forChannels) {
+        return new GetMyDefaultAdministratorRights(forChannels);
+    }
 }

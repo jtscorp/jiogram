@@ -22,4 +22,21 @@ public record PollOptionAdded(
     @JsonProperty("option_persistent_id") String optionPersistentId,
     @JsonProperty("option_text") String optionText,
     @JsonProperty("option_text_entities") @Nullable List<MessageEntity> optionTextEntities
-) {}
+) {
+
+    public PollOptionAdded withPollMessage(@Nullable MaybeInaccessibleMessage pollMessage) {
+        return new PollOptionAdded(pollMessage, optionPersistentId, optionText, optionTextEntities);
+    }
+
+    public PollOptionAdded withOptionPersistentId(String optionPersistentId) {
+        return new PollOptionAdded(pollMessage, optionPersistentId, optionText, optionTextEntities);
+    }
+
+    public PollOptionAdded withOptionText(String optionText) {
+        return new PollOptionAdded(pollMessage, optionPersistentId, optionText, optionTextEntities);
+    }
+
+    public PollOptionAdded withOptionTextEntities(@Nullable List<MessageEntity> optionTextEntities) {
+        return new PollOptionAdded(pollMessage, optionPersistentId, optionText, optionTextEntities);
+    }
+}

@@ -24,4 +24,8 @@ public record GetBusinessAccountStarBalance(
     public String apiReturnType() {
         return "StarAmount";
     }
+
+    public GetBusinessAccountStarBalance withBusinessConnectionId(String businessConnectionId) {
+        return new GetBusinessAccountStarBalance(businessConnectionId);
+    }
 }

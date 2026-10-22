@@ -32,4 +32,16 @@ public record SetBusinessAccountName(
     public static SetBusinessAccountName of(String businessConnectionId, String firstName) {
         return new SetBusinessAccountName(businessConnectionId, firstName, null);
     }
+
+    public SetBusinessAccountName withBusinessConnectionId(String businessConnectionId) {
+        return new SetBusinessAccountName(businessConnectionId, firstName, lastName);
+    }
+
+    public SetBusinessAccountName withFirstName(String firstName) {
+        return new SetBusinessAccountName(businessConnectionId, firstName, lastName);
+    }
+
+    public SetBusinessAccountName withLastName(@Nullable String lastName) {
+        return new SetBusinessAccountName(businessConnectionId, firstName, lastName);
+    }
 }

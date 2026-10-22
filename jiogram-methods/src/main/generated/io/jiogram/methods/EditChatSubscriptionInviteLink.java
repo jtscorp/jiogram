@@ -35,4 +35,16 @@ public record EditChatSubscriptionInviteLink(
     public static EditChatSubscriptionInviteLink of(ChatId chatId, String inviteLink) {
         return new EditChatSubscriptionInviteLink(chatId, inviteLink, null);
     }
+
+    public EditChatSubscriptionInviteLink withChatId(ChatId chatId) {
+        return new EditChatSubscriptionInviteLink(chatId, inviteLink, name);
+    }
+
+    public EditChatSubscriptionInviteLink withInviteLink(String inviteLink) {
+        return new EditChatSubscriptionInviteLink(chatId, inviteLink, name);
+    }
+
+    public EditChatSubscriptionInviteLink withName(@Nullable String name) {
+        return new EditChatSubscriptionInviteLink(chatId, inviteLink, name);
+    }
 }

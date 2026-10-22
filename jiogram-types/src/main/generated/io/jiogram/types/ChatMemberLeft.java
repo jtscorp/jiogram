@@ -14,4 +14,9 @@ import io.jiogram.types.User;
 public record ChatMemberLeft(
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY) ChatMemberType status,
     @JsonProperty("user") User user
-) implements ChatMember {}
+) implements ChatMember {
+
+    public ChatMemberLeft withUser(User user) {
+        return new ChatMemberLeft(status, user);
+    }
+}

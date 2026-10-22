@@ -40,4 +40,29 @@ public record InputMediaDocument(
     @JsonProperty("parse_mode") @Nullable ParseMode parseMode,
     @JsonProperty("caption_entities") @Nullable List<MessageEntity> captionEntities,
     @JsonProperty("disable_content_type_detection") @Nullable Boolean disableContentTypeDetection
-) implements InputMedia {}
+) implements InputMedia {
+
+    public InputMediaDocument withMedia(InputFileOrString media) {
+        return new InputMediaDocument(type, media, thumbnail, caption, parseMode, captionEntities, disableContentTypeDetection);
+    }
+
+    public InputMediaDocument withThumbnail(@Nullable InputFileOrString thumbnail) {
+        return new InputMediaDocument(type, media, thumbnail, caption, parseMode, captionEntities, disableContentTypeDetection);
+    }
+
+    public InputMediaDocument withCaption(@Nullable String caption) {
+        return new InputMediaDocument(type, media, thumbnail, caption, parseMode, captionEntities, disableContentTypeDetection);
+    }
+
+    public InputMediaDocument withParseMode(@Nullable ParseMode parseMode) {
+        return new InputMediaDocument(type, media, thumbnail, caption, parseMode, captionEntities, disableContentTypeDetection);
+    }
+
+    public InputMediaDocument withCaptionEntities(@Nullable List<MessageEntity> captionEntities) {
+        return new InputMediaDocument(type, media, thumbnail, caption, parseMode, captionEntities, disableContentTypeDetection);
+    }
+
+    public InputMediaDocument withDisableContentTypeDetection(@Nullable Boolean disableContentTypeDetection) {
+        return new InputMediaDocument(type, media, thumbnail, caption, parseMode, captionEntities, disableContentTypeDetection);
+    }
+}

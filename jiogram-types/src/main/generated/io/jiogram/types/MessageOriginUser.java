@@ -16,4 +16,13 @@ public record MessageOriginUser(
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) MessageOriginType type,
     @JsonProperty("date") long date,
     @JsonProperty("sender_user") User senderUser
-) implements MessageOrigin {}
+) implements MessageOrigin {
+
+    public MessageOriginUser withDate(long date) {
+        return new MessageOriginUser(type, date, senderUser);
+    }
+
+    public MessageOriginUser withSenderUser(User senderUser) {
+        return new MessageOriginUser(type, date, senderUser);
+    }
+}

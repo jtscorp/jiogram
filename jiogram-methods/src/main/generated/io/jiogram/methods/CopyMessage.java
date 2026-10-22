@@ -103,4 +103,72 @@ public record CopyMessage(
     public static CopyMessage reply(Message message, ChatId fromChatId, long messageId) {
         return new CopyMessage(ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), fromChatId, messageId, null, null, null, null, null, null, null, null, null, null, ReplyTarget.replyTo(message), null);
     }
+
+    public CopyMessage withChatId(ChatId chatId) {
+        return new CopyMessage(chatId, messageThreadId, directMessagesTopicId, fromChatId, messageId, videoStartTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public CopyMessage withMessageThreadId(@Nullable Long messageThreadId) {
+        return new CopyMessage(chatId, messageThreadId, directMessagesTopicId, fromChatId, messageId, videoStartTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public CopyMessage withDirectMessagesTopicId(@Nullable Long directMessagesTopicId) {
+        return new CopyMessage(chatId, messageThreadId, directMessagesTopicId, fromChatId, messageId, videoStartTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public CopyMessage withFromChatId(ChatId fromChatId) {
+        return new CopyMessage(chatId, messageThreadId, directMessagesTopicId, fromChatId, messageId, videoStartTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public CopyMessage withMessageId(long messageId) {
+        return new CopyMessage(chatId, messageThreadId, directMessagesTopicId, fromChatId, messageId, videoStartTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public CopyMessage withVideoStartTimestamp(@Nullable Long videoStartTimestamp) {
+        return new CopyMessage(chatId, messageThreadId, directMessagesTopicId, fromChatId, messageId, videoStartTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public CopyMessage withCaption(@Nullable String caption) {
+        return new CopyMessage(chatId, messageThreadId, directMessagesTopicId, fromChatId, messageId, videoStartTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public CopyMessage withParseMode(@Nullable ParseMode parseMode) {
+        return new CopyMessage(chatId, messageThreadId, directMessagesTopicId, fromChatId, messageId, videoStartTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public CopyMessage withCaptionEntities(@Nullable List<MessageEntity> captionEntities) {
+        return new CopyMessage(chatId, messageThreadId, directMessagesTopicId, fromChatId, messageId, videoStartTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public CopyMessage withShowCaptionAboveMedia(@Nullable Boolean showCaptionAboveMedia) {
+        return new CopyMessage(chatId, messageThreadId, directMessagesTopicId, fromChatId, messageId, videoStartTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public CopyMessage withDisableNotification(@Nullable Boolean disableNotification) {
+        return new CopyMessage(chatId, messageThreadId, directMessagesTopicId, fromChatId, messageId, videoStartTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public CopyMessage withProtectContent(@Nullable Boolean protectContent) {
+        return new CopyMessage(chatId, messageThreadId, directMessagesTopicId, fromChatId, messageId, videoStartTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public CopyMessage withAllowPaidBroadcast(@Nullable Boolean allowPaidBroadcast) {
+        return new CopyMessage(chatId, messageThreadId, directMessagesTopicId, fromChatId, messageId, videoStartTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public CopyMessage withMessageEffectId(@Nullable String messageEffectId) {
+        return new CopyMessage(chatId, messageThreadId, directMessagesTopicId, fromChatId, messageId, videoStartTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public CopyMessage withSuggestedPostParameters(@Nullable SuggestedPostParameters suggestedPostParameters) {
+        return new CopyMessage(chatId, messageThreadId, directMessagesTopicId, fromChatId, messageId, videoStartTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public CopyMessage withReplyParameters(@Nullable ReplyParameters replyParameters) {
+        return new CopyMessage(chatId, messageThreadId, directMessagesTopicId, fromChatId, messageId, videoStartTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public CopyMessage withReplyMarkup(@Nullable ReplyMarkup replyMarkup) {
+        return new CopyMessage(chatId, messageThreadId, directMessagesTopicId, fromChatId, messageId, videoStartTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
 }

@@ -30,4 +30,12 @@ public record SetBusinessAccountUsername(
     public static SetBusinessAccountUsername of(String businessConnectionId) {
         return new SetBusinessAccountUsername(businessConnectionId, null);
     }
+
+    public SetBusinessAccountUsername withBusinessConnectionId(String businessConnectionId) {
+        return new SetBusinessAccountUsername(businessConnectionId, username);
+    }
+
+    public SetBusinessAccountUsername withUsername(@Nullable String username) {
+        return new SetBusinessAccountUsername(businessConnectionId, username);
+    }
 }

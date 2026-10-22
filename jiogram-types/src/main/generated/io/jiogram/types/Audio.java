@@ -31,4 +31,41 @@ public record Audio(
     @JsonProperty("mime_type") @Nullable String mimeType,
     @JsonProperty("file_size") @Nullable Long fileSize,
     @JsonProperty("thumbnail") @Nullable PhotoSize thumbnail
-) {}
+) {
+
+    public Audio withFileId(String fileId) {
+        return new Audio(fileId, fileUniqueId, duration, performer, title, fileName, mimeType, fileSize, thumbnail);
+    }
+
+    public Audio withFileUniqueId(String fileUniqueId) {
+        return new Audio(fileId, fileUniqueId, duration, performer, title, fileName, mimeType, fileSize, thumbnail);
+    }
+
+    public Audio withDuration(long duration) {
+        return new Audio(fileId, fileUniqueId, duration, performer, title, fileName, mimeType, fileSize, thumbnail);
+    }
+
+    public Audio withPerformer(@Nullable String performer) {
+        return new Audio(fileId, fileUniqueId, duration, performer, title, fileName, mimeType, fileSize, thumbnail);
+    }
+
+    public Audio withTitle(@Nullable String title) {
+        return new Audio(fileId, fileUniqueId, duration, performer, title, fileName, mimeType, fileSize, thumbnail);
+    }
+
+    public Audio withFileName(@Nullable String fileName) {
+        return new Audio(fileId, fileUniqueId, duration, performer, title, fileName, mimeType, fileSize, thumbnail);
+    }
+
+    public Audio withMimeType(@Nullable String mimeType) {
+        return new Audio(fileId, fileUniqueId, duration, performer, title, fileName, mimeType, fileSize, thumbnail);
+    }
+
+    public Audio withFileSize(@Nullable Long fileSize) {
+        return new Audio(fileId, fileUniqueId, duration, performer, title, fileName, mimeType, fileSize, thumbnail);
+    }
+
+    public Audio withThumbnail(@Nullable PhotoSize thumbnail) {
+        return new Audio(fileId, fileUniqueId, duration, performer, title, fileName, mimeType, fileSize, thumbnail);
+    }
+}

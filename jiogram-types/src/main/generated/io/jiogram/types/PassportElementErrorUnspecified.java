@@ -19,4 +19,17 @@ public record PassportElementErrorUnspecified(
     @JsonProperty("type") PassportElementType type,
     @JsonProperty("element_hash") String elementHash,
     @JsonProperty("message") String message
-) implements PassportElementError {}
+) implements PassportElementError {
+
+    public PassportElementErrorUnspecified withType(PassportElementType type) {
+        return new PassportElementErrorUnspecified(source, type, elementHash, message);
+    }
+
+    public PassportElementErrorUnspecified withElementHash(String elementHash) {
+        return new PassportElementErrorUnspecified(source, type, elementHash, message);
+    }
+
+    public PassportElementErrorUnspecified withMessage(String message) {
+        return new PassportElementErrorUnspecified(source, type, elementHash, message);
+    }
+}

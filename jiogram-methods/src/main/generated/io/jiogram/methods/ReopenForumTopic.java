@@ -28,4 +28,12 @@ public record ReopenForumTopic(
     public String apiReturnType() {
         return "Boolean";
     }
+
+    public ReopenForumTopic withChatId(ChatId chatId) {
+        return new ReopenForumTopic(chatId, messageThreadId);
+    }
+
+    public ReopenForumTopic withMessageThreadId(long messageThreadId) {
+        return new ReopenForumTopic(chatId, messageThreadId);
+    }
 }

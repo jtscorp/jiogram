@@ -20,4 +20,25 @@ public record ForumTopic(
     @JsonProperty("icon_color") long iconColor,
     @JsonProperty("icon_custom_emoji_id") @Nullable String iconCustomEmojiId,
     @JsonProperty("is_name_implicit") @Nullable Boolean isNameImplicit
-) {}
+) {
+
+    public ForumTopic withMessageThreadId(long messageThreadId) {
+        return new ForumTopic(messageThreadId, name, iconColor, iconCustomEmojiId, isNameImplicit);
+    }
+
+    public ForumTopic withName(String name) {
+        return new ForumTopic(messageThreadId, name, iconColor, iconCustomEmojiId, isNameImplicit);
+    }
+
+    public ForumTopic withIconColor(long iconColor) {
+        return new ForumTopic(messageThreadId, name, iconColor, iconCustomEmojiId, isNameImplicit);
+    }
+
+    public ForumTopic withIconCustomEmojiId(@Nullable String iconCustomEmojiId) {
+        return new ForumTopic(messageThreadId, name, iconColor, iconCustomEmojiId, isNameImplicit);
+    }
+
+    public ForumTopic withIsNameImplicit(@Nullable Boolean isNameImplicit) {
+        return new ForumTopic(messageThreadId, name, iconColor, iconCustomEmojiId, isNameImplicit);
+    }
+}

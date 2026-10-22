@@ -55,4 +55,57 @@ public record InputMediaVideo(
     @JsonProperty("duration") @Nullable Long duration,
     @JsonProperty("supports_streaming") @Nullable Boolean supportsStreaming,
     @JsonProperty("has_spoiler") @Nullable Boolean hasSpoiler
-) implements InputMedia {}
+) implements InputMedia {
+
+    public InputMediaVideo withMedia(InputFileOrString media) {
+        return new InputMediaVideo(type, media, thumbnail, cover, startTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, width, height, duration, supportsStreaming, hasSpoiler);
+    }
+
+    public InputMediaVideo withThumbnail(@Nullable InputFileOrString thumbnail) {
+        return new InputMediaVideo(type, media, thumbnail, cover, startTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, width, height, duration, supportsStreaming, hasSpoiler);
+    }
+
+    public InputMediaVideo withCover(@Nullable InputFileOrString cover) {
+        return new InputMediaVideo(type, media, thumbnail, cover, startTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, width, height, duration, supportsStreaming, hasSpoiler);
+    }
+
+    public InputMediaVideo withStartTimestamp(@Nullable Long startTimestamp) {
+        return new InputMediaVideo(type, media, thumbnail, cover, startTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, width, height, duration, supportsStreaming, hasSpoiler);
+    }
+
+    public InputMediaVideo withCaption(@Nullable String caption) {
+        return new InputMediaVideo(type, media, thumbnail, cover, startTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, width, height, duration, supportsStreaming, hasSpoiler);
+    }
+
+    public InputMediaVideo withParseMode(@Nullable ParseMode parseMode) {
+        return new InputMediaVideo(type, media, thumbnail, cover, startTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, width, height, duration, supportsStreaming, hasSpoiler);
+    }
+
+    public InputMediaVideo withCaptionEntities(@Nullable List<MessageEntity> captionEntities) {
+        return new InputMediaVideo(type, media, thumbnail, cover, startTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, width, height, duration, supportsStreaming, hasSpoiler);
+    }
+
+    public InputMediaVideo withShowCaptionAboveMedia(@Nullable Boolean showCaptionAboveMedia) {
+        return new InputMediaVideo(type, media, thumbnail, cover, startTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, width, height, duration, supportsStreaming, hasSpoiler);
+    }
+
+    public InputMediaVideo withWidth(@Nullable Long width) {
+        return new InputMediaVideo(type, media, thumbnail, cover, startTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, width, height, duration, supportsStreaming, hasSpoiler);
+    }
+
+    public InputMediaVideo withHeight(@Nullable Long height) {
+        return new InputMediaVideo(type, media, thumbnail, cover, startTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, width, height, duration, supportsStreaming, hasSpoiler);
+    }
+
+    public InputMediaVideo withDuration(@Nullable Long duration) {
+        return new InputMediaVideo(type, media, thumbnail, cover, startTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, width, height, duration, supportsStreaming, hasSpoiler);
+    }
+
+    public InputMediaVideo withSupportsStreaming(@Nullable Boolean supportsStreaming) {
+        return new InputMediaVideo(type, media, thumbnail, cover, startTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, width, height, duration, supportsStreaming, hasSpoiler);
+    }
+
+    public InputMediaVideo withHasSpoiler(@Nullable Boolean hasSpoiler) {
+        return new InputMediaVideo(type, media, thumbnail, cover, startTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, width, height, duration, supportsStreaming, hasSpoiler);
+    }
+}

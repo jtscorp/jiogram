@@ -24,4 +24,29 @@ public record Location(
     @JsonProperty("live_period") @Nullable Long livePeriod,
     @JsonProperty("heading") @Nullable Long heading,
     @JsonProperty("proximity_alert_radius") @Nullable Long proximityAlertRadius
-) {}
+) {
+
+    public Location withLatitude(double latitude) {
+        return new Location(latitude, longitude, horizontalAccuracy, livePeriod, heading, proximityAlertRadius);
+    }
+
+    public Location withLongitude(double longitude) {
+        return new Location(latitude, longitude, horizontalAccuracy, livePeriod, heading, proximityAlertRadius);
+    }
+
+    public Location withHorizontalAccuracy(@Nullable Double horizontalAccuracy) {
+        return new Location(latitude, longitude, horizontalAccuracy, livePeriod, heading, proximityAlertRadius);
+    }
+
+    public Location withLivePeriod(@Nullable Long livePeriod) {
+        return new Location(latitude, longitude, horizontalAccuracy, livePeriod, heading, proximityAlertRadius);
+    }
+
+    public Location withHeading(@Nullable Long heading) {
+        return new Location(latitude, longitude, horizontalAccuracy, livePeriod, heading, proximityAlertRadius);
+    }
+
+    public Location withProximityAlertRadius(@Nullable Long proximityAlertRadius) {
+        return new Location(latitude, longitude, horizontalAccuracy, livePeriod, heading, proximityAlertRadius);
+    }
+}

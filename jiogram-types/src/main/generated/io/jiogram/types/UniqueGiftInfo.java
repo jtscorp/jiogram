@@ -32,4 +32,33 @@ public record UniqueGiftInfo(
     @JsonProperty("owned_gift_id") @Nullable String ownedGiftId,
     @JsonProperty("transfer_star_count") @Nullable Long transferStarCount,
     @JsonProperty("next_transfer_date") @Nullable Long nextTransferDate
-) {}
+) {
+
+    public UniqueGiftInfo withGift(UniqueGift gift) {
+        return new UniqueGiftInfo(gift, origin, lastResaleCurrency, lastResaleAmount, ownedGiftId, transferStarCount, nextTransferDate);
+    }
+
+    public UniqueGiftInfo withOrigin(String origin) {
+        return new UniqueGiftInfo(gift, origin, lastResaleCurrency, lastResaleAmount, ownedGiftId, transferStarCount, nextTransferDate);
+    }
+
+    public UniqueGiftInfo withLastResaleCurrency(@Nullable String lastResaleCurrency) {
+        return new UniqueGiftInfo(gift, origin, lastResaleCurrency, lastResaleAmount, ownedGiftId, transferStarCount, nextTransferDate);
+    }
+
+    public UniqueGiftInfo withLastResaleAmount(@Nullable Long lastResaleAmount) {
+        return new UniqueGiftInfo(gift, origin, lastResaleCurrency, lastResaleAmount, ownedGiftId, transferStarCount, nextTransferDate);
+    }
+
+    public UniqueGiftInfo withOwnedGiftId(@Nullable String ownedGiftId) {
+        return new UniqueGiftInfo(gift, origin, lastResaleCurrency, lastResaleAmount, ownedGiftId, transferStarCount, nextTransferDate);
+    }
+
+    public UniqueGiftInfo withTransferStarCount(@Nullable Long transferStarCount) {
+        return new UniqueGiftInfo(gift, origin, lastResaleCurrency, lastResaleAmount, ownedGiftId, transferStarCount, nextTransferDate);
+    }
+
+    public UniqueGiftInfo withNextTransferDate(@Nullable Long nextTransferDate) {
+        return new UniqueGiftInfo(gift, origin, lastResaleCurrency, lastResaleAmount, ownedGiftId, transferStarCount, nextTransferDate);
+    }
+}

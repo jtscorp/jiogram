@@ -13,4 +13,13 @@ import io.jiogram.types.ReactionType;
 public record ReactionCount(
     @JsonProperty("type") ReactionType type,
     @JsonProperty("total_count") long totalCount
-) {}
+) {
+
+    public ReactionCount withType(ReactionType type) {
+        return new ReactionCount(type, totalCount);
+    }
+
+    public ReactionCount withTotalCount(long totalCount) {
+        return new ReactionCount(type, totalCount);
+    }
+}

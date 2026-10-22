@@ -53,4 +53,28 @@ public record SendMessageDraft(
     public static SendMessageDraft answer(Message message, long draftId, String text) {
         return new SendMessageDraft(message.chat().id(), ReplyTarget.messageThreadId(message), draftId, text, null, null);
     }
+
+    public SendMessageDraft withChatId(long chatId) {
+        return new SendMessageDraft(chatId, messageThreadId, draftId, text, parseMode, entities);
+    }
+
+    public SendMessageDraft withMessageThreadId(@Nullable Long messageThreadId) {
+        return new SendMessageDraft(chatId, messageThreadId, draftId, text, parseMode, entities);
+    }
+
+    public SendMessageDraft withDraftId(long draftId) {
+        return new SendMessageDraft(chatId, messageThreadId, draftId, text, parseMode, entities);
+    }
+
+    public SendMessageDraft withText(String text) {
+        return new SendMessageDraft(chatId, messageThreadId, draftId, text, parseMode, entities);
+    }
+
+    public SendMessageDraft withParseMode(@Nullable ParseMode parseMode) {
+        return new SendMessageDraft(chatId, messageThreadId, draftId, text, parseMode, entities);
+    }
+
+    public SendMessageDraft withEntities(@Nullable List<MessageEntity> entities) {
+        return new SendMessageDraft(chatId, messageThreadId, draftId, text, parseMode, entities);
+    }
 }

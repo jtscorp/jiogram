@@ -69,4 +69,32 @@ public record SetWebhook(
     public static SetWebhook of(String url) {
         return new SetWebhook(url, null, null, null, null, null, null);
     }
+
+    public SetWebhook withUrl(String url) {
+        return new SetWebhook(url, certificate, ipAddress, maxConnections, allowedUpdates, dropPendingUpdates, secretToken);
+    }
+
+    public SetWebhook withCertificate(@Nullable InputFile certificate) {
+        return new SetWebhook(url, certificate, ipAddress, maxConnections, allowedUpdates, dropPendingUpdates, secretToken);
+    }
+
+    public SetWebhook withIpAddress(@Nullable String ipAddress) {
+        return new SetWebhook(url, certificate, ipAddress, maxConnections, allowedUpdates, dropPendingUpdates, secretToken);
+    }
+
+    public SetWebhook withMaxConnections(@Nullable Long maxConnections) {
+        return new SetWebhook(url, certificate, ipAddress, maxConnections, allowedUpdates, dropPendingUpdates, secretToken);
+    }
+
+    public SetWebhook withAllowedUpdates(@Nullable List<UpdateType> allowedUpdates) {
+        return new SetWebhook(url, certificate, ipAddress, maxConnections, allowedUpdates, dropPendingUpdates, secretToken);
+    }
+
+    public SetWebhook withDropPendingUpdates(@Nullable Boolean dropPendingUpdates) {
+        return new SetWebhook(url, certificate, ipAddress, maxConnections, allowedUpdates, dropPendingUpdates, secretToken);
+    }
+
+    public SetWebhook withSecretToken(@Nullable String secretToken) {
+        return new SetWebhook(url, certificate, ipAddress, maxConnections, allowedUpdates, dropPendingUpdates, secretToken);
+    }
 }

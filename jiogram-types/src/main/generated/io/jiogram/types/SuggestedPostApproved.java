@@ -18,4 +18,17 @@ public record SuggestedPostApproved(
     @JsonProperty("suggested_post_message") @Nullable Message suggestedPostMessage,
     @JsonProperty("price") @Nullable SuggestedPostPrice price,
     @JsonProperty("send_date") long sendDate
-) {}
+) {
+
+    public SuggestedPostApproved withSuggestedPostMessage(@Nullable Message suggestedPostMessage) {
+        return new SuggestedPostApproved(suggestedPostMessage, price, sendDate);
+    }
+
+    public SuggestedPostApproved withPrice(@Nullable SuggestedPostPrice price) {
+        return new SuggestedPostApproved(suggestedPostMessage, price, sendDate);
+    }
+
+    public SuggestedPostApproved withSendDate(long sendDate) {
+        return new SuggestedPostApproved(suggestedPostMessage, price, sendDate);
+    }
+}

@@ -18,4 +18,21 @@ public record ChatBoost(
     @JsonProperty("add_date") long addDate,
     @JsonProperty("expiration_date") long expirationDate,
     @JsonProperty("source") ChatBoostSource source
-) {}
+) {
+
+    public ChatBoost withBoostId(String boostId) {
+        return new ChatBoost(boostId, addDate, expirationDate, source);
+    }
+
+    public ChatBoost withAddDate(long addDate) {
+        return new ChatBoost(boostId, addDate, expirationDate, source);
+    }
+
+    public ChatBoost withExpirationDate(long expirationDate) {
+        return new ChatBoost(boostId, addDate, expirationDate, source);
+    }
+
+    public ChatBoost withSource(ChatBoostSource source) {
+        return new ChatBoost(boostId, addDate, expirationDate, source);
+    }
+}

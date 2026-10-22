@@ -14,4 +14,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public record BusinessOpeningHoursInterval(
     @JsonProperty("opening_minute") long openingMinute,
     @JsonProperty("closing_minute") long closingMinute
-) {}
+) {
+
+    public BusinessOpeningHoursInterval withOpeningMinute(long openingMinute) {
+        return new BusinessOpeningHoursInterval(openingMinute, closingMinute);
+    }
+
+    public BusinessOpeningHoursInterval withClosingMinute(long closingMinute) {
+        return new BusinessOpeningHoursInterval(openingMinute, closingMinute);
+    }
+}

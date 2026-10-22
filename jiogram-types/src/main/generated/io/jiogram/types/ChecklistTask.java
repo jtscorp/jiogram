@@ -28,4 +28,29 @@ public record ChecklistTask(
     @JsonProperty("completed_by_user") @Nullable User completedByUser,
     @JsonProperty("completed_by_chat") @Nullable Chat completedByChat,
     @JsonProperty("completion_date") @Nullable Long completionDate
-) {}
+) {
+
+    public ChecklistTask withId(long id) {
+        return new ChecklistTask(id, text, textEntities, completedByUser, completedByChat, completionDate);
+    }
+
+    public ChecklistTask withText(String text) {
+        return new ChecklistTask(id, text, textEntities, completedByUser, completedByChat, completionDate);
+    }
+
+    public ChecklistTask withTextEntities(@Nullable List<MessageEntity> textEntities) {
+        return new ChecklistTask(id, text, textEntities, completedByUser, completedByChat, completionDate);
+    }
+
+    public ChecklistTask withCompletedByUser(@Nullable User completedByUser) {
+        return new ChecklistTask(id, text, textEntities, completedByUser, completedByChat, completionDate);
+    }
+
+    public ChecklistTask withCompletedByChat(@Nullable Chat completedByChat) {
+        return new ChecklistTask(id, text, textEntities, completedByUser, completedByChat, completionDate);
+    }
+
+    public ChecklistTask withCompletionDate(@Nullable Long completionDate) {
+        return new ChecklistTask(id, text, textEntities, completedByUser, completedByChat, completionDate);
+    }
+}

@@ -84,4 +84,52 @@ public record SendDice(
     public static SendDice reply(Message message) {
         return new SendDice(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), null, null, null, null, null, null, ReplyTarget.replyTo(message), null);
     }
+
+    public SendDice withBusinessConnectionId(@Nullable String businessConnectionId) {
+        return new SendDice(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, emoji, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendDice withChatId(ChatId chatId) {
+        return new SendDice(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, emoji, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendDice withMessageThreadId(@Nullable Long messageThreadId) {
+        return new SendDice(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, emoji, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendDice withDirectMessagesTopicId(@Nullable Long directMessagesTopicId) {
+        return new SendDice(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, emoji, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendDice withEmoji(@Nullable String emoji) {
+        return new SendDice(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, emoji, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendDice withDisableNotification(@Nullable Boolean disableNotification) {
+        return new SendDice(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, emoji, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendDice withProtectContent(@Nullable Boolean protectContent) {
+        return new SendDice(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, emoji, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendDice withAllowPaidBroadcast(@Nullable Boolean allowPaidBroadcast) {
+        return new SendDice(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, emoji, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendDice withMessageEffectId(@Nullable String messageEffectId) {
+        return new SendDice(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, emoji, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendDice withSuggestedPostParameters(@Nullable SuggestedPostParameters suggestedPostParameters) {
+        return new SendDice(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, emoji, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendDice withReplyParameters(@Nullable ReplyParameters replyParameters) {
+        return new SendDice(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, emoji, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendDice withReplyMarkup(@Nullable ReplyMarkup replyMarkup) {
+        return new SendDice(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, emoji, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
 }

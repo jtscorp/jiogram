@@ -32,4 +32,20 @@ public record ReplaceStickerInSet(
     public String apiReturnType() {
         return "Boolean";
     }
+
+    public ReplaceStickerInSet withUserId(long userId) {
+        return new ReplaceStickerInSet(userId, name, oldSticker, sticker);
+    }
+
+    public ReplaceStickerInSet withName(String name) {
+        return new ReplaceStickerInSet(userId, name, oldSticker, sticker);
+    }
+
+    public ReplaceStickerInSet withOldSticker(String oldSticker) {
+        return new ReplaceStickerInSet(userId, name, oldSticker, sticker);
+    }
+
+    public ReplaceStickerInSet withSticker(InputSticker sticker) {
+        return new ReplaceStickerInSet(userId, name, oldSticker, sticker);
+    }
 }

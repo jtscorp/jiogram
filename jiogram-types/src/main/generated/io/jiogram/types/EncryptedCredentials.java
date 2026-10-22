@@ -18,4 +18,17 @@ public record EncryptedCredentials(
     @JsonProperty("data") String data,
     @JsonProperty("hash") String hash,
     @JsonProperty("secret") String secret
-) {}
+) {
+
+    public EncryptedCredentials withData(String data) {
+        return new EncryptedCredentials(data, hash, secret);
+    }
+
+    public EncryptedCredentials withHash(String hash) {
+        return new EncryptedCredentials(data, hash, secret);
+    }
+
+    public EncryptedCredentials withSecret(String secret) {
+        return new EncryptedCredentials(data, hash, secret);
+    }
+}

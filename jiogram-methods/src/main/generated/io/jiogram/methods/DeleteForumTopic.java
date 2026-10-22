@@ -29,4 +29,12 @@ public record DeleteForumTopic(
     public String apiReturnType() {
         return "Boolean";
     }
+
+    public DeleteForumTopic withChatId(ChatId chatId) {
+        return new DeleteForumTopic(chatId, messageThreadId);
+    }
+
+    public DeleteForumTopic withMessageThreadId(long messageThreadId) {
+        return new DeleteForumTopic(chatId, messageThreadId);
+    }
 }

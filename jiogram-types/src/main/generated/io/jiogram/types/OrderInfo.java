@@ -18,4 +18,21 @@ public record OrderInfo(
     @JsonProperty("phone_number") @Nullable String phoneNumber,
     @JsonProperty("email") @Nullable String email,
     @JsonProperty("shipping_address") @Nullable ShippingAddress shippingAddress
-) {}
+) {
+
+    public OrderInfo withName(@Nullable String name) {
+        return new OrderInfo(name, phoneNumber, email, shippingAddress);
+    }
+
+    public OrderInfo withPhoneNumber(@Nullable String phoneNumber) {
+        return new OrderInfo(name, phoneNumber, email, shippingAddress);
+    }
+
+    public OrderInfo withEmail(@Nullable String email) {
+        return new OrderInfo(name, phoneNumber, email, shippingAddress);
+    }
+
+    public OrderInfo withShippingAddress(@Nullable ShippingAddress shippingAddress) {
+        return new OrderInfo(name, phoneNumber, email, shippingAddress);
+    }
+}

@@ -44,4 +44,20 @@ public record SetMessageReaction(
     public static SetMessageReaction of(ChatId chatId, long messageId) {
         return new SetMessageReaction(chatId, messageId, null, null);
     }
+
+    public SetMessageReaction withChatId(ChatId chatId) {
+        return new SetMessageReaction(chatId, messageId, reaction, isBig);
+    }
+
+    public SetMessageReaction withMessageId(long messageId) {
+        return new SetMessageReaction(chatId, messageId, reaction, isBig);
+    }
+
+    public SetMessageReaction withReaction(@Nullable List<ReactionType> reaction) {
+        return new SetMessageReaction(chatId, messageId, reaction, isBig);
+    }
+
+    public SetMessageReaction withIsBig(@Nullable Boolean isBig) {
+        return new SetMessageReaction(chatId, messageId, reaction, isBig);
+    }
 }

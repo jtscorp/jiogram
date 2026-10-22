@@ -38,4 +38,16 @@ public record SetMyCommands(
     public static SetMyCommands of(List<BotCommand> commands) {
         return new SetMyCommands(commands, null, null);
     }
+
+    public SetMyCommands withCommands(List<BotCommand> commands) {
+        return new SetMyCommands(commands, scope, languageCode);
+    }
+
+    public SetMyCommands withScope(@Nullable BotCommandScope scope) {
+        return new SetMyCommands(commands, scope, languageCode);
+    }
+
+    public SetMyCommands withLanguageCode(@Nullable String languageCode) {
+        return new SetMyCommands(commands, scope, languageCode);
+    }
 }

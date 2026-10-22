@@ -10,4 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public record CopyTextButton(
     @JsonProperty("text") String text
-) {}
+) {
+
+    public CopyTextButton withText(String text) {
+        return new CopyTextButton(text);
+    }
+}

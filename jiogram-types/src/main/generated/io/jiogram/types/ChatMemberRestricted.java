@@ -56,4 +56,81 @@ public record ChatMemberRestricted(
     @JsonProperty("can_pin_messages") boolean canPinMessages,
     @JsonProperty("can_manage_topics") boolean canManageTopics,
     @JsonProperty("until_date") long untilDate
-) implements ChatMember {}
+) implements ChatMember {
+
+    public ChatMemberRestricted withTag(@Nullable String tag) {
+        return new ChatMemberRestricted(status, tag, user, isMember, canSendMessages, canSendAudios, canSendDocuments, canSendPhotos, canSendVideos, canSendVideoNotes, canSendVoiceNotes, canSendPolls, canSendOtherMessages, canAddWebPagePreviews, canEditTag, canChangeInfo, canInviteUsers, canPinMessages, canManageTopics, untilDate);
+    }
+
+    public ChatMemberRestricted withUser(User user) {
+        return new ChatMemberRestricted(status, tag, user, isMember, canSendMessages, canSendAudios, canSendDocuments, canSendPhotos, canSendVideos, canSendVideoNotes, canSendVoiceNotes, canSendPolls, canSendOtherMessages, canAddWebPagePreviews, canEditTag, canChangeInfo, canInviteUsers, canPinMessages, canManageTopics, untilDate);
+    }
+
+    public ChatMemberRestricted withIsMember(boolean isMember) {
+        return new ChatMemberRestricted(status, tag, user, isMember, canSendMessages, canSendAudios, canSendDocuments, canSendPhotos, canSendVideos, canSendVideoNotes, canSendVoiceNotes, canSendPolls, canSendOtherMessages, canAddWebPagePreviews, canEditTag, canChangeInfo, canInviteUsers, canPinMessages, canManageTopics, untilDate);
+    }
+
+    public ChatMemberRestricted withCanSendMessages(boolean canSendMessages) {
+        return new ChatMemberRestricted(status, tag, user, isMember, canSendMessages, canSendAudios, canSendDocuments, canSendPhotos, canSendVideos, canSendVideoNotes, canSendVoiceNotes, canSendPolls, canSendOtherMessages, canAddWebPagePreviews, canEditTag, canChangeInfo, canInviteUsers, canPinMessages, canManageTopics, untilDate);
+    }
+
+    public ChatMemberRestricted withCanSendAudios(boolean canSendAudios) {
+        return new ChatMemberRestricted(status, tag, user, isMember, canSendMessages, canSendAudios, canSendDocuments, canSendPhotos, canSendVideos, canSendVideoNotes, canSendVoiceNotes, canSendPolls, canSendOtherMessages, canAddWebPagePreviews, canEditTag, canChangeInfo, canInviteUsers, canPinMessages, canManageTopics, untilDate);
+    }
+
+    public ChatMemberRestricted withCanSendDocuments(boolean canSendDocuments) {
+        return new ChatMemberRestricted(status, tag, user, isMember, canSendMessages, canSendAudios, canSendDocuments, canSendPhotos, canSendVideos, canSendVideoNotes, canSendVoiceNotes, canSendPolls, canSendOtherMessages, canAddWebPagePreviews, canEditTag, canChangeInfo, canInviteUsers, canPinMessages, canManageTopics, untilDate);
+    }
+
+    public ChatMemberRestricted withCanSendPhotos(boolean canSendPhotos) {
+        return new ChatMemberRestricted(status, tag, user, isMember, canSendMessages, canSendAudios, canSendDocuments, canSendPhotos, canSendVideos, canSendVideoNotes, canSendVoiceNotes, canSendPolls, canSendOtherMessages, canAddWebPagePreviews, canEditTag, canChangeInfo, canInviteUsers, canPinMessages, canManageTopics, untilDate);
+    }
+
+    public ChatMemberRestricted withCanSendVideos(boolean canSendVideos) {
+        return new ChatMemberRestricted(status, tag, user, isMember, canSendMessages, canSendAudios, canSendDocuments, canSendPhotos, canSendVideos, canSendVideoNotes, canSendVoiceNotes, canSendPolls, canSendOtherMessages, canAddWebPagePreviews, canEditTag, canChangeInfo, canInviteUsers, canPinMessages, canManageTopics, untilDate);
+    }
+
+    public ChatMemberRestricted withCanSendVideoNotes(boolean canSendVideoNotes) {
+        return new ChatMemberRestricted(status, tag, user, isMember, canSendMessages, canSendAudios, canSendDocuments, canSendPhotos, canSendVideos, canSendVideoNotes, canSendVoiceNotes, canSendPolls, canSendOtherMessages, canAddWebPagePreviews, canEditTag, canChangeInfo, canInviteUsers, canPinMessages, canManageTopics, untilDate);
+    }
+
+    public ChatMemberRestricted withCanSendVoiceNotes(boolean canSendVoiceNotes) {
+        return new ChatMemberRestricted(status, tag, user, isMember, canSendMessages, canSendAudios, canSendDocuments, canSendPhotos, canSendVideos, canSendVideoNotes, canSendVoiceNotes, canSendPolls, canSendOtherMessages, canAddWebPagePreviews, canEditTag, canChangeInfo, canInviteUsers, canPinMessages, canManageTopics, untilDate);
+    }
+
+    public ChatMemberRestricted withCanSendPolls(boolean canSendPolls) {
+        return new ChatMemberRestricted(status, tag, user, isMember, canSendMessages, canSendAudios, canSendDocuments, canSendPhotos, canSendVideos, canSendVideoNotes, canSendVoiceNotes, canSendPolls, canSendOtherMessages, canAddWebPagePreviews, canEditTag, canChangeInfo, canInviteUsers, canPinMessages, canManageTopics, untilDate);
+    }
+
+    public ChatMemberRestricted withCanSendOtherMessages(boolean canSendOtherMessages) {
+        return new ChatMemberRestricted(status, tag, user, isMember, canSendMessages, canSendAudios, canSendDocuments, canSendPhotos, canSendVideos, canSendVideoNotes, canSendVoiceNotes, canSendPolls, canSendOtherMessages, canAddWebPagePreviews, canEditTag, canChangeInfo, canInviteUsers, canPinMessages, canManageTopics, untilDate);
+    }
+
+    public ChatMemberRestricted withCanAddWebPagePreviews(boolean canAddWebPagePreviews) {
+        return new ChatMemberRestricted(status, tag, user, isMember, canSendMessages, canSendAudios, canSendDocuments, canSendPhotos, canSendVideos, canSendVideoNotes, canSendVoiceNotes, canSendPolls, canSendOtherMessages, canAddWebPagePreviews, canEditTag, canChangeInfo, canInviteUsers, canPinMessages, canManageTopics, untilDate);
+    }
+
+    public ChatMemberRestricted withCanEditTag(boolean canEditTag) {
+        return new ChatMemberRestricted(status, tag, user, isMember, canSendMessages, canSendAudios, canSendDocuments, canSendPhotos, canSendVideos, canSendVideoNotes, canSendVoiceNotes, canSendPolls, canSendOtherMessages, canAddWebPagePreviews, canEditTag, canChangeInfo, canInviteUsers, canPinMessages, canManageTopics, untilDate);
+    }
+
+    public ChatMemberRestricted withCanChangeInfo(boolean canChangeInfo) {
+        return new ChatMemberRestricted(status, tag, user, isMember, canSendMessages, canSendAudios, canSendDocuments, canSendPhotos, canSendVideos, canSendVideoNotes, canSendVoiceNotes, canSendPolls, canSendOtherMessages, canAddWebPagePreviews, canEditTag, canChangeInfo, canInviteUsers, canPinMessages, canManageTopics, untilDate);
+    }
+
+    public ChatMemberRestricted withCanInviteUsers(boolean canInviteUsers) {
+        return new ChatMemberRestricted(status, tag, user, isMember, canSendMessages, canSendAudios, canSendDocuments, canSendPhotos, canSendVideos, canSendVideoNotes, canSendVoiceNotes, canSendPolls, canSendOtherMessages, canAddWebPagePreviews, canEditTag, canChangeInfo, canInviteUsers, canPinMessages, canManageTopics, untilDate);
+    }
+
+    public ChatMemberRestricted withCanPinMessages(boolean canPinMessages) {
+        return new ChatMemberRestricted(status, tag, user, isMember, canSendMessages, canSendAudios, canSendDocuments, canSendPhotos, canSendVideos, canSendVideoNotes, canSendVoiceNotes, canSendPolls, canSendOtherMessages, canAddWebPagePreviews, canEditTag, canChangeInfo, canInviteUsers, canPinMessages, canManageTopics, untilDate);
+    }
+
+    public ChatMemberRestricted withCanManageTopics(boolean canManageTopics) {
+        return new ChatMemberRestricted(status, tag, user, isMember, canSendMessages, canSendAudios, canSendDocuments, canSendPhotos, canSendVideos, canSendVideoNotes, canSendVoiceNotes, canSendPolls, canSendOtherMessages, canAddWebPagePreviews, canEditTag, canChangeInfo, canInviteUsers, canPinMessages, canManageTopics, untilDate);
+    }
+
+    public ChatMemberRestricted withUntilDate(long untilDate) {
+        return new ChatMemberRestricted(status, tag, user, isMember, canSendMessages, canSendAudios, canSendDocuments, canSendPhotos, canSendVideos, canSendVideoNotes, canSendVoiceNotes, canSendPolls, canSendOtherMessages, canAddWebPagePreviews, canEditTag, canChangeInfo, canInviteUsers, canPinMessages, canManageTopics, untilDate);
+    }
+}

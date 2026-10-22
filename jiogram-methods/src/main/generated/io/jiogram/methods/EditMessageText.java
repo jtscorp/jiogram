@@ -59,4 +59,40 @@ public record EditMessageText(
     public static EditMessageText of(String text) {
         return new EditMessageText(null, null, null, null, text, null, null, null, null);
     }
+
+    public EditMessageText withBusinessConnectionId(@Nullable String businessConnectionId) {
+        return new EditMessageText(businessConnectionId, chatId, messageId, inlineMessageId, text, parseMode, entities, linkPreviewOptions, replyMarkup);
+    }
+
+    public EditMessageText withChatId(@Nullable ChatId chatId) {
+        return new EditMessageText(businessConnectionId, chatId, messageId, inlineMessageId, text, parseMode, entities, linkPreviewOptions, replyMarkup);
+    }
+
+    public EditMessageText withMessageId(@Nullable Long messageId) {
+        return new EditMessageText(businessConnectionId, chatId, messageId, inlineMessageId, text, parseMode, entities, linkPreviewOptions, replyMarkup);
+    }
+
+    public EditMessageText withInlineMessageId(@Nullable String inlineMessageId) {
+        return new EditMessageText(businessConnectionId, chatId, messageId, inlineMessageId, text, parseMode, entities, linkPreviewOptions, replyMarkup);
+    }
+
+    public EditMessageText withText(String text) {
+        return new EditMessageText(businessConnectionId, chatId, messageId, inlineMessageId, text, parseMode, entities, linkPreviewOptions, replyMarkup);
+    }
+
+    public EditMessageText withParseMode(@Nullable ParseMode parseMode) {
+        return new EditMessageText(businessConnectionId, chatId, messageId, inlineMessageId, text, parseMode, entities, linkPreviewOptions, replyMarkup);
+    }
+
+    public EditMessageText withEntities(@Nullable List<MessageEntity> entities) {
+        return new EditMessageText(businessConnectionId, chatId, messageId, inlineMessageId, text, parseMode, entities, linkPreviewOptions, replyMarkup);
+    }
+
+    public EditMessageText withLinkPreviewOptions(@Nullable LinkPreviewOptions linkPreviewOptions) {
+        return new EditMessageText(businessConnectionId, chatId, messageId, inlineMessageId, text, parseMode, entities, linkPreviewOptions, replyMarkup);
+    }
+
+    public EditMessageText withReplyMarkup(@Nullable InlineKeyboardMarkup replyMarkup) {
+        return new EditMessageText(businessConnectionId, chatId, messageId, inlineMessageId, text, parseMode, entities, linkPreviewOptions, replyMarkup);
+    }
 }

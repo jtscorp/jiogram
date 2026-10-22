@@ -44,4 +44,61 @@ public record BusinessBotRights(
     @JsonProperty("can_transfer_and_upgrade_gifts") @Nullable Boolean canTransferAndUpgradeGifts,
     @JsonProperty("can_transfer_stars") @Nullable Boolean canTransferStars,
     @JsonProperty("can_manage_stories") @Nullable Boolean canManageStories
-) {}
+) {
+
+    public BusinessBotRights withCanReply(@Nullable Boolean canReply) {
+        return new BusinessBotRights(canReply, canReadMessages, canDeleteSentMessages, canDeleteAllMessages, canEditName, canEditBio, canEditProfilePhoto, canEditUsername, canChangeGiftSettings, canViewGiftsAndStars, canConvertGiftsToStars, canTransferAndUpgradeGifts, canTransferStars, canManageStories);
+    }
+
+    public BusinessBotRights withCanReadMessages(@Nullable Boolean canReadMessages) {
+        return new BusinessBotRights(canReply, canReadMessages, canDeleteSentMessages, canDeleteAllMessages, canEditName, canEditBio, canEditProfilePhoto, canEditUsername, canChangeGiftSettings, canViewGiftsAndStars, canConvertGiftsToStars, canTransferAndUpgradeGifts, canTransferStars, canManageStories);
+    }
+
+    public BusinessBotRights withCanDeleteSentMessages(@Nullable Boolean canDeleteSentMessages) {
+        return new BusinessBotRights(canReply, canReadMessages, canDeleteSentMessages, canDeleteAllMessages, canEditName, canEditBio, canEditProfilePhoto, canEditUsername, canChangeGiftSettings, canViewGiftsAndStars, canConvertGiftsToStars, canTransferAndUpgradeGifts, canTransferStars, canManageStories);
+    }
+
+    public BusinessBotRights withCanDeleteAllMessages(@Nullable Boolean canDeleteAllMessages) {
+        return new BusinessBotRights(canReply, canReadMessages, canDeleteSentMessages, canDeleteAllMessages, canEditName, canEditBio, canEditProfilePhoto, canEditUsername, canChangeGiftSettings, canViewGiftsAndStars, canConvertGiftsToStars, canTransferAndUpgradeGifts, canTransferStars, canManageStories);
+    }
+
+    public BusinessBotRights withCanEditName(@Nullable Boolean canEditName) {
+        return new BusinessBotRights(canReply, canReadMessages, canDeleteSentMessages, canDeleteAllMessages, canEditName, canEditBio, canEditProfilePhoto, canEditUsername, canChangeGiftSettings, canViewGiftsAndStars, canConvertGiftsToStars, canTransferAndUpgradeGifts, canTransferStars, canManageStories);
+    }
+
+    public BusinessBotRights withCanEditBio(@Nullable Boolean canEditBio) {
+        return new BusinessBotRights(canReply, canReadMessages, canDeleteSentMessages, canDeleteAllMessages, canEditName, canEditBio, canEditProfilePhoto, canEditUsername, canChangeGiftSettings, canViewGiftsAndStars, canConvertGiftsToStars, canTransferAndUpgradeGifts, canTransferStars, canManageStories);
+    }
+
+    public BusinessBotRights withCanEditProfilePhoto(@Nullable Boolean canEditProfilePhoto) {
+        return new BusinessBotRights(canReply, canReadMessages, canDeleteSentMessages, canDeleteAllMessages, canEditName, canEditBio, canEditProfilePhoto, canEditUsername, canChangeGiftSettings, canViewGiftsAndStars, canConvertGiftsToStars, canTransferAndUpgradeGifts, canTransferStars, canManageStories);
+    }
+
+    public BusinessBotRights withCanEditUsername(@Nullable Boolean canEditUsername) {
+        return new BusinessBotRights(canReply, canReadMessages, canDeleteSentMessages, canDeleteAllMessages, canEditName, canEditBio, canEditProfilePhoto, canEditUsername, canChangeGiftSettings, canViewGiftsAndStars, canConvertGiftsToStars, canTransferAndUpgradeGifts, canTransferStars, canManageStories);
+    }
+
+    public BusinessBotRights withCanChangeGiftSettings(@Nullable Boolean canChangeGiftSettings) {
+        return new BusinessBotRights(canReply, canReadMessages, canDeleteSentMessages, canDeleteAllMessages, canEditName, canEditBio, canEditProfilePhoto, canEditUsername, canChangeGiftSettings, canViewGiftsAndStars, canConvertGiftsToStars, canTransferAndUpgradeGifts, canTransferStars, canManageStories);
+    }
+
+    public BusinessBotRights withCanViewGiftsAndStars(@Nullable Boolean canViewGiftsAndStars) {
+        return new BusinessBotRights(canReply, canReadMessages, canDeleteSentMessages, canDeleteAllMessages, canEditName, canEditBio, canEditProfilePhoto, canEditUsername, canChangeGiftSettings, canViewGiftsAndStars, canConvertGiftsToStars, canTransferAndUpgradeGifts, canTransferStars, canManageStories);
+    }
+
+    public BusinessBotRights withCanConvertGiftsToStars(@Nullable Boolean canConvertGiftsToStars) {
+        return new BusinessBotRights(canReply, canReadMessages, canDeleteSentMessages, canDeleteAllMessages, canEditName, canEditBio, canEditProfilePhoto, canEditUsername, canChangeGiftSettings, canViewGiftsAndStars, canConvertGiftsToStars, canTransferAndUpgradeGifts, canTransferStars, canManageStories);
+    }
+
+    public BusinessBotRights withCanTransferAndUpgradeGifts(@Nullable Boolean canTransferAndUpgradeGifts) {
+        return new BusinessBotRights(canReply, canReadMessages, canDeleteSentMessages, canDeleteAllMessages, canEditName, canEditBio, canEditProfilePhoto, canEditUsername, canChangeGiftSettings, canViewGiftsAndStars, canConvertGiftsToStars, canTransferAndUpgradeGifts, canTransferStars, canManageStories);
+    }
+
+    public BusinessBotRights withCanTransferStars(@Nullable Boolean canTransferStars) {
+        return new BusinessBotRights(canReply, canReadMessages, canDeleteSentMessages, canDeleteAllMessages, canEditName, canEditBio, canEditProfilePhoto, canEditUsername, canChangeGiftSettings, canViewGiftsAndStars, canConvertGiftsToStars, canTransferAndUpgradeGifts, canTransferStars, canManageStories);
+    }
+
+    public BusinessBotRights withCanManageStories(@Nullable Boolean canManageStories) {
+        return new BusinessBotRights(canReply, canReadMessages, canDeleteSentMessages, canDeleteAllMessages, canEditName, canEditBio, canEditProfilePhoto, canEditUsername, canChangeGiftSettings, canViewGiftsAndStars, canConvertGiftsToStars, canTransferAndUpgradeGifts, canTransferStars, canManageStories);
+    }
+}

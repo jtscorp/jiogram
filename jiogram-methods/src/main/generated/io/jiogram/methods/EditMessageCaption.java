@@ -59,4 +59,40 @@ public record EditMessageCaption(
     public static EditMessageCaption of() {
         return new EditMessageCaption(null, null, null, null, null, null, null, null, null);
     }
+
+    public EditMessageCaption withBusinessConnectionId(@Nullable String businessConnectionId) {
+        return new EditMessageCaption(businessConnectionId, chatId, messageId, inlineMessageId, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup);
+    }
+
+    public EditMessageCaption withChatId(@Nullable ChatId chatId) {
+        return new EditMessageCaption(businessConnectionId, chatId, messageId, inlineMessageId, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup);
+    }
+
+    public EditMessageCaption withMessageId(@Nullable Long messageId) {
+        return new EditMessageCaption(businessConnectionId, chatId, messageId, inlineMessageId, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup);
+    }
+
+    public EditMessageCaption withInlineMessageId(@Nullable String inlineMessageId) {
+        return new EditMessageCaption(businessConnectionId, chatId, messageId, inlineMessageId, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup);
+    }
+
+    public EditMessageCaption withCaption(@Nullable String caption) {
+        return new EditMessageCaption(businessConnectionId, chatId, messageId, inlineMessageId, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup);
+    }
+
+    public EditMessageCaption withParseMode(@Nullable ParseMode parseMode) {
+        return new EditMessageCaption(businessConnectionId, chatId, messageId, inlineMessageId, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup);
+    }
+
+    public EditMessageCaption withCaptionEntities(@Nullable List<MessageEntity> captionEntities) {
+        return new EditMessageCaption(businessConnectionId, chatId, messageId, inlineMessageId, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup);
+    }
+
+    public EditMessageCaption withShowCaptionAboveMedia(@Nullable Boolean showCaptionAboveMedia) {
+        return new EditMessageCaption(businessConnectionId, chatId, messageId, inlineMessageId, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup);
+    }
+
+    public EditMessageCaption withReplyMarkup(@Nullable InlineKeyboardMarkup replyMarkup) {
+        return new EditMessageCaption(businessConnectionId, chatId, messageId, inlineMessageId, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup);
+    }
 }

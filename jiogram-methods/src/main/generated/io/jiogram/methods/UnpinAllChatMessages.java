@@ -28,4 +28,8 @@ public record UnpinAllChatMessages(
     public String apiReturnType() {
         return "Boolean";
     }
+
+    public UnpinAllChatMessages withChatId(ChatId chatId) {
+        return new UnpinAllChatMessages(chatId);
+    }
 }

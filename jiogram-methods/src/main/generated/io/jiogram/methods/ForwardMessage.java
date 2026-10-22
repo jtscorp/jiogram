@@ -56,4 +56,44 @@ public record ForwardMessage(
     public static ForwardMessage of(ChatId chatId, ChatId fromChatId, long messageId) {
         return new ForwardMessage(chatId, null, null, fromChatId, null, null, null, null, null, messageId);
     }
+
+    public ForwardMessage withChatId(ChatId chatId) {
+        return new ForwardMessage(chatId, messageThreadId, directMessagesTopicId, fromChatId, videoStartTimestamp, disableNotification, protectContent, messageEffectId, suggestedPostParameters, messageId);
+    }
+
+    public ForwardMessage withMessageThreadId(@Nullable Long messageThreadId) {
+        return new ForwardMessage(chatId, messageThreadId, directMessagesTopicId, fromChatId, videoStartTimestamp, disableNotification, protectContent, messageEffectId, suggestedPostParameters, messageId);
+    }
+
+    public ForwardMessage withDirectMessagesTopicId(@Nullable Long directMessagesTopicId) {
+        return new ForwardMessage(chatId, messageThreadId, directMessagesTopicId, fromChatId, videoStartTimestamp, disableNotification, protectContent, messageEffectId, suggestedPostParameters, messageId);
+    }
+
+    public ForwardMessage withFromChatId(ChatId fromChatId) {
+        return new ForwardMessage(chatId, messageThreadId, directMessagesTopicId, fromChatId, videoStartTimestamp, disableNotification, protectContent, messageEffectId, suggestedPostParameters, messageId);
+    }
+
+    public ForwardMessage withVideoStartTimestamp(@Nullable Long videoStartTimestamp) {
+        return new ForwardMessage(chatId, messageThreadId, directMessagesTopicId, fromChatId, videoStartTimestamp, disableNotification, protectContent, messageEffectId, suggestedPostParameters, messageId);
+    }
+
+    public ForwardMessage withDisableNotification(@Nullable Boolean disableNotification) {
+        return new ForwardMessage(chatId, messageThreadId, directMessagesTopicId, fromChatId, videoStartTimestamp, disableNotification, protectContent, messageEffectId, suggestedPostParameters, messageId);
+    }
+
+    public ForwardMessage withProtectContent(@Nullable Boolean protectContent) {
+        return new ForwardMessage(chatId, messageThreadId, directMessagesTopicId, fromChatId, videoStartTimestamp, disableNotification, protectContent, messageEffectId, suggestedPostParameters, messageId);
+    }
+
+    public ForwardMessage withMessageEffectId(@Nullable String messageEffectId) {
+        return new ForwardMessage(chatId, messageThreadId, directMessagesTopicId, fromChatId, videoStartTimestamp, disableNotification, protectContent, messageEffectId, suggestedPostParameters, messageId);
+    }
+
+    public ForwardMessage withSuggestedPostParameters(@Nullable SuggestedPostParameters suggestedPostParameters) {
+        return new ForwardMessage(chatId, messageThreadId, directMessagesTopicId, fromChatId, videoStartTimestamp, disableNotification, protectContent, messageEffectId, suggestedPostParameters, messageId);
+    }
+
+    public ForwardMessage withMessageId(long messageId) {
+        return new ForwardMessage(chatId, messageThreadId, directMessagesTopicId, fromChatId, videoStartTimestamp, disableNotification, protectContent, messageEffectId, suggestedPostParameters, messageId);
+    }
 }

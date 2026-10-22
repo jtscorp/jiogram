@@ -17,4 +17,17 @@ public record BusinessMessagesDeleted(
     @JsonProperty("business_connection_id") String businessConnectionId,
     @JsonProperty("chat") Chat chat,
     @JsonProperty("message_ids") List<Long> messageIds
-) {}
+) {
+
+    public BusinessMessagesDeleted withBusinessConnectionId(String businessConnectionId) {
+        return new BusinessMessagesDeleted(businessConnectionId, chat, messageIds);
+    }
+
+    public BusinessMessagesDeleted withChat(Chat chat) {
+        return new BusinessMessagesDeleted(businessConnectionId, chat, messageIds);
+    }
+
+    public BusinessMessagesDeleted withMessageIds(List<Long> messageIds) {
+        return new BusinessMessagesDeleted(businessConnectionId, chat, messageIds);
+    }
+}

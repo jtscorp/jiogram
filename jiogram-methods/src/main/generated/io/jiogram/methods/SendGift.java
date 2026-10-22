@@ -51,4 +51,32 @@ public record SendGift(
     public static SendGift of(String giftId) {
         return new SendGift(null, null, giftId, null, null, null, null);
     }
+
+    public SendGift withUserId(@Nullable Long userId) {
+        return new SendGift(userId, chatId, giftId, payForUpgrade, text, textParseMode, textEntities);
+    }
+
+    public SendGift withChatId(@Nullable ChatId chatId) {
+        return new SendGift(userId, chatId, giftId, payForUpgrade, text, textParseMode, textEntities);
+    }
+
+    public SendGift withGiftId(String giftId) {
+        return new SendGift(userId, chatId, giftId, payForUpgrade, text, textParseMode, textEntities);
+    }
+
+    public SendGift withPayForUpgrade(@Nullable Boolean payForUpgrade) {
+        return new SendGift(userId, chatId, giftId, payForUpgrade, text, textParseMode, textEntities);
+    }
+
+    public SendGift withText(@Nullable String text) {
+        return new SendGift(userId, chatId, giftId, payForUpgrade, text, textParseMode, textEntities);
+    }
+
+    public SendGift withTextParseMode(@Nullable ParseMode textParseMode) {
+        return new SendGift(userId, chatId, giftId, payForUpgrade, text, textParseMode, textEntities);
+    }
+
+    public SendGift withTextEntities(@Nullable List<MessageEntity> textEntities) {
+        return new SendGift(userId, chatId, giftId, payForUpgrade, text, textParseMode, textEntities);
+    }
 }

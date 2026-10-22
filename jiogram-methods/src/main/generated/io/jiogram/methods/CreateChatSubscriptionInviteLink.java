@@ -41,4 +41,20 @@ public record CreateChatSubscriptionInviteLink(
     public static CreateChatSubscriptionInviteLink of(ChatId chatId, long subscriptionPeriod, long subscriptionPrice) {
         return new CreateChatSubscriptionInviteLink(chatId, null, subscriptionPeriod, subscriptionPrice);
     }
+
+    public CreateChatSubscriptionInviteLink withChatId(ChatId chatId) {
+        return new CreateChatSubscriptionInviteLink(chatId, name, subscriptionPeriod, subscriptionPrice);
+    }
+
+    public CreateChatSubscriptionInviteLink withName(@Nullable String name) {
+        return new CreateChatSubscriptionInviteLink(chatId, name, subscriptionPeriod, subscriptionPrice);
+    }
+
+    public CreateChatSubscriptionInviteLink withSubscriptionPeriod(long subscriptionPeriod) {
+        return new CreateChatSubscriptionInviteLink(chatId, name, subscriptionPeriod, subscriptionPrice);
+    }
+
+    public CreateChatSubscriptionInviteLink withSubscriptionPrice(long subscriptionPrice) {
+        return new CreateChatSubscriptionInviteLink(chatId, name, subscriptionPeriod, subscriptionPrice);
+    }
 }

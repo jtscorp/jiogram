@@ -35,4 +35,16 @@ public record SetBusinessAccountProfilePhoto(
     public static SetBusinessAccountProfilePhoto of(String businessConnectionId, InputProfilePhoto photo) {
         return new SetBusinessAccountProfilePhoto(businessConnectionId, photo, null);
     }
+
+    public SetBusinessAccountProfilePhoto withBusinessConnectionId(String businessConnectionId) {
+        return new SetBusinessAccountProfilePhoto(businessConnectionId, photo, isPublic);
+    }
+
+    public SetBusinessAccountProfilePhoto withPhoto(InputProfilePhoto photo) {
+        return new SetBusinessAccountProfilePhoto(businessConnectionId, photo, isPublic);
+    }
+
+    public SetBusinessAccountProfilePhoto withIsPublic(@Nullable Boolean isPublic) {
+        return new SetBusinessAccountProfilePhoto(businessConnectionId, photo, isPublic);
+    }
 }

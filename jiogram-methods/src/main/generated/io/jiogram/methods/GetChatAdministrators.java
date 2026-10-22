@@ -27,4 +27,8 @@ public record GetChatAdministrators(
     public String apiReturnType() {
         return "Array of ChatMember";
     }
+
+    public GetChatAdministrators withChatId(ChatId chatId) {
+        return new GetChatAdministrators(chatId);
+    }
 }

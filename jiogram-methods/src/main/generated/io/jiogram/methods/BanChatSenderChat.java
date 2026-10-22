@@ -29,4 +29,12 @@ public record BanChatSenderChat(
     public String apiReturnType() {
         return "Boolean";
     }
+
+    public BanChatSenderChat withChatId(ChatId chatId) {
+        return new BanChatSenderChat(chatId, senderChatId);
+    }
+
+    public BanChatSenderChat withSenderChatId(long senderChatId) {
+        return new BanChatSenderChat(chatId, senderChatId);
+    }
 }

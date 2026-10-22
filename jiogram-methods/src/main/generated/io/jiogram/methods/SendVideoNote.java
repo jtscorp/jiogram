@@ -96,4 +96,64 @@ public record SendVideoNote(
     public static SendVideoNote reply(Message message, InputFileOrString videoNote) {
         return new SendVideoNote(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), videoNote, null, null, null, null, null, null, null, null, ReplyTarget.replyTo(message), null);
     }
+
+    public SendVideoNote withBusinessConnectionId(@Nullable String businessConnectionId) {
+        return new SendVideoNote(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, videoNote, duration, length, thumbnail, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVideoNote withChatId(ChatId chatId) {
+        return new SendVideoNote(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, videoNote, duration, length, thumbnail, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVideoNote withMessageThreadId(@Nullable Long messageThreadId) {
+        return new SendVideoNote(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, videoNote, duration, length, thumbnail, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVideoNote withDirectMessagesTopicId(@Nullable Long directMessagesTopicId) {
+        return new SendVideoNote(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, videoNote, duration, length, thumbnail, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVideoNote withVideoNote(InputFileOrString videoNote) {
+        return new SendVideoNote(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, videoNote, duration, length, thumbnail, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVideoNote withDuration(@Nullable Long duration) {
+        return new SendVideoNote(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, videoNote, duration, length, thumbnail, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVideoNote withLength(@Nullable Long length) {
+        return new SendVideoNote(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, videoNote, duration, length, thumbnail, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVideoNote withThumbnail(@Nullable InputFileOrString thumbnail) {
+        return new SendVideoNote(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, videoNote, duration, length, thumbnail, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVideoNote withDisableNotification(@Nullable Boolean disableNotification) {
+        return new SendVideoNote(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, videoNote, duration, length, thumbnail, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVideoNote withProtectContent(@Nullable Boolean protectContent) {
+        return new SendVideoNote(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, videoNote, duration, length, thumbnail, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVideoNote withAllowPaidBroadcast(@Nullable Boolean allowPaidBroadcast) {
+        return new SendVideoNote(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, videoNote, duration, length, thumbnail, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVideoNote withMessageEffectId(@Nullable String messageEffectId) {
+        return new SendVideoNote(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, videoNote, duration, length, thumbnail, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVideoNote withSuggestedPostParameters(@Nullable SuggestedPostParameters suggestedPostParameters) {
+        return new SendVideoNote(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, videoNote, duration, length, thumbnail, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVideoNote withReplyParameters(@Nullable ReplyParameters replyParameters) {
+        return new SendVideoNote(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, videoNote, duration, length, thumbnail, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVideoNote withReplyMarkup(@Nullable ReplyMarkup replyMarkup) {
+        return new SendVideoNote(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, videoNote, duration, length, thumbnail, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
 }

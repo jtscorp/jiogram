@@ -39,4 +39,16 @@ public record UnpinChatMessage(
     public static UnpinChatMessage of(ChatId chatId) {
         return new UnpinChatMessage(null, chatId, null);
     }
+
+    public UnpinChatMessage withBusinessConnectionId(@Nullable String businessConnectionId) {
+        return new UnpinChatMessage(businessConnectionId, chatId, messageId);
+    }
+
+    public UnpinChatMessage withChatId(ChatId chatId) {
+        return new UnpinChatMessage(businessConnectionId, chatId, messageId);
+    }
+
+    public UnpinChatMessage withMessageId(@Nullable Long messageId) {
+        return new UnpinChatMessage(businessConnectionId, chatId, messageId);
+    }
 }

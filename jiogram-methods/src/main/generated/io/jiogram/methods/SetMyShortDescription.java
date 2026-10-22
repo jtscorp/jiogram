@@ -32,4 +32,12 @@ public record SetMyShortDescription(
     public static SetMyShortDescription of() {
         return new SetMyShortDescription(null, null);
     }
+
+    public SetMyShortDescription withShortDescription(@Nullable String shortDescription) {
+        return new SetMyShortDescription(shortDescription, languageCode);
+    }
+
+    public SetMyShortDescription withLanguageCode(@Nullable String languageCode) {
+        return new SetMyShortDescription(shortDescription, languageCode);
+    }
 }

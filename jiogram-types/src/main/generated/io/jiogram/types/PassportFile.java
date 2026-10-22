@@ -18,4 +18,21 @@ public record PassportFile(
     @JsonProperty("file_unique_id") String fileUniqueId,
     @JsonProperty("file_size") long fileSize,
     @JsonProperty("file_date") long fileDate
-) {}
+) {
+
+    public PassportFile withFileId(String fileId) {
+        return new PassportFile(fileId, fileUniqueId, fileSize, fileDate);
+    }
+
+    public PassportFile withFileUniqueId(String fileUniqueId) {
+        return new PassportFile(fileId, fileUniqueId, fileSize, fileDate);
+    }
+
+    public PassportFile withFileSize(long fileSize) {
+        return new PassportFile(fileId, fileUniqueId, fileSize, fileDate);
+    }
+
+    public PassportFile withFileDate(long fileDate) {
+        return new PassportFile(fileId, fileUniqueId, fileSize, fileDate);
+    }
+}

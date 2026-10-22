@@ -33,4 +33,12 @@ public record DeleteMyCommands(
     public static DeleteMyCommands of() {
         return new DeleteMyCommands(null, null);
     }
+
+    public DeleteMyCommands withScope(@Nullable BotCommandScope scope) {
+        return new DeleteMyCommands(scope, languageCode);
+    }
+
+    public DeleteMyCommands withLanguageCode(@Nullable String languageCode) {
+        return new DeleteMyCommands(scope, languageCode);
+    }
 }

@@ -41,4 +41,20 @@ public record AnswerShippingQuery(
     public static AnswerShippingQuery of(String shippingQueryId, boolean ok) {
         return new AnswerShippingQuery(shippingQueryId, ok, null, null);
     }
+
+    public AnswerShippingQuery withShippingQueryId(String shippingQueryId) {
+        return new AnswerShippingQuery(shippingQueryId, ok, shippingOptions, errorMessage);
+    }
+
+    public AnswerShippingQuery withOk(boolean ok) {
+        return new AnswerShippingQuery(shippingQueryId, ok, shippingOptions, errorMessage);
+    }
+
+    public AnswerShippingQuery withShippingOptions(@Nullable List<ShippingOption> shippingOptions) {
+        return new AnswerShippingQuery(shippingQueryId, ok, shippingOptions, errorMessage);
+    }
+
+    public AnswerShippingQuery withErrorMessage(@Nullable String errorMessage) {
+        return new AnswerShippingQuery(shippingQueryId, ok, shippingOptions, errorMessage);
+    }
 }

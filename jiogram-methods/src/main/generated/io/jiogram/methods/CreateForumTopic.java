@@ -42,4 +42,20 @@ public record CreateForumTopic(
     public static CreateForumTopic of(ChatId chatId, String name) {
         return new CreateForumTopic(chatId, name, null, null);
     }
+
+    public CreateForumTopic withChatId(ChatId chatId) {
+        return new CreateForumTopic(chatId, name, iconColor, iconCustomEmojiId);
+    }
+
+    public CreateForumTopic withName(String name) {
+        return new CreateForumTopic(chatId, name, iconColor, iconCustomEmojiId);
+    }
+
+    public CreateForumTopic withIconColor(@Nullable Long iconColor) {
+        return new CreateForumTopic(chatId, name, iconColor, iconCustomEmojiId);
+    }
+
+    public CreateForumTopic withIconCustomEmojiId(@Nullable String iconCustomEmojiId) {
+        return new CreateForumTopic(chatId, name, iconColor, iconCustomEmojiId);
+    }
 }

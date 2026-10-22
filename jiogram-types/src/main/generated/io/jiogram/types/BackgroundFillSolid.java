@@ -13,4 +13,9 @@ import io.jiogram.types.BackgroundFillType;
 public record BackgroundFillSolid(
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) BackgroundFillType type,
     @JsonProperty("color") long color
-) implements BackgroundFill {}
+) implements BackgroundFill {
+
+    public BackgroundFillSolid withColor(long color) {
+        return new BackgroundFillSolid(type, color);
+    }
+}

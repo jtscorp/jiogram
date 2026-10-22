@@ -23,4 +23,8 @@ public record ReplaceManagedBotToken(
     public String apiReturnType() {
         return "String";
     }
+
+    public ReplaceManagedBotToken withUserId(long userId) {
+        return new ReplaceManagedBotToken(userId);
+    }
 }

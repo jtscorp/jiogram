@@ -24,4 +24,29 @@ public record InputLocationMessageContent(
     @JsonProperty("live_period") @Nullable Long livePeriod,
     @JsonProperty("heading") @Nullable Long heading,
     @JsonProperty("proximity_alert_radius") @Nullable Long proximityAlertRadius
-) implements InputMessageContent {}
+) implements InputMessageContent {
+
+    public InputLocationMessageContent withLatitude(double latitude) {
+        return new InputLocationMessageContent(latitude, longitude, horizontalAccuracy, livePeriod, heading, proximityAlertRadius);
+    }
+
+    public InputLocationMessageContent withLongitude(double longitude) {
+        return new InputLocationMessageContent(latitude, longitude, horizontalAccuracy, livePeriod, heading, proximityAlertRadius);
+    }
+
+    public InputLocationMessageContent withHorizontalAccuracy(@Nullable Double horizontalAccuracy) {
+        return new InputLocationMessageContent(latitude, longitude, horizontalAccuracy, livePeriod, heading, proximityAlertRadius);
+    }
+
+    public InputLocationMessageContent withLivePeriod(@Nullable Long livePeriod) {
+        return new InputLocationMessageContent(latitude, longitude, horizontalAccuracy, livePeriod, heading, proximityAlertRadius);
+    }
+
+    public InputLocationMessageContent withHeading(@Nullable Long heading) {
+        return new InputLocationMessageContent(latitude, longitude, horizontalAccuracy, livePeriod, heading, proximityAlertRadius);
+    }
+
+    public InputLocationMessageContent withProximityAlertRadius(@Nullable Long proximityAlertRadius) {
+        return new InputLocationMessageContent(latitude, longitude, horizontalAccuracy, livePeriod, heading, proximityAlertRadius);
+    }
+}

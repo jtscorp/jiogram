@@ -28,4 +28,12 @@ public record UnbanChatSenderChat(
     public String apiReturnType() {
         return "Boolean";
     }
+
+    public UnbanChatSenderChat withChatId(ChatId chatId) {
+        return new UnbanChatSenderChat(chatId, senderChatId);
+    }
+
+    public UnbanChatSenderChat withSenderChatId(long senderChatId) {
+        return new UnbanChatSenderChat(chatId, senderChatId);
+    }
 }

@@ -24,4 +24,25 @@ public record StickerSet(
     @JsonProperty("sticker_type") StickerType stickerType,
     @JsonProperty("stickers") List<Sticker> stickers,
     @JsonProperty("thumbnail") @Nullable PhotoSize thumbnail
-) {}
+) {
+
+    public StickerSet withName(String name) {
+        return new StickerSet(name, title, stickerType, stickers, thumbnail);
+    }
+
+    public StickerSet withTitle(String title) {
+        return new StickerSet(name, title, stickerType, stickers, thumbnail);
+    }
+
+    public StickerSet withStickerType(StickerType stickerType) {
+        return new StickerSet(name, title, stickerType, stickers, thumbnail);
+    }
+
+    public StickerSet withStickers(List<Sticker> stickers) {
+        return new StickerSet(name, title, stickerType, stickers, thumbnail);
+    }
+
+    public StickerSet withThumbnail(@Nullable PhotoSize thumbnail) {
+        return new StickerSet(name, title, stickerType, stickers, thumbnail);
+    }
+}

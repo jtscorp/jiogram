@@ -40,4 +40,28 @@ public record SavePreparedInlineMessage(
     public static SavePreparedInlineMessage of(long userId, InlineQueryResult result) {
         return new SavePreparedInlineMessage(userId, result, null, null, null, null);
     }
+
+    public SavePreparedInlineMessage withUserId(long userId) {
+        return new SavePreparedInlineMessage(userId, result, allowUserChats, allowBotChats, allowGroupChats, allowChannelChats);
+    }
+
+    public SavePreparedInlineMessage withResult(InlineQueryResult result) {
+        return new SavePreparedInlineMessage(userId, result, allowUserChats, allowBotChats, allowGroupChats, allowChannelChats);
+    }
+
+    public SavePreparedInlineMessage withAllowUserChats(@Nullable Boolean allowUserChats) {
+        return new SavePreparedInlineMessage(userId, result, allowUserChats, allowBotChats, allowGroupChats, allowChannelChats);
+    }
+
+    public SavePreparedInlineMessage withAllowBotChats(@Nullable Boolean allowBotChats) {
+        return new SavePreparedInlineMessage(userId, result, allowUserChats, allowBotChats, allowGroupChats, allowChannelChats);
+    }
+
+    public SavePreparedInlineMessage withAllowGroupChats(@Nullable Boolean allowGroupChats) {
+        return new SavePreparedInlineMessage(userId, result, allowUserChats, allowBotChats, allowGroupChats, allowChannelChats);
+    }
+
+    public SavePreparedInlineMessage withAllowChannelChats(@Nullable Boolean allowChannelChats) {
+        return new SavePreparedInlineMessage(userId, result, allowUserChats, allowBotChats, allowGroupChats, allowChannelChats);
+    }
 }

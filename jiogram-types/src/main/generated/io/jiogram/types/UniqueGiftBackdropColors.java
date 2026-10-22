@@ -16,4 +16,21 @@ public record UniqueGiftBackdropColors(
     @JsonProperty("edge_color") long edgeColor,
     @JsonProperty("symbol_color") long symbolColor,
     @JsonProperty("text_color") long textColor
-) {}
+) {
+
+    public UniqueGiftBackdropColors withCenterColor(long centerColor) {
+        return new UniqueGiftBackdropColors(centerColor, edgeColor, symbolColor, textColor);
+    }
+
+    public UniqueGiftBackdropColors withEdgeColor(long edgeColor) {
+        return new UniqueGiftBackdropColors(centerColor, edgeColor, symbolColor, textColor);
+    }
+
+    public UniqueGiftBackdropColors withSymbolColor(long symbolColor) {
+        return new UniqueGiftBackdropColors(centerColor, edgeColor, symbolColor, textColor);
+    }
+
+    public UniqueGiftBackdropColors withTextColor(long textColor) {
+        return new UniqueGiftBackdropColors(centerColor, edgeColor, symbolColor, textColor);
+    }
+}

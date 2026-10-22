@@ -13,4 +13,13 @@ import io.jiogram.types.User;
 public record PaidMediaPurchased(
     @JsonProperty("from") User from,
     @JsonProperty("paid_media_payload") String paidMediaPayload
-) {}
+) {
+
+    public PaidMediaPurchased withFrom(User from) {
+        return new PaidMediaPurchased(from, paidMediaPayload);
+    }
+
+    public PaidMediaPurchased withPaidMediaPayload(String paidMediaPayload) {
+        return new PaidMediaPurchased(from, paidMediaPayload);
+    }
+}

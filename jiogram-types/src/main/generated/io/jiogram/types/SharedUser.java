@@ -26,4 +26,25 @@ public record SharedUser(
     @JsonProperty("last_name") @Nullable String lastName,
     @JsonProperty("username") @Nullable String username,
     @JsonProperty("photo") @Nullable List<PhotoSize> photo
-) {}
+) {
+
+    public SharedUser withUserId(long userId) {
+        return new SharedUser(userId, firstName, lastName, username, photo);
+    }
+
+    public SharedUser withFirstName(@Nullable String firstName) {
+        return new SharedUser(userId, firstName, lastName, username, photo);
+    }
+
+    public SharedUser withLastName(@Nullable String lastName) {
+        return new SharedUser(userId, firstName, lastName, username, photo);
+    }
+
+    public SharedUser withUsername(@Nullable String username) {
+        return new SharedUser(userId, firstName, lastName, username, photo);
+    }
+
+    public SharedUser withPhoto(@Nullable List<PhotoSize> photo) {
+        return new SharedUser(userId, firstName, lastName, username, photo);
+    }
+}

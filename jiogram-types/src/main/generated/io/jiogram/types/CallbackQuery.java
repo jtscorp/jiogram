@@ -37,4 +37,33 @@ public record CallbackQuery(
     @JsonProperty("chat_instance") String chatInstance,
     @JsonProperty("data") @Nullable String data,
     @JsonProperty("game_short_name") @Nullable String gameShortName
-) {}
+) {
+
+    public CallbackQuery withId(String id) {
+        return new CallbackQuery(id, from, message, inlineMessageId, chatInstance, data, gameShortName);
+    }
+
+    public CallbackQuery withFrom(User from) {
+        return new CallbackQuery(id, from, message, inlineMessageId, chatInstance, data, gameShortName);
+    }
+
+    public CallbackQuery withMessage(@Nullable MaybeInaccessibleMessage message) {
+        return new CallbackQuery(id, from, message, inlineMessageId, chatInstance, data, gameShortName);
+    }
+
+    public CallbackQuery withInlineMessageId(@Nullable String inlineMessageId) {
+        return new CallbackQuery(id, from, message, inlineMessageId, chatInstance, data, gameShortName);
+    }
+
+    public CallbackQuery withChatInstance(String chatInstance) {
+        return new CallbackQuery(id, from, message, inlineMessageId, chatInstance, data, gameShortName);
+    }
+
+    public CallbackQuery withData(@Nullable String data) {
+        return new CallbackQuery(id, from, message, inlineMessageId, chatInstance, data, gameShortName);
+    }
+
+    public CallbackQuery withGameShortName(@Nullable String gameShortName) {
+        return new CallbackQuery(id, from, message, inlineMessageId, chatInstance, data, gameShortName);
+    }
+}

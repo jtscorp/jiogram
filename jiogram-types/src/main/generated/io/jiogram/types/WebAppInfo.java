@@ -11,4 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public record WebAppInfo(
     @JsonProperty("url") String url
-) {}
+) {
+
+    public WebAppInfo withUrl(String url) {
+        return new WebAppInfo(url);
+    }
+}

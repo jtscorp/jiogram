@@ -14,4 +14,13 @@ import org.jspecify.annotations.Nullable;
 public record BusinessLocation(
     @JsonProperty("address") String address,
     @JsonProperty("location") @Nullable Location location
-) {}
+) {
+
+    public BusinessLocation withAddress(String address) {
+        return new BusinessLocation(address, location);
+    }
+
+    public BusinessLocation withLocation(@Nullable Location location) {
+        return new BusinessLocation(address, location);
+    }
+}

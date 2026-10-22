@@ -35,4 +35,33 @@ public record InlineQueryResultCachedAudio(
     @JsonProperty("caption_entities") @Nullable List<MessageEntity> captionEntities,
     @JsonProperty("reply_markup") @Nullable InlineKeyboardMarkup replyMarkup,
     @JsonProperty("input_message_content") @Nullable InputMessageContent inputMessageContent
-) implements InlineQueryResult {}
+) implements InlineQueryResult {
+
+    public InlineQueryResultCachedAudio withId(String id) {
+        return new InlineQueryResultCachedAudio(type, id, audioFileId, caption, parseMode, captionEntities, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultCachedAudio withAudioFileId(String audioFileId) {
+        return new InlineQueryResultCachedAudio(type, id, audioFileId, caption, parseMode, captionEntities, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultCachedAudio withCaption(@Nullable String caption) {
+        return new InlineQueryResultCachedAudio(type, id, audioFileId, caption, parseMode, captionEntities, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultCachedAudio withParseMode(@Nullable ParseMode parseMode) {
+        return new InlineQueryResultCachedAudio(type, id, audioFileId, caption, parseMode, captionEntities, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultCachedAudio withCaptionEntities(@Nullable List<MessageEntity> captionEntities) {
+        return new InlineQueryResultCachedAudio(type, id, audioFileId, caption, parseMode, captionEntities, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultCachedAudio withReplyMarkup(@Nullable InlineKeyboardMarkup replyMarkup) {
+        return new InlineQueryResultCachedAudio(type, id, audioFileId, caption, parseMode, captionEntities, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultCachedAudio withInputMessageContent(@Nullable InputMessageContent inputMessageContent) {
+        return new InlineQueryResultCachedAudio(type, id, audioFileId, caption, parseMode, captionEntities, replyMarkup, inputMessageContent);
+    }
+}

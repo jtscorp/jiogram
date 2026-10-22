@@ -48,4 +48,57 @@ public record InlineQueryResultPhoto(
     @JsonProperty("show_caption_above_media") @Nullable Boolean showCaptionAboveMedia,
     @JsonProperty("reply_markup") @Nullable InlineKeyboardMarkup replyMarkup,
     @JsonProperty("input_message_content") @Nullable InputMessageContent inputMessageContent
-) implements InlineQueryResult {}
+) implements InlineQueryResult {
+
+    public InlineQueryResultPhoto withId(String id) {
+        return new InlineQueryResultPhoto(type, id, photoUrl, thumbnailUrl, photoWidth, photoHeight, title, description, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultPhoto withPhotoUrl(String photoUrl) {
+        return new InlineQueryResultPhoto(type, id, photoUrl, thumbnailUrl, photoWidth, photoHeight, title, description, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultPhoto withThumbnailUrl(String thumbnailUrl) {
+        return new InlineQueryResultPhoto(type, id, photoUrl, thumbnailUrl, photoWidth, photoHeight, title, description, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultPhoto withPhotoWidth(@Nullable Long photoWidth) {
+        return new InlineQueryResultPhoto(type, id, photoUrl, thumbnailUrl, photoWidth, photoHeight, title, description, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultPhoto withPhotoHeight(@Nullable Long photoHeight) {
+        return new InlineQueryResultPhoto(type, id, photoUrl, thumbnailUrl, photoWidth, photoHeight, title, description, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultPhoto withTitle(@Nullable String title) {
+        return new InlineQueryResultPhoto(type, id, photoUrl, thumbnailUrl, photoWidth, photoHeight, title, description, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultPhoto withDescription(@Nullable String description) {
+        return new InlineQueryResultPhoto(type, id, photoUrl, thumbnailUrl, photoWidth, photoHeight, title, description, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultPhoto withCaption(@Nullable String caption) {
+        return new InlineQueryResultPhoto(type, id, photoUrl, thumbnailUrl, photoWidth, photoHeight, title, description, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultPhoto withParseMode(@Nullable ParseMode parseMode) {
+        return new InlineQueryResultPhoto(type, id, photoUrl, thumbnailUrl, photoWidth, photoHeight, title, description, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultPhoto withCaptionEntities(@Nullable List<MessageEntity> captionEntities) {
+        return new InlineQueryResultPhoto(type, id, photoUrl, thumbnailUrl, photoWidth, photoHeight, title, description, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultPhoto withShowCaptionAboveMedia(@Nullable Boolean showCaptionAboveMedia) {
+        return new InlineQueryResultPhoto(type, id, photoUrl, thumbnailUrl, photoWidth, photoHeight, title, description, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultPhoto withReplyMarkup(@Nullable InlineKeyboardMarkup replyMarkup) {
+        return new InlineQueryResultPhoto(type, id, photoUrl, thumbnailUrl, photoWidth, photoHeight, title, description, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultPhoto withInputMessageContent(@Nullable InputMessageContent inputMessageContent) {
+        return new InlineQueryResultPhoto(type, id, photoUrl, thumbnailUrl, photoWidth, photoHeight, title, description, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+}

@@ -32,4 +32,12 @@ public record SetPassportDataErrors(
     public String apiReturnType() {
         return "Boolean";
     }
+
+    public SetPassportDataErrors withUserId(long userId) {
+        return new SetPassportDataErrors(userId, errors);
+    }
+
+    public SetPassportDataErrors withErrors(List<PassportElementError> errors) {
+        return new SetPassportDataErrors(userId, errors);
+    }
 }

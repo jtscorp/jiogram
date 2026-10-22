@@ -17,4 +17,9 @@ import io.jiogram.types.ChatId;
 public record BotCommandScopeChatAdministrators(
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) BotCommandScopeType type,
     @JsonProperty("chat_id") ChatId chatId
-) implements BotCommandScope {}
+) implements BotCommandScope {
+
+    public BotCommandScopeChatAdministrators withChatId(ChatId chatId) {
+        return new BotCommandScopeChatAdministrators(type, chatId);
+    }
+}

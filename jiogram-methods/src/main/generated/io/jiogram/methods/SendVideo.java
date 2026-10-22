@@ -124,4 +124,100 @@ public record SendVideo(
     public static SendVideo reply(Message message, InputFileOrString video) {
         return new SendVideo(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), video, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, ReplyTarget.replyTo(message), null);
     }
+
+    public SendVideo withBusinessConnectionId(@Nullable String businessConnectionId) {
+        return new SendVideo(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, video, duration, width, height, thumbnail, cover, startTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, supportsStreaming, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVideo withChatId(ChatId chatId) {
+        return new SendVideo(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, video, duration, width, height, thumbnail, cover, startTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, supportsStreaming, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVideo withMessageThreadId(@Nullable Long messageThreadId) {
+        return new SendVideo(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, video, duration, width, height, thumbnail, cover, startTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, supportsStreaming, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVideo withDirectMessagesTopicId(@Nullable Long directMessagesTopicId) {
+        return new SendVideo(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, video, duration, width, height, thumbnail, cover, startTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, supportsStreaming, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVideo withVideo(InputFileOrString video) {
+        return new SendVideo(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, video, duration, width, height, thumbnail, cover, startTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, supportsStreaming, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVideo withDuration(@Nullable Long duration) {
+        return new SendVideo(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, video, duration, width, height, thumbnail, cover, startTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, supportsStreaming, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVideo withWidth(@Nullable Long width) {
+        return new SendVideo(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, video, duration, width, height, thumbnail, cover, startTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, supportsStreaming, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVideo withHeight(@Nullable Long height) {
+        return new SendVideo(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, video, duration, width, height, thumbnail, cover, startTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, supportsStreaming, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVideo withThumbnail(@Nullable InputFileOrString thumbnail) {
+        return new SendVideo(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, video, duration, width, height, thumbnail, cover, startTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, supportsStreaming, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVideo withCover(@Nullable InputFileOrString cover) {
+        return new SendVideo(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, video, duration, width, height, thumbnail, cover, startTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, supportsStreaming, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVideo withStartTimestamp(@Nullable Long startTimestamp) {
+        return new SendVideo(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, video, duration, width, height, thumbnail, cover, startTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, supportsStreaming, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVideo withCaption(@Nullable String caption) {
+        return new SendVideo(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, video, duration, width, height, thumbnail, cover, startTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, supportsStreaming, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVideo withParseMode(@Nullable ParseMode parseMode) {
+        return new SendVideo(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, video, duration, width, height, thumbnail, cover, startTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, supportsStreaming, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVideo withCaptionEntities(@Nullable List<MessageEntity> captionEntities) {
+        return new SendVideo(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, video, duration, width, height, thumbnail, cover, startTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, supportsStreaming, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVideo withShowCaptionAboveMedia(@Nullable Boolean showCaptionAboveMedia) {
+        return new SendVideo(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, video, duration, width, height, thumbnail, cover, startTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, supportsStreaming, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVideo withHasSpoiler(@Nullable Boolean hasSpoiler) {
+        return new SendVideo(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, video, duration, width, height, thumbnail, cover, startTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, supportsStreaming, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVideo withSupportsStreaming(@Nullable Boolean supportsStreaming) {
+        return new SendVideo(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, video, duration, width, height, thumbnail, cover, startTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, supportsStreaming, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVideo withDisableNotification(@Nullable Boolean disableNotification) {
+        return new SendVideo(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, video, duration, width, height, thumbnail, cover, startTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, supportsStreaming, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVideo withProtectContent(@Nullable Boolean protectContent) {
+        return new SendVideo(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, video, duration, width, height, thumbnail, cover, startTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, supportsStreaming, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVideo withAllowPaidBroadcast(@Nullable Boolean allowPaidBroadcast) {
+        return new SendVideo(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, video, duration, width, height, thumbnail, cover, startTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, supportsStreaming, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVideo withMessageEffectId(@Nullable String messageEffectId) {
+        return new SendVideo(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, video, duration, width, height, thumbnail, cover, startTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, supportsStreaming, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVideo withSuggestedPostParameters(@Nullable SuggestedPostParameters suggestedPostParameters) {
+        return new SendVideo(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, video, duration, width, height, thumbnail, cover, startTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, supportsStreaming, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVideo withReplyParameters(@Nullable ReplyParameters replyParameters) {
+        return new SendVideo(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, video, duration, width, height, thumbnail, cover, startTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, supportsStreaming, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVideo withReplyMarkup(@Nullable ReplyMarkup replyMarkup) {
+        return new SendVideo(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, video, duration, width, height, thumbnail, cover, startTimestamp, caption, parseMode, captionEntities, showCaptionAboveMedia, hasSpoiler, supportsStreaming, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
 }

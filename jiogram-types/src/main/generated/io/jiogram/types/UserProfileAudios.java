@@ -14,4 +14,13 @@ import java.util.List;
 public record UserProfileAudios(
     @JsonProperty("total_count") long totalCount,
     @JsonProperty("audios") List<Audio> audios
-) {}
+) {
+
+    public UserProfileAudios withTotalCount(long totalCount) {
+        return new UserProfileAudios(totalCount, audios);
+    }
+
+    public UserProfileAudios withAudios(List<Audio> audios) {
+        return new UserProfileAudios(totalCount, audios);
+    }
+}

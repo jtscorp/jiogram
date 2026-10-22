@@ -26,4 +26,8 @@ public record DeleteChatPhoto(
     public String apiReturnType() {
         return "Boolean";
     }
+
+    public DeleteChatPhoto withChatId(ChatId chatId) {
+        return new DeleteChatPhoto(chatId);
+    }
 }

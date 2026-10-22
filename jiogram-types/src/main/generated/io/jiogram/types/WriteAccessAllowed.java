@@ -20,4 +20,17 @@ public record WriteAccessAllowed(
     @JsonProperty("from_request") @Nullable Boolean fromRequest,
     @JsonProperty("web_app_name") @Nullable String webAppName,
     @JsonProperty("from_attachment_menu") @Nullable Boolean fromAttachmentMenu
-) {}
+) {
+
+    public WriteAccessAllowed withFromRequest(@Nullable Boolean fromRequest) {
+        return new WriteAccessAllowed(fromRequest, webAppName, fromAttachmentMenu);
+    }
+
+    public WriteAccessAllowed withWebAppName(@Nullable String webAppName) {
+        return new WriteAccessAllowed(fromRequest, webAppName, fromAttachmentMenu);
+    }
+
+    public WriteAccessAllowed withFromAttachmentMenu(@Nullable Boolean fromAttachmentMenu) {
+        return new WriteAccessAllowed(fromRequest, webAppName, fromAttachmentMenu);
+    }
+}

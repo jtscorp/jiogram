@@ -21,4 +21,25 @@ public record Invoice(
     @JsonProperty("start_parameter") String startParameter,
     @JsonProperty("currency") String currency,
     @JsonProperty("total_amount") long totalAmount
-) {}
+) {
+
+    public Invoice withTitle(String title) {
+        return new Invoice(title, description, startParameter, currency, totalAmount);
+    }
+
+    public Invoice withDescription(String description) {
+        return new Invoice(title, description, startParameter, currency, totalAmount);
+    }
+
+    public Invoice withStartParameter(String startParameter) {
+        return new Invoice(title, description, startParameter, currency, totalAmount);
+    }
+
+    public Invoice withCurrency(String currency) {
+        return new Invoice(title, description, startParameter, currency, totalAmount);
+    }
+
+    public Invoice withTotalAmount(long totalAmount) {
+        return new Invoice(title, description, startParameter, currency, totalAmount);
+    }
+}

@@ -29,4 +29,8 @@ public record GetMyName(
     public static GetMyName of() {
         return new GetMyName(null);
     }
+
+    public GetMyName withLanguageCode(@Nullable String languageCode) {
+        return new GetMyName(languageCode);
+    }
 }

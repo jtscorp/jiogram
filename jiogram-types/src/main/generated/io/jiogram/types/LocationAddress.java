@@ -18,4 +18,21 @@ public record LocationAddress(
     @JsonProperty("state") @Nullable String state,
     @JsonProperty("city") @Nullable String city,
     @JsonProperty("street") @Nullable String street
-) {}
+) {
+
+    public LocationAddress withCountryCode(String countryCode) {
+        return new LocationAddress(countryCode, state, city, street);
+    }
+
+    public LocationAddress withState(@Nullable String state) {
+        return new LocationAddress(countryCode, state, city, street);
+    }
+
+    public LocationAddress withCity(@Nullable String city) {
+        return new LocationAddress(countryCode, state, city, street);
+    }
+
+    public LocationAddress withStreet(@Nullable String street) {
+        return new LocationAddress(countryCode, state, city, street);
+    }
+}

@@ -21,4 +21,29 @@ public record StoryAreaPosition(
     @JsonProperty("height_percentage") double heightPercentage,
     @JsonProperty("rotation_angle") double rotationAngle,
     @JsonProperty("corner_radius_percentage") double cornerRadiusPercentage
-) {}
+) {
+
+    public StoryAreaPosition withXPercentage(double xPercentage) {
+        return new StoryAreaPosition(xPercentage, yPercentage, widthPercentage, heightPercentage, rotationAngle, cornerRadiusPercentage);
+    }
+
+    public StoryAreaPosition withYPercentage(double yPercentage) {
+        return new StoryAreaPosition(xPercentage, yPercentage, widthPercentage, heightPercentage, rotationAngle, cornerRadiusPercentage);
+    }
+
+    public StoryAreaPosition withWidthPercentage(double widthPercentage) {
+        return new StoryAreaPosition(xPercentage, yPercentage, widthPercentage, heightPercentage, rotationAngle, cornerRadiusPercentage);
+    }
+
+    public StoryAreaPosition withHeightPercentage(double heightPercentage) {
+        return new StoryAreaPosition(xPercentage, yPercentage, widthPercentage, heightPercentage, rotationAngle, cornerRadiusPercentage);
+    }
+
+    public StoryAreaPosition withRotationAngle(double rotationAngle) {
+        return new StoryAreaPosition(xPercentage, yPercentage, widthPercentage, heightPercentage, rotationAngle, cornerRadiusPercentage);
+    }
+
+    public StoryAreaPosition withCornerRadiusPercentage(double cornerRadiusPercentage) {
+        return new StoryAreaPosition(xPercentage, yPercentage, widthPercentage, heightPercentage, rotationAngle, cornerRadiusPercentage);
+    }
+}

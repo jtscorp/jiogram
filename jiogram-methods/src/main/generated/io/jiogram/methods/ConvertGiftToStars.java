@@ -26,4 +26,12 @@ public record ConvertGiftToStars(
     public String apiReturnType() {
         return "Boolean";
     }
+
+    public ConvertGiftToStars withBusinessConnectionId(String businessConnectionId) {
+        return new ConvertGiftToStars(businessConnectionId, ownedGiftId);
+    }
+
+    public ConvertGiftToStars withOwnedGiftId(String ownedGiftId) {
+        return new ConvertGiftToStars(businessConnectionId, ownedGiftId);
+    }
 }

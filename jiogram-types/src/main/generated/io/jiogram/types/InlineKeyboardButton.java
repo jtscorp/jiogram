@@ -67,4 +67,57 @@ public record InlineKeyboardButton(
     @JsonProperty("copy_text") @Nullable CopyTextButton copyText,
     @JsonProperty("callback_game") @Nullable CallbackGame callbackGame,
     @JsonProperty("pay") @Nullable Boolean pay
-) {}
+) {
+
+    public InlineKeyboardButton withText(String text) {
+        return new InlineKeyboardButton(text, iconCustomEmojiId, style, url, callbackData, webApp, loginUrl, switchInlineQuery, switchInlineQueryCurrentChat, switchInlineQueryChosenChat, copyText, callbackGame, pay);
+    }
+
+    public InlineKeyboardButton withIconCustomEmojiId(@Nullable String iconCustomEmojiId) {
+        return new InlineKeyboardButton(text, iconCustomEmojiId, style, url, callbackData, webApp, loginUrl, switchInlineQuery, switchInlineQueryCurrentChat, switchInlineQueryChosenChat, copyText, callbackGame, pay);
+    }
+
+    public InlineKeyboardButton withStyle(@Nullable String style) {
+        return new InlineKeyboardButton(text, iconCustomEmojiId, style, url, callbackData, webApp, loginUrl, switchInlineQuery, switchInlineQueryCurrentChat, switchInlineQueryChosenChat, copyText, callbackGame, pay);
+    }
+
+    public InlineKeyboardButton withUrl(@Nullable String url) {
+        return new InlineKeyboardButton(text, iconCustomEmojiId, style, url, callbackData, webApp, loginUrl, switchInlineQuery, switchInlineQueryCurrentChat, switchInlineQueryChosenChat, copyText, callbackGame, pay);
+    }
+
+    public InlineKeyboardButton withCallbackData(@Nullable String callbackData) {
+        return new InlineKeyboardButton(text, iconCustomEmojiId, style, url, callbackData, webApp, loginUrl, switchInlineQuery, switchInlineQueryCurrentChat, switchInlineQueryChosenChat, copyText, callbackGame, pay);
+    }
+
+    public InlineKeyboardButton withWebApp(@Nullable WebAppInfo webApp) {
+        return new InlineKeyboardButton(text, iconCustomEmojiId, style, url, callbackData, webApp, loginUrl, switchInlineQuery, switchInlineQueryCurrentChat, switchInlineQueryChosenChat, copyText, callbackGame, pay);
+    }
+
+    public InlineKeyboardButton withLoginUrl(@Nullable LoginUrl loginUrl) {
+        return new InlineKeyboardButton(text, iconCustomEmojiId, style, url, callbackData, webApp, loginUrl, switchInlineQuery, switchInlineQueryCurrentChat, switchInlineQueryChosenChat, copyText, callbackGame, pay);
+    }
+
+    public InlineKeyboardButton withSwitchInlineQuery(@Nullable String switchInlineQuery) {
+        return new InlineKeyboardButton(text, iconCustomEmojiId, style, url, callbackData, webApp, loginUrl, switchInlineQuery, switchInlineQueryCurrentChat, switchInlineQueryChosenChat, copyText, callbackGame, pay);
+    }
+
+    public InlineKeyboardButton withSwitchInlineQueryCurrentChat(@Nullable String switchInlineQueryCurrentChat) {
+        return new InlineKeyboardButton(text, iconCustomEmojiId, style, url, callbackData, webApp, loginUrl, switchInlineQuery, switchInlineQueryCurrentChat, switchInlineQueryChosenChat, copyText, callbackGame, pay);
+    }
+
+    public InlineKeyboardButton withSwitchInlineQueryChosenChat(@Nullable SwitchInlineQueryChosenChat switchInlineQueryChosenChat) {
+        return new InlineKeyboardButton(text, iconCustomEmojiId, style, url, callbackData, webApp, loginUrl, switchInlineQuery, switchInlineQueryCurrentChat, switchInlineQueryChosenChat, copyText, callbackGame, pay);
+    }
+
+    public InlineKeyboardButton withCopyText(@Nullable CopyTextButton copyText) {
+        return new InlineKeyboardButton(text, iconCustomEmojiId, style, url, callbackData, webApp, loginUrl, switchInlineQuery, switchInlineQueryCurrentChat, switchInlineQueryChosenChat, copyText, callbackGame, pay);
+    }
+
+    public InlineKeyboardButton withCallbackGame(@Nullable CallbackGame callbackGame) {
+        return new InlineKeyboardButton(text, iconCustomEmojiId, style, url, callbackData, webApp, loginUrl, switchInlineQuery, switchInlineQueryCurrentChat, switchInlineQueryChosenChat, copyText, callbackGame, pay);
+    }
+
+    public InlineKeyboardButton withPay(@Nullable Boolean pay) {
+        return new InlineKeyboardButton(text, iconCustomEmojiId, style, url, callbackData, webApp, loginUrl, switchInlineQuery, switchInlineQueryCurrentChat, switchInlineQueryChosenChat, copyText, callbackGame, pay);
+    }
+}

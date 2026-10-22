@@ -38,4 +38,12 @@ public record DeleteMessage(
     public String apiReturnType() {
         return "Boolean";
     }
+
+    public DeleteMessage withChatId(ChatId chatId) {
+        return new DeleteMessage(chatId, messageId);
+    }
+
+    public DeleteMessage withMessageId(long messageId) {
+        return new DeleteMessage(chatId, messageId);
+    }
 }

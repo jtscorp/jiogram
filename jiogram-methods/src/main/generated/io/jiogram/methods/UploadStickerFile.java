@@ -32,4 +32,16 @@ public record UploadStickerFile(
     public String apiReturnType() {
         return "File";
     }
+
+    public UploadStickerFile withUserId(long userId) {
+        return new UploadStickerFile(userId, sticker, stickerFormat);
+    }
+
+    public UploadStickerFile withSticker(InputFile sticker) {
+        return new UploadStickerFile(userId, sticker, stickerFormat);
+    }
+
+    public UploadStickerFile withStickerFormat(String stickerFormat) {
+        return new UploadStickerFile(userId, sticker, stickerFormat);
+    }
 }

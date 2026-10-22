@@ -53,4 +53,73 @@ public record Poll(
     @JsonProperty("close_date") @Nullable Long closeDate,
     @JsonProperty("description") @Nullable String description,
     @JsonProperty("description_entities") @Nullable List<MessageEntity> descriptionEntities
-) {}
+) {
+
+    public Poll withId(String id) {
+        return new Poll(id, question, questionEntities, options, totalVoterCount, isClosed, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, correctOptionIds, explanation, explanationEntities, openPeriod, closeDate, description, descriptionEntities);
+    }
+
+    public Poll withQuestion(String question) {
+        return new Poll(id, question, questionEntities, options, totalVoterCount, isClosed, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, correctOptionIds, explanation, explanationEntities, openPeriod, closeDate, description, descriptionEntities);
+    }
+
+    public Poll withQuestionEntities(@Nullable List<MessageEntity> questionEntities) {
+        return new Poll(id, question, questionEntities, options, totalVoterCount, isClosed, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, correctOptionIds, explanation, explanationEntities, openPeriod, closeDate, description, descriptionEntities);
+    }
+
+    public Poll withOptions(List<PollOption> options) {
+        return new Poll(id, question, questionEntities, options, totalVoterCount, isClosed, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, correctOptionIds, explanation, explanationEntities, openPeriod, closeDate, description, descriptionEntities);
+    }
+
+    public Poll withTotalVoterCount(long totalVoterCount) {
+        return new Poll(id, question, questionEntities, options, totalVoterCount, isClosed, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, correctOptionIds, explanation, explanationEntities, openPeriod, closeDate, description, descriptionEntities);
+    }
+
+    public Poll withIsClosed(boolean isClosed) {
+        return new Poll(id, question, questionEntities, options, totalVoterCount, isClosed, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, correctOptionIds, explanation, explanationEntities, openPeriod, closeDate, description, descriptionEntities);
+    }
+
+    public Poll withIsAnonymous(boolean isAnonymous) {
+        return new Poll(id, question, questionEntities, options, totalVoterCount, isClosed, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, correctOptionIds, explanation, explanationEntities, openPeriod, closeDate, description, descriptionEntities);
+    }
+
+    public Poll withType(PollType type) {
+        return new Poll(id, question, questionEntities, options, totalVoterCount, isClosed, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, correctOptionIds, explanation, explanationEntities, openPeriod, closeDate, description, descriptionEntities);
+    }
+
+    public Poll withAllowsMultipleAnswers(boolean allowsMultipleAnswers) {
+        return new Poll(id, question, questionEntities, options, totalVoterCount, isClosed, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, correctOptionIds, explanation, explanationEntities, openPeriod, closeDate, description, descriptionEntities);
+    }
+
+    public Poll withAllowsRevoting(boolean allowsRevoting) {
+        return new Poll(id, question, questionEntities, options, totalVoterCount, isClosed, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, correctOptionIds, explanation, explanationEntities, openPeriod, closeDate, description, descriptionEntities);
+    }
+
+    public Poll withCorrectOptionIds(@Nullable List<Long> correctOptionIds) {
+        return new Poll(id, question, questionEntities, options, totalVoterCount, isClosed, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, correctOptionIds, explanation, explanationEntities, openPeriod, closeDate, description, descriptionEntities);
+    }
+
+    public Poll withExplanation(@Nullable String explanation) {
+        return new Poll(id, question, questionEntities, options, totalVoterCount, isClosed, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, correctOptionIds, explanation, explanationEntities, openPeriod, closeDate, description, descriptionEntities);
+    }
+
+    public Poll withExplanationEntities(@Nullable List<MessageEntity> explanationEntities) {
+        return new Poll(id, question, questionEntities, options, totalVoterCount, isClosed, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, correctOptionIds, explanation, explanationEntities, openPeriod, closeDate, description, descriptionEntities);
+    }
+
+    public Poll withOpenPeriod(@Nullable Long openPeriod) {
+        return new Poll(id, question, questionEntities, options, totalVoterCount, isClosed, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, correctOptionIds, explanation, explanationEntities, openPeriod, closeDate, description, descriptionEntities);
+    }
+
+    public Poll withCloseDate(@Nullable Long closeDate) {
+        return new Poll(id, question, questionEntities, options, totalVoterCount, isClosed, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, correctOptionIds, explanation, explanationEntities, openPeriod, closeDate, description, descriptionEntities);
+    }
+
+    public Poll withDescription(@Nullable String description) {
+        return new Poll(id, question, questionEntities, options, totalVoterCount, isClosed, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, correctOptionIds, explanation, explanationEntities, openPeriod, closeDate, description, descriptionEntities);
+    }
+
+    public Poll withDescriptionEntities(@Nullable List<MessageEntity> descriptionEntities) {
+        return new Poll(id, question, questionEntities, options, totalVoterCount, isClosed, isAnonymous, type, allowsMultipleAnswers, allowsRevoting, correctOptionIds, explanation, explanationEntities, openPeriod, closeDate, description, descriptionEntities);
+    }
+}

@@ -12,4 +12,9 @@ import java.util.List;
  */
 public record StarTransactions(
     @JsonProperty("transactions") List<StarTransaction> transactions
-) {}
+) {
+
+    public StarTransactions withTransactions(List<StarTransaction> transactions) {
+        return new StarTransactions(transactions);
+    }
+}

@@ -67,4 +67,85 @@ public record ChatMemberAdministrator(
     @JsonProperty("can_manage_direct_messages") @Nullable Boolean canManageDirectMessages,
     @JsonProperty("can_manage_tags") @Nullable Boolean canManageTags,
     @JsonProperty("custom_title") @Nullable String customTitle
-) implements ChatMember {}
+) implements ChatMember {
+
+    public ChatMemberAdministrator withUser(User user) {
+        return new ChatMemberAdministrator(status, user, canBeEdited, isAnonymous, canManageChat, canDeleteMessages, canManageVideoChats, canRestrictMembers, canPromoteMembers, canChangeInfo, canInviteUsers, canPostStories, canEditStories, canDeleteStories, canPostMessages, canEditMessages, canPinMessages, canManageTopics, canManageDirectMessages, canManageTags, customTitle);
+    }
+
+    public ChatMemberAdministrator withCanBeEdited(boolean canBeEdited) {
+        return new ChatMemberAdministrator(status, user, canBeEdited, isAnonymous, canManageChat, canDeleteMessages, canManageVideoChats, canRestrictMembers, canPromoteMembers, canChangeInfo, canInviteUsers, canPostStories, canEditStories, canDeleteStories, canPostMessages, canEditMessages, canPinMessages, canManageTopics, canManageDirectMessages, canManageTags, customTitle);
+    }
+
+    public ChatMemberAdministrator withIsAnonymous(boolean isAnonymous) {
+        return new ChatMemberAdministrator(status, user, canBeEdited, isAnonymous, canManageChat, canDeleteMessages, canManageVideoChats, canRestrictMembers, canPromoteMembers, canChangeInfo, canInviteUsers, canPostStories, canEditStories, canDeleteStories, canPostMessages, canEditMessages, canPinMessages, canManageTopics, canManageDirectMessages, canManageTags, customTitle);
+    }
+
+    public ChatMemberAdministrator withCanManageChat(boolean canManageChat) {
+        return new ChatMemberAdministrator(status, user, canBeEdited, isAnonymous, canManageChat, canDeleteMessages, canManageVideoChats, canRestrictMembers, canPromoteMembers, canChangeInfo, canInviteUsers, canPostStories, canEditStories, canDeleteStories, canPostMessages, canEditMessages, canPinMessages, canManageTopics, canManageDirectMessages, canManageTags, customTitle);
+    }
+
+    public ChatMemberAdministrator withCanDeleteMessages(boolean canDeleteMessages) {
+        return new ChatMemberAdministrator(status, user, canBeEdited, isAnonymous, canManageChat, canDeleteMessages, canManageVideoChats, canRestrictMembers, canPromoteMembers, canChangeInfo, canInviteUsers, canPostStories, canEditStories, canDeleteStories, canPostMessages, canEditMessages, canPinMessages, canManageTopics, canManageDirectMessages, canManageTags, customTitle);
+    }
+
+    public ChatMemberAdministrator withCanManageVideoChats(boolean canManageVideoChats) {
+        return new ChatMemberAdministrator(status, user, canBeEdited, isAnonymous, canManageChat, canDeleteMessages, canManageVideoChats, canRestrictMembers, canPromoteMembers, canChangeInfo, canInviteUsers, canPostStories, canEditStories, canDeleteStories, canPostMessages, canEditMessages, canPinMessages, canManageTopics, canManageDirectMessages, canManageTags, customTitle);
+    }
+
+    public ChatMemberAdministrator withCanRestrictMembers(boolean canRestrictMembers) {
+        return new ChatMemberAdministrator(status, user, canBeEdited, isAnonymous, canManageChat, canDeleteMessages, canManageVideoChats, canRestrictMembers, canPromoteMembers, canChangeInfo, canInviteUsers, canPostStories, canEditStories, canDeleteStories, canPostMessages, canEditMessages, canPinMessages, canManageTopics, canManageDirectMessages, canManageTags, customTitle);
+    }
+
+    public ChatMemberAdministrator withCanPromoteMembers(boolean canPromoteMembers) {
+        return new ChatMemberAdministrator(status, user, canBeEdited, isAnonymous, canManageChat, canDeleteMessages, canManageVideoChats, canRestrictMembers, canPromoteMembers, canChangeInfo, canInviteUsers, canPostStories, canEditStories, canDeleteStories, canPostMessages, canEditMessages, canPinMessages, canManageTopics, canManageDirectMessages, canManageTags, customTitle);
+    }
+
+    public ChatMemberAdministrator withCanChangeInfo(boolean canChangeInfo) {
+        return new ChatMemberAdministrator(status, user, canBeEdited, isAnonymous, canManageChat, canDeleteMessages, canManageVideoChats, canRestrictMembers, canPromoteMembers, canChangeInfo, canInviteUsers, canPostStories, canEditStories, canDeleteStories, canPostMessages, canEditMessages, canPinMessages, canManageTopics, canManageDirectMessages, canManageTags, customTitle);
+    }
+
+    public ChatMemberAdministrator withCanInviteUsers(boolean canInviteUsers) {
+        return new ChatMemberAdministrator(status, user, canBeEdited, isAnonymous, canManageChat, canDeleteMessages, canManageVideoChats, canRestrictMembers, canPromoteMembers, canChangeInfo, canInviteUsers, canPostStories, canEditStories, canDeleteStories, canPostMessages, canEditMessages, canPinMessages, canManageTopics, canManageDirectMessages, canManageTags, customTitle);
+    }
+
+    public ChatMemberAdministrator withCanPostStories(boolean canPostStories) {
+        return new ChatMemberAdministrator(status, user, canBeEdited, isAnonymous, canManageChat, canDeleteMessages, canManageVideoChats, canRestrictMembers, canPromoteMembers, canChangeInfo, canInviteUsers, canPostStories, canEditStories, canDeleteStories, canPostMessages, canEditMessages, canPinMessages, canManageTopics, canManageDirectMessages, canManageTags, customTitle);
+    }
+
+    public ChatMemberAdministrator withCanEditStories(boolean canEditStories) {
+        return new ChatMemberAdministrator(status, user, canBeEdited, isAnonymous, canManageChat, canDeleteMessages, canManageVideoChats, canRestrictMembers, canPromoteMembers, canChangeInfo, canInviteUsers, canPostStories, canEditStories, canDeleteStories, canPostMessages, canEditMessages, canPinMessages, canManageTopics, canManageDirectMessages, canManageTags, customTitle);
+    }
+
+    public ChatMemberAdministrator withCanDeleteStories(boolean canDeleteStories) {
+        return new ChatMemberAdministrator(status, user, canBeEdited, isAnonymous, canManageChat, canDeleteMessages, canManageVideoChats, canRestrictMembers, canPromoteMembers, canChangeInfo, canInviteUsers, canPostStories, canEditStories, canDeleteStories, canPostMessages, canEditMessages, canPinMessages, canManageTopics, canManageDirectMessages, canManageTags, customTitle);
+    }
+
+    public ChatMemberAdministrator withCanPostMessages(@Nullable Boolean canPostMessages) {
+        return new ChatMemberAdministrator(status, user, canBeEdited, isAnonymous, canManageChat, canDeleteMessages, canManageVideoChats, canRestrictMembers, canPromoteMembers, canChangeInfo, canInviteUsers, canPostStories, canEditStories, canDeleteStories, canPostMessages, canEditMessages, canPinMessages, canManageTopics, canManageDirectMessages, canManageTags, customTitle);
+    }
+
+    public ChatMemberAdministrator withCanEditMessages(@Nullable Boolean canEditMessages) {
+        return new ChatMemberAdministrator(status, user, canBeEdited, isAnonymous, canManageChat, canDeleteMessages, canManageVideoChats, canRestrictMembers, canPromoteMembers, canChangeInfo, canInviteUsers, canPostStories, canEditStories, canDeleteStories, canPostMessages, canEditMessages, canPinMessages, canManageTopics, canManageDirectMessages, canManageTags, customTitle);
+    }
+
+    public ChatMemberAdministrator withCanPinMessages(@Nullable Boolean canPinMessages) {
+        return new ChatMemberAdministrator(status, user, canBeEdited, isAnonymous, canManageChat, canDeleteMessages, canManageVideoChats, canRestrictMembers, canPromoteMembers, canChangeInfo, canInviteUsers, canPostStories, canEditStories, canDeleteStories, canPostMessages, canEditMessages, canPinMessages, canManageTopics, canManageDirectMessages, canManageTags, customTitle);
+    }
+
+    public ChatMemberAdministrator withCanManageTopics(@Nullable Boolean canManageTopics) {
+        return new ChatMemberAdministrator(status, user, canBeEdited, isAnonymous, canManageChat, canDeleteMessages, canManageVideoChats, canRestrictMembers, canPromoteMembers, canChangeInfo, canInviteUsers, canPostStories, canEditStories, canDeleteStories, canPostMessages, canEditMessages, canPinMessages, canManageTopics, canManageDirectMessages, canManageTags, customTitle);
+    }
+
+    public ChatMemberAdministrator withCanManageDirectMessages(@Nullable Boolean canManageDirectMessages) {
+        return new ChatMemberAdministrator(status, user, canBeEdited, isAnonymous, canManageChat, canDeleteMessages, canManageVideoChats, canRestrictMembers, canPromoteMembers, canChangeInfo, canInviteUsers, canPostStories, canEditStories, canDeleteStories, canPostMessages, canEditMessages, canPinMessages, canManageTopics, canManageDirectMessages, canManageTags, customTitle);
+    }
+
+    public ChatMemberAdministrator withCanManageTags(@Nullable Boolean canManageTags) {
+        return new ChatMemberAdministrator(status, user, canBeEdited, isAnonymous, canManageChat, canDeleteMessages, canManageVideoChats, canRestrictMembers, canPromoteMembers, canChangeInfo, canInviteUsers, canPostStories, canEditStories, canDeleteStories, canPostMessages, canEditMessages, canPinMessages, canManageTopics, canManageDirectMessages, canManageTags, customTitle);
+    }
+
+    public ChatMemberAdministrator withCustomTitle(@Nullable String customTitle) {
+        return new ChatMemberAdministrator(status, user, canBeEdited, isAnonymous, canManageChat, canDeleteMessages, canManageVideoChats, canRestrictMembers, canPromoteMembers, canChangeInfo, canInviteUsers, canPostStories, canEditStories, canDeleteStories, canPostMessages, canEditMessages, canPinMessages, canManageTopics, canManageDirectMessages, canManageTags, customTitle);
+    }
+}

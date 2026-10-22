@@ -58,4 +58,48 @@ public record GetChatGifts(
     public static GetChatGifts of(ChatId chatId) {
         return new GetChatGifts(chatId, null, null, null, null, null, null, null, null, null, null);
     }
+
+    public GetChatGifts withChatId(ChatId chatId) {
+        return new GetChatGifts(chatId, excludeUnsaved, excludeSaved, excludeUnlimited, excludeLimitedUpgradable, excludeLimitedNonUpgradable, excludeFromBlockchain, excludeUnique, sortByPrice, offset, limit);
+    }
+
+    public GetChatGifts withExcludeUnsaved(@Nullable Boolean excludeUnsaved) {
+        return new GetChatGifts(chatId, excludeUnsaved, excludeSaved, excludeUnlimited, excludeLimitedUpgradable, excludeLimitedNonUpgradable, excludeFromBlockchain, excludeUnique, sortByPrice, offset, limit);
+    }
+
+    public GetChatGifts withExcludeSaved(@Nullable Boolean excludeSaved) {
+        return new GetChatGifts(chatId, excludeUnsaved, excludeSaved, excludeUnlimited, excludeLimitedUpgradable, excludeLimitedNonUpgradable, excludeFromBlockchain, excludeUnique, sortByPrice, offset, limit);
+    }
+
+    public GetChatGifts withExcludeUnlimited(@Nullable Boolean excludeUnlimited) {
+        return new GetChatGifts(chatId, excludeUnsaved, excludeSaved, excludeUnlimited, excludeLimitedUpgradable, excludeLimitedNonUpgradable, excludeFromBlockchain, excludeUnique, sortByPrice, offset, limit);
+    }
+
+    public GetChatGifts withExcludeLimitedUpgradable(@Nullable Boolean excludeLimitedUpgradable) {
+        return new GetChatGifts(chatId, excludeUnsaved, excludeSaved, excludeUnlimited, excludeLimitedUpgradable, excludeLimitedNonUpgradable, excludeFromBlockchain, excludeUnique, sortByPrice, offset, limit);
+    }
+
+    public GetChatGifts withExcludeLimitedNonUpgradable(@Nullable Boolean excludeLimitedNonUpgradable) {
+        return new GetChatGifts(chatId, excludeUnsaved, excludeSaved, excludeUnlimited, excludeLimitedUpgradable, excludeLimitedNonUpgradable, excludeFromBlockchain, excludeUnique, sortByPrice, offset, limit);
+    }
+
+    public GetChatGifts withExcludeFromBlockchain(@Nullable Boolean excludeFromBlockchain) {
+        return new GetChatGifts(chatId, excludeUnsaved, excludeSaved, excludeUnlimited, excludeLimitedUpgradable, excludeLimitedNonUpgradable, excludeFromBlockchain, excludeUnique, sortByPrice, offset, limit);
+    }
+
+    public GetChatGifts withExcludeUnique(@Nullable Boolean excludeUnique) {
+        return new GetChatGifts(chatId, excludeUnsaved, excludeSaved, excludeUnlimited, excludeLimitedUpgradable, excludeLimitedNonUpgradable, excludeFromBlockchain, excludeUnique, sortByPrice, offset, limit);
+    }
+
+    public GetChatGifts withSortByPrice(@Nullable Boolean sortByPrice) {
+        return new GetChatGifts(chatId, excludeUnsaved, excludeSaved, excludeUnlimited, excludeLimitedUpgradable, excludeLimitedNonUpgradable, excludeFromBlockchain, excludeUnique, sortByPrice, offset, limit);
+    }
+
+    public GetChatGifts withOffset(@Nullable String offset) {
+        return new GetChatGifts(chatId, excludeUnsaved, excludeSaved, excludeUnlimited, excludeLimitedUpgradable, excludeLimitedNonUpgradable, excludeFromBlockchain, excludeUnique, sortByPrice, offset, limit);
+    }
+
+    public GetChatGifts withLimit(@Nullable Long limit) {
+        return new GetChatGifts(chatId, excludeUnsaved, excludeSaved, excludeUnlimited, excludeLimitedUpgradable, excludeLimitedNonUpgradable, excludeFromBlockchain, excludeUnique, sortByPrice, offset, limit);
+    }
 }

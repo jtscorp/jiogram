@@ -102,4 +102,68 @@ public record SendVoice(
     public static SendVoice reply(Message message, InputFileOrString voice) {
         return new SendVoice(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), voice, null, null, null, null, null, null, null, null, null, ReplyTarget.replyTo(message), null);
     }
+
+    public SendVoice withBusinessConnectionId(@Nullable String businessConnectionId) {
+        return new SendVoice(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, voice, caption, parseMode, captionEntities, duration, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVoice withChatId(ChatId chatId) {
+        return new SendVoice(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, voice, caption, parseMode, captionEntities, duration, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVoice withMessageThreadId(@Nullable Long messageThreadId) {
+        return new SendVoice(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, voice, caption, parseMode, captionEntities, duration, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVoice withDirectMessagesTopicId(@Nullable Long directMessagesTopicId) {
+        return new SendVoice(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, voice, caption, parseMode, captionEntities, duration, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVoice withVoice(InputFileOrString voice) {
+        return new SendVoice(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, voice, caption, parseMode, captionEntities, duration, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVoice withCaption(@Nullable String caption) {
+        return new SendVoice(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, voice, caption, parseMode, captionEntities, duration, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVoice withParseMode(@Nullable ParseMode parseMode) {
+        return new SendVoice(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, voice, caption, parseMode, captionEntities, duration, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVoice withCaptionEntities(@Nullable List<MessageEntity> captionEntities) {
+        return new SendVoice(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, voice, caption, parseMode, captionEntities, duration, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVoice withDuration(@Nullable Long duration) {
+        return new SendVoice(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, voice, caption, parseMode, captionEntities, duration, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVoice withDisableNotification(@Nullable Boolean disableNotification) {
+        return new SendVoice(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, voice, caption, parseMode, captionEntities, duration, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVoice withProtectContent(@Nullable Boolean protectContent) {
+        return new SendVoice(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, voice, caption, parseMode, captionEntities, duration, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVoice withAllowPaidBroadcast(@Nullable Boolean allowPaidBroadcast) {
+        return new SendVoice(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, voice, caption, parseMode, captionEntities, duration, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVoice withMessageEffectId(@Nullable String messageEffectId) {
+        return new SendVoice(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, voice, caption, parseMode, captionEntities, duration, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVoice withSuggestedPostParameters(@Nullable SuggestedPostParameters suggestedPostParameters) {
+        return new SendVoice(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, voice, caption, parseMode, captionEntities, duration, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVoice withReplyParameters(@Nullable ReplyParameters replyParameters) {
+        return new SendVoice(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, voice, caption, parseMode, captionEntities, duration, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendVoice withReplyMarkup(@Nullable ReplyMarkup replyMarkup) {
+        return new SendVoice(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, voice, caption, parseMode, captionEntities, duration, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
 }

@@ -32,4 +32,12 @@ public record GetStarTransactions(
     public static GetStarTransactions of() {
         return new GetStarTransactions(null, null);
     }
+
+    public GetStarTransactions withOffset(@Nullable Long offset) {
+        return new GetStarTransactions(offset, limit);
+    }
+
+    public GetStarTransactions withLimit(@Nullable Long limit) {
+        return new GetStarTransactions(offset, limit);
+    }
 }

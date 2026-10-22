@@ -14,4 +14,13 @@ import java.util.List;
 public record PaidMediaInfo(
     @JsonProperty("star_count") long starCount,
     @JsonProperty("paid_media") List<PaidMedia> paidMedia
-) {}
+) {
+
+    public PaidMediaInfo withStarCount(long starCount) {
+        return new PaidMediaInfo(starCount, paidMedia);
+    }
+
+    public PaidMediaInfo withPaidMedia(List<PaidMedia> paidMedia) {
+        return new PaidMediaInfo(starCount, paidMedia);
+    }
+}

@@ -12,4 +12,9 @@ import java.util.List;
  */
 public record VideoChatParticipantsInvited(
     @JsonProperty("users") List<User> users
-) {}
+) {
+
+    public VideoChatParticipantsInvited withUsers(List<User> users) {
+        return new VideoChatParticipantsInvited(users);
+    }
+}

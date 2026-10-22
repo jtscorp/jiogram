@@ -18,4 +18,21 @@ public record ChatBoostRemoved(
     @JsonProperty("boost_id") String boostId,
     @JsonProperty("remove_date") long removeDate,
     @JsonProperty("source") ChatBoostSource source
-) {}
+) {
+
+    public ChatBoostRemoved withChat(Chat chat) {
+        return new ChatBoostRemoved(chat, boostId, removeDate, source);
+    }
+
+    public ChatBoostRemoved withBoostId(String boostId) {
+        return new ChatBoostRemoved(chat, boostId, removeDate, source);
+    }
+
+    public ChatBoostRemoved withRemoveDate(long removeDate) {
+        return new ChatBoostRemoved(chat, boostId, removeDate, source);
+    }
+
+    public ChatBoostRemoved withSource(ChatBoostSource source) {
+        return new ChatBoostRemoved(chat, boostId, removeDate, source);
+    }
+}

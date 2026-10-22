@@ -11,4 +11,9 @@ import io.jiogram.types.BackgroundType;
  */
 public record ChatBackground(
     @JsonProperty("type") BackgroundType type
-) {}
+) {
+
+    public ChatBackground withType(BackgroundType type) {
+        return new ChatBackground(type);
+    }
+}

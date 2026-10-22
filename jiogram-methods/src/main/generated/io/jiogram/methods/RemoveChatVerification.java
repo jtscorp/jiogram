@@ -25,4 +25,8 @@ public record RemoveChatVerification(
     public String apiReturnType() {
         return "Boolean";
     }
+
+    public RemoveChatVerification withChatId(ChatId chatId) {
+        return new RemoveChatVerification(chatId);
+    }
 }

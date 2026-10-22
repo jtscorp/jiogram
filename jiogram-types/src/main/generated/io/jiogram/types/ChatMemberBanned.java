@@ -18,4 +18,13 @@ public record ChatMemberBanned(
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY) ChatMemberType status,
     @JsonProperty("user") User user,
     @JsonProperty("until_date") long untilDate
-) implements ChatMember {}
+) implements ChatMember {
+
+    public ChatMemberBanned withUser(User user) {
+        return new ChatMemberBanned(status, user, untilDate);
+    }
+
+    public ChatMemberBanned withUntilDate(long untilDate) {
+        return new ChatMemberBanned(status, user, untilDate);
+    }
+}

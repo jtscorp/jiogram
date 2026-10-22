@@ -113,4 +113,80 @@ public record SendAudio(
     public static SendAudio reply(Message message, InputFileOrString audio) {
         return new SendAudio(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), audio, null, null, null, null, null, null, null, null, null, null, null, null, ReplyTarget.replyTo(message), null);
     }
+
+    public SendAudio withBusinessConnectionId(@Nullable String businessConnectionId) {
+        return new SendAudio(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, audio, caption, parseMode, captionEntities, duration, performer, title, thumbnail, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendAudio withChatId(ChatId chatId) {
+        return new SendAudio(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, audio, caption, parseMode, captionEntities, duration, performer, title, thumbnail, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendAudio withMessageThreadId(@Nullable Long messageThreadId) {
+        return new SendAudio(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, audio, caption, parseMode, captionEntities, duration, performer, title, thumbnail, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendAudio withDirectMessagesTopicId(@Nullable Long directMessagesTopicId) {
+        return new SendAudio(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, audio, caption, parseMode, captionEntities, duration, performer, title, thumbnail, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendAudio withAudio(InputFileOrString audio) {
+        return new SendAudio(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, audio, caption, parseMode, captionEntities, duration, performer, title, thumbnail, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendAudio withCaption(@Nullable String caption) {
+        return new SendAudio(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, audio, caption, parseMode, captionEntities, duration, performer, title, thumbnail, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendAudio withParseMode(@Nullable ParseMode parseMode) {
+        return new SendAudio(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, audio, caption, parseMode, captionEntities, duration, performer, title, thumbnail, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendAudio withCaptionEntities(@Nullable List<MessageEntity> captionEntities) {
+        return new SendAudio(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, audio, caption, parseMode, captionEntities, duration, performer, title, thumbnail, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendAudio withDuration(@Nullable Long duration) {
+        return new SendAudio(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, audio, caption, parseMode, captionEntities, duration, performer, title, thumbnail, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendAudio withPerformer(@Nullable String performer) {
+        return new SendAudio(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, audio, caption, parseMode, captionEntities, duration, performer, title, thumbnail, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendAudio withTitle(@Nullable String title) {
+        return new SendAudio(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, audio, caption, parseMode, captionEntities, duration, performer, title, thumbnail, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendAudio withThumbnail(@Nullable InputFileOrString thumbnail) {
+        return new SendAudio(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, audio, caption, parseMode, captionEntities, duration, performer, title, thumbnail, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendAudio withDisableNotification(@Nullable Boolean disableNotification) {
+        return new SendAudio(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, audio, caption, parseMode, captionEntities, duration, performer, title, thumbnail, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendAudio withProtectContent(@Nullable Boolean protectContent) {
+        return new SendAudio(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, audio, caption, parseMode, captionEntities, duration, performer, title, thumbnail, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendAudio withAllowPaidBroadcast(@Nullable Boolean allowPaidBroadcast) {
+        return new SendAudio(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, audio, caption, parseMode, captionEntities, duration, performer, title, thumbnail, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendAudio withMessageEffectId(@Nullable String messageEffectId) {
+        return new SendAudio(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, audio, caption, parseMode, captionEntities, duration, performer, title, thumbnail, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendAudio withSuggestedPostParameters(@Nullable SuggestedPostParameters suggestedPostParameters) {
+        return new SendAudio(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, audio, caption, parseMode, captionEntities, duration, performer, title, thumbnail, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendAudio withReplyParameters(@Nullable ReplyParameters replyParameters) {
+        return new SendAudio(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, audio, caption, parseMode, captionEntities, duration, performer, title, thumbnail, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendAudio withReplyMarkup(@Nullable ReplyMarkup replyMarkup) {
+        return new SendAudio(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, audio, caption, parseMode, captionEntities, duration, performer, title, thumbnail, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
 }

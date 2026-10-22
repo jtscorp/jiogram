@@ -22,4 +22,21 @@ public record BackgroundTypeWallpaper(
     @JsonProperty("dark_theme_dimming") long darkThemeDimming,
     @JsonProperty("is_blurred") @Nullable Boolean isBlurred,
     @JsonProperty("is_moving") @Nullable Boolean isMoving
-) implements BackgroundType {}
+) implements BackgroundType {
+
+    public BackgroundTypeWallpaper withDocument(Document document) {
+        return new BackgroundTypeWallpaper(type, document, darkThemeDimming, isBlurred, isMoving);
+    }
+
+    public BackgroundTypeWallpaper withDarkThemeDimming(long darkThemeDimming) {
+        return new BackgroundTypeWallpaper(type, document, darkThemeDimming, isBlurred, isMoving);
+    }
+
+    public BackgroundTypeWallpaper withIsBlurred(@Nullable Boolean isBlurred) {
+        return new BackgroundTypeWallpaper(type, document, darkThemeDimming, isBlurred, isMoving);
+    }
+
+    public BackgroundTypeWallpaper withIsMoving(@Nullable Boolean isMoving) {
+        return new BackgroundTypeWallpaper(type, document, darkThemeDimming, isBlurred, isMoving);
+    }
+}

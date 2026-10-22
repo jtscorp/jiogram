@@ -29,4 +29,29 @@ public record ChatJoinRequest(
     @JsonProperty("date") long date,
     @JsonProperty("bio") @Nullable String bio,
     @JsonProperty("invite_link") @Nullable ChatInviteLink inviteLink
-) {}
+) {
+
+    public ChatJoinRequest withChat(Chat chat) {
+        return new ChatJoinRequest(chat, from, userChatId, date, bio, inviteLink);
+    }
+
+    public ChatJoinRequest withFrom(User from) {
+        return new ChatJoinRequest(chat, from, userChatId, date, bio, inviteLink);
+    }
+
+    public ChatJoinRequest withUserChatId(long userChatId) {
+        return new ChatJoinRequest(chat, from, userChatId, date, bio, inviteLink);
+    }
+
+    public ChatJoinRequest withDate(long date) {
+        return new ChatJoinRequest(chat, from, userChatId, date, bio, inviteLink);
+    }
+
+    public ChatJoinRequest withBio(@Nullable String bio) {
+        return new ChatJoinRequest(chat, from, userChatId, date, bio, inviteLink);
+    }
+
+    public ChatJoinRequest withInviteLink(@Nullable ChatInviteLink inviteLink) {
+        return new ChatJoinRequest(chat, from, userChatId, date, bio, inviteLink);
+    }
+}

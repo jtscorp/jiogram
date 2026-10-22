@@ -45,4 +45,28 @@ public record AnswerInlineQuery(
     public static AnswerInlineQuery of(String inlineQueryId, List<InlineQueryResult> results) {
         return new AnswerInlineQuery(inlineQueryId, results, null, null, null, null);
     }
+
+    public AnswerInlineQuery withInlineQueryId(String inlineQueryId) {
+        return new AnswerInlineQuery(inlineQueryId, results, cacheTime, isPersonal, nextOffset, button);
+    }
+
+    public AnswerInlineQuery withResults(List<InlineQueryResult> results) {
+        return new AnswerInlineQuery(inlineQueryId, results, cacheTime, isPersonal, nextOffset, button);
+    }
+
+    public AnswerInlineQuery withCacheTime(@Nullable Long cacheTime) {
+        return new AnswerInlineQuery(inlineQueryId, results, cacheTime, isPersonal, nextOffset, button);
+    }
+
+    public AnswerInlineQuery withIsPersonal(@Nullable Boolean isPersonal) {
+        return new AnswerInlineQuery(inlineQueryId, results, cacheTime, isPersonal, nextOffset, button);
+    }
+
+    public AnswerInlineQuery withNextOffset(@Nullable String nextOffset) {
+        return new AnswerInlineQuery(inlineQueryId, results, cacheTime, isPersonal, nextOffset, button);
+    }
+
+    public AnswerInlineQuery withButton(@Nullable InlineQueryResultsButton button) {
+        return new AnswerInlineQuery(inlineQueryId, results, cacheTime, isPersonal, nextOffset, button);
+    }
 }

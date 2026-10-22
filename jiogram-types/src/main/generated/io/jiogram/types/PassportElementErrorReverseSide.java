@@ -20,4 +20,17 @@ public record PassportElementErrorReverseSide(
     @JsonProperty("type") PassportElementType type,
     @JsonProperty("file_hash") String fileHash,
     @JsonProperty("message") String message
-) implements PassportElementError {}
+) implements PassportElementError {
+
+    public PassportElementErrorReverseSide withType(PassportElementType type) {
+        return new PassportElementErrorReverseSide(source, type, fileHash, message);
+    }
+
+    public PassportElementErrorReverseSide withFileHash(String fileHash) {
+        return new PassportElementErrorReverseSide(source, type, fileHash, message);
+    }
+
+    public PassportElementErrorReverseSide withMessage(String message) {
+        return new PassportElementErrorReverseSide(source, type, fileHash, message);
+    }
+}

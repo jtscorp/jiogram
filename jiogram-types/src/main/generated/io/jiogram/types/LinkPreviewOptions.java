@@ -24,4 +24,25 @@ public record LinkPreviewOptions(
     @JsonProperty("prefer_small_media") @Nullable Boolean preferSmallMedia,
     @JsonProperty("prefer_large_media") @Nullable Boolean preferLargeMedia,
     @JsonProperty("show_above_text") @Nullable Boolean showAboveText
-) {}
+) {
+
+    public LinkPreviewOptions withIsDisabled(@Nullable Boolean isDisabled) {
+        return new LinkPreviewOptions(isDisabled, url, preferSmallMedia, preferLargeMedia, showAboveText);
+    }
+
+    public LinkPreviewOptions withUrl(@Nullable String url) {
+        return new LinkPreviewOptions(isDisabled, url, preferSmallMedia, preferLargeMedia, showAboveText);
+    }
+
+    public LinkPreviewOptions withPreferSmallMedia(@Nullable Boolean preferSmallMedia) {
+        return new LinkPreviewOptions(isDisabled, url, preferSmallMedia, preferLargeMedia, showAboveText);
+    }
+
+    public LinkPreviewOptions withPreferLargeMedia(@Nullable Boolean preferLargeMedia) {
+        return new LinkPreviewOptions(isDisabled, url, preferSmallMedia, preferLargeMedia, showAboveText);
+    }
+
+    public LinkPreviewOptions withShowAboveText(@Nullable Boolean showAboveText) {
+        return new LinkPreviewOptions(isDisabled, url, preferSmallMedia, preferLargeMedia, showAboveText);
+    }
+}

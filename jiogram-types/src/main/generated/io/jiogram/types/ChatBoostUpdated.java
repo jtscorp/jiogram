@@ -14,4 +14,13 @@ import io.jiogram.types.ChatBoost;
 public record ChatBoostUpdated(
     @JsonProperty("chat") Chat chat,
     @JsonProperty("boost") ChatBoost boost
-) {}
+) {
+
+    public ChatBoostUpdated withChat(Chat chat) {
+        return new ChatBoostUpdated(chat, boost);
+    }
+
+    public ChatBoostUpdated withBoost(ChatBoost boost) {
+        return new ChatBoostUpdated(chat, boost);
+    }
+}

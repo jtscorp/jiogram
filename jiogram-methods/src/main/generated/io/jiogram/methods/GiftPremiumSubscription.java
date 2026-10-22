@@ -48,4 +48,28 @@ public record GiftPremiumSubscription(
     public static GiftPremiumSubscription of(long userId, long monthCount, long starCount) {
         return new GiftPremiumSubscription(userId, monthCount, starCount, null, null, null);
     }
+
+    public GiftPremiumSubscription withUserId(long userId) {
+        return new GiftPremiumSubscription(userId, monthCount, starCount, text, textParseMode, textEntities);
+    }
+
+    public GiftPremiumSubscription withMonthCount(long monthCount) {
+        return new GiftPremiumSubscription(userId, monthCount, starCount, text, textParseMode, textEntities);
+    }
+
+    public GiftPremiumSubscription withStarCount(long starCount) {
+        return new GiftPremiumSubscription(userId, monthCount, starCount, text, textParseMode, textEntities);
+    }
+
+    public GiftPremiumSubscription withText(@Nullable String text) {
+        return new GiftPremiumSubscription(userId, monthCount, starCount, text, textParseMode, textEntities);
+    }
+
+    public GiftPremiumSubscription withTextParseMode(@Nullable ParseMode textParseMode) {
+        return new GiftPremiumSubscription(userId, monthCount, starCount, text, textParseMode, textEntities);
+    }
+
+    public GiftPremiumSubscription withTextEntities(@Nullable List<MessageEntity> textEntities) {
+        return new GiftPremiumSubscription(userId, monthCount, starCount, text, textParseMode, textEntities);
+    }
 }

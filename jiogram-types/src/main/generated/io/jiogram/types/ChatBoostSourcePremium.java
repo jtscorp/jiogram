@@ -15,4 +15,9 @@ import io.jiogram.types.User;
 public record ChatBoostSourcePremium(
     @JsonProperty(value = "source", access = JsonProperty.Access.WRITE_ONLY) ChatBoostSourceType source,
     @JsonProperty("user") User user
-) implements ChatBoostSource {}
+) implements ChatBoostSource {
+
+    public ChatBoostSourcePremium withUser(User user) {
+        return new ChatBoostSourcePremium(source, user);
+    }
+}

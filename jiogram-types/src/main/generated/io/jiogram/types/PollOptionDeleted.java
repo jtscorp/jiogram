@@ -22,4 +22,21 @@ public record PollOptionDeleted(
     @JsonProperty("option_persistent_id") String optionPersistentId,
     @JsonProperty("option_text") String optionText,
     @JsonProperty("option_text_entities") @Nullable List<MessageEntity> optionTextEntities
-) {}
+) {
+
+    public PollOptionDeleted withPollMessage(@Nullable MaybeInaccessibleMessage pollMessage) {
+        return new PollOptionDeleted(pollMessage, optionPersistentId, optionText, optionTextEntities);
+    }
+
+    public PollOptionDeleted withOptionPersistentId(String optionPersistentId) {
+        return new PollOptionDeleted(pollMessage, optionPersistentId, optionText, optionTextEntities);
+    }
+
+    public PollOptionDeleted withOptionText(String optionText) {
+        return new PollOptionDeleted(pollMessage, optionPersistentId, optionText, optionTextEntities);
+    }
+
+    public PollOptionDeleted withOptionTextEntities(@Nullable List<MessageEntity> optionTextEntities) {
+        return new PollOptionDeleted(pollMessage, optionPersistentId, optionText, optionTextEntities);
+    }
+}

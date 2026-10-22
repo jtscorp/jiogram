@@ -45,4 +45,57 @@ public record Gift(
     @JsonProperty("background") @Nullable GiftBackground background,
     @JsonProperty("unique_gift_variant_count") @Nullable Long uniqueGiftVariantCount,
     @JsonProperty("publisher_chat") @Nullable Chat publisherChat
-) {}
+) {
+
+    public Gift withId(String id) {
+        return new Gift(id, sticker, starCount, upgradeStarCount, isPremium, hasColors, totalCount, remainingCount, personalTotalCount, personalRemainingCount, background, uniqueGiftVariantCount, publisherChat);
+    }
+
+    public Gift withSticker(Sticker sticker) {
+        return new Gift(id, sticker, starCount, upgradeStarCount, isPremium, hasColors, totalCount, remainingCount, personalTotalCount, personalRemainingCount, background, uniqueGiftVariantCount, publisherChat);
+    }
+
+    public Gift withStarCount(long starCount) {
+        return new Gift(id, sticker, starCount, upgradeStarCount, isPremium, hasColors, totalCount, remainingCount, personalTotalCount, personalRemainingCount, background, uniqueGiftVariantCount, publisherChat);
+    }
+
+    public Gift withUpgradeStarCount(@Nullable Long upgradeStarCount) {
+        return new Gift(id, sticker, starCount, upgradeStarCount, isPremium, hasColors, totalCount, remainingCount, personalTotalCount, personalRemainingCount, background, uniqueGiftVariantCount, publisherChat);
+    }
+
+    public Gift withIsPremium(@Nullable Boolean isPremium) {
+        return new Gift(id, sticker, starCount, upgradeStarCount, isPremium, hasColors, totalCount, remainingCount, personalTotalCount, personalRemainingCount, background, uniqueGiftVariantCount, publisherChat);
+    }
+
+    public Gift withHasColors(@Nullable Boolean hasColors) {
+        return new Gift(id, sticker, starCount, upgradeStarCount, isPremium, hasColors, totalCount, remainingCount, personalTotalCount, personalRemainingCount, background, uniqueGiftVariantCount, publisherChat);
+    }
+
+    public Gift withTotalCount(@Nullable Long totalCount) {
+        return new Gift(id, sticker, starCount, upgradeStarCount, isPremium, hasColors, totalCount, remainingCount, personalTotalCount, personalRemainingCount, background, uniqueGiftVariantCount, publisherChat);
+    }
+
+    public Gift withRemainingCount(@Nullable Long remainingCount) {
+        return new Gift(id, sticker, starCount, upgradeStarCount, isPremium, hasColors, totalCount, remainingCount, personalTotalCount, personalRemainingCount, background, uniqueGiftVariantCount, publisherChat);
+    }
+
+    public Gift withPersonalTotalCount(@Nullable Long personalTotalCount) {
+        return new Gift(id, sticker, starCount, upgradeStarCount, isPremium, hasColors, totalCount, remainingCount, personalTotalCount, personalRemainingCount, background, uniqueGiftVariantCount, publisherChat);
+    }
+
+    public Gift withPersonalRemainingCount(@Nullable Long personalRemainingCount) {
+        return new Gift(id, sticker, starCount, upgradeStarCount, isPremium, hasColors, totalCount, remainingCount, personalTotalCount, personalRemainingCount, background, uniqueGiftVariantCount, publisherChat);
+    }
+
+    public Gift withBackground(@Nullable GiftBackground background) {
+        return new Gift(id, sticker, starCount, upgradeStarCount, isPremium, hasColors, totalCount, remainingCount, personalTotalCount, personalRemainingCount, background, uniqueGiftVariantCount, publisherChat);
+    }
+
+    public Gift withUniqueGiftVariantCount(@Nullable Long uniqueGiftVariantCount) {
+        return new Gift(id, sticker, starCount, upgradeStarCount, isPremium, hasColors, totalCount, remainingCount, personalTotalCount, personalRemainingCount, background, uniqueGiftVariantCount, publisherChat);
+    }
+
+    public Gift withPublisherChat(@Nullable Chat publisherChat) {
+        return new Gift(id, sticker, starCount, upgradeStarCount, isPremium, hasColors, totalCount, remainingCount, personalTotalCount, personalRemainingCount, background, uniqueGiftVariantCount, publisherChat);
+    }
+}

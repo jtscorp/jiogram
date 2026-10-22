@@ -31,4 +31,12 @@ public record VerifyUser(
     public static VerifyUser of(long userId) {
         return new VerifyUser(userId, null);
     }
+
+    public VerifyUser withUserId(long userId) {
+        return new VerifyUser(userId, customDescription);
+    }
+
+    public VerifyUser withCustomDescription(@Nullable String customDescription) {
+        return new VerifyUser(userId, customDescription);
+    }
 }

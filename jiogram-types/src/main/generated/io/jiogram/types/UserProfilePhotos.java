@@ -14,4 +14,13 @@ import java.util.List;
 public record UserProfilePhotos(
     @JsonProperty("total_count") long totalCount,
     @JsonProperty("photos") List<List<PhotoSize>> photos
-) {}
+) {
+
+    public UserProfilePhotos withTotalCount(long totalCount) {
+        return new UserProfilePhotos(totalCount, photos);
+    }
+
+    public UserProfilePhotos withPhotos(List<List<PhotoSize>> photos) {
+        return new UserProfilePhotos(totalCount, photos);
+    }
+}

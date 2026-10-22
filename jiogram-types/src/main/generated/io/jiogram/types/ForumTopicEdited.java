@@ -14,4 +14,13 @@ import org.jspecify.annotations.Nullable;
 public record ForumTopicEdited(
     @JsonProperty("name") @Nullable String name,
     @JsonProperty("icon_custom_emoji_id") @Nullable String iconCustomEmojiId
-) {}
+) {
+
+    public ForumTopicEdited withName(@Nullable String name) {
+        return new ForumTopicEdited(name, iconCustomEmojiId);
+    }
+
+    public ForumTopicEdited withIconCustomEmojiId(@Nullable String iconCustomEmojiId) {
+        return new ForumTopicEdited(name, iconCustomEmojiId);
+    }
+}

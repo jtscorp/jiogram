@@ -20,4 +20,17 @@ public record InputPollOption(
     @JsonProperty("text") String text,
     @JsonProperty("text_parse_mode") @Nullable ParseMode textParseMode,
     @JsonProperty("text_entities") @Nullable List<MessageEntity> textEntities
-) {}
+) {
+
+    public InputPollOption withText(String text) {
+        return new InputPollOption(text, textParseMode, textEntities);
+    }
+
+    public InputPollOption withTextParseMode(@Nullable ParseMode textParseMode) {
+        return new InputPollOption(text, textParseMode, textEntities);
+    }
+
+    public InputPollOption withTextEntities(@Nullable List<MessageEntity> textEntities) {
+        return new InputPollOption(text, textParseMode, textEntities);
+    }
+}

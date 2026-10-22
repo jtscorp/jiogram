@@ -34,4 +34,16 @@ public record GetUserProfileAudios(
     public static GetUserProfileAudios of(long userId) {
         return new GetUserProfileAudios(userId, null, null);
     }
+
+    public GetUserProfileAudios withUserId(long userId) {
+        return new GetUserProfileAudios(userId, offset, limit);
+    }
+
+    public GetUserProfileAudios withOffset(@Nullable Long offset) {
+        return new GetUserProfileAudios(userId, offset, limit);
+    }
+
+    public GetUserProfileAudios withLimit(@Nullable Long limit) {
+        return new GetUserProfileAudios(userId, offset, limit);
+    }
 }

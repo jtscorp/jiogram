@@ -38,4 +38,16 @@ public record UnbanChatMember(
     public static UnbanChatMember of(ChatId chatId, long userId) {
         return new UnbanChatMember(chatId, userId, null);
     }
+
+    public UnbanChatMember withChatId(ChatId chatId) {
+        return new UnbanChatMember(chatId, userId, onlyIfBanned);
+    }
+
+    public UnbanChatMember withUserId(long userId) {
+        return new UnbanChatMember(chatId, userId, onlyIfBanned);
+    }
+
+    public UnbanChatMember withOnlyIfBanned(@Nullable Boolean onlyIfBanned) {
+        return new UnbanChatMember(chatId, userId, onlyIfBanned);
+    }
 }

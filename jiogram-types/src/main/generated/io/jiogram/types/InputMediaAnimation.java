@@ -46,4 +46,45 @@ public record InputMediaAnimation(
     @JsonProperty("height") @Nullable Long height,
     @JsonProperty("duration") @Nullable Long duration,
     @JsonProperty("has_spoiler") @Nullable Boolean hasSpoiler
-) implements InputMedia {}
+) implements InputMedia {
+
+    public InputMediaAnimation withMedia(InputFileOrString media) {
+        return new InputMediaAnimation(type, media, thumbnail, caption, parseMode, captionEntities, showCaptionAboveMedia, width, height, duration, hasSpoiler);
+    }
+
+    public InputMediaAnimation withThumbnail(@Nullable InputFileOrString thumbnail) {
+        return new InputMediaAnimation(type, media, thumbnail, caption, parseMode, captionEntities, showCaptionAboveMedia, width, height, duration, hasSpoiler);
+    }
+
+    public InputMediaAnimation withCaption(@Nullable String caption) {
+        return new InputMediaAnimation(type, media, thumbnail, caption, parseMode, captionEntities, showCaptionAboveMedia, width, height, duration, hasSpoiler);
+    }
+
+    public InputMediaAnimation withParseMode(@Nullable ParseMode parseMode) {
+        return new InputMediaAnimation(type, media, thumbnail, caption, parseMode, captionEntities, showCaptionAboveMedia, width, height, duration, hasSpoiler);
+    }
+
+    public InputMediaAnimation withCaptionEntities(@Nullable List<MessageEntity> captionEntities) {
+        return new InputMediaAnimation(type, media, thumbnail, caption, parseMode, captionEntities, showCaptionAboveMedia, width, height, duration, hasSpoiler);
+    }
+
+    public InputMediaAnimation withShowCaptionAboveMedia(@Nullable Boolean showCaptionAboveMedia) {
+        return new InputMediaAnimation(type, media, thumbnail, caption, parseMode, captionEntities, showCaptionAboveMedia, width, height, duration, hasSpoiler);
+    }
+
+    public InputMediaAnimation withWidth(@Nullable Long width) {
+        return new InputMediaAnimation(type, media, thumbnail, caption, parseMode, captionEntities, showCaptionAboveMedia, width, height, duration, hasSpoiler);
+    }
+
+    public InputMediaAnimation withHeight(@Nullable Long height) {
+        return new InputMediaAnimation(type, media, thumbnail, caption, parseMode, captionEntities, showCaptionAboveMedia, width, height, duration, hasSpoiler);
+    }
+
+    public InputMediaAnimation withDuration(@Nullable Long duration) {
+        return new InputMediaAnimation(type, media, thumbnail, caption, parseMode, captionEntities, showCaptionAboveMedia, width, height, duration, hasSpoiler);
+    }
+
+    public InputMediaAnimation withHasSpoiler(@Nullable Boolean hasSpoiler) {
+        return new InputMediaAnimation(type, media, thumbnail, caption, parseMode, captionEntities, showCaptionAboveMedia, width, height, duration, hasSpoiler);
+    }
+}

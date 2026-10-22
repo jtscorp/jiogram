@@ -22,4 +22,25 @@ public record Voice(
     @JsonProperty("duration") long duration,
     @JsonProperty("mime_type") @Nullable String mimeType,
     @JsonProperty("file_size") @Nullable Long fileSize
-) {}
+) {
+
+    public Voice withFileId(String fileId) {
+        return new Voice(fileId, fileUniqueId, duration, mimeType, fileSize);
+    }
+
+    public Voice withFileUniqueId(String fileUniqueId) {
+        return new Voice(fileId, fileUniqueId, duration, mimeType, fileSize);
+    }
+
+    public Voice withDuration(long duration) {
+        return new Voice(fileId, fileUniqueId, duration, mimeType, fileSize);
+    }
+
+    public Voice withMimeType(@Nullable String mimeType) {
+        return new Voice(fileId, fileUniqueId, duration, mimeType, fileSize);
+    }
+
+    public Voice withFileSize(@Nullable Long fileSize) {
+        return new Voice(fileId, fileUniqueId, duration, mimeType, fileSize);
+    }
+}

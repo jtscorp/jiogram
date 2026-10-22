@@ -25,4 +25,21 @@ public record File(
     @JsonProperty("file_unique_id") String fileUniqueId,
     @JsonProperty("file_size") @Nullable Long fileSize,
     @JsonProperty("file_path") @Nullable String filePath
-) {}
+) {
+
+    public File withFileId(String fileId) {
+        return new File(fileId, fileUniqueId, fileSize, filePath);
+    }
+
+    public File withFileUniqueId(String fileUniqueId) {
+        return new File(fileId, fileUniqueId, fileSize, filePath);
+    }
+
+    public File withFileSize(@Nullable Long fileSize) {
+        return new File(fileId, fileUniqueId, fileSize, filePath);
+    }
+
+    public File withFilePath(@Nullable String filePath) {
+        return new File(fileId, fileUniqueId, fileSize, filePath);
+    }
+}

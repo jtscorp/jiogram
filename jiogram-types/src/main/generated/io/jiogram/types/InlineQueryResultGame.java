@@ -19,4 +19,17 @@ public record InlineQueryResultGame(
     @JsonProperty("id") String id,
     @JsonProperty("game_short_name") String gameShortName,
     @JsonProperty("reply_markup") @Nullable InlineKeyboardMarkup replyMarkup
-) implements InlineQueryResult {}
+) implements InlineQueryResult {
+
+    public InlineQueryResultGame withId(String id) {
+        return new InlineQueryResultGame(type, id, gameShortName, replyMarkup);
+    }
+
+    public InlineQueryResultGame withGameShortName(String gameShortName) {
+        return new InlineQueryResultGame(type, id, gameShortName, replyMarkup);
+    }
+
+    public InlineQueryResultGame withReplyMarkup(@Nullable InlineKeyboardMarkup replyMarkup) {
+        return new InlineQueryResultGame(type, id, gameShortName, replyMarkup);
+    }
+}

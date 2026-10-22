@@ -26,4 +26,8 @@ public record GetChat(
     public String apiReturnType() {
         return "ChatFullInfo";
     }
+
+    public GetChat withChatId(ChatId chatId) {
+        return new GetChat(chatId);
+    }
 }
