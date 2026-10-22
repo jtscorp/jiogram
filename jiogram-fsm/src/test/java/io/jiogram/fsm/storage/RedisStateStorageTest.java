@@ -15,12 +15,17 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Testcontainers(disabledWithoutDocker = true)
@@ -88,6 +93,89 @@ class RedisStateStorageTest {
                 assertFalse(exists.getT2());
             })
             .verifyComplete();
+    }
+
+    @Test
+    void withoutTtl_keysDoNotExpire() {
+        StepVerifier.create(storage.setState(key, "Form.NAME")
+                .then(storage.updateData(key, Map.of("a", 1)))
+                .then(pttl(storage.buildKey(key, "state")).zipWith(pttl(storage.buildKey(key, "data")))))
+            .assertNext(expiries -> {
+                assertEquals(NO_EXPIRY, expiries.getT1());
+                assertEquals(NO_EXPIRY, expiries.getT2());
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    void ttl_isSetByEveryWrite_andTheKeysExpire() {
+        var expiring = new RedisStateStorage(redis,
+            new RedisStateStorage.Settings("jiogram:fsm", Duration.ofMinutes(5), Duration.ofSeconds(2)));
+
+        StepVerifier.create(expiring.setState(key, "Form.NAME")
+                .then(expiring.setData(key, Map.of("a", 1)))
+                .then(expiring.updateData(key, Map.of("b", 2)))
+                .then(redis.getExpire(expiring.buildKey(key, "state")).zipWith(redis.getExpire(expiring.buildKey(key, "data")))))
+            .assertNext(expiries -> {
+                assertTrue(expiries.getT1().compareTo(Duration.ofMinutes(4)) > 0, expiries.getT1().toString());
+                assertTrue(expiries.getT1().compareTo(Duration.ofMinutes(5)) <= 0, expiries.getT1().toString());
+                assertTrue(expiries.getT2().compareTo(Duration.ZERO) > 0, expiries.getT2().toString());
+                assertTrue(expiries.getT2().compareTo(Duration.ofSeconds(2)) <= 0, expiries.getT2().toString());
+            })
+            .verifyComplete();
+
+        // updateData (the compare-and-set script) kept the TTL, so the data is gone after it.
+        await().atMost(Duration.ofSeconds(5))
+            .until(() -> Boolean.FALSE.equals(redis.hasKey(expiring.buildKey(key, "data")).block()));
+        StepVerifier.create(expiring.getData(key))
+            .assertNext(data -> assertTrue(data.isEmpty()))
+            .verifyComplete();
+        StepVerifier.create(expiring.getState(key))
+            .assertNext(state -> assertEquals("Form.NAME", state))
+            .verifyComplete();
+    }
+
+    @Test
+    void updateData_withoutTtl_removesAnExpiryLeftByAnEarlierTtlSetting() {
+        var expiring = new RedisStateStorage(redis,
+            new RedisStateStorage.Settings("jiogram:fsm", null, Duration.ofMinutes(5)));
+
+        StepVerifier.create(expiring.updateData(key, Map.of("a", 1))
+                .then(storage.updateData(key, Map.of("b", 2)))
+                .then(pttl(storage.buildKey(key, "data"))))
+            .assertNext(expiry -> assertEquals(NO_EXPIRY, expiry))
+            .verifyComplete();
+    }
+
+    @Test
+    void customKeyPrefix_isUsedForEveryKey() {
+        var prefixed = new RedisStateStorage(redis, new RedisStateStorage.Settings("shop-bot:fsm", null, null));
+
+        assertEquals("shop-bot:fsm:1:-1001234567890:7000000000:-:default:state", prefixed.buildKey(key, "state"));
+        StepVerifier.create(prefixed.setState(key, "Form.NAME")
+                .then(prefixed.updateData(key, Map.of("a", 1)))
+                .thenMany(redis.keys("*").sort()))
+            .expectNext("shop-bot:fsm:1:-1001234567890:7000000000:-:default:data")
+            .expectNext("shop-bot:fsm:1:-1001234567890:7000000000:-:default:state")
+            .verifyComplete();
+    }
+
+    /** Redis PTTL: -1 for a key without expiry (-2 would mean the key does not exist). */
+    private static final long NO_EXPIRY = -1;
+
+    private static Mono<Long> pttl(String redisKey) {
+        return redis.execute(connection -> connection.keyCommands()
+                .pTtl(ByteBuffer.wrap(redisKey.getBytes(StandardCharsets.UTF_8))))
+            .next();
+    }
+
+    @Test
+    void invalidSettings_areRejected() {
+        assertThrows(IllegalArgumentException.class, () -> new RedisStateStorage.Settings(" ", null, null));
+        assertThrows(IllegalArgumentException.class,
+            () -> new RedisStateStorage.Settings("jiogram:fsm", Duration.ZERO, null));
+        assertThrows(IllegalArgumentException.class,
+            () -> new RedisStateStorage.Settings("jiogram:fsm", null, Duration.ofNanos(10)));
     }
 
     @Test

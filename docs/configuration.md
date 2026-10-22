@@ -67,6 +67,13 @@ telegram:
     strategy: USER_IN_CHAT
     # Storage backend: memory or redis (default: memory)
     storage: memory
+    # Redis storage only
+    redis:
+      # First segment(s) of every key (default: jiogram:fsm)
+      key-prefix: jiogram:fsm
+      # Expire a state / data this long after it last changed (default: no expiry)
+      state-ttl: 7d
+      data-ttl: 7d
 
   # Handler execution
   handlers:
@@ -158,6 +165,9 @@ Configuration for the Finite State Machine subsystem.
 | `enabled` | `boolean` | `true` | When `true`, the `FSMMiddleware` is registered on the dispatcher. Set to `false` to disable FSM. |
 | `strategy` | `String` | `USER_IN_CHAT` | How the storage key is resolved. One of: `USER_IN_CHAT`, `CHAT`, `USER`, `USER_IN_TOPIC`, `CHAT_TOPIC`. See [core concepts](core-concepts.md#4-fsm-strategy). |
 | `storage` | `String` | `memory` | Storage backend. `memory` uses an in-memory `ConcurrentHashMap`. `redis` uses Spring Data Redis (requires `spring-boot-starter-data-redis` on classpath). |
+| `redis.key-prefix` | `String` | `jiogram:fsm` | First segment(s) of every Redis key, e.g. to keep several bots apart in one Redis database. Keys look like `{prefix}:{botId}:{chatId}:{userId}:{threadId}:{destiny}:state` (or `:data`). |
+| `redis.state-ttl` | `Duration` | none | Like aiogram's `state_ttl`: a state key expires this long after it was last written. Unset keeps states until cleared. |
+| `redis.data-ttl` | `Duration` | none | Like aiogram's `data_ttl`, for the data key. Every write (`setData`, `updateData`) sets the TTL again. |
 
 ### telegram.handlers
 

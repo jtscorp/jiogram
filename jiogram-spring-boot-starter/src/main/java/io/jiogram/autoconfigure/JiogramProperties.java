@@ -131,11 +131,26 @@ public record JiogramProperties(
      * @param enabled  whether FSM support is enabled
      * @param strategy the FSM key resolution strategy
      * @param storage  the storage backend type (memory, redis)
+     * @param redis    settings of the Redis storage
      */
     public record FsmProperties(
         @DefaultValue("true") boolean enabled,
         @DefaultValue("USER_IN_CHAT") FSMStrategy strategy,
-        @DefaultValue("memory") String storage
+        @DefaultValue("memory") String storage,
+        @DefaultValue RedisProperties redis
+    ) {}
+
+    /**
+     * Redis FSM storage settings, used when {@code telegram.fsm.storage=redis}.
+     *
+     * @param keyPrefix first segment(s) of every key
+     * @param stateTtl  how long a state lives after it last changed; unset for no expiry
+     * @param dataTtl   how long data lives after it last changed; unset for no expiry
+     */
+    public record RedisProperties(
+        @DefaultValue("jiogram:fsm") String keyPrefix,
+        Duration stateTtl,
+        Duration dataTtl
     ) {}
 
     /**
