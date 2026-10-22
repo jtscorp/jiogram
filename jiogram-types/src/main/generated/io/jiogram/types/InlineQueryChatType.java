@@ -3,6 +3,9 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+/**
+ * Type of chat where an inline query was sent.
+ */
 public enum InlineQueryChatType {
     SENDER("sender"),
     PRIVATE("private"),

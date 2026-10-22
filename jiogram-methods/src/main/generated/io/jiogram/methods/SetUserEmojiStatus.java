@@ -4,6 +4,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.TelegramMethod;
 import org.jspecify.annotations.Nullable;
 
+/**
+ * Changes the emoji status for a given user that previously allowed the bot to manage their emoji
+ * status via the Mini App method requestEmojiStatusAccess. Returns True on success.
+ *
+ * @param userId Unique identifier of the target user
+ * @param emojiStatusCustomEmojiId Custom emoji identifier of the emoji status to set. Pass an empty
+ *     string to remove the status.
+ * @param emojiStatusExpirationDate Expiration date of the emoji status, if any
+ * @see <a href="https://core.telegram.org/bots/api#setuseremojistatus">setUserEmojiStatus in the Bot API</a>
+ */
 public record SetUserEmojiStatus(
     @JsonProperty("user_id") long userId,
     @JsonProperty("emoji_status_custom_emoji_id") @Nullable String emojiStatusCustomEmojiId,

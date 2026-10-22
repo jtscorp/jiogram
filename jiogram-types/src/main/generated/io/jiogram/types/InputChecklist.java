@@ -7,6 +7,20 @@ import io.jiogram.types.ParseMode;
 import java.util.List;
 import org.jspecify.annotations.Nullable;
 
+/**
+ * Describes a checklist to create.
+ *
+ * @param title Title of the checklist; 1-255 characters after entities parsing
+ * @param parseMode Mode for parsing entities in the title. See formatting options for more details.
+ * @param titleEntities List of special entities that appear in the title, which can be specified
+ *     instead of parse_mode. Currently, only bold, italic, underline, strikethrough, spoiler,
+ *     custom_emoji, and date_time entities are allowed.
+ * @param tasks List of 1-30 tasks in the checklist
+ * @param othersCanAddTasks Pass True if other users can add tasks to the checklist
+ * @param othersCanMarkTasksAsDone Pass True if other users can mark tasks as done or not done in
+ *     the checklist
+ * @see <a href="https://core.telegram.org/bots/api#inputchecklist">InputChecklist in the Bot API</a>
+ */
 public record InputChecklist(
     @JsonProperty("title") String title,
     @JsonProperty("parse_mode") @Nullable ParseMode parseMode,

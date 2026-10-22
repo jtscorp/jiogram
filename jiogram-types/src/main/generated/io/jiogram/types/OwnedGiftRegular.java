@@ -8,6 +8,35 @@ import io.jiogram.types.User;
 import java.util.List;
 import org.jspecify.annotations.Nullable;
 
+/**
+ * Describes a regular gift owned by a user or a chat.
+ *
+ * @param type Type of the gift, always 'regular'
+ * @param gift Information about the regular gift
+ * @param ownedGiftId Unique identifier of the gift for the bot; for gifts received on behalf of
+ *     business accounts only
+ * @param senderUser Sender of the gift if it is a known user
+ * @param sendDate Date the gift was sent in Unix time
+ * @param text Text of the message that was added to the gift
+ * @param entities Special entities that appear in the text
+ * @param isPrivate True, if the sender and gift text are shown only to the gift receiver;
+ *     otherwise, everyone will be able to see them
+ * @param isSaved True, if the gift is displayed on the account's profile page; for gifts received
+ *     on behalf of business accounts only
+ * @param canBeUpgraded True, if the gift can be upgraded to a unique gift; for gifts received on
+ *     behalf of business accounts only
+ * @param wasRefunded True, if the gift was refunded and isn't available anymore
+ * @param convertStarCount Number of Telegram Stars that can be claimed by the receiver instead of
+ *     the gift; omitted if the gift cannot be converted to Telegram Stars; for gifts received on
+ *     behalf of business accounts only
+ * @param prepaidUpgradeStarCount Number of Telegram Stars that were paid for the ability to upgrade
+ *     the gift
+ * @param isUpgradeSeparate True, if the gift's upgrade was purchased after the gift was sent; for
+ *     gifts received on behalf of business accounts only
+ * @param uniqueGiftNumber Unique number reserved for this gift when upgraded. See the number field
+ *     in UniqueGift
+ * @see <a href="https://core.telegram.org/bots/api#ownedgiftregular">OwnedGiftRegular in the Bot API</a>
+ */
 public record OwnedGiftRegular(
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) OwnedGiftType type,
     @JsonProperty("gift") Gift gift,

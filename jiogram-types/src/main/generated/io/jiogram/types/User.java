@@ -3,6 +3,35 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jspecify.annotations.Nullable;
 
+/**
+ * This object represents a Telegram user or bot.
+ *
+ * @param id Unique identifier for this user or bot. This number may have more than 32 significant
+ *     bits and some programming languages may have difficulty/silent defects in interpreting it.
+ *     But it has at most 52 significant bits, so a 64-bit integer or double-precision float type
+ *     are safe for storing this identifier.
+ * @param isBot True, if this user is a bot
+ * @param firstName User's or bot's first name
+ * @param lastName User's or bot's last name
+ * @param username User's or bot's username
+ * @param languageCode IETF language tag of the user's language
+ * @param isPremium True, if this user is a Telegram Premium user
+ * @param addedToAttachmentMenu True, if this user added the bot to the attachment menu
+ * @param canJoinGroups True, if the bot can be invited to groups. Returned only in getMe.
+ * @param canReadAllGroupMessages True, if privacy mode is disabled for the bot. Returned only in
+ *     getMe.
+ * @param supportsInlineQueries True, if the bot supports inline queries. Returned only in getMe.
+ * @param canConnectToBusiness True, if the bot can be connected to a Telegram Business account to
+ *     receive its messages. Returned only in getMe.
+ * @param hasMainWebApp True, if the bot has a main Web App. Returned only in getMe.
+ * @param hasTopicsEnabled True, if the bot has forum topic mode enabled in private chats. Returned
+ *     only in getMe.
+ * @param allowsUsersToCreateTopics True, if the bot allows users to create and delete topics in
+ *     private chats. Returned only in getMe.
+ * @param canManageBots True, if other bots can be created to be controlled by the bot. Returned
+ *     only in getMe.
+ * @see <a href="https://core.telegram.org/bots/api#user">User in the Bot API</a>
+ */
 public record User(
     @JsonProperty("id") long id,
     @JsonProperty("is_bot") boolean isBot,

@@ -7,6 +7,21 @@ import io.jiogram.types.ChatMember;
 import io.jiogram.types.User;
 import org.jspecify.annotations.Nullable;
 
+/**
+ * This object represents changes in the status of a chat member.
+ *
+ * @param chat Chat the user belongs to
+ * @param from Performer of the action, which resulted in the change
+ * @param date Date the change was done in Unix time
+ * @param oldChatMember Previous information about the chat member
+ * @param newChatMember New information about the chat member
+ * @param inviteLink Chat invite link, which was used by the user to join the chat; for joining by
+ *     invite link events only.
+ * @param viaJoinRequest True, if the user joined the chat after sending a direct join request
+ *     without using an invite link and being approved by an administrator
+ * @param viaChatFolderInviteLink True, if the user joined the chat via a chat folder invite link
+ * @see <a href="https://core.telegram.org/bots/api#chatmemberupdated">ChatMemberUpdated in the Bot API</a>
+ */
 public record ChatMemberUpdated(
     @JsonProperty("chat") Chat chat,
     @JsonProperty("from") User from,

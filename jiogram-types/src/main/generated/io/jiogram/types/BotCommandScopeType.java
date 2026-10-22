@@ -3,6 +3,9 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+/**
+ * Discriminator values for BotCommandScope.
+ */
 public enum BotCommandScopeType {
     ALL_CHAT_ADMINISTRATORS("all_chat_administrators"),
     ALL_GROUP_CHATS("all_group_chats"),

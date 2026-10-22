@@ -5,6 +5,15 @@ import io.jiogram.types.ChatMemberType;
 import io.jiogram.types.User;
 import org.jspecify.annotations.Nullable;
 
+/**
+ * Represents a chat member that has no additional privileges or restrictions.
+ *
+ * @param status The member's status in the chat, always 'member'
+ * @param tag Tag of the member
+ * @param user Information about the user
+ * @param untilDate Date when the user's subscription will expire; Unix time
+ * @see <a href="https://core.telegram.org/bots/api#chatmembermember">ChatMemberMember in the Bot API</a>
+ */
 public record ChatMemberMember(
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY) ChatMemberType status,
     @JsonProperty("tag") @Nullable String tag,

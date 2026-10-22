@@ -5,6 +5,15 @@ import io.jiogram.types.ChatId;
 import io.jiogram.types.TelegramMethod;
 import io.jiogram.types.UserChatBoosts;
 
+/**
+ * Use this method to get the list of boosts added to a chat by a user. Requires administrator
+ * rights in the chat. Returns a UserChatBoosts object.
+ *
+ * @param chatId Unique identifier for the chat or username of the channel (in the format
+ *     &#64;channelusername)
+ * @param userId Unique identifier of the target user
+ * @see <a href="https://core.telegram.org/bots/api#getuserchatboosts">getUserChatBoosts in the Bot API</a>
+ */
 public record GetUserChatBoosts(
     @JsonProperty("chat_id") ChatId chatId,
     @JsonProperty("user_id") long userId

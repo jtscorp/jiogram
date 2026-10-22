@@ -6,6 +6,41 @@ import io.jiogram.types.PassportFile;
 import java.util.List;
 import org.jspecify.annotations.Nullable;
 
+/**
+ * Describes documents or other Telegram Passport elements shared with the bot by the user.
+ *
+ * @param type Element type. One of 'personal_details', 'passport', 'driver_license',
+ *     'identity_card', 'internal_passport', 'address', 'utility_bill', 'bank_statement',
+ *     'rental_agreement', 'passport_registration', 'temporary_registration', 'phone_number',
+ *     'email'.
+ * @param data Base64-encoded encrypted Telegram Passport element data provided by the user;
+ *     available only for 'personal_details', 'passport', 'driver_license', 'identity_card',
+ *     'internal_passport' and 'address' types. Can be decrypted and verified using the accompanying
+ *     EncryptedCredentials.
+ * @param phoneNumber User's verified phone number; available only for 'phone_number' type
+ * @param email User's verified email address; available only for 'email' type
+ * @param files Array of encrypted files with documents provided by the user; available only for
+ *     'utility_bill', 'bank_statement', 'rental_agreement', 'passport_registration' and
+ *     'temporary_registration' types. Files can be decrypted and verified using the accompanying
+ *     EncryptedCredentials.
+ * @param frontSide Encrypted file with the front side of the document, provided by the user;
+ *     available only for 'passport', 'driver_license', 'identity_card' and 'internal_passport'. The
+ *     file can be decrypted and verified using the accompanying EncryptedCredentials.
+ * @param reverseSide Encrypted file with the reverse side of the document, provided by the user;
+ *     available only for 'driver_license' and 'identity_card'. The file can be decrypted and
+ *     verified using the accompanying EncryptedCredentials.
+ * @param selfie Encrypted file with the selfie of the user holding a document, provided by the
+ *     user; available if requested for 'passport', 'driver_license', 'identity_card' and
+ *     'internal_passport'. The file can be decrypted and verified using the accompanying
+ *     EncryptedCredentials.
+ * @param translation Array of encrypted files with translated versions of documents provided by the
+ *     user; available if requested for 'passport', 'driver_license', 'identity_card',
+ *     'internal_passport', 'utility_bill', 'bank_statement', 'rental_agreement',
+ *     'passport_registration' and 'temporary_registration' types. Files can be decrypted and
+ *     verified using the accompanying EncryptedCredentials.
+ * @param hash Base64-encoded element hash for using in PassportElementErrorUnspecified
+ * @see <a href="https://core.telegram.org/bots/api#encryptedpassportelement">EncryptedPassportElement in the Bot API</a>
+ */
 public record EncryptedPassportElement(
     @JsonProperty("type") PassportElementType type,
     @JsonProperty("data") @Nullable String data,

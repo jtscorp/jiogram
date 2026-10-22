@@ -3,6 +3,9 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+/**
+ * Type of chat.
+ */
 public enum ChatType {
     PRIVATE("private"),
     GROUP("group"),

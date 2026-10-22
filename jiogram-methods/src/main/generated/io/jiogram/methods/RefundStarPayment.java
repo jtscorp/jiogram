@@ -3,6 +3,13 @@ package io.jiogram.methods;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.TelegramMethod;
 
+/**
+ * Refunds a successful payment in Telegram Stars. Returns True on success.
+ *
+ * @param userId Identifier of the user whose payment will be refunded
+ * @param telegramPaymentChargeId Telegram payment identifier
+ * @see <a href="https://core.telegram.org/bots/api#refundstarpayment">refundStarPayment in the Bot API</a>
+ */
 public record RefundStarPayment(
     @JsonProperty("user_id") long userId,
     @JsonProperty("telegram_payment_charge_id") String telegramPaymentChargeId

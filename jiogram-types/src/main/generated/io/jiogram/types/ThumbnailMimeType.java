@@ -3,6 +3,9 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+/**
+ * Supported thumbnail MIME type.
+ */
 public enum ThumbnailMimeType {
     IMAGE_JPEG("image/jpeg"),
     IMAGE_GIF("image/gif"),

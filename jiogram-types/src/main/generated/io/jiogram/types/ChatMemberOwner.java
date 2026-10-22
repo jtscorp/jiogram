@@ -5,6 +5,15 @@ import io.jiogram.types.ChatMemberType;
 import io.jiogram.types.User;
 import org.jspecify.annotations.Nullable;
 
+/**
+ * Represents a chat member that owns the chat and has all administrator privileges.
+ *
+ * @param status The member's status in the chat, always 'creator'
+ * @param user Information about the user
+ * @param isAnonymous True, if the user's presence in the chat is hidden
+ * @param customTitle Custom title for this user
+ * @see <a href="https://core.telegram.org/bots/api#chatmemberowner">ChatMemberOwner in the Bot API</a>
+ */
 public record ChatMemberOwner(
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY) ChatMemberType status,
     @JsonProperty("user") User user,

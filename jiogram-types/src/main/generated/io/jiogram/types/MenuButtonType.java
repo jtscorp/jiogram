@@ -3,6 +3,9 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+/**
+ * Discriminator values for MenuButton.
+ */
 public enum MenuButtonType {
     COMMANDS("commands"),
     DEFAULT("default"),

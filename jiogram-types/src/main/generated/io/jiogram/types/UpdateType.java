@@ -3,6 +3,9 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+/**
+ * Types of updates.
+ */
 public enum UpdateType {
     MESSAGE("message"),
     EDITED_MESSAGE("edited_message"),

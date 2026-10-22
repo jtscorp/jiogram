@@ -5,6 +5,17 @@ import io.jiogram.types.ChatId;
 import io.jiogram.types.TelegramMethod;
 import org.jspecify.annotations.Nullable;
 
+/**
+ * Use this method to set a tag for a regular member in a group or a supergroup. The bot must be an
+ * administrator in the chat for this to work and must have the can_manage_tags administrator right.
+ * Returns True on success.
+ *
+ * @param chatId Unique identifier for the target chat or username of the target supergroup (in the
+ *     format &#64;supergroupusername)
+ * @param userId Unique identifier of the target user
+ * @param tag New tag for the member; 0-16 characters, emoji are not allowed
+ * @see <a href="https://core.telegram.org/bots/api#setchatmembertag">setChatMemberTag in the Bot API</a>
+ */
 public record SetChatMemberTag(
     @JsonProperty("chat_id") ChatId chatId,
     @JsonProperty("user_id") long userId,

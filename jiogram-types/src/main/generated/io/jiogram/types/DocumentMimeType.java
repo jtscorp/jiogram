@@ -3,6 +3,9 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+/**
+ * Supported document MIME type.
+ */
 public enum DocumentMimeType {
     APPLICATION_PDF("application/pdf"),
     APPLICATION_ZIP("application/zip"),

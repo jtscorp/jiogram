@@ -10,6 +10,31 @@ import io.jiogram.types.ThumbnailMimeType;
 import java.util.List;
 import org.jspecify.annotations.Nullable;
 
+/**
+ * Represents a link to a video animation (H.264/MPEG-4 AVC video without sound). By default, this
+ * animated MPEG-4 file will be sent by the user with optional caption. Alternatively, you can use
+ * input_message_content to send a message with the specified content instead of the animation.
+ *
+ * @param type Type of the result, must be mpeg4_gif
+ * @param id Unique identifier for this result, 1-64 bytes
+ * @param mpeg4Url A valid URL for the MPEG4 file
+ * @param mpeg4Width Video width
+ * @param mpeg4Height Video height
+ * @param mpeg4Duration Video duration in seconds
+ * @param thumbnailUrl URL of the static (JPEG or GIF) or animated (MPEG4) thumbnail for the result
+ * @param thumbnailMimeType MIME type of the thumbnail, must be one of 'image/jpeg', 'image/gif', or
+ *     'video/mp4'. Defaults to 'image/jpeg'
+ * @param title Title for the result
+ * @param caption Caption of the MPEG-4 file to be sent, 0-1024 characters after entities parsing
+ * @param parseMode Mode for parsing entities in the caption. See formatting options for more
+ *     details.
+ * @param captionEntities List of special entities that appear in the caption, which can be
+ *     specified instead of parse_mode
+ * @param showCaptionAboveMedia Pass True, if the caption must be shown above the message media
+ * @param replyMarkup Inline keyboard attached to the message
+ * @param inputMessageContent Content of the message to be sent instead of the video animation
+ * @see <a href="https://core.telegram.org/bots/api#inlinequeryresultmpeg4gif">InlineQueryResultMpeg4Gif in the Bot API</a>
+ */
 public record InlineQueryResultMpeg4Gif(
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) InlineQueryResultType type,
     @JsonProperty("id") String id,

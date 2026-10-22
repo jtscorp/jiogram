@@ -3,6 +3,9 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+/**
+ * Common message content types.
+ */
 public enum ContentType {
     TEXT("text"),
     ANIMATION("animation"),

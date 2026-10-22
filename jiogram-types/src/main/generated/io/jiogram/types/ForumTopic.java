@@ -3,6 +3,17 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jspecify.annotations.Nullable;
 
+/**
+ * This object represents a forum topic.
+ *
+ * @param messageThreadId Unique identifier of the forum topic
+ * @param name Name of the topic
+ * @param iconColor Color of the topic icon in RGB format
+ * @param iconCustomEmojiId Unique identifier of the custom emoji shown as the topic icon
+ * @param isNameImplicit True, if the name of the topic wasn't specified explicitly by its creator
+ *     and likely needs to be changed by the bot
+ * @see <a href="https://core.telegram.org/bots/api#forumtopic">ForumTopic in the Bot API</a>
+ */
 public record ForumTopic(
     @JsonProperty("message_thread_id") long messageThreadId,
     @JsonProperty("name") String name,

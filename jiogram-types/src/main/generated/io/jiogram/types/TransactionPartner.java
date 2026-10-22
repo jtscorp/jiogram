@@ -3,6 +3,19 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+/**
+ * This object describes the source of a transaction, or its recipient for outgoing transactions.
+ * Currently, it can be one of
+ * <br>- TransactionPartnerUser
+ * <br>- TransactionPartnerChat
+ * <br>- TransactionPartnerAffiliateProgram
+ * <br>- TransactionPartnerFragment
+ * <br>- TransactionPartnerTelegramAds
+ * <br>- TransactionPartnerTelegramApi
+ * <br>- TransactionPartnerOther
+ *
+ * @see <a href="https://core.telegram.org/bots/api#transactionpartner">TransactionPartner in the Bot API</a>
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", visible = true, defaultImpl = TransactionPartnerUnknown.class)
 @JsonSubTypes({
     @JsonSubTypes.Type(value = TransactionPartnerAffiliateProgram.class, name = "affiliate_program"),

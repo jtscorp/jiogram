@@ -3,6 +3,9 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+/**
+ * Type of transaction with a user.
+ */
 public enum TransactionType {
     INVOICE_PAYMENT("invoice_payment"),
     PAID_MEDIA_PAYMENT("paid_media_payment"),

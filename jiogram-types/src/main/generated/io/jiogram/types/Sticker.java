@@ -7,6 +7,31 @@ import io.jiogram.types.PhotoSize;
 import io.jiogram.types.StickerType;
 import org.jspecify.annotations.Nullable;
 
+/**
+ * This object represents a sticker.
+ *
+ * @param fileId Identifier for this file, which can be used to download or reuse the file
+ * @param fileUniqueId Unique identifier for this file, which is supposed to be the same over time
+ *     and for different bots. Can't be used to download or reuse the file.
+ * @param type Type of the sticker, currently one of 'regular', 'mask', 'custom_emoji'. The type of
+ *     the sticker is independent from its format, which is determined by the fields is_animated and
+ *     is_video.
+ * @param width Sticker width
+ * @param height Sticker height
+ * @param isAnimated True, if the sticker is animated
+ * @param isVideo True, if the sticker is a video sticker
+ * @param thumbnail Sticker thumbnail in the .WEBP or .JPG format
+ * @param emoji Emoji associated with the sticker
+ * @param setName Name of the sticker set to which the sticker belongs
+ * @param premiumAnimation For premium regular stickers, premium animation for the sticker
+ * @param maskPosition For mask stickers, the position where the mask should be placed
+ * @param customEmojiId For custom emoji stickers, unique identifier of the custom emoji
+ * @param needsRepainting True, if the sticker must be repainted to a text color in messages, the
+ *     color of the Telegram Premium badge in emoji status, white color on chat photos, or another
+ *     appropriate color in other places
+ * @param fileSize File size in bytes
+ * @see <a href="https://core.telegram.org/bots/api#sticker">Sticker in the Bot API</a>
+ */
 public record Sticker(
     @JsonProperty("file_id") String fileId,
     @JsonProperty("file_unique_id") String fileUniqueId,

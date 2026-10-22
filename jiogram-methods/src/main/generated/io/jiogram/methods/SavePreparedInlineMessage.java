@@ -6,6 +6,18 @@ import io.jiogram.types.PreparedInlineMessage;
 import io.jiogram.types.TelegramMethod;
 import org.jspecify.annotations.Nullable;
 
+/**
+ * Stores a message that can be sent by a user of a Mini App. Returns a PreparedInlineMessage
+ * object.
+ *
+ * @param userId Unique identifier of the target user that can use the prepared message
+ * @param result A JSON-serialized object describing the message to be sent
+ * @param allowUserChats Pass True if the message can be sent to private chats with users
+ * @param allowBotChats Pass True if the message can be sent to private chats with bots
+ * @param allowGroupChats Pass True if the message can be sent to group and supergroup chats
+ * @param allowChannelChats Pass True if the message can be sent to channel chats
+ * @see <a href="https://core.telegram.org/bots/api#savepreparedinlinemessage">savePreparedInlineMessage in the Bot API</a>
+ */
 public record SavePreparedInlineMessage(
     @JsonProperty("user_id") long userId,
     @JsonProperty("result") InlineQueryResult result,

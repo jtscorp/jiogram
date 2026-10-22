@@ -7,6 +7,23 @@ import io.jiogram.types.Message;
 import io.jiogram.types.TelegramMethod;
 import org.jspecify.annotations.Nullable;
 
+/**
+ * Use this method to edit only the reply markup of messages. On success, if the edited message is
+ * not an inline message, the edited Message is returned, otherwise True is returned. Note that
+ * business messages that were not sent by the bot and do not contain an inline keyboard can only be
+ * edited within 48 hours from the time they were sent.
+ *
+ * @param businessConnectionId Unique identifier of the business connection on behalf of which the
+ *     message to be edited was sent
+ * @param chatId Required if inline_message_id is not specified. Unique identifier for the target
+ *     chat or username of the target channel (in the format &#64;channelusername)
+ * @param messageId Required if inline_message_id is not specified. Identifier of the message to
+ *     edit
+ * @param inlineMessageId Required if chat_id and message_id are not specified. Identifier of the
+ *     inline message
+ * @param replyMarkup A JSON-serialized object for an inline keyboard.
+ * @see <a href="https://core.telegram.org/bots/api#editmessagereplymarkup">editMessageReplyMarkup in the Bot API</a>
+ */
 public record EditMessageReplyMarkup(
     @JsonProperty("business_connection_id") @Nullable String businessConnectionId,
     @JsonProperty("chat_id") @Nullable ChatId chatId,

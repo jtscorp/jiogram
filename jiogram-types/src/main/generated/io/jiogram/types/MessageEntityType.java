@@ -3,6 +3,9 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+/**
+ * Type of the entity.
+ */
 public enum MessageEntityType {
     MENTION("mention"),
     HASHTAG("hashtag"),

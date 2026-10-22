@@ -3,6 +3,9 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+/**
+ * Discriminator values for TransactionPartner.
+ */
 public enum TransactionPartnerType {
     AFFILIATE_PROGRAM("affiliate_program"),
     CHAT("chat"),

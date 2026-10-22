@@ -7,6 +7,30 @@ import io.jiogram.types.ReplyParameters;
 import io.jiogram.types.TelegramMethod;
 import org.jspecify.annotations.Nullable;
 
+/**
+ * Use this method to send a game. On success, the sent Message is returned.
+ *
+ * @param businessConnectionId Unique identifier of the business connection on behalf of which the
+ *     message will be sent
+ * @param chatId Unique identifier for the target chat. Games can't be sent to channel direct
+ *     messages chats and channel chats.
+ * @param messageThreadId Unique identifier for the target message thread (topic) of a forum; for
+ *     forum supergroups and private chats of bots with forum topic mode enabled only
+ * @param gameShortName Short name of the game, serves as the unique identifier for the game. Set up
+ *     your games via &#64;BotFather.
+ * @param disableNotification Sends the message silently. Users will receive a notification with no
+ *     sound.
+ * @param protectContent Protects the contents of the sent message from forwarding and saving
+ * @param allowPaidBroadcast Pass True to allow up to 1000 messages per second, ignoring
+ *     broadcasting limits for a fee of 0.1 Telegram Stars per message. The relevant Stars will be
+ *     withdrawn from the bot's balance
+ * @param messageEffectId Unique identifier of the message effect to be added to the message; for
+ *     private chats only
+ * @param replyParameters Description of the message to reply to
+ * @param replyMarkup A JSON-serialized object for an inline keyboard. If empty, one 'Play
+ *     game_title' button will be shown. If not empty, the first button must launch the game.
+ * @see <a href="https://core.telegram.org/bots/api#sendgame">sendGame in the Bot API</a>
+ */
 public record SendGame(
     @JsonProperty("business_connection_id") @Nullable String businessConnectionId,
     @JsonProperty("chat_id") long chatId,

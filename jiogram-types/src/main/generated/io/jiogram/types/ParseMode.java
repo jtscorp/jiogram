@@ -3,6 +3,9 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+/**
+ * Formatting options for messages.
+ */
 public enum ParseMode {
     HTML("HTML"),
     MARKDOWN("Markdown"),

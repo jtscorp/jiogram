@@ -3,6 +3,9 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+/**
+ * Discriminator values for InputPaidMedia.
+ */
 public enum InputPaidMediaType {
     PHOTO("photo"),
     VIDEO("video"),

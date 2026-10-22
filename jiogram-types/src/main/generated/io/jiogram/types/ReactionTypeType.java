@@ -3,6 +3,9 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+/**
+ * Discriminator values for ReactionType.
+ */
 public enum ReactionTypeType {
     CUSTOM_EMOJI("custom_emoji"),
     EMOJI("emoji"),

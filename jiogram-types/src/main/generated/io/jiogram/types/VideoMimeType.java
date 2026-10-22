@@ -3,6 +3,9 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+/**
+ * Supported video MIME type.
+ */
 public enum VideoMimeType {
     TEXT_HTML("text/html"),
     VIDEO_MP4("video/mp4"),

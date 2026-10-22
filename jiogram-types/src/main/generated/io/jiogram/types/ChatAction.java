@@ -3,6 +3,9 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+/**
+ * Type of action to broadcast.
+ */
 public enum ChatAction {
     TYPING("typing"),
     UPLOAD_PHOTO("upload_photo"),

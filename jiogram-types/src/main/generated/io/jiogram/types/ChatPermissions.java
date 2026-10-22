@@ -3,6 +3,31 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jspecify.annotations.Nullable;
 
+/**
+ * Describes actions that a non-administrator user is allowed to take in a chat.
+ *
+ * @param canSendMessages True, if the user is allowed to send text messages, contacts, giveaways,
+ *     giveaway winners, invoices, locations and venues
+ * @param canSendAudios True, if the user is allowed to send audios
+ * @param canSendDocuments True, if the user is allowed to send documents
+ * @param canSendPhotos True, if the user is allowed to send photos
+ * @param canSendVideos True, if the user is allowed to send videos
+ * @param canSendVideoNotes True, if the user is allowed to send video notes
+ * @param canSendVoiceNotes True, if the user is allowed to send voice notes
+ * @param canSendPolls True, if the user is allowed to send polls and checklists
+ * @param canSendOtherMessages True, if the user is allowed to send animations, games, stickers and
+ *     use inline bots
+ * @param canAddWebPagePreviews True, if the user is allowed to add web page previews to their
+ *     messages
+ * @param canEditTag True, if the user is allowed to edit their own tag
+ * @param canChangeInfo True, if the user is allowed to change the chat title, photo and other
+ *     settings. Ignored in public supergroups
+ * @param canInviteUsers True, if the user is allowed to invite new users to the chat
+ * @param canPinMessages True, if the user is allowed to pin messages. Ignored in public supergroups
+ * @param canManageTopics True, if the user is allowed to create forum topics. If omitted defaults
+ *     to the value of can_pin_messages
+ * @see <a href="https://core.telegram.org/bots/api#chatpermissions">ChatPermissions in the Bot API</a>
+ */
 public record ChatPermissions(
     @JsonProperty("can_send_messages") @Nullable Boolean canSendMessages,
     @JsonProperty("can_send_audios") @Nullable Boolean canSendAudios,
