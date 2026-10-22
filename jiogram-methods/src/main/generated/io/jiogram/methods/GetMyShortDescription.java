@@ -1,23 +1,35 @@
 package io.jiogram.methods;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.BotShortDescription;
 import io.jiogram.types.TelegramMethod;
+import java.util.Objects;
 import org.jspecify.annotations.Nullable;
 
-public class GetMyShortDescription implements TelegramMethod<BotShortDescription> {
-    @JsonProperty("language_code") @Nullable private final String languageCode;
+/**
+ * Use this method to get the current bot short description for the given user language. Returns
+ * BotShortDescription on success.
+ *
+ * @see <a href="https://core.telegram.org/bots/api#getmyshortdescription">getMyShortDescription in the Bot API</a>
+ */
+@JsonAutoDetect(getterVisibility = Visibility.NONE, isGetterVisibility = Visibility.NONE)
+public final class GetMyShortDescription implements TelegramMethod<BotShortDescription> {
 
+    @JsonProperty("language_code")
+    private final @Nullable String languageCode;
+
+    /**
+     * Creates a new {@code GetMyShortDescription} instance.
+     *
+     * @param languageCode A two-letter ISO 639-1 language code or an empty string
+     */
     @JsonCreator
     public GetMyShortDescription(
-            @JsonProperty("language_code") @Nullable String languageCode
-    ) {
+            @JsonProperty("language_code") @Nullable String languageCode) {
         this.languageCode = languageCode;
-    }
-
-    public String languageCode() {
-        return this.languageCode;
     }
 
     @Override
@@ -32,5 +44,39 @@ public class GetMyShortDescription implements TelegramMethod<BotShortDescription
 
     public static GetMyShortDescription of() {
         return new GetMyShortDescription(null);
+    }
+
+    /**
+     * A two-letter ISO 639-1 language code or an empty string
+     */
+    public @Nullable String languageCode() {
+        return languageCode;
+    }
+
+    public GetMyShortDescription withLanguageCode(@Nullable String languageCode) {
+        return new GetMyShortDescription(languageCode);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof GetMyShortDescription)) {
+            return false;
+        }
+        GetMyShortDescription that = (GetMyShortDescription) o;
+        return Objects.equals(this.languageCode, that.languageCode);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.languageCode);
+    }
+
+    @Override
+    public String toString() {
+        return "GetMyShortDescription[languageCode=" + this.languageCode
+                + "]";
     }
 }

@@ -1,21 +1,59 @@
 package io.jiogram.methods;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.InlineQueryResult;
 import io.jiogram.types.InlineQueryResultsButton;
 import io.jiogram.types.TelegramMethod;
 import java.util.List;
+import java.util.Objects;
 import org.jspecify.annotations.Nullable;
 
-public class AnswerInlineQuery implements TelegramMethod<Boolean> {
-    @JsonProperty("inline_query_id") private final String inlineQueryId;
-    @JsonProperty("results") private final List<InlineQueryResult> results;
-    @JsonProperty("cache_time") @Nullable private final Long cacheTime;
-    @JsonProperty("is_personal") @Nullable private final Boolean isPersonal;
-    @JsonProperty("next_offset") @Nullable private final String nextOffset;
-    @JsonProperty("button") @Nullable private final InlineQueryResultsButton button;
+/**
+ * Use this method to send answers to an inline query. On success, True is returned.
+ * <br>No more than 50 results per query are allowed.
+ *
+ * @see <a href="https://core.telegram.org/bots/api#answerinlinequery">answerInlineQuery in the Bot API</a>
+ */
+@JsonAutoDetect(getterVisibility = Visibility.NONE, isGetterVisibility = Visibility.NONE)
+public final class AnswerInlineQuery implements TelegramMethod<Boolean> {
 
+    @JsonProperty("inline_query_id")
+    private final String inlineQueryId;
+
+    @JsonProperty("results")
+    private final List<InlineQueryResult> results;
+
+    @JsonProperty("cache_time")
+    private final @Nullable Long cacheTime;
+
+    @JsonProperty("is_personal")
+    private final @Nullable Boolean isPersonal;
+
+    @JsonProperty("next_offset")
+    private final @Nullable String nextOffset;
+
+    @JsonProperty("button")
+    private final @Nullable InlineQueryResultsButton button;
+
+    /**
+     * Creates a new {@code AnswerInlineQuery} instance.
+     *
+     * @param inlineQueryId Unique identifier for the answered query
+     * @param results A JSON-serialized array of results for the inline query
+     * @param cacheTime The maximum amount of time in seconds that the result of the inline query
+     *     may be cached on the server. Defaults to 300.
+     * @param isPersonal Pass True if results may be cached on the server side only for the user
+     *     that sent the query. By default, results may be returned to any user who sends the same
+     *     query.
+     * @param nextOffset Pass the offset that a client should send in the next query with the same
+     *     text to receive more results. Pass an empty string if there are no more results or if you
+     *     don't support pagination. Offset length can't exceed 64 bytes.
+     * @param button A JSON-serialized object describing a button to be shown above inline query
+     *     results
+     */
     @JsonCreator
     public AnswerInlineQuery(
             @JsonProperty("inline_query_id") String inlineQueryId,
@@ -23,38 +61,13 @@ public class AnswerInlineQuery implements TelegramMethod<Boolean> {
             @JsonProperty("cache_time") @Nullable Long cacheTime,
             @JsonProperty("is_personal") @Nullable Boolean isPersonal,
             @JsonProperty("next_offset") @Nullable String nextOffset,
-            @JsonProperty("button") @Nullable InlineQueryResultsButton button
-    ) {
+            @JsonProperty("button") @Nullable InlineQueryResultsButton button) {
         this.inlineQueryId = inlineQueryId;
         this.results = results;
         this.cacheTime = cacheTime;
         this.isPersonal = isPersonal;
         this.nextOffset = nextOffset;
         this.button = button;
-    }
-
-    public String inlineQueryId() {
-        return this.inlineQueryId;
-    }
-
-    public List<InlineQueryResult> results() {
-        return this.results;
-    }
-
-    public Long cacheTime() {
-        return this.cacheTime;
-    }
-
-    public Boolean isPersonal() {
-        return this.isPersonal;
-    }
-
-    public String nextOffset() {
-        return this.nextOffset;
-    }
-
-    public InlineQueryResultsButton button() {
-        return this.button;
     }
 
     @Override
@@ -69,5 +82,108 @@ public class AnswerInlineQuery implements TelegramMethod<Boolean> {
 
     public static AnswerInlineQuery of(String inlineQueryId, List<InlineQueryResult> results) {
         return new AnswerInlineQuery(inlineQueryId, results, null, null, null, null);
+    }
+
+    /**
+     * Unique identifier for the answered query
+     */
+    public String inlineQueryId() {
+        return inlineQueryId;
+    }
+
+    /**
+     * A JSON-serialized array of results for the inline query
+     */
+    public List<InlineQueryResult> results() {
+        return results;
+    }
+
+    /**
+     * The maximum amount of time in seconds that the result of the inline query may be cached on
+     * the server. Defaults to 300.
+     */
+    public @Nullable Long cacheTime() {
+        return cacheTime;
+    }
+
+    /**
+     * Pass True if results may be cached on the server side only for the user that sent the query.
+     * By default, results may be returned to any user who sends the same query.
+     */
+    public @Nullable Boolean isPersonal() {
+        return isPersonal;
+    }
+
+    /**
+     * Pass the offset that a client should send in the next query with the same text to receive
+     * more results. Pass an empty string if there are no more results or if you don't support
+     * pagination. Offset length can't exceed 64 bytes.
+     */
+    public @Nullable String nextOffset() {
+        return nextOffset;
+    }
+
+    /**
+     * A JSON-serialized object describing a button to be shown above inline query results
+     */
+    public @Nullable InlineQueryResultsButton button() {
+        return button;
+    }
+
+    public AnswerInlineQuery withInlineQueryId(String inlineQueryId) {
+        return new AnswerInlineQuery(inlineQueryId, results, cacheTime, isPersonal, nextOffset, button);
+    }
+
+    public AnswerInlineQuery withResults(List<InlineQueryResult> results) {
+        return new AnswerInlineQuery(inlineQueryId, results, cacheTime, isPersonal, nextOffset, button);
+    }
+
+    public AnswerInlineQuery withCacheTime(@Nullable Long cacheTime) {
+        return new AnswerInlineQuery(inlineQueryId, results, cacheTime, isPersonal, nextOffset, button);
+    }
+
+    public AnswerInlineQuery withIsPersonal(@Nullable Boolean isPersonal) {
+        return new AnswerInlineQuery(inlineQueryId, results, cacheTime, isPersonal, nextOffset, button);
+    }
+
+    public AnswerInlineQuery withNextOffset(@Nullable String nextOffset) {
+        return new AnswerInlineQuery(inlineQueryId, results, cacheTime, isPersonal, nextOffset, button);
+    }
+
+    public AnswerInlineQuery withButton(@Nullable InlineQueryResultsButton button) {
+        return new AnswerInlineQuery(inlineQueryId, results, cacheTime, isPersonal, nextOffset, button);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof AnswerInlineQuery)) {
+            return false;
+        }
+        AnswerInlineQuery that = (AnswerInlineQuery) o;
+        return Objects.equals(this.inlineQueryId, that.inlineQueryId)
+                && Objects.equals(this.results, that.results)
+                && Objects.equals(this.cacheTime, that.cacheTime)
+                && Objects.equals(this.isPersonal, that.isPersonal)
+                && Objects.equals(this.nextOffset, that.nextOffset)
+                && Objects.equals(this.button, that.button);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.inlineQueryId, this.results, this.cacheTime, this.isPersonal, this.nextOffset, this.button);
+    }
+
+    @Override
+    public String toString() {
+        return "AnswerInlineQuery[inlineQueryId=" + this.inlineQueryId
+                + ", results=" + this.results
+                + ", cacheTime=" + this.cacheTime
+                + ", isPersonal=" + this.isPersonal
+                + ", nextOffset=" + this.nextOffset
+                + ", button=" + this.button
+                + "]";
     }
 }

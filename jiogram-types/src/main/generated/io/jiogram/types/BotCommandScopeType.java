@@ -3,6 +3,9 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+/**
+ * Discriminator values for BotCommandScope.
+ */
 public enum BotCommandScopeType {
     ALL_CHAT_ADMINISTRATORS("all_chat_administrators"),
     ALL_GROUP_CHATS("all_group_chats"),
@@ -10,7 +13,9 @@ public enum BotCommandScopeType {
     CHAT("chat"),
     CHAT_ADMINISTRATORS("chat_administrators"),
     CHAT_MEMBER("chat_member"),
-    DEFAULT("default");
+    DEFAULT("default"),
+    /** A value unknown to this library version; {@link #value()} returns {@code null}. */
+    UNKNOWN(null);
 
     private final String value;
 
@@ -26,10 +31,10 @@ public enum BotCommandScopeType {
     @JsonCreator
     public static BotCommandScopeType fromValue(String value) {
         for (BotCommandScopeType e : values()) {
-            if (e.value.equals(value)) {
+            if (e.value != null && e.value.equals(value)) {
                 return e;
             }
         }
-        throw new IllegalArgumentException("Unknown BotCommandScopeType: " + value);
+        return UNKNOWN;
     }
 }

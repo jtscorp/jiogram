@@ -1,33 +1,86 @@
 package io.jiogram.types;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.jiogram.types.InputFileOrString;
 import io.jiogram.types.InputPaidMediaType;
+import java.util.Objects;
 import org.jspecify.annotations.Nullable;
 
-public class InputPaidMediaVideo implements InputPaidMedia {
-    @JsonProperty("type") private final InputPaidMediaType type;
-    @JsonProperty("media") private final String media;
-    @JsonProperty("thumbnail") @Nullable private final String thumbnail;
-    @JsonProperty("cover") @Nullable private final String cover;
-    @JsonProperty("start_timestamp") @Nullable private final Long startTimestamp;
-    @JsonProperty("width") @Nullable private final Long width;
-    @JsonProperty("height") @Nullable private final Long height;
-    @JsonProperty("duration") @Nullable private final Long duration;
-    @JsonProperty("supports_streaming") @Nullable private final Boolean supportsStreaming;
+/**
+ * The paid media to send is a video.
+ *
+ * @see <a href="https://core.telegram.org/bots/api#inputpaidmediavideo">InputPaidMediaVideo in the Bot API</a>
+ */
+@JsonAutoDetect(getterVisibility = Visibility.NONE, isGetterVisibility = Visibility.NONE)
+public final class InputPaidMediaVideo implements InputPaidMedia {
 
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
+    private final InputPaidMediaType type;
+
+    @JsonProperty("media")
+    private final InputFileOrString media;
+
+    @JsonProperty("thumbnail")
+    private final @Nullable InputFileOrString thumbnail;
+
+    @JsonProperty("cover")
+    private final @Nullable InputFileOrString cover;
+
+    @JsonProperty("start_timestamp")
+    private final @Nullable Long startTimestamp;
+
+    @JsonProperty("width")
+    private final @Nullable Long width;
+
+    @JsonProperty("height")
+    private final @Nullable Long height;
+
+    @JsonProperty("duration")
+    private final @Nullable Long duration;
+
+    @JsonProperty("supports_streaming")
+    private final @Nullable Boolean supportsStreaming;
+
+    /**
+     * Creates a new {@code InputPaidMediaVideo} instance.
+     *
+     * @param type Type of the media, must be video
+     * @param media File to send. Pass a file_id to send a file that exists on the Telegram servers
+     *     (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass
+     *     'attach://&lt;file_attach_name&gt;' to upload a new one using multipart/form-data under
+     *     &lt;file_attach_name&gt; name. More information on Sending Files
+     * @param thumbnail Thumbnail of the file sent; can be ignored if thumbnail generation for the
+     *     file is supported server-side. The thumbnail should be in JPEG format and less than 200
+     *     kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is
+     *     not uploaded using multipart/form-data. Thumbnails can't be reused and can be only
+     *     uploaded as a new file, so you can pass 'attach://&lt;file_attach_name&gt;' if the
+     *     thumbnail was uploaded using multipart/form-data under &lt;file_attach_name&gt;. More
+     *     information on Sending Files
+     * @param cover Cover for the video in the message. Pass a file_id to send a file that exists on
+     *     the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the
+     *     Internet, or pass 'attach://&lt;file_attach_name&gt;' to upload a new one using
+     *     multipart/form-data under &lt;file_attach_name&gt; name. More information on Sending
+     *     Files
+     * @param startTimestamp Start timestamp for the video in the message
+     * @param width Video width
+     * @param height Video height
+     * @param duration Video duration in seconds
+     * @param supportsStreaming Pass True if the uploaded video is suitable for streaming
+     */
     @JsonCreator
     public InputPaidMediaVideo(
-            @JsonProperty("type") InputPaidMediaType type,
-            @JsonProperty("media") String media,
-            @JsonProperty("thumbnail") @Nullable String thumbnail,
-            @JsonProperty("cover") @Nullable String cover,
+            @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) InputPaidMediaType type,
+            @JsonProperty("media") InputFileOrString media,
+            @JsonProperty("thumbnail") @Nullable InputFileOrString thumbnail,
+            @JsonProperty("cover") @Nullable InputFileOrString cover,
             @JsonProperty("start_timestamp") @Nullable Long startTimestamp,
             @JsonProperty("width") @Nullable Long width,
             @JsonProperty("height") @Nullable Long height,
             @JsonProperty("duration") @Nullable Long duration,
-            @JsonProperty("supports_streaming") @Nullable Boolean supportsStreaming
-    ) {
+            @JsonProperty("supports_streaming") @Nullable Boolean supportsStreaming) {
         this.type = type;
         this.media = media;
         this.thumbnail = thumbnail;
@@ -39,39 +92,152 @@ public class InputPaidMediaVideo implements InputPaidMedia {
         this.supportsStreaming = supportsStreaming;
     }
 
+    public static InputPaidMediaVideo of(InputFileOrString media) {
+        return new InputPaidMediaVideo(InputPaidMediaType.VIDEO, media, null, null, null, null, null, null, null);
+    }
+
+    /**
+     * Type of the media, must be video
+     */
     public InputPaidMediaType type() {
-        return this.type;
+        return type;
     }
 
-    public String media() {
-        return this.media;
+    /**
+     * File to send. Pass a file_id to send a file that exists on the Telegram servers
+     * (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass
+     * 'attach://&lt;file_attach_name&gt;' to upload a new one using multipart/form-data under
+     * &lt;file_attach_name&gt; name. More information on Sending Files
+     */
+    public InputFileOrString media() {
+        return media;
     }
 
-    public String thumbnail() {
-        return this.thumbnail;
+    /**
+     * Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported
+     * server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A
+     * thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using
+     * multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so
+     * you can pass 'attach://&lt;file_attach_name&gt;' if the thumbnail was uploaded using
+     * multipart/form-data under &lt;file_attach_name&gt;. More information on Sending Files
+     */
+    public @Nullable InputFileOrString thumbnail() {
+        return thumbnail;
     }
 
-    public String cover() {
-        return this.cover;
+    /**
+     * Cover for the video in the message. Pass a file_id to send a file that exists on the Telegram
+     * servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass
+     * 'attach://&lt;file_attach_name&gt;' to upload a new one using multipart/form-data under
+     * &lt;file_attach_name&gt; name. More information on Sending Files
+     */
+    public @Nullable InputFileOrString cover() {
+        return cover;
     }
 
-    public Long startTimestamp() {
-        return this.startTimestamp;
+    /**
+     * Start timestamp for the video in the message
+     */
+    public @Nullable Long startTimestamp() {
+        return startTimestamp;
     }
 
-    public Long width() {
-        return this.width;
+    /**
+     * Video width
+     */
+    public @Nullable Long width() {
+        return width;
     }
 
-    public Long height() {
-        return this.height;
+    /**
+     * Video height
+     */
+    public @Nullable Long height() {
+        return height;
     }
 
-    public Long duration() {
-        return this.duration;
+    /**
+     * Video duration in seconds
+     */
+    public @Nullable Long duration() {
+        return duration;
     }
 
-    public Boolean supportsStreaming() {
-        return this.supportsStreaming;
+    /**
+     * Pass True if the uploaded video is suitable for streaming
+     */
+    public @Nullable Boolean supportsStreaming() {
+        return supportsStreaming;
+    }
+
+    public InputPaidMediaVideo withMedia(InputFileOrString media) {
+        return new InputPaidMediaVideo(type, media, thumbnail, cover, startTimestamp, width, height, duration, supportsStreaming);
+    }
+
+    public InputPaidMediaVideo withThumbnail(@Nullable InputFileOrString thumbnail) {
+        return new InputPaidMediaVideo(type, media, thumbnail, cover, startTimestamp, width, height, duration, supportsStreaming);
+    }
+
+    public InputPaidMediaVideo withCover(@Nullable InputFileOrString cover) {
+        return new InputPaidMediaVideo(type, media, thumbnail, cover, startTimestamp, width, height, duration, supportsStreaming);
+    }
+
+    public InputPaidMediaVideo withStartTimestamp(@Nullable Long startTimestamp) {
+        return new InputPaidMediaVideo(type, media, thumbnail, cover, startTimestamp, width, height, duration, supportsStreaming);
+    }
+
+    public InputPaidMediaVideo withWidth(@Nullable Long width) {
+        return new InputPaidMediaVideo(type, media, thumbnail, cover, startTimestamp, width, height, duration, supportsStreaming);
+    }
+
+    public InputPaidMediaVideo withHeight(@Nullable Long height) {
+        return new InputPaidMediaVideo(type, media, thumbnail, cover, startTimestamp, width, height, duration, supportsStreaming);
+    }
+
+    public InputPaidMediaVideo withDuration(@Nullable Long duration) {
+        return new InputPaidMediaVideo(type, media, thumbnail, cover, startTimestamp, width, height, duration, supportsStreaming);
+    }
+
+    public InputPaidMediaVideo withSupportsStreaming(@Nullable Boolean supportsStreaming) {
+        return new InputPaidMediaVideo(type, media, thumbnail, cover, startTimestamp, width, height, duration, supportsStreaming);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof InputPaidMediaVideo)) {
+            return false;
+        }
+        InputPaidMediaVideo that = (InputPaidMediaVideo) o;
+        return Objects.equals(this.type, that.type)
+                && Objects.equals(this.media, that.media)
+                && Objects.equals(this.thumbnail, that.thumbnail)
+                && Objects.equals(this.cover, that.cover)
+                && Objects.equals(this.startTimestamp, that.startTimestamp)
+                && Objects.equals(this.width, that.width)
+                && Objects.equals(this.height, that.height)
+                && Objects.equals(this.duration, that.duration)
+                && Objects.equals(this.supportsStreaming, that.supportsStreaming);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.type, this.media, this.thumbnail, this.cover, this.startTimestamp, this.width, this.height, this.duration, this.supportsStreaming);
+    }
+
+    @Override
+    public String toString() {
+        return "InputPaidMediaVideo[type=" + this.type
+                + ", media=" + this.media
+                + ", thumbnail=" + this.thumbnail
+                + ", cover=" + this.cover
+                + ", startTimestamp=" + this.startTimestamp
+                + ", width=" + this.width
+                + ", height=" + this.height
+                + ", duration=" + this.duration
+                + ", supportsStreaming=" + this.supportsStreaming
+                + "]";
     }
 }

@@ -18,7 +18,7 @@ class MethodGeneratorTest {
     // ---- SendMessage (returns Message, has required + optional params) ----
 
     @Test
-    void sendMessage_generatesRecordImplementingTelegramMethod() {
+    void sendMessage_generatesClassImplementingTelegramMethod() {
         MethodDefinition sendMessage = new MethodDefinition("sendMessage",
                 "Use this method to send text messages.",
                 List.of(
@@ -31,15 +31,17 @@ class MethodGeneratorTest {
 
         String source = generator.generateToString(sendMessage);
 
-        assertTrue(source.contains("public class SendMessage"), "Should be a class named SendMessage");
-        assertFalse(source.contains("record"), "Should not be a record");
-        assertTrue(source.contains("implements TelegramMethod<Message>"), "Should implement TelegramMethod<Message>");
-        assertTrue(source.contains("@JsonProperty(\"chat_id\")"), "Required union -> ChatId annotation");
-        assertTrue(source.contains("private final ChatId chatId"), "Required union -> ChatId field");
-        assertTrue(source.contains("private final String text"), "Required String field");
-        assertTrue(source.contains("@JsonProperty(\"parse_mode\") @Nullable private final String parseMode"), "Optional String -> @Nullable field");
-        assertTrue(source.contains("@JsonProperty(\"disable_notification\") @Nullable private final Boolean disableNotification"),
-                "Optional Boolean -> @Nullable Boolean field");
+        assertTrue(source.contains("public final class SendMessage implements TelegramMethod<Message> {"),
+                "Should be a final class named SendMessage implementing TelegramMethod<Message>");
+        assertFalse(source.contains("record"), "Java 11 output has no records");
+        assertTrue(source.contains("    @JsonProperty(\"chat_id\")\n    private final ChatId chatId;"), "Field");
+        assertTrue(source.contains("    public ChatId chatId() {\n        return chatId;\n    }"), "Accessor");
+        assertTrue(source.contains("@JsonProperty(\"chat_id\") ChatId chatId"), "Required union -> ChatId");
+        assertTrue(source.contains("@JsonProperty(\"text\") String text"), "Required String");
+        assertTrue(source.contains("@JsonProperty(\"parse_mode\") @Nullable ParseMode parseMode"),
+                "parse_mode -> @Nullable ParseMode");
+        assertTrue(source.contains("@JsonProperty(\"disable_notification\") @Nullable Boolean disableNotification"),
+                "Optional Boolean -> @Nullable Boolean");
     }
 
     @Test
@@ -105,12 +107,14 @@ class MethodGeneratorTest {
         assertTrue(source.contains("import io.jiogram.types.ChatId;"), "Should import ChatId");
         assertTrue(source.contains("import io.jiogram.types.Message;"), "Should import Message");
         assertTrue(source.contains("import org.jspecify.annotations.Nullable;"), "Should import Nullable");
+        assertTrue(source.contains("import com.fasterxml.jackson.annotation.JsonCreator;"), "Should import JsonCreator");
+        assertTrue(source.contains("import java.util.Objects;"), "Should import Objects");
     }
 
     // ---- GetMe (no params, returns User) ----
 
     @Test
-    void getMe_generatesRecordWithNoParams() {
+    void getMe_generatesClassWithNoParams() {
         MethodDefinition getMe = new MethodDefinition("getMe",
                 "Returns basic information about the bot.",
                 List.of(),
@@ -118,9 +122,12 @@ class MethodGeneratorTest {
 
         String source = generator.generateToString(getMe);
 
-        assertTrue(source.contains("public class GetMe"), "Should be named GetMe");
-        assertFalse(source.contains("record"), "Should not be a record");
-        assertTrue(source.contains("implements TelegramMethod<User>"), "Should implement TelegramMethod<User>");
+        assertTrue(source.contains("public final class GetMe implements TelegramMethod<User> {"),
+                "Should be named GetMe and implement TelegramMethod<User>");
+        assertTrue(source.contains("    public GetMe() {\n    }"), "No-argument constructor");
+        assertFalse(source.contains("@JsonCreator"), "Nothing for Jackson to create from");
+        // Jackson only serializes an empty class as {} when it has a class annotation.
+        assertTrue(source.contains("@JsonAutoDetect("), source);
         assertTrue(source.contains("return \"getMe\""), "apiMethod should return 'getMe'");
         assertTrue(source.contains("return \"User\""), "apiReturnType should return 'User'");
         // No static factory needed when there are no params at all
@@ -143,8 +150,7 @@ class MethodGeneratorTest {
 
         String source = generator.generateToString(getUpdates);
 
-        assertTrue(source.contains("public class GetUpdates"), "Should be named GetUpdates");
-        assertFalse(source.contains("record"), "Should not be a record");
+        assertTrue(source.contains("public final class GetUpdates"), "Should be named GetUpdates");
         assertTrue(source.contains("implements TelegramMethod<List<Update>>"),
                 "Array of Update -> TelegramMethod<List<Update>>");
         assertTrue(source.contains("return \"getUpdates\""), "apiMethod should return 'getUpdates'");
@@ -206,5 +212,83 @@ class MethodGeneratorTest {
 
         assertTrue(source.contains("implements TelegramMethod<Boolean>"),
                 "Boolean return type -> TelegramMethod<Boolean>");
+    }
+
+    // ---- answer(Message, ...) / reply(Message, ...) ----
+
+    @Test
+    void sendingMethod_getsAnswerAndReplyFactoriesTargetingTheMessage() {
+        MethodDefinition sendMessage = new MethodDefinition("sendMessage", "",
+                List.of(
+                        new FieldDefinition("business_connection_id", "String", false, ""),
+                        new FieldDefinition("chat_id", "Integer or String", true, ""),
+                        new FieldDefinition("message_thread_id", "Integer", false, ""),
+                        new FieldDefinition("direct_messages_topic_id", "Integer", false, ""),
+                        new FieldDefinition("text", "String", true, ""),
+                        new FieldDefinition("disable_notification", "Boolean", false, ""),
+                        new FieldDefinition("reply_parameters", "ReplyParameters", false, "")
+                ),
+                "Message", "Available methods");
+
+        String source = generator.generateToString(sendMessage);
+
+        assertTrue(source.contains("""
+                    public static SendMessage answer(Message message, String text) {
+                        return new SendMessage(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), \
+                ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), text, null, null);
+                    }
+                """), source);
+        assertTrue(source.contains("""
+                    public static SendMessage reply(Message message, String text) {
+                        return new SendMessage(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), \
+                ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), text, null, \
+                ReplyTarget.replyTo(message));
+                    }
+                """), source);
+        assertTrue(source.contains("import io.jiogram.types.Message;"), source);
+    }
+
+    @Test
+    void sendingMethodWithoutReplyParameters_getsOnlyAnswer() {
+        MethodDefinition sendChatAction = new MethodDefinition("sendChatAction", "",
+                List.of(
+                        new FieldDefinition("chat_id", "Integer or String", true, ""),
+                        new FieldDefinition("message_thread_id", "Integer", false, ""),
+                        new FieldDefinition("action", "String", true, "")
+                ),
+                "Boolean", "Available methods");
+
+        String source = generator.generateToString(sendChatAction);
+
+        assertTrue(source.contains("public static SendChatAction answer(Message message, ChatAction action)"), source);
+        assertFalse(source.contains(" reply("), source);
+        // Message is imported for the factory although the method does not return one.
+        assertTrue(source.contains("import io.jiogram.types.Message;"), source);
+    }
+
+    @Test
+    void numericChatId_isTakenFromTheChatDirectly() {
+        MethodDefinition sendGame = new MethodDefinition("sendGame", "",
+                List.of(
+                        new FieldDefinition("chat_id", "Integer", true, ""),
+                        new FieldDefinition("message_thread_id", "Integer", false, ""),
+                        new FieldDefinition("game_short_name", "String", true, "")
+                ),
+                "Message", "Available methods");
+
+        assertTrue(generator.generateToString(sendGame).contains(
+                "return new SendGame(message.chat().id(), ReplyTarget.messageThreadId(message), gameShortName);"));
+    }
+
+    @Test
+    void methodsThatDoNotSendIntoAChat_getNoAnswerFactory() {
+        MethodDefinition closeTopic = new MethodDefinition("closeForumTopic", "",
+                List.of(
+                        new FieldDefinition("chat_id", "Integer or String", true, ""),
+                        new FieldDefinition("message_thread_id", "Integer", true, "")
+                ),
+                "Boolean", "Available methods");
+
+        assertFalse(generator.generateToString(closeTopic).contains("answer("));
     }
 }

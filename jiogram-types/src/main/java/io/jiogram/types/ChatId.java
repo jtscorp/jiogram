@@ -16,6 +16,8 @@ import java.util.Objects;
 /**
  * Represents a Telegram chat identifier, which can be either a numeric ID or a
  * string username (e.g. {@code "@channelusername"}).
+ * <p>
+ * The only implementations are {@link OfLong} and {@link OfString}.
  */
 @JsonSerialize(using = ChatId.Serializer.class)
 @JsonDeserialize(using = ChatId.Deserializer.class)
@@ -35,7 +37,11 @@ public interface ChatId {
         return new OfString(username);
     }
 
+    /**
+     * A numeric chat ID.
+     */
     final class OfLong implements ChatId {
+
         private final long id;
 
         public OfLong(long id) {
@@ -48,10 +54,7 @@ public interface ChatId {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof OfLong)) return false;
-            OfLong other = (OfLong) o;
-            return id == other.id;
+            return o instanceof OfLong && ((OfLong) o).id == id;
         }
 
         @Override
@@ -61,11 +64,15 @@ public interface ChatId {
 
         @Override
         public String toString() {
-            return "ChatId.OfLong[id=" + id + "]";
+            return "OfLong[id=" + id + "]";
         }
     }
 
+    /**
+     * A chat username, e.g. {@code "@channelusername"}.
+     */
     final class OfString implements ChatId {
+
         private final String username;
 
         public OfString(String username) {
@@ -78,10 +85,7 @@ public interface ChatId {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof OfString)) return false;
-            OfString other = (OfString) o;
-            return Objects.equals(username, other.username);
+            return o instanceof OfString && Objects.equals(((OfString) o).username, username);
         }
 
         @Override
@@ -91,7 +95,7 @@ public interface ChatId {
 
         @Override
         public String toString() {
-            return "ChatId.OfString[username=" + username + "]";
+            return "OfString[username=" + username + "]";
         }
     }
 
@@ -99,11 +103,9 @@ public interface ChatId {
         @Override
         public void serialize(ChatId value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
             if (value instanceof OfLong) {
-                OfLong ol = (OfLong) value;
-                gen.writeNumber(ol.id());
+                gen.writeNumber(((OfLong) value).id());
             } else if (value instanceof OfString) {
-                OfString os = (OfString) value;
-                gen.writeString(os.username());
+                gen.writeString(((OfString) value).username());
             } else {
                 throw new IllegalStateException("Unknown ChatId variant: " + value);
             }
@@ -113,14 +115,14 @@ public interface ChatId {
     final class Deserializer extends JsonDeserializer<ChatId> {
         @Override
         public ChatId deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-            if (p.currentToken() == JsonToken.VALUE_NUMBER_INT) {
+            JsonToken token = p.currentToken();
+            if (token == JsonToken.VALUE_NUMBER_INT) {
                 return new OfLong(p.getLongValue());
-            } else if (p.currentToken() == JsonToken.VALUE_STRING) {
-                return new OfString(p.getText());
-            } else {
-                throw ctxt.weirdStringException(p.getText(), ChatId.class,
-                        "Expected number or string for ChatId");
             }
+            if (token == JsonToken.VALUE_STRING) {
+                return new OfString(p.getText());
+            }
+            throw ctxt.weirdStringException(p.getText(), ChatId.class, "Expected number or string for ChatId");
         }
     }
 }

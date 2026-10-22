@@ -3,7 +3,16 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
+/**
+ * This object describes the type of a background. Currently, it can be one of
+ * <br>- BackgroundTypeFill
+ * <br>- BackgroundTypeWallpaper
+ * <br>- BackgroundTypePattern
+ * <br>- BackgroundTypeChatTheme
+ *
+ * @see <a href="https://core.telegram.org/bots/api#backgroundtype">BackgroundType in the Bot API</a>
+ */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", visible = true, defaultImpl = BackgroundTypeUnknown.class)
 @JsonSubTypes({
     @JsonSubTypes.Type(value = BackgroundTypeChatTheme.class, name = "chat_theme"),
     @JsonSubTypes.Type(value = BackgroundTypeFill.class, name = "fill"),

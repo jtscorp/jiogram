@@ -1,43 +1,129 @@
 package io.jiogram.types;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.PassportElementErrorType;
 import io.jiogram.types.PassportElementType;
 import java.util.List;
+import java.util.Objects;
 
-public class PassportElementErrorTranslationFiles implements PassportElementError {
-    @JsonProperty("source") private final PassportElementErrorType source;
-    @JsonProperty("type") private final PassportElementType type;
-    @JsonProperty("file_hashes") private final List<String> fileHashes;
-    @JsonProperty("message") private final String message;
+/**
+ * Represents an issue with the translated version of a document. The error is considered resolved
+ * when a file with the document translation change.
+ *
+ * @see <a href="https://core.telegram.org/bots/api#passportelementerrortranslationfiles">PassportElementErrorTranslationFiles in the Bot API</a>
+ */
+@JsonAutoDetect(getterVisibility = Visibility.NONE, isGetterVisibility = Visibility.NONE)
+public final class PassportElementErrorTranslationFiles implements PassportElementError {
 
+    @JsonProperty(value = "source", access = JsonProperty.Access.WRITE_ONLY)
+    private final PassportElementErrorType source;
+
+    @JsonProperty("type")
+    private final PassportElementType type;
+
+    @JsonProperty("file_hashes")
+    private final List<String> fileHashes;
+
+    @JsonProperty("message")
+    private final String message;
+
+    /**
+     * Creates a new {@code PassportElementErrorTranslationFiles} instance.
+     *
+     * @param source Error source, must be translation_files
+     * @param type Type of element of the user's Telegram Passport which has the issue, one of
+     *     'passport', 'driver_license', 'identity_card', 'internal_passport', 'utility_bill',
+     *     'bank_statement', 'rental_agreement', 'passport_registration', 'temporary_registration'
+     * @param fileHashes List of base64-encoded file hashes
+     * @param message Error message
+     */
     @JsonCreator
     public PassportElementErrorTranslationFiles(
-            @JsonProperty("source") PassportElementErrorType source,
+            @JsonProperty(value = "source", access = JsonProperty.Access.WRITE_ONLY) PassportElementErrorType source,
             @JsonProperty("type") PassportElementType type,
             @JsonProperty("file_hashes") List<String> fileHashes,
-            @JsonProperty("message") String message
-    ) {
+            @JsonProperty("message") String message) {
         this.source = source;
         this.type = type;
         this.fileHashes = fileHashes;
         this.message = message;
     }
 
+    public static PassportElementErrorTranslationFiles of(PassportElementType type, List<String> fileHashes, String message) {
+        return new PassportElementErrorTranslationFiles(PassportElementErrorType.TRANSLATION_FILES, type, fileHashes, message);
+    }
+
+    /**
+     * Error source, must be translation_files
+     */
     public PassportElementErrorType source() {
-        return this.source;
+        return source;
     }
 
+    /**
+     * Type of element of the user's Telegram Passport which has the issue, one of 'passport',
+     * 'driver_license', 'identity_card', 'internal_passport', 'utility_bill', 'bank_statement',
+     * 'rental_agreement', 'passport_registration', 'temporary_registration'
+     */
     public PassportElementType type() {
-        return this.type;
+        return type;
     }
 
+    /**
+     * List of base64-encoded file hashes
+     */
     public List<String> fileHashes() {
-        return this.fileHashes;
+        return fileHashes;
     }
 
+    /**
+     * Error message
+     */
     public String message() {
-        return this.message;
+        return message;
+    }
+
+    public PassportElementErrorTranslationFiles withType(PassportElementType type) {
+        return new PassportElementErrorTranslationFiles(source, type, fileHashes, message);
+    }
+
+    public PassportElementErrorTranslationFiles withFileHashes(List<String> fileHashes) {
+        return new PassportElementErrorTranslationFiles(source, type, fileHashes, message);
+    }
+
+    public PassportElementErrorTranslationFiles withMessage(String message) {
+        return new PassportElementErrorTranslationFiles(source, type, fileHashes, message);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof PassportElementErrorTranslationFiles)) {
+            return false;
+        }
+        PassportElementErrorTranslationFiles that = (PassportElementErrorTranslationFiles) o;
+        return Objects.equals(this.source, that.source)
+                && Objects.equals(this.type, that.type)
+                && Objects.equals(this.fileHashes, that.fileHashes)
+                && Objects.equals(this.message, that.message);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.source, this.type, this.fileHashes, this.message);
+    }
+
+    @Override
+    public String toString() {
+        return "PassportElementErrorTranslationFiles[source=" + this.source
+                + ", type=" + this.type
+                + ", fileHashes=" + this.fileHashes
+                + ", message=" + this.message
+                + "]";
     }
 }

@@ -3,17 +3,45 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
+/**
+ * This object represents one result of an inline query. Telegram clients currently support results
+ * of the following 20 types:
+ * <br>- InlineQueryResultCachedAudio
+ * <br>- InlineQueryResultCachedDocument
+ * <br>- InlineQueryResultCachedGif
+ * <br>- InlineQueryResultCachedMpeg4Gif
+ * <br>- InlineQueryResultCachedPhoto
+ * <br>- InlineQueryResultCachedSticker
+ * <br>- InlineQueryResultCachedVideo
+ * <br>- InlineQueryResultCachedVoice
+ * <br>- InlineQueryResultArticle
+ * <br>- InlineQueryResultAudio
+ * <br>- InlineQueryResultContact
+ * <br>- InlineQueryResultGame
+ * <br>- InlineQueryResultDocument
+ * <br>- InlineQueryResultGif
+ * <br>- InlineQueryResultLocation
+ * <br>- InlineQueryResultMpeg4Gif
+ * <br>- InlineQueryResultPhoto
+ * <br>- InlineQueryResultVenue
+ * <br>- InlineQueryResultVideo
+ * <br>- InlineQueryResultVoice
+ * <br>Note: All URLs passed in inline query results will be available to end users and therefore
+ * must be assumed to be public.
+ *
+ * @see <a href="https://core.telegram.org/bots/api#inlinequeryresult">InlineQueryResult in the Bot API</a>
+ */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", visible = true, defaultImpl = InlineQueryResultUnknown.class)
 @JsonSubTypes({
     @JsonSubTypes.Type(value = InlineQueryResultArticle.class, name = "article"),
     @JsonSubTypes.Type(value = InlineQueryResultAudio.class, name = "audio"),
-    @JsonSubTypes.Type(value = InlineQueryResultCachedAudio.class, name = "cached_audio"),
-    @JsonSubTypes.Type(value = InlineQueryResultCachedDocument.class, name = "cached_document"),
-    @JsonSubTypes.Type(value = InlineQueryResultCachedGif.class, name = "cached_gif"),
-    @JsonSubTypes.Type(value = InlineQueryResultCachedMpeg4Gif.class, name = "cached_mpeg4_gif"),
-    @JsonSubTypes.Type(value = InlineQueryResultCachedPhoto.class, name = "cached_photo"),
-    @JsonSubTypes.Type(value = InlineQueryResultCachedVideo.class, name = "cached_video"),
-    @JsonSubTypes.Type(value = InlineQueryResultCachedVoice.class, name = "cached_voice"),
+    @JsonSubTypes.Type(value = InlineQueryResultCachedAudio.class, name = "audio"),
+    @JsonSubTypes.Type(value = InlineQueryResultCachedDocument.class, name = "document"),
+    @JsonSubTypes.Type(value = InlineQueryResultCachedGif.class, name = "gif"),
+    @JsonSubTypes.Type(value = InlineQueryResultCachedMpeg4Gif.class, name = "mpeg4_gif"),
+    @JsonSubTypes.Type(value = InlineQueryResultCachedPhoto.class, name = "photo"),
+    @JsonSubTypes.Type(value = InlineQueryResultCachedVideo.class, name = "video"),
+    @JsonSubTypes.Type(value = InlineQueryResultCachedVoice.class, name = "voice"),
     @JsonSubTypes.Type(value = InlineQueryResultContact.class, name = "contact"),
     @JsonSubTypes.Type(value = InlineQueryResultDocument.class, name = "document"),
     @JsonSubTypes.Type(value = InlineQueryResultGame.class, name = "game"),

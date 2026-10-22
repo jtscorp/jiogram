@@ -1,29 +1,41 @@
 package io.jiogram.methods;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.ChatId;
 import io.jiogram.types.TelegramMethod;
+import java.util.Objects;
 
-public class ApproveChatJoinRequest implements TelegramMethod<Boolean> {
-    @JsonProperty("chat_id") private final ChatId chatId;
-    @JsonProperty("user_id") private final long userId;
+/**
+ * Use this method to approve a chat join request. The bot must be an administrator in the chat for
+ * this to work and must have the can_invite_users administrator right. Returns True on success.
+ *
+ * @see <a href="https://core.telegram.org/bots/api#approvechatjoinrequest">approveChatJoinRequest in the Bot API</a>
+ */
+@JsonAutoDetect(getterVisibility = Visibility.NONE, isGetterVisibility = Visibility.NONE)
+public final class ApproveChatJoinRequest implements TelegramMethod<Boolean> {
 
+    @JsonProperty("chat_id")
+    private final ChatId chatId;
+
+    @JsonProperty("user_id")
+    private final long userId;
+
+    /**
+     * Creates a new {@code ApproveChatJoinRequest} instance.
+     *
+     * @param chatId Unique identifier for the target chat or username of the target channel (in the
+     *     format &#64;channelusername)
+     * @param userId Unique identifier of the target user
+     */
     @JsonCreator
     public ApproveChatJoinRequest(
             @JsonProperty("chat_id") ChatId chatId,
-            @JsonProperty("user_id") long userId
-    ) {
+            @JsonProperty("user_id") long userId) {
         this.chatId = chatId;
         this.userId = userId;
-    }
-
-    public ChatId chatId() {
-        return this.chatId;
-    }
-
-    public long userId() {
-        return this.userId;
     }
 
     @Override
@@ -34,5 +46,53 @@ public class ApproveChatJoinRequest implements TelegramMethod<Boolean> {
     @Override
     public String apiReturnType() {
         return "Boolean";
+    }
+
+    /**
+     * Unique identifier for the target chat or username of the target channel (in the format
+     * &#64;channelusername)
+     */
+    public ChatId chatId() {
+        return chatId;
+    }
+
+    /**
+     * Unique identifier of the target user
+     */
+    public long userId() {
+        return userId;
+    }
+
+    public ApproveChatJoinRequest withChatId(ChatId chatId) {
+        return new ApproveChatJoinRequest(chatId, userId);
+    }
+
+    public ApproveChatJoinRequest withUserId(long userId) {
+        return new ApproveChatJoinRequest(chatId, userId);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof ApproveChatJoinRequest)) {
+            return false;
+        }
+        ApproveChatJoinRequest that = (ApproveChatJoinRequest) o;
+        return Objects.equals(this.chatId, that.chatId)
+                && this.userId == that.userId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.chatId, this.userId);
+    }
+
+    @Override
+    public String toString() {
+        return "ApproveChatJoinRequest[chatId=" + this.chatId
+                + ", userId=" + this.userId
+                + "]";
     }
 }

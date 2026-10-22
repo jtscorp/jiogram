@@ -20,7 +20,8 @@ import java.util.Objects;
  *   <li>{@code "True"} &rarr; {@code boolean} / {@code Boolean}</li>
  *   <li>{@code "Array of X"} &rarr; {@code List<X>} (element always boxed)</li>
  *   <li>{@code "Integer or String"} &rarr; {@code ChatId}</li>
- *   <li>{@code "InputFile or String"} &rarr; {@code InputFileOrString}</li>
+ *   <li>{@code "InputFile or String"}, and {@code String} fields that accept
+ *       {@code attach://} uploads &rarr; {@code InputFileOrString}</li>
  *   <li>Multi-type unions (4+ types like reply_markup) &rarr; {@code ReplyMarkup}</li>
  *   <li>Other entity names &rarr; {@code ClassName.get(typesPackage, name)}</li>
  * </ul>
@@ -83,6 +84,12 @@ public final class TypeMapper {
      * generated enum exists, map those fields to the enum instead.
      */
     public TypeName resolveTypeField(String ownerTypeName, FieldDefinition field) {
+        // The schema types fields like InputMediaPhoto.media as plain String, but they also
+        // accept an upload referenced as "attach://<name>"; model them like "InputFile or String".
+        if ("String".equals(field.type()) && field.description() != null
+                && field.description().contains("attach://")) {
+            return ClassName.get(typesPackage, "InputFileOrString");
+        }
         TypeName enumType = resolveEnumField(ownerTypeName, field.name(), field.type());
         if (enumType != null) {
             return enumType;
@@ -186,6 +193,7 @@ public final class TypeMapper {
         if (ownerTypeName.startsWith("PassportElementError") && "type".equals(fieldName)) {
             return ClassName.get(typesPackage, "PassportElementType");
         }
+
         String parentName = UnionRegistry.parentOf(ownerTypeName);
         if (parentName == null || "MaybeInaccessibleMessage".equals(parentName)) {
             return null;

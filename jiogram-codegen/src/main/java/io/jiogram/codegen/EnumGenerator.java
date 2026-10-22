@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Objects;
 import java.util.TreeSet;
 import java.util.Set;
@@ -18,11 +19,13 @@ import java.util.Set;
  *   <li>Constants with the original string value</li>
  *   <li>{@code @JsonValue} on the {@code value()} method</li>
  *   <li>{@code @JsonCreator} on a static {@code fromValue()} factory method</li>
+ *   <li>An {@code UNKNOWN} constant that {@code fromValue()} returns for unrecognised values</li>
  * </ul>
  */
 public final class EnumGenerator {
 
     private static final String JACKSON_ANNOTATION_PACKAGE = "com.fasterxml.jackson.annotation";
+    private static final String UNKNOWN_CONSTANT = "UNKNOWN";
 
     private final String basePackage;
 
@@ -78,20 +81,23 @@ public final class EnumGenerator {
         }
         sb.append("\n");
 
+        sb.append(Javadoc.render(enumDef.description(), List.of(), null));
         sb.append("public enum ").append(enumDef.name()).append(" {\n");
 
         // Enum constants
-        for (int i = 0; i < enumDef.values().size(); i++) {
-            String value = enumDef.values().get(i);
+        for (String value : enumDef.values()) {
             String constantName = toConstantName(value);
-            sb.append("    ").append(constantName).append("(\"").append(value).append("\")");
-            if (i < enumDef.values().size() - 1) {
-                sb.append(",");
-            } else {
-                sb.append(";");
+            if (UNKNOWN_CONSTANT.equals(constantName)) {
+                throw new IllegalStateException(
+                        enumDef.name() + " has a value that clashes with the " + UNKNOWN_CONSTANT + " fallback: " + value);
             }
-            sb.append("\n");
+            sb.append("    ").append(constantName).append("(\"").append(value).append("\"),\n");
         }
+
+        // Fallback for values added to the Bot API after this code was generated,
+        // so a new value does not fail deserialization of the whole update.
+        sb.append("    /** A value unknown to this library version; {@link #value()} returns {@code null}. */\n");
+        sb.append("    ").append(UNKNOWN_CONSTANT).append("(null);\n");
 
         sb.append("\n");
 
@@ -111,11 +117,11 @@ public final class EnumGenerator {
         sb.append("    @JsonCreator\n");
         sb.append("    public static ").append(enumDef.name()).append(" fromValue(String value) {\n");
         sb.append("        for (").append(enumDef.name()).append(" e : values()) {\n");
-        sb.append("            if (e.value.equals(value)) {\n");
+        sb.append("            if (e.value != null && e.value.equals(value)) {\n");
         sb.append("                return e;\n");
         sb.append("            }\n");
         sb.append("        }\n");
-        sb.append("        throw new IllegalArgumentException(\"Unknown ").append(enumDef.name()).append(": \" + value);\n");
+        sb.append("        return ").append(UNKNOWN_CONSTANT).append(";\n");
         sb.append("    }\n");
 
         sb.append("}\n");

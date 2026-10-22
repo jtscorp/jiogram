@@ -161,6 +161,8 @@ public final class EnumExtractor {
             // is deterministic across JVM runs (UnionRegistry's Map.of(...)
             // input has unspecified iteration order).
             List<String> values = info.subtypes().keySet().stream()
+                    .map(key -> UnionRegistry.wireName(parentName, key))
+                    .distinct()
                     .sorted()
                     .collect(Collectors.toList());
             enums.add(new EnumDefinition(enumName,

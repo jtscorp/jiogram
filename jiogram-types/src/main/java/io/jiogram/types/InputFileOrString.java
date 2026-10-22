@@ -16,6 +16,8 @@ import java.util.Objects;
 /**
  * Represents a parameter that can be either an {@link InputFile} or a String
  * (file_id or URL).
+ * <p>
+ * The only implementations are {@link OfInputFile} and {@link OfString}.
  */
 @JsonSerialize(using = InputFileOrString.Serializer.class)
 @JsonDeserialize(using = InputFileOrString.Deserializer.class)
@@ -29,7 +31,11 @@ public interface InputFileOrString {
         return new OfString(fileIdOrUrl);
     }
 
+    /**
+     * A file to upload.
+     */
     final class OfInputFile implements InputFileOrString {
+
         private final InputFile file;
 
         public OfInputFile(InputFile file) {
@@ -42,10 +48,7 @@ public interface InputFileOrString {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof OfInputFile)) return false;
-            OfInputFile other = (OfInputFile) o;
-            return Objects.equals(file, other.file);
+            return o instanceof OfInputFile && Objects.equals(((OfInputFile) o).file, file);
         }
 
         @Override
@@ -55,11 +58,15 @@ public interface InputFileOrString {
 
         @Override
         public String toString() {
-            return "InputFileOrString.OfInputFile[file=" + file + "]";
+            return "OfInputFile[file=" + file + "]";
         }
     }
 
+    /**
+     * A file_id or URL of a file Telegram already has or can fetch.
+     */
     final class OfString implements InputFileOrString {
+
         private final String value;
 
         public OfString(String value) {
@@ -72,10 +79,7 @@ public interface InputFileOrString {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof OfString)) return false;
-            OfString other = (OfString) o;
-            return Objects.equals(value, other.value);
+            return o instanceof OfString && Objects.equals(((OfString) o).value, value);
         }
 
         @Override
@@ -85,7 +89,7 @@ public interface InputFileOrString {
 
         @Override
         public String toString() {
-            return "InputFileOrString.OfString[value=" + value + "]";
+            return "OfString[value=" + value + "]";
         }
     }
 
@@ -93,13 +97,11 @@ public interface InputFileOrString {
         @Override
         public void serialize(InputFileOrString value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
             if (value instanceof OfInputFile) {
-                OfInputFile oi = (OfInputFile) value;
-                gen.writeObject(oi.file());
-            } else if (value instanceof OfString) {
-                OfString os = (OfString) value;
-                gen.writeString(os.value());
+                // Through the provider (not gen.writeObject) so InputFile.Serializer
+                // sees the session's InputFile.Attachments attribute.
+                serializers.defaultSerializeValue(((OfInputFile) value).file(), gen);
             } else {
-                throw new IllegalStateException("Unknown InputFileOrString variant: " + value);
+                gen.writeString(((OfString) value).value());
             }
         }
     }
@@ -107,11 +109,12 @@ public interface InputFileOrString {
     final class Deserializer extends JsonDeserializer<InputFileOrString> {
         @Override
         public InputFileOrString deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-            if (p.currentToken() == JsonToken.VALUE_STRING) {
-                return new OfString(p.getText());
-            } else {
-                return new OfInputFile(ctxt.readValue(p, InputFile.class));
+            // Telegram only ever sends file_id / URL strings; an upload never comes back.
+            if (p.currentToken() != JsonToken.VALUE_STRING) {
+                return ctxt.reportInputMismatch(InputFileOrString.class,
+                    "Expected a file_id or URL string, got %s", p.currentToken());
             }
+            return new OfString(p.getText());
         }
     }
 }

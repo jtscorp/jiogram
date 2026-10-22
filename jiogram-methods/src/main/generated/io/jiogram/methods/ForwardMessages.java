@@ -1,22 +1,67 @@
 package io.jiogram.methods;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.ChatId;
 import io.jiogram.types.MessageId;
 import io.jiogram.types.TelegramMethod;
 import java.util.List;
+import java.util.Objects;
 import org.jspecify.annotations.Nullable;
 
-public class ForwardMessages implements TelegramMethod<List<MessageId>> {
-    @JsonProperty("chat_id") private final ChatId chatId;
-    @JsonProperty("message_thread_id") @Nullable private final Long messageThreadId;
-    @JsonProperty("direct_messages_topic_id") @Nullable private final Long directMessagesTopicId;
-    @JsonProperty("from_chat_id") private final ChatId fromChatId;
-    @JsonProperty("message_ids") private final List<Long> messageIds;
-    @JsonProperty("disable_notification") @Nullable private final Boolean disableNotification;
-    @JsonProperty("protect_content") @Nullable private final Boolean protectContent;
+/**
+ * Use this method to forward multiple messages of any kind. If some of the specified messages can't
+ * be found or forwarded, they are skipped. Service messages and messages with protected content
+ * can't be forwarded. Album grouping is kept for forwarded messages. On success, an array of
+ * MessageId of the sent messages is returned.
+ *
+ * @see <a href="https://core.telegram.org/bots/api#forwardmessages">forwardMessages in the Bot API</a>
+ */
+@JsonAutoDetect(getterVisibility = Visibility.NONE, isGetterVisibility = Visibility.NONE)
+public final class ForwardMessages implements TelegramMethod<List<MessageId>> {
 
+    @JsonProperty("chat_id")
+    private final ChatId chatId;
+
+    @JsonProperty("message_thread_id")
+    private final @Nullable Long messageThreadId;
+
+    @JsonProperty("direct_messages_topic_id")
+    private final @Nullable Long directMessagesTopicId;
+
+    @JsonProperty("from_chat_id")
+    private final ChatId fromChatId;
+
+    @JsonProperty("message_ids")
+    private final List<Long> messageIds;
+
+    @JsonProperty("disable_notification")
+    private final @Nullable Boolean disableNotification;
+
+    @JsonProperty("protect_content")
+    private final @Nullable Boolean protectContent;
+
+    /**
+     * Creates a new {@code ForwardMessages} instance.
+     *
+     * @param chatId Unique identifier for the target chat or username of the target channel (in the
+     *     format &#64;channelusername)
+     * @param messageThreadId Unique identifier for the target message thread (topic) of a forum;
+     *     for forum supergroups and private chats of bots with forum topic mode enabled only
+     * @param directMessagesTopicId Identifier of the direct messages topic to which the messages
+     *     will be forwarded; required if the messages are forwarded to a direct messages chat
+     * @param fromChatId Unique identifier for the chat where the original messages were sent (or
+     *     channel username in the format &#64;channelusername)
+     * @param messageIds A JSON-serialized list of 1-100 identifiers of messages in the chat
+     *     from_chat_id to forward. The identifiers must be specified in a strictly increasing
+     *     order.
+     * @param disableNotification Sends the messages silently. Users will receive a notification
+     *     with no sound.
+     * @param protectContent Protects the contents of the forwarded messages from forwarding and
+     *     saving
+     */
     @JsonCreator
     public ForwardMessages(
             @JsonProperty("chat_id") ChatId chatId,
@@ -25,8 +70,7 @@ public class ForwardMessages implements TelegramMethod<List<MessageId>> {
             @JsonProperty("from_chat_id") ChatId fromChatId,
             @JsonProperty("message_ids") List<Long> messageIds,
             @JsonProperty("disable_notification") @Nullable Boolean disableNotification,
-            @JsonProperty("protect_content") @Nullable Boolean protectContent
-    ) {
+            @JsonProperty("protect_content") @Nullable Boolean protectContent) {
         this.chatId = chatId;
         this.messageThreadId = messageThreadId;
         this.directMessagesTopicId = directMessagesTopicId;
@@ -34,34 +78,6 @@ public class ForwardMessages implements TelegramMethod<List<MessageId>> {
         this.messageIds = messageIds;
         this.disableNotification = disableNotification;
         this.protectContent = protectContent;
-    }
-
-    public ChatId chatId() {
-        return this.chatId;
-    }
-
-    public Long messageThreadId() {
-        return this.messageThreadId;
-    }
-
-    public Long directMessagesTopicId() {
-        return this.directMessagesTopicId;
-    }
-
-    public ChatId fromChatId() {
-        return this.fromChatId;
-    }
-
-    public List<Long> messageIds() {
-        return this.messageIds;
-    }
-
-    public Boolean disableNotification() {
-        return this.disableNotification;
-    }
-
-    public Boolean protectContent() {
-        return this.protectContent;
     }
 
     @Override
@@ -76,5 +92,122 @@ public class ForwardMessages implements TelegramMethod<List<MessageId>> {
 
     public static ForwardMessages of(ChatId chatId, ChatId fromChatId, List<Long> messageIds) {
         return new ForwardMessages(chatId, null, null, fromChatId, messageIds, null, null);
+    }
+
+    /**
+     * Unique identifier for the target chat or username of the target channel (in the format
+     * &#64;channelusername)
+     */
+    public ChatId chatId() {
+        return chatId;
+    }
+
+    /**
+     * Unique identifier for the target message thread (topic) of a forum; for forum supergroups and
+     * private chats of bots with forum topic mode enabled only
+     */
+    public @Nullable Long messageThreadId() {
+        return messageThreadId;
+    }
+
+    /**
+     * Identifier of the direct messages topic to which the messages will be forwarded; required if
+     * the messages are forwarded to a direct messages chat
+     */
+    public @Nullable Long directMessagesTopicId() {
+        return directMessagesTopicId;
+    }
+
+    /**
+     * Unique identifier for the chat where the original messages were sent (or channel username in
+     * the format &#64;channelusername)
+     */
+    public ChatId fromChatId() {
+        return fromChatId;
+    }
+
+    /**
+     * A JSON-serialized list of 1-100 identifiers of messages in the chat from_chat_id to forward.
+     * The identifiers must be specified in a strictly increasing order.
+     */
+    public List<Long> messageIds() {
+        return messageIds;
+    }
+
+    /**
+     * Sends the messages silently. Users will receive a notification with no sound.
+     */
+    public @Nullable Boolean disableNotification() {
+        return disableNotification;
+    }
+
+    /**
+     * Protects the contents of the forwarded messages from forwarding and saving
+     */
+    public @Nullable Boolean protectContent() {
+        return protectContent;
+    }
+
+    public ForwardMessages withChatId(ChatId chatId) {
+        return new ForwardMessages(chatId, messageThreadId, directMessagesTopicId, fromChatId, messageIds, disableNotification, protectContent);
+    }
+
+    public ForwardMessages withMessageThreadId(@Nullable Long messageThreadId) {
+        return new ForwardMessages(chatId, messageThreadId, directMessagesTopicId, fromChatId, messageIds, disableNotification, protectContent);
+    }
+
+    public ForwardMessages withDirectMessagesTopicId(@Nullable Long directMessagesTopicId) {
+        return new ForwardMessages(chatId, messageThreadId, directMessagesTopicId, fromChatId, messageIds, disableNotification, protectContent);
+    }
+
+    public ForwardMessages withFromChatId(ChatId fromChatId) {
+        return new ForwardMessages(chatId, messageThreadId, directMessagesTopicId, fromChatId, messageIds, disableNotification, protectContent);
+    }
+
+    public ForwardMessages withMessageIds(List<Long> messageIds) {
+        return new ForwardMessages(chatId, messageThreadId, directMessagesTopicId, fromChatId, messageIds, disableNotification, protectContent);
+    }
+
+    public ForwardMessages withDisableNotification(@Nullable Boolean disableNotification) {
+        return new ForwardMessages(chatId, messageThreadId, directMessagesTopicId, fromChatId, messageIds, disableNotification, protectContent);
+    }
+
+    public ForwardMessages withProtectContent(@Nullable Boolean protectContent) {
+        return new ForwardMessages(chatId, messageThreadId, directMessagesTopicId, fromChatId, messageIds, disableNotification, protectContent);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof ForwardMessages)) {
+            return false;
+        }
+        ForwardMessages that = (ForwardMessages) o;
+        return Objects.equals(this.chatId, that.chatId)
+                && Objects.equals(this.messageThreadId, that.messageThreadId)
+                && Objects.equals(this.directMessagesTopicId, that.directMessagesTopicId)
+                && Objects.equals(this.fromChatId, that.fromChatId)
+                && Objects.equals(this.messageIds, that.messageIds)
+                && Objects.equals(this.disableNotification, that.disableNotification)
+                && Objects.equals(this.protectContent, that.protectContent);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.chatId, this.messageThreadId, this.directMessagesTopicId, this.fromChatId, this.messageIds, this.disableNotification, this.protectContent);
+    }
+
+    @Override
+    public String toString() {
+        return "ForwardMessages[chatId=" + this.chatId
+                + ", messageThreadId=" + this.messageThreadId
+                + ", directMessagesTopicId=" + this.directMessagesTopicId
+                + ", fromChatId=" + this.fromChatId
+                + ", messageIds=" + this.messageIds
+                + ", disableNotification=" + this.disableNotification
+                + ", protectContent=" + this.protectContent
+                + "]";
     }
 }

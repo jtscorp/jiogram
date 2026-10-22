@@ -1,18 +1,57 @@
 package io.jiogram.types;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.TransactionPartner;
+import java.util.Objects;
 import org.jspecify.annotations.Nullable;
 
-public class StarTransaction {
-    @JsonProperty("id") private final String id;
-    @JsonProperty("amount") private final long amount;
-    @JsonProperty("nanostar_amount") @Nullable private final Long nanostarAmount;
-    @JsonProperty("date") private final long date;
-    @JsonProperty("source") @Nullable private final TransactionPartner source;
-    @JsonProperty("receiver") @Nullable private final TransactionPartner receiver;
+/**
+ * Describes a Telegram Star transaction. Note that if the buyer initiates a chargeback with the
+ * payment provider from whom they acquired Stars (e.g., Apple, Google) following this transaction,
+ * the refunded Stars will be deducted from the bot's balance. This is outside of Telegram's
+ * control.
+ *
+ * @see <a href="https://core.telegram.org/bots/api#startransaction">StarTransaction in the Bot API</a>
+ */
+@JsonAutoDetect(getterVisibility = Visibility.NONE, isGetterVisibility = Visibility.NONE)
+public final class StarTransaction {
 
+    @JsonProperty("id")
+    private final String id;
+
+    @JsonProperty("amount")
+    private final long amount;
+
+    @JsonProperty("nanostar_amount")
+    private final @Nullable Long nanostarAmount;
+
+    @JsonProperty("date")
+    private final long date;
+
+    @JsonProperty("source")
+    private final @Nullable TransactionPartner source;
+
+    @JsonProperty("receiver")
+    private final @Nullable TransactionPartner receiver;
+
+    /**
+     * Creates a new {@code StarTransaction} instance.
+     *
+     * @param id Unique identifier of the transaction. Coincides with the identifier of the original
+     *     transaction for refund transactions. Coincides with
+     *     SuccessfulPayment.telegram_payment_charge_id for successful incoming payments from users.
+     * @param amount Integer amount of Telegram Stars transferred by the transaction
+     * @param nanostarAmount The number of 1/1000000000 shares of Telegram Stars transferred by the
+     *     transaction; from 0 to 999999999
+     * @param date Date the transaction was created in Unix time
+     * @param source Source of an incoming transaction (e.g., a user purchasing goods or services,
+     *     Fragment refunding a failed withdrawal). Only for incoming transactions
+     * @param receiver Receiver of an outgoing transaction (e.g., a user for a purchase refund,
+     *     Fragment for a withdrawal). Only for outgoing transactions
+     */
     @JsonCreator
     public StarTransaction(
             @JsonProperty("id") String id,
@@ -20,8 +59,7 @@ public class StarTransaction {
             @JsonProperty("nanostar_amount") @Nullable Long nanostarAmount,
             @JsonProperty("date") long date,
             @JsonProperty("source") @Nullable TransactionPartner source,
-            @JsonProperty("receiver") @Nullable TransactionPartner receiver
-    ) {
+            @JsonProperty("receiver") @Nullable TransactionPartner receiver) {
         this.id = id;
         this.amount = amount;
         this.nanostarAmount = nanostarAmount;
@@ -30,27 +68,111 @@ public class StarTransaction {
         this.receiver = receiver;
     }
 
+    public static StarTransaction of(String id, long amount, long date) {
+        return new StarTransaction(id, amount, null, date, null, null);
+    }
+
+    /**
+     * Unique identifier of the transaction. Coincides with the identifier of the original
+     * transaction for refund transactions. Coincides with
+     * SuccessfulPayment.telegram_payment_charge_id for successful incoming payments from users.
+     */
     public String id() {
-        return this.id;
+        return id;
     }
 
+    /**
+     * Integer amount of Telegram Stars transferred by the transaction
+     */
     public long amount() {
-        return this.amount;
+        return amount;
     }
 
-    public Long nanostarAmount() {
-        return this.nanostarAmount;
+    /**
+     * The number of 1/1000000000 shares of Telegram Stars transferred by the transaction; from 0 to
+     * 999999999
+     */
+    public @Nullable Long nanostarAmount() {
+        return nanostarAmount;
     }
 
+    /**
+     * Date the transaction was created in Unix time
+     */
     public long date() {
-        return this.date;
+        return date;
     }
 
-    public TransactionPartner source() {
-        return this.source;
+    /**
+     * Source of an incoming transaction (e.g., a user purchasing goods or services, Fragment
+     * refunding a failed withdrawal). Only for incoming transactions
+     */
+    public @Nullable TransactionPartner source() {
+        return source;
     }
 
-    public TransactionPartner receiver() {
-        return this.receiver;
+    /**
+     * Receiver of an outgoing transaction (e.g., a user for a purchase refund, Fragment for a
+     * withdrawal). Only for outgoing transactions
+     */
+    public @Nullable TransactionPartner receiver() {
+        return receiver;
+    }
+
+    public StarTransaction withId(String id) {
+        return new StarTransaction(id, amount, nanostarAmount, date, source, receiver);
+    }
+
+    public StarTransaction withAmount(long amount) {
+        return new StarTransaction(id, amount, nanostarAmount, date, source, receiver);
+    }
+
+    public StarTransaction withNanostarAmount(@Nullable Long nanostarAmount) {
+        return new StarTransaction(id, amount, nanostarAmount, date, source, receiver);
+    }
+
+    public StarTransaction withDate(long date) {
+        return new StarTransaction(id, amount, nanostarAmount, date, source, receiver);
+    }
+
+    public StarTransaction withSource(@Nullable TransactionPartner source) {
+        return new StarTransaction(id, amount, nanostarAmount, date, source, receiver);
+    }
+
+    public StarTransaction withReceiver(@Nullable TransactionPartner receiver) {
+        return new StarTransaction(id, amount, nanostarAmount, date, source, receiver);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof StarTransaction)) {
+            return false;
+        }
+        StarTransaction that = (StarTransaction) o;
+        return Objects.equals(this.id, that.id)
+                && this.amount == that.amount
+                && Objects.equals(this.nanostarAmount, that.nanostarAmount)
+                && this.date == that.date
+                && Objects.equals(this.source, that.source)
+                && Objects.equals(this.receiver, that.receiver);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.id, this.amount, this.nanostarAmount, this.date, this.source, this.receiver);
+    }
+
+    @Override
+    public String toString() {
+        return "StarTransaction[id=" + this.id
+                + ", amount=" + this.amount
+                + ", nanostarAmount=" + this.nanostarAmount
+                + ", date=" + this.date
+                + ", source=" + this.source
+                + ", receiver=" + this.receiver
+                + "]";
     }
 }

@@ -3,7 +3,17 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
+/**
+ * Describes the type of a clickable area on a story. Currently, it can be one of
+ * <br>- StoryAreaTypeLocation
+ * <br>- StoryAreaTypeSuggestedReaction
+ * <br>- StoryAreaTypeLink
+ * <br>- StoryAreaTypeWeather
+ * <br>- StoryAreaTypeUniqueGift
+ *
+ * @see <a href="https://core.telegram.org/bots/api#storyareatype">StoryAreaType in the Bot API</a>
+ */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", visible = true, defaultImpl = StoryAreaTypeUnknown.class)
 @JsonSubTypes({
     @JsonSubTypes.Type(value = StoryAreaTypeLink.class, name = "link"),
     @JsonSubTypes.Type(value = StoryAreaTypeLocation.class, name = "location"),

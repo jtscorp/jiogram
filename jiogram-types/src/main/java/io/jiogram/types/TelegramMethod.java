@@ -1,7 +1,7 @@
 package io.jiogram.types;
 
 /**
- * Marker interface for all Telegram Bot API method records.
+ * Marker interface for all Telegram Bot API method classes.
  *
  * @param <T> the return type of the API method
  */

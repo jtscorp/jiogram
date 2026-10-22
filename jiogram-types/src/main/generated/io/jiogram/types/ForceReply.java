@@ -1,34 +1,129 @@
 package io.jiogram.types;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Objects;
 import org.jspecify.annotations.Nullable;
 
-public class ForceReply implements ReplyMarkup {
-    @JsonProperty("force_reply") private final boolean forceReply;
-    @JsonProperty("input_field_placeholder") @Nullable private final String inputFieldPlaceholder;
-    @JsonProperty("selective") @Nullable private final Boolean selective;
+/**
+ * Upon receiving a message with this object, Telegram clients will display a reply interface to the
+ * user (act as if the user has selected the bot's message and tapped 'Reply'). This can be
+ * extremely useful if you want to create user-friendly step-by-step interfaces without having to
+ * sacrifice privacy mode. Not supported in channels and for messages sent on behalf of a Telegram
+ * Business account.
+ * <br>Example: A poll bot for groups runs in privacy mode (only receives commands, replies to its
+ * messages and mentions). There could be two ways to create a new poll:
+ * <br>Explain the user how to send a command with parameters (e.g. /newpoll question answer1
+ * answer2). May be appealing for hardcore users but lacks modern day polish.
+ * <br>Guide the user through a step-by-step process. 'Please send me your question', 'Cool, now
+ * let's add the first answer option', 'Great. Keep adding answer options, then send /done when
+ * you're ready'.
+ * <br>The last option is definitely more attractive. And if you use ForceReply in your bot's
+ * questions, it will receive the user's answers even if it only receives replies, commands and
+ * mentions - without any extra work for the user.
+ *
+ * @see <a href="https://core.telegram.org/bots/api#forcereply">ForceReply in the Bot API</a>
+ */
+@JsonAutoDetect(getterVisibility = Visibility.NONE, isGetterVisibility = Visibility.NONE)
+public final class ForceReply implements ReplyMarkup {
 
+    @JsonProperty("force_reply")
+    private final boolean forceReply;
+
+    @JsonProperty("input_field_placeholder")
+    private final @Nullable String inputFieldPlaceholder;
+
+    @JsonProperty("selective")
+    private final @Nullable Boolean selective;
+
+    /**
+     * Creates a new {@code ForceReply} instance.
+     *
+     * @param forceReply Shows reply interface to the user, as if they manually selected the bot's
+     *     message and tapped 'Reply'
+     * @param inputFieldPlaceholder The placeholder to be shown in the input field when the reply is
+     *     active; 1-64 characters
+     * @param selective Use this parameter if you want to force reply from specific users only.
+     *     Targets: 1) users that are &#64;mentioned in the text of the Message object; 2) if the
+     *     bot's message is a reply to a message in the same chat and forum topic, sender of the
+     *     original message.
+     */
     @JsonCreator
     public ForceReply(
             @JsonProperty("force_reply") boolean forceReply,
             @JsonProperty("input_field_placeholder") @Nullable String inputFieldPlaceholder,
-            @JsonProperty("selective") @Nullable Boolean selective
-    ) {
+            @JsonProperty("selective") @Nullable Boolean selective) {
         this.forceReply = forceReply;
         this.inputFieldPlaceholder = inputFieldPlaceholder;
         this.selective = selective;
     }
 
+    public static ForceReply of(boolean forceReply) {
+        return new ForceReply(forceReply, null, null);
+    }
+
+    /**
+     * Shows reply interface to the user, as if they manually selected the bot's message and tapped
+     * 'Reply'
+     */
     public boolean forceReply() {
-        return this.forceReply;
+        return forceReply;
     }
 
-    public String inputFieldPlaceholder() {
-        return this.inputFieldPlaceholder;
+    /**
+     * The placeholder to be shown in the input field when the reply is active; 1-64 characters
+     */
+    public @Nullable String inputFieldPlaceholder() {
+        return inputFieldPlaceholder;
     }
 
-    public Boolean selective() {
-        return this.selective;
+    /**
+     * Use this parameter if you want to force reply from specific users only. Targets: 1) users
+     * that are &#64;mentioned in the text of the Message object; 2) if the bot's message is a reply
+     * to a message in the same chat and forum topic, sender of the original message.
+     */
+    public @Nullable Boolean selective() {
+        return selective;
+    }
+
+    public ForceReply withForceReply(boolean forceReply) {
+        return new ForceReply(forceReply, inputFieldPlaceholder, selective);
+    }
+
+    public ForceReply withInputFieldPlaceholder(@Nullable String inputFieldPlaceholder) {
+        return new ForceReply(forceReply, inputFieldPlaceholder, selective);
+    }
+
+    public ForceReply withSelective(@Nullable Boolean selective) {
+        return new ForceReply(forceReply, inputFieldPlaceholder, selective);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof ForceReply)) {
+            return false;
+        }
+        ForceReply that = (ForceReply) o;
+        return this.forceReply == that.forceReply
+                && Objects.equals(this.inputFieldPlaceholder, that.inputFieldPlaceholder)
+                && Objects.equals(this.selective, that.selective);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.forceReply, this.inputFieldPlaceholder, this.selective);
+    }
+
+    @Override
+    public String toString() {
+        return "ForceReply[forceReply=" + this.forceReply
+                + ", inputFieldPlaceholder=" + this.inputFieldPlaceholder
+                + ", selective=" + this.selective
+                + "]";
     }
 }

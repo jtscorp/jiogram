@@ -3,10 +3,15 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+/**
+ * Discriminator values for BackgroundFill.
+ */
 public enum BackgroundFillType {
     FREEFORM_GRADIENT("freeform_gradient"),
     GRADIENT("gradient"),
-    SOLID("solid");
+    SOLID("solid"),
+    /** A value unknown to this library version; {@link #value()} returns {@code null}. */
+    UNKNOWN(null);
 
     private final String value;
 
@@ -22,10 +27,10 @@ public enum BackgroundFillType {
     @JsonCreator
     public static BackgroundFillType fromValue(String value) {
         for (BackgroundFillType e : values()) {
-            if (e.value.equals(value)) {
+            if (e.value != null && e.value.equals(value)) {
                 return e;
             }
         }
-        throw new IllegalArgumentException("Unknown BackgroundFillType: " + value);
+        return UNKNOWN;
     }
 }

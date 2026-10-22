@@ -14,23 +14,23 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Generates Java class source files from {@link MethodDefinition} objects.
+ * Generates Java source files from {@link MethodDefinition} objects: Java 11 value classes
+ * (see {@link ValueClass}).
  * <p>
  * Each generated class implements {@code TelegramMethod<T>} where T is the return type,
  * and includes:
  * <ul>
- *   <li>Final fields with {@code @JsonProperty} annotations</li>
- *   <li>A {@code @JsonCreator} constructor</li>
- *   <li>Record-style accessors (no {@code get} prefix)</li>
+ *   <li>A field, constructor parameter and accessor for every method parameter</li>
  *   <li>{@code apiMethod()} returning the original API method name</li>
  *   <li>{@code apiReturnType()} returning the return type string</li>
  *   <li>A static {@code of()} factory with only required parameters</li>
+ *   <li>For sending methods, static {@code answer(Message, ...)} and {@code reply(Message, ...)}
+ *       factories that target the chat (and topic) of a received message</li>
+ *   <li>A {@code withX(...)} method per parameter returning a copy with that value replaced</li>
+ *   <li>{@code equals}, {@code hashCode} and {@code toString} as a record has them</li>
  * </ul>
  */
 public final class MethodGenerator {
-
-    private static final String NULLABLE_PACKAGE = "org.jspecify.annotations";
-    private static final String JACKSON_ANNOTATION_PACKAGE = "com.fasterxml.jackson.annotation";
 
     private final TypeMapper typeMapper;
     private final String methodsPackage;
@@ -40,7 +40,7 @@ public final class MethodGenerator {
      * Creates a new MethodGenerator.
      *
      * @param typeMapper     resolves Telegram types to JavaPoet types
-     * @param methodsPackage the Java package for generated method records
+     * @param methodsPackage the Java package for generated method classes
      * @param typesPackage   the Java package where generated types live (for TelegramMethod reference)
      */
     public MethodGenerator(TypeMapper typeMapper, String methodsPackage, String typesPackage) {
@@ -77,8 +77,6 @@ public final class MethodGenerator {
         Objects.requireNonNull(method, "method must not be null");
 
         Set<String> imports = new TreeSet<>();
-        imports.add(JACKSON_ANNOTATION_PACKAGE + ".JsonProperty");
-        imports.add(JACKSON_ANNOTATION_PACKAGE + ".JsonCreator");
 
         // Resolve return type
         TypeName returnType = typeMapper.resolveReturnType(method.returnType());
@@ -88,27 +86,45 @@ public final class MethodGenerator {
         // Build TelegramMethod<ReturnType> import
         imports.add(typesPackage + ".TelegramMethod");
 
-        // Collect field metadata
-        record FieldInfo(String annotation, String typeString, String javaName, boolean nullable) {}
-        List<FieldInfo> fields = new ArrayList<>();
-        boolean hasOptionalRefField = false;
-
+        List<ValueClass.Field> fields = new ArrayList<>();
         for (FieldDefinition param : method.parameters()) {
             TypeName javaType = typeMapper.resolveMethodParameter(method.name(), param);
             String typeString = resolveTypeString(javaType, imports);
-            String annotation = "@JsonProperty(\"" + param.name() + "\")";
             boolean nullable = !param.required() && !javaType.isPrimitive();
-            if (nullable) {
-                hasOptionalRefField = true;
-            }
-            fields.add(new FieldInfo(annotation, typeString, param.javaName(), nullable));
+            fields.add(new ValueClass.Field(param, typeString, nullable, false));
         }
 
-        if (hasOptionalRefField) {
-            imports.add(NULLABLE_PACKAGE + ".Nullable");
-        }
+        // The members between the constructor and the accessors.
+        StringBuilder members = new StringBuilder();
 
-        // Build the source
+        // apiMethod()
+        members.append("\n");
+        members.append("    @Override\n");
+        members.append("    public String apiMethod() {\n");
+        members.append("        return \"").append(method.name()).append("\";\n");
+        members.append("    }\n\n");
+
+        // apiReturnType()
+        members.append("    @Override\n");
+        members.append("    public String apiReturnType() {\n");
+        members.append("        return \"").append(method.returnType()).append("\";\n");
+        members.append("    }\n");
+
+        // Static factory with only required params
+        List<FieldDefinition> requiredParams = method.parameters().stream()
+                .filter(FieldDefinition::required)
+                .toList();
+
+        // Only generate of() if there are optional params (otherwise the constructor suffices)
+        boolean hasOptionalParams = method.parameters().stream().anyMatch(p -> !p.required());
+        if (hasOptionalParams && !method.parameters().isEmpty()) {
+            members.append("\n");
+            generateStaticFactory(members, method, requiredParams, imports);
+        }
+        members.append(answerFactories(method, imports));
+
+        // Imports last: the members above may add some.
+        ValueClass.addImports(fields, imports);
         StringBuilder sb = new StringBuilder();
         sb.append("package ").append(methodsPackage).append(";\n\n");
         for (String imp : imports) {
@@ -116,82 +132,10 @@ public final class MethodGenerator {
         }
         sb.append("\n");
 
-        // Class declaration
-        sb.append("public class ").append(method.className())
-                .append(" implements TelegramMethod<").append(returnTypeStr).append("> {\n");
-
-        // Fields
-        for (FieldInfo f : fields) {
-            sb.append("    ").append(f.annotation());
-            if (f.nullable()) {
-                sb.append(" @Nullable");
-            }
-            sb.append(" private final ").append(f.typeString()).append(" ").append(f.javaName()).append(";\n");
-        }
-
-        if (!fields.isEmpty()) {
-            sb.append("\n");
-        }
-
-        // @JsonCreator constructor
-        sb.append("    @JsonCreator\n");
-        sb.append("    public ").append(method.className()).append("(");
-        if (!fields.isEmpty()) {
-            sb.append("\n");
-            List<String> ctorParams = new ArrayList<>();
-            for (FieldInfo f : fields) {
-                StringBuilder param = new StringBuilder("            ");
-                param.append(f.annotation());
-                if (f.nullable()) {
-                    param.append(" @Nullable");
-                }
-                param.append(" ").append(f.typeString()).append(" ").append(f.javaName());
-                ctorParams.add(param.toString());
-            }
-            sb.append(String.join(",\n", ctorParams));
-            sb.append("\n    ");
-        }
-        sb.append(") {\n");
-        for (FieldInfo f : fields) {
-            sb.append("        this.").append(f.javaName()).append(" = ").append(f.javaName()).append(";\n");
-        }
-        sb.append("    }\n");
-
-        // Accessors
-        for (FieldInfo f : fields) {
-            sb.append("\n");
-            sb.append("    public ").append(f.typeString()).append(" ").append(f.javaName()).append("() {\n");
-            sb.append("        return this.").append(f.javaName()).append(";\n");
-            sb.append("    }\n");
-        }
-
-        sb.append("\n");
-
-        // apiMethod()
-        sb.append("    @Override\n");
-        sb.append("    public String apiMethod() {\n");
-        sb.append("        return \"").append(method.name()).append("\";\n");
-        sb.append("    }\n\n");
-
-        // apiReturnType()
-        sb.append("    @Override\n");
-        sb.append("    public String apiReturnType() {\n");
-        sb.append("        return \"").append(method.returnType()).append("\";\n");
-        sb.append("    }\n");
-
-        // Static factory with only required params
-        List<FieldDefinition> requiredParams = method.parameters().stream()
-                .filter(FieldDefinition::required)
-                .toList();
-
-        // Only generate of() if there are optional params (otherwise canonical constructor suffices)
-        boolean hasOptionalParams = method.parameters().stream().anyMatch(p -> !p.required());
-        if (hasOptionalParams && !method.parameters().isEmpty()) {
-            sb.append("\n");
-            generateStaticFactory(sb, method, requiredParams, imports);
-        }
-
-        sb.append("}\n");
+        // A class cannot take @param tags: the parameters are documented on the constructor and accessors.
+        sb.append(Javadoc.render(method.description(), List.of(), method.name()));
+        sb.append(ValueClass.render(method.className(),
+                List.of("TelegramMethod<" + returnTypeStr + ">"), fields, members.toString()));
 
         return sb.toString();
     }
@@ -231,6 +175,82 @@ public final class MethodGenerator {
         sb.append("    }\n");
     }
 
+    /**
+     * For methods that send something into a chat, factories that answer a received message the
+     * way aiogram's {@code Message.answer()} / {@code reply()} do: {@code answer(Message, ...)}
+     * fills in the chat, forum topic, business connection and direct messages topic from the
+     * message (see the hand-written {@code ReplyTarget}); {@code reply(Message, ...)} also replies
+     * to it. The other required parameters follow the message.
+     */
+    private String answerFactories(MethodDefinition method, Set<String> imports) {
+        if (!isAnswering(method)) {
+            return "";
+        }
+        imports.add(typesPackage + ".Message");
+        String messageParam = method.parameters().stream().anyMatch(p -> p.javaName().equals("message"))
+                ? "target" : "message";
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n");
+        appendAnswerFactory(sb, method, messageParam, false, imports);
+        if (method.parameters().stream().anyMatch(p -> p.name().equals("reply_parameters"))) {
+            sb.append("\n");
+            appendAnswerFactory(sb, method, messageParam, true, imports);
+        }
+        return sb.toString();
+    }
+
+    private static boolean isAnswering(MethodDefinition method) {
+        boolean sends = method.name().startsWith("send") || method.name().equals("copyMessage");
+        boolean hasChat = method.parameters().stream().anyMatch(p -> p.name().equals("chat_id") && p.required());
+        boolean hasOptionalThread = method.parameters().stream()
+                .anyMatch(p -> p.name().equals("message_thread_id") && !p.required());
+        return sends && hasChat && hasOptionalThread;
+    }
+
+    private void appendAnswerFactory(StringBuilder sb, MethodDefinition method, String messageParam, boolean reply,
+                                     Set<String> imports) {
+        List<String> factoryParams = new ArrayList<>();
+        factoryParams.add("Message " + messageParam);
+        List<String> constructorArgs = new ArrayList<>();
+        for (FieldDefinition param : method.parameters()) {
+            TypeName javaType = typeMapper.resolveMethodParameter(method.name(), param);
+            String fromMessage = switch (param.name()) {
+                // Most methods take a ChatId; a few (sendGame, sendMessageDraft) only a numeric id.
+                case "chat_id" -> javaType.isPrimitive()
+                        ? messageParam + ".chat().id()"
+                        : "ReplyTarget.chatId(" + messageParam + ")";
+                case "message_thread_id" -> "ReplyTarget.messageThreadId(" + messageParam + ")";
+                case "business_connection_id" -> "ReplyTarget.businessConnectionId(" + messageParam + ")";
+                case "direct_messages_topic_id" -> "ReplyTarget.directMessagesTopicId(" + messageParam + ")";
+                case "reply_parameters" -> reply ? "ReplyTarget.replyTo(" + messageParam + ")" : null;
+                default -> null;
+            };
+            if (fromMessage != null) {
+                constructorArgs.add(fromMessage);
+            } else if (param.required()) {
+                factoryParams.add(resolveTypeString(javaType, imports) + " " + param.javaName());
+                constructorArgs.add(param.javaName());
+            } else {
+                constructorArgs.add(javaType.isPrimitive() ? defaultPrimitiveValue(javaType) : "null");
+            }
+        }
+
+        sb.append("    /**\n");
+        if (reply) {
+            sb.append("     * Like {@code answer}, as a reply to {@code ").append(messageParam).append("}.\n");
+        } else {
+            sb.append("     * Sends to the chat of {@code ").append(messageParam)
+                    .append("}, and to its forum topic, business connection or direct\n")
+                    .append("     * messages topic when it came from one.\n");
+        }
+        sb.append("     */\n");
+        sb.append("    public static ").append(method.className()).append(reply ? " reply(" : " answer(")
+                .append(String.join(", ", factoryParams)).append(") {\n");
+        sb.append("        return new ").append(method.className()).append("(")
+                .append(String.join(", ", constructorArgs)).append(");\n");
+        sb.append("    }\n");
+    }
+
     private String defaultPrimitiveValue(TypeName typeName) {
         if (typeName.equals(TypeName.BOOLEAN)) return "false";
         if (typeName.equals(TypeName.LONG)) return "0L";
@@ -247,7 +267,6 @@ public final class MethodGenerator {
         if (typeName.isPrimitive()) {
             return typeName.toString();
         }
-
         if (typeName instanceof ParameterizedTypeName paramType) {
             String rawString = resolveTypeString(paramType.rawType, imports);
             String args = paramType.typeArguments.stream()
@@ -255,7 +274,6 @@ public final class MethodGenerator {
                     .collect(Collectors.joining(", "));
             return rawString + "<" + args + ">";
         }
-
         if (typeName instanceof ClassName className) {
             String fullName = className.packageName() + "." + className.simpleName();
             if (!"java.lang".equals(className.packageName())) {
@@ -263,8 +281,6 @@ public final class MethodGenerator {
             }
             return className.simpleName();
         }
-
-        // Boxed primitives
         return typeName.box().toString();
     }
 }

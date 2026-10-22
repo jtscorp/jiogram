@@ -3,16 +3,12 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+/**
+ * Discriminator values for InlineQueryResult.
+ */
 public enum InlineQueryResultType {
     ARTICLE("article"),
     AUDIO("audio"),
-    CACHED_AUDIO("cached_audio"),
-    CACHED_DOCUMENT("cached_document"),
-    CACHED_GIF("cached_gif"),
-    CACHED_MPEG4_GIF("cached_mpeg4_gif"),
-    CACHED_PHOTO("cached_photo"),
-    CACHED_VIDEO("cached_video"),
-    CACHED_VOICE("cached_voice"),
     CONTACT("contact"),
     DOCUMENT("document"),
     GAME("game"),
@@ -23,7 +19,9 @@ public enum InlineQueryResultType {
     STICKER("sticker"),
     VENUE("venue"),
     VIDEO("video"),
-    VOICE("voice");
+    VOICE("voice"),
+    /** A value unknown to this library version; {@link #value()} returns {@code null}. */
+    UNKNOWN(null);
 
     private final String value;
 
@@ -39,10 +37,10 @@ public enum InlineQueryResultType {
     @JsonCreator
     public static InlineQueryResultType fromValue(String value) {
         for (InlineQueryResultType e : values()) {
-            if (e.value.equals(value)) {
+            if (e.value != null && e.value.equals(value)) {
                 return e;
             }
         }
-        throw new IllegalArgumentException("Unknown InlineQueryResultType: " + value);
+        return UNKNOWN;
     }
 }

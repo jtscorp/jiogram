@@ -48,6 +48,24 @@ class EnumGeneratorTest {
     }
 
     @Test
+    void enum_fallsBackToUnknownInsteadOfThrowing() {
+        EnumDefinition enumDef = new EnumDefinition("TestEnum", "Test.", List.of("foo", "bar"));
+        String source = generator.generateToString(enumDef);
+
+        assertTrue(source.contains("BAR(\"bar\"),"), "Last real constant is followed by UNKNOWN");
+        assertTrue(source.contains("UNKNOWN(null);"), "Should have UNKNOWN constant");
+        assertTrue(source.contains("return UNKNOWN;"), "fromValue() should fall back to UNKNOWN");
+        assertFalse(source.contains("throw"), "fromValue() should not throw");
+    }
+
+    @Test
+    void enum_withValueClashingWithUnknown_fails() {
+        EnumDefinition enumDef = new EnumDefinition("TestEnum", "Test.", List.of("foo", "unknown"));
+
+        assertThrows(IllegalStateException.class, () -> generator.generateToString(enumDef));
+    }
+
+    @Test
     void enum_hasCorrectImports() {
         EnumDefinition enumDef = new EnumDefinition("TestEnum", "Test.", List.of("foo"));
         String source = generator.generateToString(enumDef);
@@ -94,6 +112,12 @@ class EnumGeneratorTest {
     void toConstantName_pascalCase() {
         assertEquals("MARKDOWN", EnumGenerator.toConstantName("Markdown"));
         assertEquals("MARKDOWN_V2", EnumGenerator.toConstantName("MarkdownV2"));
+    }
+
+    @Test
+    void toConstantName_mimeType() {
+        assertEquals("IMAGE_JPEG", EnumGenerator.toConstantName("image/jpeg"));
+        assertEquals("VIDEO_MP4", EnumGenerator.toConstantName("video/mp4"));
     }
 
     // ---- EnumExtractor ----
@@ -157,18 +181,17 @@ class EnumGeneratorTest {
                 .filter(e -> "ChatType".equals(e.name())).findFirst().orElseThrow();
         assertEquals(List.of("private", "group", "supergroup", "channel"), chatType.values());
 
-        // ChatAction — hardcoded well-known enum (not extracted from description, because
-        // the real Telegram schema uses italics rather than quoted values for chat actions).
-        // The test schema only has 3 quoted values in the description, but the extractor
-        // always returns the full hardcoded list.
+        // ChatAction
         assertTrue(enums.stream().anyMatch(e -> "ChatAction".equals(e.name())),
-                "Should include hardcoded ChatAction enum");
+                "Should extract ChatAction from sendChatAction.action description");
         EnumDefinition chatAction = enums.stream()
                 .filter(e -> "ChatAction".equals(e.name())).findFirst().orElseThrow();
-        assertTrue(chatAction.values().contains("typing"), "ChatAction should include 'typing'");
-        assertTrue(chatAction.values().contains("upload_photo"), "ChatAction should include 'upload_photo'");
-        assertTrue(chatAction.values().contains("record_video"), "ChatAction should include 'record_video'");
-        assertTrue(chatAction.values().contains("upload_video_note"), "ChatAction should include full hardcoded list");
+        assertEquals(List.of(
+                "typing", "upload_photo", "record_video", "upload_video",
+                "record_voice", "upload_voice", "upload_document",
+                "choose_sticker", "find_location", "record_video_note",
+                "upload_video_note"
+        ), chatAction.values());
     }
 
     @Test
