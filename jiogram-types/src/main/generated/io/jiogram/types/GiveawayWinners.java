@@ -6,6 +6,28 @@ import io.jiogram.types.User;
 import java.util.List;
 import org.jspecify.annotations.Nullable;
 
+/**
+ * This object represents a message about the completion of a giveaway with public winners.
+ *
+ * @param chat The chat that created the giveaway
+ * @param giveawayMessageId Identifier of the message with the giveaway in the chat
+ * @param winnersSelectionDate Point in time (Unix timestamp) when winners of the giveaway were
+ *     selected
+ * @param winnerCount Total number of winners in the giveaway
+ * @param winners List of up to 100 winners of the giveaway
+ * @param additionalChatCount The number of other chats the user had to join in order to be eligible
+ *     for the giveaway
+ * @param prizeStarCount The number of Telegram Stars that were split between giveaway winners; for
+ *     Telegram Star giveaways only
+ * @param premiumSubscriptionMonthCount The number of months the Telegram Premium subscription won
+ *     from the giveaway will be active for; for Telegram Premium giveaways only
+ * @param unclaimedPrizeCount Number of undistributed prizes
+ * @param onlyNewMembers True, if only users who had joined the chats after the giveaway started
+ *     were eligible to win
+ * @param wasRefunded True, if the giveaway was canceled because the payment for it was refunded
+ * @param prizeDescription Description of additional giveaway prize
+ * @see <a href="https://core.telegram.org/bots/api#giveawaywinners">GiveawayWinners in the Bot API</a>
+ */
 public record GiveawayWinners(
     @JsonProperty("chat") Chat chat,
     @JsonProperty("giveaway_message_id") long giveawayMessageId,
@@ -19,4 +41,57 @@ public record GiveawayWinners(
     @JsonProperty("only_new_members") @Nullable Boolean onlyNewMembers,
     @JsonProperty("was_refunded") @Nullable Boolean wasRefunded,
     @JsonProperty("prize_description") @Nullable String prizeDescription
-) {}
+) {
+
+    public static GiveawayWinners of(Chat chat, long giveawayMessageId, long winnersSelectionDate, long winnerCount, List<User> winners) {
+        return new GiveawayWinners(chat, giveawayMessageId, winnersSelectionDate, winnerCount, winners, null, null, null, null, null, null, null);
+    }
+
+    public GiveawayWinners withChat(Chat chat) {
+        return new GiveawayWinners(chat, giveawayMessageId, winnersSelectionDate, winnerCount, winners, additionalChatCount, prizeStarCount, premiumSubscriptionMonthCount, unclaimedPrizeCount, onlyNewMembers, wasRefunded, prizeDescription);
+    }
+
+    public GiveawayWinners withGiveawayMessageId(long giveawayMessageId) {
+        return new GiveawayWinners(chat, giveawayMessageId, winnersSelectionDate, winnerCount, winners, additionalChatCount, prizeStarCount, premiumSubscriptionMonthCount, unclaimedPrizeCount, onlyNewMembers, wasRefunded, prizeDescription);
+    }
+
+    public GiveawayWinners withWinnersSelectionDate(long winnersSelectionDate) {
+        return new GiveawayWinners(chat, giveawayMessageId, winnersSelectionDate, winnerCount, winners, additionalChatCount, prizeStarCount, premiumSubscriptionMonthCount, unclaimedPrizeCount, onlyNewMembers, wasRefunded, prizeDescription);
+    }
+
+    public GiveawayWinners withWinnerCount(long winnerCount) {
+        return new GiveawayWinners(chat, giveawayMessageId, winnersSelectionDate, winnerCount, winners, additionalChatCount, prizeStarCount, premiumSubscriptionMonthCount, unclaimedPrizeCount, onlyNewMembers, wasRefunded, prizeDescription);
+    }
+
+    public GiveawayWinners withWinners(List<User> winners) {
+        return new GiveawayWinners(chat, giveawayMessageId, winnersSelectionDate, winnerCount, winners, additionalChatCount, prizeStarCount, premiumSubscriptionMonthCount, unclaimedPrizeCount, onlyNewMembers, wasRefunded, prizeDescription);
+    }
+
+    public GiveawayWinners withAdditionalChatCount(@Nullable Long additionalChatCount) {
+        return new GiveawayWinners(chat, giveawayMessageId, winnersSelectionDate, winnerCount, winners, additionalChatCount, prizeStarCount, premiumSubscriptionMonthCount, unclaimedPrizeCount, onlyNewMembers, wasRefunded, prizeDescription);
+    }
+
+    public GiveawayWinners withPrizeStarCount(@Nullable Long prizeStarCount) {
+        return new GiveawayWinners(chat, giveawayMessageId, winnersSelectionDate, winnerCount, winners, additionalChatCount, prizeStarCount, premiumSubscriptionMonthCount, unclaimedPrizeCount, onlyNewMembers, wasRefunded, prizeDescription);
+    }
+
+    public GiveawayWinners withPremiumSubscriptionMonthCount(@Nullable Long premiumSubscriptionMonthCount) {
+        return new GiveawayWinners(chat, giveawayMessageId, winnersSelectionDate, winnerCount, winners, additionalChatCount, prizeStarCount, premiumSubscriptionMonthCount, unclaimedPrizeCount, onlyNewMembers, wasRefunded, prizeDescription);
+    }
+
+    public GiveawayWinners withUnclaimedPrizeCount(@Nullable Long unclaimedPrizeCount) {
+        return new GiveawayWinners(chat, giveawayMessageId, winnersSelectionDate, winnerCount, winners, additionalChatCount, prizeStarCount, premiumSubscriptionMonthCount, unclaimedPrizeCount, onlyNewMembers, wasRefunded, prizeDescription);
+    }
+
+    public GiveawayWinners withOnlyNewMembers(@Nullable Boolean onlyNewMembers) {
+        return new GiveawayWinners(chat, giveawayMessageId, winnersSelectionDate, winnerCount, winners, additionalChatCount, prizeStarCount, premiumSubscriptionMonthCount, unclaimedPrizeCount, onlyNewMembers, wasRefunded, prizeDescription);
+    }
+
+    public GiveawayWinners withWasRefunded(@Nullable Boolean wasRefunded) {
+        return new GiveawayWinners(chat, giveawayMessageId, winnersSelectionDate, winnerCount, winners, additionalChatCount, prizeStarCount, premiumSubscriptionMonthCount, unclaimedPrizeCount, onlyNewMembers, wasRefunded, prizeDescription);
+    }
+
+    public GiveawayWinners withPrizeDescription(@Nullable String prizeDescription) {
+        return new GiveawayWinners(chat, giveawayMessageId, winnersSelectionDate, winnerCount, winners, additionalChatCount, prizeStarCount, premiumSubscriptionMonthCount, unclaimedPrizeCount, onlyNewMembers, wasRefunded, prizeDescription);
+    }
+}

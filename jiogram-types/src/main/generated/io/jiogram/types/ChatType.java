@@ -3,11 +3,16 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+/**
+ * Type of chat.
+ */
 public enum ChatType {
     PRIVATE("private"),
     GROUP("group"),
     SUPERGROUP("supergroup"),
-    CHANNEL("channel");
+    CHANNEL("channel"),
+    /** A value unknown to this library version; {@link #value()} returns {@code null}. */
+    UNKNOWN(null);
 
     private final String value;
 
@@ -23,10 +28,10 @@ public enum ChatType {
     @JsonCreator
     public static ChatType fromValue(String value) {
         for (ChatType e : values()) {
-            if (e.value.equals(value)) {
+            if (e.value != null && e.value.equals(value)) {
                 return e;
             }
         }
-        throw new IllegalArgumentException("Unknown ChatType: " + value);
+        return UNKNOWN;
     }
 }

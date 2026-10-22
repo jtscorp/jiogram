@@ -6,8 +6,29 @@ import io.jiogram.types.Gift;
 import io.jiogram.types.TransactionPartnerType;
 import org.jspecify.annotations.Nullable;
 
+/**
+ * Describes a transaction with a chat.
+ *
+ * @param type Type of the transaction partner, always 'chat'
+ * @param chat Information about the chat
+ * @param gift The gift sent to the chat by the bot
+ * @see <a href="https://core.telegram.org/bots/api#transactionpartnerchat">TransactionPartnerChat in the Bot API</a>
+ */
 public record TransactionPartnerChat(
-    @JsonProperty("type") TransactionPartnerType type,
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) TransactionPartnerType type,
     @JsonProperty("chat") Chat chat,
     @JsonProperty("gift") @Nullable Gift gift
-) implements TransactionPartner {}
+) implements TransactionPartner {
+
+    public static TransactionPartnerChat of(Chat chat) {
+        return new TransactionPartnerChat(TransactionPartnerType.CHAT, chat, null);
+    }
+
+    public TransactionPartnerChat withChat(Chat chat) {
+        return new TransactionPartnerChat(type, chat, gift);
+    }
+
+    public TransactionPartnerChat withGift(@Nullable Gift gift) {
+        return new TransactionPartnerChat(type, chat, gift);
+    }
+}

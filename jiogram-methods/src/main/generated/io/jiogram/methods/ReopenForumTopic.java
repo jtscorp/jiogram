@@ -4,6 +4,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.ChatId;
 import io.jiogram.types.TelegramMethod;
 
+/**
+ * Use this method to reopen a closed topic in a forum supergroup chat. The bot must be an
+ * administrator in the chat for this to work and must have the can_manage_topics administrator
+ * rights, unless it is the creator of the topic. Returns True on success.
+ *
+ * @param chatId Unique identifier for the target chat or username of the target supergroup (in the
+ *     format &#64;supergroupusername)
+ * @param messageThreadId Unique identifier for the target message thread of the forum topic
+ * @see <a href="https://core.telegram.org/bots/api#reopenforumtopic">reopenForumTopic in the Bot API</a>
+ */
 public record ReopenForumTopic(
     @JsonProperty("chat_id") ChatId chatId,
     @JsonProperty("message_thread_id") long messageThreadId
@@ -17,5 +27,13 @@ public record ReopenForumTopic(
     @Override
     public String apiReturnType() {
         return "Boolean";
+    }
+
+    public ReopenForumTopic withChatId(ChatId chatId) {
+        return new ReopenForumTopic(chatId, messageThreadId);
+    }
+
+    public ReopenForumTopic withMessageThreadId(long messageThreadId) {
+        return new ReopenForumTopic(chatId, messageThreadId);
     }
 }

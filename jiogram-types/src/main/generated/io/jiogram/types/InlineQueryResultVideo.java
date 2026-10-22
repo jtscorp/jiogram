@@ -10,8 +10,37 @@ import io.jiogram.types.VideoMimeType;
 import java.util.List;
 import org.jspecify.annotations.Nullable;
 
+/**
+ * Represents a link to a page containing an embedded video player or a video file. By default, this
+ * video file will be sent by the user with an optional caption. Alternatively, you can use
+ * input_message_content to send a message with the specified content instead of the video.
+ * <br>If an InlineQueryResultVideo message contains an embedded video (e.g., YouTube), you must
+ * replace its content using input_message_content.
+ *
+ * @param type Type of the result, must be video
+ * @param id Unique identifier for this result, 1-64 bytes
+ * @param videoUrl A valid URL for the embedded video player or video file
+ * @param mimeType MIME type of the content of the video URL, 'text/html' or 'video/mp4'
+ * @param thumbnailUrl URL of the thumbnail (JPEG only) for the video
+ * @param title Title for the result
+ * @param caption Caption of the video to be sent, 0-1024 characters after entities parsing
+ * @param parseMode Mode for parsing entities in the video caption. See formatting options for more
+ *     details.
+ * @param captionEntities List of special entities that appear in the caption, which can be
+ *     specified instead of parse_mode
+ * @param showCaptionAboveMedia Pass True, if the caption must be shown above the message media
+ * @param videoWidth Video width
+ * @param videoHeight Video height
+ * @param videoDuration Video duration in seconds
+ * @param description Short description of the result
+ * @param replyMarkup Inline keyboard attached to the message
+ * @param inputMessageContent Content of the message to be sent instead of the video. This field is
+ *     required if InlineQueryResultVideo is used to send an HTML-page as a result (e.g., a YouTube
+ *     video).
+ * @see <a href="https://core.telegram.org/bots/api#inlinequeryresultvideo">InlineQueryResultVideo in the Bot API</a>
+ */
 public record InlineQueryResultVideo(
-    @JsonProperty("type") InlineQueryResultType type,
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) InlineQueryResultType type,
     @JsonProperty("id") String id,
     @JsonProperty("video_url") String videoUrl,
     @JsonProperty("mime_type") VideoMimeType mimeType,
@@ -27,4 +56,69 @@ public record InlineQueryResultVideo(
     @JsonProperty("description") @Nullable String description,
     @JsonProperty("reply_markup") @Nullable InlineKeyboardMarkup replyMarkup,
     @JsonProperty("input_message_content") @Nullable InputMessageContent inputMessageContent
-) implements InlineQueryResult {}
+) implements InlineQueryResult {
+
+    public static InlineQueryResultVideo of(String id, String videoUrl, VideoMimeType mimeType, String thumbnailUrl, String title) {
+        return new InlineQueryResultVideo(InlineQueryResultType.VIDEO, id, videoUrl, mimeType, thumbnailUrl, title, null, null, null, null, null, null, null, null, null, null);
+    }
+
+    public InlineQueryResultVideo withId(String id) {
+        return new InlineQueryResultVideo(type, id, videoUrl, mimeType, thumbnailUrl, title, caption, parseMode, captionEntities, showCaptionAboveMedia, videoWidth, videoHeight, videoDuration, description, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultVideo withVideoUrl(String videoUrl) {
+        return new InlineQueryResultVideo(type, id, videoUrl, mimeType, thumbnailUrl, title, caption, parseMode, captionEntities, showCaptionAboveMedia, videoWidth, videoHeight, videoDuration, description, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultVideo withMimeType(VideoMimeType mimeType) {
+        return new InlineQueryResultVideo(type, id, videoUrl, mimeType, thumbnailUrl, title, caption, parseMode, captionEntities, showCaptionAboveMedia, videoWidth, videoHeight, videoDuration, description, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultVideo withThumbnailUrl(String thumbnailUrl) {
+        return new InlineQueryResultVideo(type, id, videoUrl, mimeType, thumbnailUrl, title, caption, parseMode, captionEntities, showCaptionAboveMedia, videoWidth, videoHeight, videoDuration, description, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultVideo withTitle(String title) {
+        return new InlineQueryResultVideo(type, id, videoUrl, mimeType, thumbnailUrl, title, caption, parseMode, captionEntities, showCaptionAboveMedia, videoWidth, videoHeight, videoDuration, description, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultVideo withCaption(@Nullable String caption) {
+        return new InlineQueryResultVideo(type, id, videoUrl, mimeType, thumbnailUrl, title, caption, parseMode, captionEntities, showCaptionAboveMedia, videoWidth, videoHeight, videoDuration, description, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultVideo withParseMode(@Nullable ParseMode parseMode) {
+        return new InlineQueryResultVideo(type, id, videoUrl, mimeType, thumbnailUrl, title, caption, parseMode, captionEntities, showCaptionAboveMedia, videoWidth, videoHeight, videoDuration, description, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultVideo withCaptionEntities(@Nullable List<MessageEntity> captionEntities) {
+        return new InlineQueryResultVideo(type, id, videoUrl, mimeType, thumbnailUrl, title, caption, parseMode, captionEntities, showCaptionAboveMedia, videoWidth, videoHeight, videoDuration, description, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultVideo withShowCaptionAboveMedia(@Nullable Boolean showCaptionAboveMedia) {
+        return new InlineQueryResultVideo(type, id, videoUrl, mimeType, thumbnailUrl, title, caption, parseMode, captionEntities, showCaptionAboveMedia, videoWidth, videoHeight, videoDuration, description, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultVideo withVideoWidth(@Nullable Long videoWidth) {
+        return new InlineQueryResultVideo(type, id, videoUrl, mimeType, thumbnailUrl, title, caption, parseMode, captionEntities, showCaptionAboveMedia, videoWidth, videoHeight, videoDuration, description, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultVideo withVideoHeight(@Nullable Long videoHeight) {
+        return new InlineQueryResultVideo(type, id, videoUrl, mimeType, thumbnailUrl, title, caption, parseMode, captionEntities, showCaptionAboveMedia, videoWidth, videoHeight, videoDuration, description, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultVideo withVideoDuration(@Nullable Long videoDuration) {
+        return new InlineQueryResultVideo(type, id, videoUrl, mimeType, thumbnailUrl, title, caption, parseMode, captionEntities, showCaptionAboveMedia, videoWidth, videoHeight, videoDuration, description, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultVideo withDescription(@Nullable String description) {
+        return new InlineQueryResultVideo(type, id, videoUrl, mimeType, thumbnailUrl, title, caption, parseMode, captionEntities, showCaptionAboveMedia, videoWidth, videoHeight, videoDuration, description, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultVideo withReplyMarkup(@Nullable InlineKeyboardMarkup replyMarkup) {
+        return new InlineQueryResultVideo(type, id, videoUrl, mimeType, thumbnailUrl, title, caption, parseMode, captionEntities, showCaptionAboveMedia, videoWidth, videoHeight, videoDuration, description, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultVideo withInputMessageContent(@Nullable InputMessageContent inputMessageContent) {
+        return new InlineQueryResultVideo(type, id, videoUrl, mimeType, thumbnailUrl, title, caption, parseMode, captionEntities, showCaptionAboveMedia, videoWidth, videoHeight, videoDuration, description, replyMarkup, inputMessageContent);
+    }
+}

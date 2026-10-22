@@ -3,12 +3,17 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+/**
+ * Type of chat where an inline query was sent.
+ */
 public enum InlineQueryChatType {
     SENDER("sender"),
     PRIVATE("private"),
     GROUP("group"),
     SUPERGROUP("supergroup"),
-    CHANNEL("channel");
+    CHANNEL("channel"),
+    /** A value unknown to this library version; {@link #value()} returns {@code null}. */
+    UNKNOWN(null);
 
     private final String value;
 
@@ -24,10 +29,10 @@ public enum InlineQueryChatType {
     @JsonCreator
     public static InlineQueryChatType fromValue(String value) {
         for (InlineQueryChatType e : values()) {
-            if (e.value.equals(value)) {
+            if (e.value != null && e.value.equals(value)) {
                 return e;
             }
         }
-        throw new IllegalArgumentException("Unknown InlineQueryChatType: " + value);
+        return UNKNOWN;
     }
 }

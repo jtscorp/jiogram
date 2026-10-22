@@ -26,6 +26,7 @@ public final class TypeGenerator {
 
     private static final String NULLABLE_PACKAGE = "org.jspecify.annotations";
     private static final String JACKSON_ANNOTATION_PACKAGE = "com.fasterxml.jackson.annotation";
+    private static final String JACKSON_DATABIND_ANNOTATION_PACKAGE = "com.fasterxml.jackson.databind.annotation";
 
     /** Types that should implement the ReplyMarkup marker interface. */
     private static final Set<String> REPLY_MARKUP_TYPES = Set.of(
@@ -74,6 +75,11 @@ public final class TypeGenerator {
         Path packageDir = outputDir.toPath().resolve(basePackage.replace('.', '/'));
         Files.createDirectories(packageDir);
         Files.writeString(packageDir.resolve(type.name() + ".java"), source);
+
+        if (UnionRegistry.isDiscriminatedUnion(type.name()) && hasUnknownVariant(UnionRegistry.get(type.name()))) {
+            Files.writeString(packageDir.resolve(unknownVariantName(type.name()) + ".java"),
+                    generateUnknownVariant(type.name()));
+        }
     }
 
     /**
@@ -96,7 +102,8 @@ public final class TypeGenerator {
 
     private String generateRecord(TypeDefinition type) {
         Set<String> imports = new TreeSet<>();
-        List<String> components = buildRecordComponents(type.name(), type.fields(), imports);
+        List<Withers.Component> witherComponents = new ArrayList<>();
+        List<String> components = buildRecordComponents(type.name(), type.fields(), null, imports, witherComponents);
 
         // Collect all interfaces this type should implement
         List<String> interfaces = new ArrayList<>();
@@ -116,13 +123,14 @@ public final class TypeGenerator {
         if (!imports.isEmpty()) {
             sb.append("\n");
         }
+        sb.append(Javadoc.render(type.description(), type.fields(), type.name()));
         sb.append("public record ").append(type.name()).append("(\n");
         sb.append(String.join(",\n", components));
         sb.append("\n)");
         if (!interfaces.isEmpty()) {
             sb.append(" implements ").append(String.join(", ", interfaces));
         }
-        sb.append(" {}\n");
+        sb.append(recordBody(type.name(), witherComponents, null, null));
 
         return sb.toString();
     }
@@ -137,9 +145,15 @@ public final class TypeGenerator {
             return generatePlainInterface(type);
         }
 
+        boolean isValueBasedDiscriminator = isValueBasedDiscriminator(unionInfo);
+
         Set<String> imports = new TreeSet<>();
         imports.add(JACKSON_ANNOTATION_PACKAGE + ".JsonTypeInfo");
-        imports.add(JACKSON_ANNOTATION_PACKAGE + ".JsonSubTypes");
+        if (isValueBasedDiscriminator) {
+            imports.add(JACKSON_DATABIND_ANNOTATION_PACKAGE + ".JsonTypeIdResolver");
+        } else {
+            imports.add(JACKSON_ANNOTATION_PACKAGE + ".JsonSubTypes");
+        }
 
         StringBuilder sb = new StringBuilder();
         sb.append("package ").append(basePackage).append(";\n\n");
@@ -147,28 +161,43 @@ public final class TypeGenerator {
             sb.append("import ").append(imp).append(";\n");
         }
         sb.append("\n");
+        sb.append(Javadoc.render(type.description(), List.of(), type.name()));
 
-        // @JsonTypeInfo
-        sb.append("@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = \"")
-                .append(unionInfo.discriminator()).append("\")\n");
+        if (isValueBasedDiscriminator) {
+            // @JsonTypeInfo with CUSTOM resolver, reading the existing discriminator
+            // property and keeping it visible so the subtype's record component
+            // is still populated by the default deserializer.
+            sb.append("@JsonTypeInfo(use = JsonTypeInfo.Id.CUSTOM, property = \"")
+                    .append(unionInfo.discriminator())
+                    .append("\", include = JsonTypeInfo.As.EXISTING_PROPERTY, visible = true)\n");
+            sb.append("@JsonTypeIdResolver(").append(type.name()).append("TypeIdResolver.class)\n");
+        } else {
+            // @JsonTypeInfo — visible so subtypes (and the Unknown fallback) receive
+            // the discriminator value; unrecognised values fall back to defaultImpl
+            // instead of failing the whole update.
+            sb.append("@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = \"")
+                    .append(unionInfo.discriminator())
+                    .append("\", visible = true, defaultImpl = ")
+                    .append(unknownVariantName(type.name())).append(".class)\n");
 
-        // @JsonSubTypes — entries are sorted alphabetically by discriminator
-        // value to keep generated output deterministic across JVM runs (the
-        // input map is built from Map.of(...), which has unspecified iteration
-        // order between processes).
-        sb.append("@JsonSubTypes({\n");
-        List<Map.Entry<String, String>> entries = new ArrayList<>(unionInfo.subtypes().entrySet());
-        entries.sort(Map.Entry.comparingByKey());
-        for (int i = 0; i < entries.size(); i++) {
-            Map.Entry<String, String> entry = entries.get(i);
-            sb.append("    @JsonSubTypes.Type(value = ").append(entry.getValue()).append(".class, name = \"")
-                    .append(entry.getKey()).append("\")");
-            if (i < entries.size() - 1) {
-                sb.append(",");
+            // @JsonSubTypes — entries are sorted alphabetically by discriminator
+            // value to keep generated output deterministic across JVM runs (the
+            // input map is built from Map.of(...), which has unspecified iteration
+            // order between processes).
+            sb.append("@JsonSubTypes({\n");
+            List<Map.Entry<String, String>> entries = new ArrayList<>(unionInfo.subtypes().entrySet());
+            entries.sort(Map.Entry.comparingByKey());
+            for (int i = 0; i < entries.size(); i++) {
+                Map.Entry<String, String> entry = entries.get(i);
+                sb.append("    @JsonSubTypes.Type(value = ").append(entry.getValue()).append(".class, name = \"")
+                        .append(UnionRegistry.wireName(type.name(), entry.getKey())).append("\")");
+                if (i < entries.size() - 1) {
+                    sb.append(",");
+                }
+                sb.append("\n");
             }
-            sb.append("\n");
+            sb.append("})\n");
         }
-        sb.append("})\n");
 
         // sealed interface declaration with permits — same deterministic
         // ordering by discriminator key, so the permits clause matches the
@@ -179,6 +208,9 @@ public final class TypeGenerator {
                 .sorted(Map.Entry.comparingByKey())
                 .map(Map.Entry::getValue)
                 .collect(Collectors.joining(", "));
+        if (!isValueBasedDiscriminator) {
+            permits += ", " + unknownVariantName(type.name());
+        }
         sb.append(" permits ").append(permits);
 
         sb.append(" {}\n");
@@ -186,9 +218,70 @@ public final class TypeGenerator {
         return sb.toString();
     }
 
+    /**
+     * The body of a type record: an {@code of(...)} factory and the withers.
+     *
+     * @param fixedField the subtype's discriminator component, filled in by {@code of(...)}; or null
+     * @param fixedValue the Java expression of its value
+     */
+    private static String recordBody(String recordName, List<Withers.Component> components,
+                                     String fixedField, String fixedValue) {
+        String body = staticFactory(recordName, components, fixedField, fixedValue)
+                + Withers.render(recordName, components);
+        return body.isEmpty() ? " {}\n" : " {\n" + body + "}\n";
+    }
+
+    /**
+     * {@code of(...)} taking only the required components (optional ones start as null), so a
+     * value can be built from there with the withers. Generated when it is shorter than the
+     * canonical constructor: when there is an optional component or a discriminator to fill in.
+     */
+    private static String staticFactory(String recordName, List<Withers.Component> components,
+                                        String fixedField, String fixedValue) {
+        boolean hasOptional = components.stream().anyMatch(Withers.Component::nullable);
+        if (!hasOptional && fixedField == null) {
+            return "";
+        }
+        List<String> parameters = new ArrayList<>();
+        List<String> arguments = new ArrayList<>();
+        for (Withers.Component component : components) {
+            if (component.javaName().equals(fixedField)) {
+                arguments.add(fixedValue);
+            } else if (component.nullable()) {
+                arguments.add("null");
+            } else {
+                parameters.add(component.type() + " " + component.javaName());
+                arguments.add(component.javaName());
+            }
+        }
+        return "\n    public static " + recordName + " of(" + String.join(", ", parameters) + ") {\n"
+                + "        return new " + recordName + "(" + String.join(", ", arguments) + ");\n"
+                + "    }\n";
+    }
+
+    /** The Java expression of a subtype's discriminator value, e.g. {@code InputMediaType.PHOTO}. */
+    private static String discriminatorValue(String subtype, String parentName, List<Withers.Component> components) {
+        UnionRegistry.UnionInfo info = UnionRegistry.get(parentName);
+        String key = info.subtypes().entrySet().stream()
+                .filter(entry -> entry.getValue().equals(subtype))
+                .map(Map.Entry::getKey)
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException(subtype + " is not registered under " + parentName));
+        String wireValue = UnionRegistry.wireName(parentName, key);
+        String type = components.stream()
+                .filter(component -> component.javaName().equals(info.discriminator()))
+                .map(Withers.Component::type)
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException(subtype + " has no " + info.discriminator() + " field"));
+        return type.equals("String")
+                ? "\"" + wireValue + "\""
+                : type + "." + EnumGenerator.toConstantName(wireValue);
+    }
+
     private String generatePlainInterface(TypeDefinition type) {
         StringBuilder sb = new StringBuilder();
         sb.append("package ").append(basePackage).append(";\n\n");
+        sb.append(Javadoc.render(type.description(), List.of(), type.name()));
         sb.append("public interface ").append(type.name()).append(" {}\n");
         return sb.toString();
     }
@@ -208,9 +301,17 @@ public final class TypeGenerator {
 
     private String generateSubtypeRecord(TypeDefinition type) {
         String parentName = UnionRegistry.parentOf(type.name());
+        UnionRegistry.UnionInfo parentInfo = UnionRegistry.get(parentName);
+
+        // The discriminator is read into the component (the union is visible = true)
+        // but never written from it: Jackson already writes the type id for the
+        // concrete class, so serializing the component too would duplicate the key.
+        String writeOnlyField = isValueBasedDiscriminator(parentInfo) ? null : parentInfo.discriminator();
 
         Set<String> imports = new TreeSet<>();
-        List<String> components = buildRecordComponents(type.name(), type.fields(), imports);
+        List<Withers.Component> witherComponents = new ArrayList<>();
+        List<String> components = buildRecordComponents(type.name(), type.fields(), writeOnlyField, imports,
+                witherComponents);
 
         StringBuilder sb = new StringBuilder();
         sb.append("package ").append(basePackage).append(";\n\n");
@@ -220,17 +321,89 @@ public final class TypeGenerator {
         if (!imports.isEmpty()) {
             sb.append("\n");
         }
+        sb.append(Javadoc.render(type.description(), type.fields(), type.name()));
         sb.append("public record ").append(type.name()).append("(\n");
         sb.append(String.join(",\n", components));
-        sb.append("\n) implements ").append(parentName).append(" {}\n");
+        sb.append("\n) implements ").append(parentName).append(recordBody(type.name(), witherComponents,
+                writeOnlyField, writeOnlyField == null ? null : discriminatorValue(type.name(), parentName, witherComponents)));
 
         return sb.toString();
     }
 
     /**
-     * Builds record component strings with annotations, collecting necessary imports.
+     * Generates the fallback record for a discriminated union: it holds the raw
+     * discriminator value plus every other field, and serializes back to the
+     * original JSON shape via {@code UnknownVariant.Serializer}.
      */
-    private List<String> buildRecordComponents(String ownerTypeName, List<FieldDefinition> fields, Set<String> imports) {
+    String generateUnknownVariant(String parentName) {
+        String discriminator = UnionRegistry.get(parentName).discriminator();
+        String name = unknownVariantName(parentName);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("package ").append(basePackage).append(";\n\n");
+        sb.append("import ").append(JACKSON_ANNOTATION_PACKAGE).append(".JsonAnySetter;\n");
+        sb.append("import ").append(JACKSON_ANNOTATION_PACKAGE).append(".JsonProperty;\n");
+        sb.append("import ").append(JACKSON_DATABIND_ANNOTATION_PACKAGE).append(".JsonSerialize;\n");
+        sb.append("import java.util.Collections;\n");
+        sb.append("import java.util.LinkedHashMap;\n");
+        sb.append("import java.util.Map;\n");
+        sb.append("import ").append(NULLABLE_PACKAGE).append(".Nullable;\n\n");
+        sb.append("/**\n");
+        sb.append(" * A {@link ").append(parentName).append("} variant unknown to this library version.\n");
+        sb.append(" * Holds the raw {@code ").append(discriminator)
+                .append("} value and all other fields as they were received.\n");
+        sb.append(" */\n");
+        sb.append("@JsonSerialize(using = UnknownVariant.Serializer.class)\n");
+        sb.append("public record ").append(name).append("(\n");
+        sb.append("    @JsonProperty(\"").append(discriminator).append("\") @Nullable String ")
+                .append(discriminator).append(",\n");
+        sb.append("    @JsonAnySetter Map<String, Object> data\n");
+        sb.append(") implements ").append(parentName).append(", UnknownVariant {\n\n");
+        sb.append("    public ").append(name).append(" {\n");
+        sb.append("        data = data == null ? Map.of() : Collections.unmodifiableMap(new LinkedHashMap<>(data));\n");
+        sb.append("    }\n\n");
+        sb.append("    @Override\n");
+        sb.append("    public String discriminatorName() {\n");
+        sb.append("        return \"").append(discriminator).append("\";\n");
+        sb.append("    }\n\n");
+        sb.append("    @Override\n");
+        sb.append("    public @Nullable String discriminatorValue() {\n");
+        sb.append("        return ").append(discriminator).append(";\n");
+        sb.append("    }\n");
+        sb.append("}\n");
+
+        return sb.toString();
+    }
+
+    static String unknownVariantName(String parentName) {
+        return parentName + "Unknown";
+    }
+
+    private static boolean hasUnknownVariant(UnionRegistry.UnionInfo unionInfo) {
+        return !unionInfo.subtypes().isEmpty() && !isValueBasedDiscriminator(unionInfo);
+    }
+
+    /**
+     * Detects value-based discriminators (e.g. MaybeInaccessibleMessage's "date == 0"
+     * pattern). These cannot be expressed with @JsonSubTypes because Jackson does exact
+     * string matching on discriminator values; a hand-written TypeIdResolver bridges the gap.
+     */
+    private static boolean isValueBasedDiscriminator(UnionRegistry.UnionInfo unionInfo) {
+        return unionInfo.subtypes().containsKey("nonzero");
+    }
+
+    /**
+     * Builds record component strings with annotations, collecting necessary imports.
+     *
+     * @param writeOnlyField JSON name of a field to mark {@code WRITE_ONLY} (the union
+     *                       discriminator of a subtype), or {@code null}
+     */
+    /**
+     * Returns the source of each record component and adds to {@code witherComponents} what
+     * {@link Withers} needs to know about them.
+     */
+    private List<String> buildRecordComponents(String ownerTypeName, List<FieldDefinition> fields,
+            String writeOnlyField, Set<String> imports, List<Withers.Component> witherComponents) {
         imports.add(JACKSON_ANNOTATION_PACKAGE + ".JsonProperty");
 
         List<String> components = new ArrayList<>();
@@ -241,15 +414,24 @@ public final class TypeGenerator {
             String typeString = resolveTypeString(javaType, imports);
 
             StringBuilder comp = new StringBuilder();
-            comp.append("    @JsonProperty(\"").append(field.name()).append("\")");
+            if (field.name().equals(writeOnlyField)) {
+                comp.append("    @JsonProperty(value = \"").append(field.name())
+                        .append("\", access = JsonProperty.Access.WRITE_ONLY)");
+            } else {
+                comp.append("    @JsonProperty(\"").append(field.name()).append("\")");
+            }
 
-            if (!field.required() && !javaType.isPrimitive()) {
+            boolean nullable = !field.required() && !javaType.isPrimitive();
+            if (nullable) {
                 comp.append(" @Nullable");
                 hasOptionalRefField = true;
             }
 
             comp.append(" ").append(typeString).append(" ").append(field.javaName());
             components.add(comp.toString());
+            // A subtype's discriminator is fixed by its class; changing it would make no sense.
+            witherComponents.add(new Withers.Component(field.javaName(), typeString, nullable,
+                    !field.name().equals(writeOnlyField)));
         }
 
         if (hasOptionalRefField) {
@@ -267,26 +449,20 @@ public final class TypeGenerator {
         if (typeName.isPrimitive()) {
             return typeName.toString();
         }
-
         if (typeName instanceof com.squareup.javapoet.ParameterizedTypeName paramType) {
-            // Handle List<X>
             String rawString = resolveTypeString(paramType.rawType, imports);
             String args = paramType.typeArguments.stream()
                     .map(arg -> resolveTypeString(arg, imports))
                     .collect(Collectors.joining(", "));
             return rawString + "<" + args + ">";
         }
-
         if (typeName instanceof ClassName className) {
             String fullName = className.packageName() + "." + className.simpleName();
-            // Don't import java.lang classes
             if (!"java.lang".equals(className.packageName())) {
                 imports.add(fullName);
             }
             return className.simpleName();
         }
-
-        // Boxed primitives
         return typeName.box().toString();
     }
 }

@@ -9,8 +9,28 @@ import io.jiogram.types.ParseMode;
 import java.util.List;
 import org.jspecify.annotations.Nullable;
 
+/**
+ * Represents a link to a video file stored on the Telegram servers. By default, this video file
+ * will be sent by the user with an optional caption. Alternatively, you can use
+ * input_message_content to send a message with the specified content instead of the video.
+ *
+ * @param type Type of the result, must be video
+ * @param id Unique identifier for this result, 1-64 bytes
+ * @param videoFileId A valid file identifier for the video file
+ * @param title Title for the result
+ * @param description Short description of the result
+ * @param caption Caption of the video to be sent, 0-1024 characters after entities parsing
+ * @param parseMode Mode for parsing entities in the video caption. See formatting options for more
+ *     details.
+ * @param captionEntities List of special entities that appear in the caption, which can be
+ *     specified instead of parse_mode
+ * @param showCaptionAboveMedia Pass True, if the caption must be shown above the message media
+ * @param replyMarkup Inline keyboard attached to the message
+ * @param inputMessageContent Content of the message to be sent instead of the video
+ * @see <a href="https://core.telegram.org/bots/api#inlinequeryresultcachedvideo">InlineQueryResultCachedVideo in the Bot API</a>
+ */
 public record InlineQueryResultCachedVideo(
-    @JsonProperty("type") InlineQueryResultType type,
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY) InlineQueryResultType type,
     @JsonProperty("id") String id,
     @JsonProperty("video_file_id") String videoFileId,
     @JsonProperty("title") String title,
@@ -21,4 +41,49 @@ public record InlineQueryResultCachedVideo(
     @JsonProperty("show_caption_above_media") @Nullable Boolean showCaptionAboveMedia,
     @JsonProperty("reply_markup") @Nullable InlineKeyboardMarkup replyMarkup,
     @JsonProperty("input_message_content") @Nullable InputMessageContent inputMessageContent
-) implements InlineQueryResult {}
+) implements InlineQueryResult {
+
+    public static InlineQueryResultCachedVideo of(String id, String videoFileId, String title) {
+        return new InlineQueryResultCachedVideo(InlineQueryResultType.VIDEO, id, videoFileId, title, null, null, null, null, null, null, null);
+    }
+
+    public InlineQueryResultCachedVideo withId(String id) {
+        return new InlineQueryResultCachedVideo(type, id, videoFileId, title, description, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultCachedVideo withVideoFileId(String videoFileId) {
+        return new InlineQueryResultCachedVideo(type, id, videoFileId, title, description, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultCachedVideo withTitle(String title) {
+        return new InlineQueryResultCachedVideo(type, id, videoFileId, title, description, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultCachedVideo withDescription(@Nullable String description) {
+        return new InlineQueryResultCachedVideo(type, id, videoFileId, title, description, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultCachedVideo withCaption(@Nullable String caption) {
+        return new InlineQueryResultCachedVideo(type, id, videoFileId, title, description, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultCachedVideo withParseMode(@Nullable ParseMode parseMode) {
+        return new InlineQueryResultCachedVideo(type, id, videoFileId, title, description, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultCachedVideo withCaptionEntities(@Nullable List<MessageEntity> captionEntities) {
+        return new InlineQueryResultCachedVideo(type, id, videoFileId, title, description, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultCachedVideo withShowCaptionAboveMedia(@Nullable Boolean showCaptionAboveMedia) {
+        return new InlineQueryResultCachedVideo(type, id, videoFileId, title, description, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultCachedVideo withReplyMarkup(@Nullable InlineKeyboardMarkup replyMarkup) {
+        return new InlineQueryResultCachedVideo(type, id, videoFileId, title, description, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+
+    public InlineQueryResultCachedVideo withInputMessageContent(@Nullable InputMessageContent inputMessageContent) {
+        return new InlineQueryResultCachedVideo(type, id, videoFileId, title, description, caption, parseMode, captionEntities, showCaptionAboveMedia, replyMarkup, inputMessageContent);
+    }
+}

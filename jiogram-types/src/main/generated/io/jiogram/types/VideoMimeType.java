@@ -3,9 +3,14 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+/**
+ * Supported video MIME type.
+ */
 public enum VideoMimeType {
     TEXT_HTML("text/html"),
-    VIDEO_MP4("video/mp4");
+    VIDEO_MP4("video/mp4"),
+    /** A value unknown to this library version; {@link #value()} returns {@code null}. */
+    UNKNOWN(null);
 
     private final String value;
 
@@ -21,10 +26,10 @@ public enum VideoMimeType {
     @JsonCreator
     public static VideoMimeType fromValue(String value) {
         for (VideoMimeType e : values()) {
-            if (e.value.equals(value)) {
+            if (e.value != null && e.value.equals(value)) {
                 return e;
             }
         }
-        throw new IllegalArgumentException("Unknown VideoMimeType: " + value);
+        return UNKNOWN;
     }
 }

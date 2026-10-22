@@ -3,11 +3,16 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+/**
+ * Discriminator values for MessageOrigin.
+ */
 public enum MessageOriginType {
     CHANNEL("channel"),
     CHAT("chat"),
     HIDDEN_USER("hidden_user"),
-    USER("user");
+    USER("user"),
+    /** A value unknown to this library version; {@link #value()} returns {@code null}. */
+    UNKNOWN(null);
 
     private final String value;
 
@@ -23,10 +28,10 @@ public enum MessageOriginType {
     @JsonCreator
     public static MessageOriginType fromValue(String value) {
         for (MessageOriginType e : values()) {
-            if (e.value.equals(value)) {
+            if (e.value != null && e.value.equals(value)) {
                 return e;
             }
         }
-        throw new IllegalArgumentException("Unknown MessageOriginType: " + value);
+        return UNKNOWN;
     }
 }

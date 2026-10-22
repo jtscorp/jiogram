@@ -5,9 +5,38 @@ import io.jiogram.types.PassportElementErrorType;
 import io.jiogram.types.PassportElementType;
 import java.util.List;
 
+/**
+ * Represents an issue with a list of scans. The error is considered resolved when the list of files
+ * containing the scans changes.
+ *
+ * @param source Error source, must be files
+ * @param type The section of the user's Telegram Passport which has the issue, one of
+ *     'utility_bill', 'bank_statement', 'rental_agreement', 'passport_registration',
+ *     'temporary_registration'
+ * @param fileHashes List of base64-encoded file hashes
+ * @param message Error message
+ * @see <a href="https://core.telegram.org/bots/api#passportelementerrorfiles">PassportElementErrorFiles in the Bot API</a>
+ */
 public record PassportElementErrorFiles(
-    @JsonProperty("source") PassportElementErrorType source,
+    @JsonProperty(value = "source", access = JsonProperty.Access.WRITE_ONLY) PassportElementErrorType source,
     @JsonProperty("type") PassportElementType type,
     @JsonProperty("file_hashes") List<String> fileHashes,
     @JsonProperty("message") String message
-) implements PassportElementError {}
+) implements PassportElementError {
+
+    public static PassportElementErrorFiles of(PassportElementType type, List<String> fileHashes, String message) {
+        return new PassportElementErrorFiles(PassportElementErrorType.FILES, type, fileHashes, message);
+    }
+
+    public PassportElementErrorFiles withType(PassportElementType type) {
+        return new PassportElementErrorFiles(source, type, fileHashes, message);
+    }
+
+    public PassportElementErrorFiles withFileHashes(List<String> fileHashes) {
+        return new PassportElementErrorFiles(source, type, fileHashes, message);
+    }
+
+    public PassportElementErrorFiles withMessage(String message) {
+        return new PassportElementErrorFiles(source, type, fileHashes, message);
+    }
+}

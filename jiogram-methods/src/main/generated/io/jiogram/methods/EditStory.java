@@ -10,6 +10,21 @@ import io.jiogram.types.TelegramMethod;
 import java.util.List;
 import org.jspecify.annotations.Nullable;
 
+/**
+ * Edits a story previously posted by the bot on behalf of a managed business account. Requires the
+ * can_manage_stories business bot right. Returns Story on success.
+ *
+ * @param businessConnectionId Unique identifier of the business connection
+ * @param storyId Unique identifier of the story to edit
+ * @param content Content of the story
+ * @param caption Caption of the story, 0-2048 characters after entities parsing
+ * @param parseMode Mode for parsing entities in the story caption. See formatting options for more
+ *     details.
+ * @param captionEntities A JSON-serialized list of special entities that appear in the caption,
+ *     which can be specified instead of parse_mode
+ * @param areas A JSON-serialized list of clickable areas to be shown on the story
+ * @see <a href="https://core.telegram.org/bots/api#editstory">editStory in the Bot API</a>
+ */
 public record EditStory(
     @JsonProperty("business_connection_id") String businessConnectionId,
     @JsonProperty("story_id") long storyId,
@@ -32,5 +47,33 @@ public record EditStory(
 
     public static EditStory of(String businessConnectionId, long storyId, InputStoryContent content) {
         return new EditStory(businessConnectionId, storyId, content, null, null, null, null);
+    }
+
+    public EditStory withBusinessConnectionId(String businessConnectionId) {
+        return new EditStory(businessConnectionId, storyId, content, caption, parseMode, captionEntities, areas);
+    }
+
+    public EditStory withStoryId(long storyId) {
+        return new EditStory(businessConnectionId, storyId, content, caption, parseMode, captionEntities, areas);
+    }
+
+    public EditStory withContent(InputStoryContent content) {
+        return new EditStory(businessConnectionId, storyId, content, caption, parseMode, captionEntities, areas);
+    }
+
+    public EditStory withCaption(@Nullable String caption) {
+        return new EditStory(businessConnectionId, storyId, content, caption, parseMode, captionEntities, areas);
+    }
+
+    public EditStory withParseMode(@Nullable ParseMode parseMode) {
+        return new EditStory(businessConnectionId, storyId, content, caption, parseMode, captionEntities, areas);
+    }
+
+    public EditStory withCaptionEntities(@Nullable List<MessageEntity> captionEntities) {
+        return new EditStory(businessConnectionId, storyId, content, caption, parseMode, captionEntities, areas);
+    }
+
+    public EditStory withAreas(@Nullable List<StoryArea> areas) {
+        return new EditStory(businessConnectionId, storyId, content, caption, parseMode, captionEntities, areas);
     }
 }

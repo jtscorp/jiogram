@@ -3,6 +3,9 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+/**
+ * Type of action to broadcast.
+ */
 public enum ChatAction {
     TYPING("typing"),
     UPLOAD_PHOTO("upload_photo"),
@@ -14,7 +17,9 @@ public enum ChatAction {
     CHOOSE_STICKER("choose_sticker"),
     FIND_LOCATION("find_location"),
     RECORD_VIDEO_NOTE("record_video_note"),
-    UPLOAD_VIDEO_NOTE("upload_video_note");
+    UPLOAD_VIDEO_NOTE("upload_video_note"),
+    /** A value unknown to this library version; {@link #value()} returns {@code null}. */
+    UNKNOWN(null);
 
     private final String value;
 
@@ -30,10 +35,10 @@ public enum ChatAction {
     @JsonCreator
     public static ChatAction fromValue(String value) {
         for (ChatAction e : values()) {
-            if (e.value.equals(value)) {
+            if (e.value != null && e.value.equals(value)) {
                 return e;
             }
         }
-        throw new IllegalArgumentException("Unknown ChatAction: " + value);
+        return UNKNOWN;
     }
 }

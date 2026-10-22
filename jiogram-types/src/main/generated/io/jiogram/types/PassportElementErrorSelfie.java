@@ -4,9 +4,37 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.PassportElementErrorType;
 import io.jiogram.types.PassportElementType;
 
+/**
+ * Represents an issue with the selfie with a document. The error is considered resolved when the
+ * file with the selfie changes.
+ *
+ * @param source Error source, must be selfie
+ * @param type The section of the user's Telegram Passport which has the issue, one of 'passport',
+ *     'driver_license', 'identity_card', 'internal_passport'
+ * @param fileHash Base64-encoded hash of the file with the selfie
+ * @param message Error message
+ * @see <a href="https://core.telegram.org/bots/api#passportelementerrorselfie">PassportElementErrorSelfie in the Bot API</a>
+ */
 public record PassportElementErrorSelfie(
-    @JsonProperty("source") PassportElementErrorType source,
+    @JsonProperty(value = "source", access = JsonProperty.Access.WRITE_ONLY) PassportElementErrorType source,
     @JsonProperty("type") PassportElementType type,
     @JsonProperty("file_hash") String fileHash,
     @JsonProperty("message") String message
-) implements PassportElementError {}
+) implements PassportElementError {
+
+    public static PassportElementErrorSelfie of(PassportElementType type, String fileHash, String message) {
+        return new PassportElementErrorSelfie(PassportElementErrorType.SELFIE, type, fileHash, message);
+    }
+
+    public PassportElementErrorSelfie withType(PassportElementType type) {
+        return new PassportElementErrorSelfie(source, type, fileHash, message);
+    }
+
+    public PassportElementErrorSelfie withFileHash(String fileHash) {
+        return new PassportElementErrorSelfie(source, type, fileHash, message);
+    }
+
+    public PassportElementErrorSelfie withMessage(String message) {
+        return new PassportElementErrorSelfie(source, type, fileHash, message);
+    }
+}

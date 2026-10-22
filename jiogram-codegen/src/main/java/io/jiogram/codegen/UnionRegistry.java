@@ -1,9 +1,19 @@
 package io.jiogram.codegen;
 
+import io.jiogram.codegen.model.ApiSchema;
+import io.jiogram.codegen.model.TypeDefinition;
+
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Static registry of all discriminated union types in the Telegram Bot API.
@@ -30,6 +40,11 @@ public final class UnionRegistry {
             this.subtypes = Collections.unmodifiableMap(new LinkedHashMap<>(subtypes));
         }
     }
+
+    private static final String CACHED_KEY_PREFIX = "cached_";
+
+    /** A subtype line of a union's description, e.g. {@code " - ChatMemberOwner"}. */
+    private static final Pattern SUBTYPE_LINE = Pattern.compile("(?m)^\\s*-\\s+(\\w+)\\s*$");
 
     private static final Map<String, UnionInfo> UNIONS = new LinkedHashMap<>();
     private static final Map<String, String> SUBTYPE_TO_PARENT = new HashMap<>();
@@ -117,8 +132,8 @@ public final class UnionRegistry {
 
         // 11. InlineQueryResult — discriminator: "type"
         // Note: Some discriminator values (photo, gif, etc.) map to multiple subtypes
-        // (regular and cached variants). We register all subtypes here; the code generator
-        // will need additional logic to distinguish regular vs cached variants.
+        // (regular and cached variants). Cached variants are keyed "cached_<type>" to keep
+        // the keys unique; wireName() maps them back to the value sent to Telegram.
         Map<String, String> inlineQueryResultSubtypes = new LinkedHashMap<>();
         inlineQueryResultSubtypes.put("article", "InlineQueryResultArticle");
         inlineQueryResultSubtypes.put("photo", "InlineQueryResultPhoto");
@@ -133,7 +148,7 @@ public final class UnionRegistry {
         inlineQueryResultSubtypes.put("contact", "InlineQueryResultContact");
         inlineQueryResultSubtypes.put("game", "InlineQueryResultGame");
         inlineQueryResultSubtypes.put("sticker", "InlineQueryResultCachedSticker");
-        // Cached variants registered with "cached_" prefix to avoid key collisions
+        // Cached variants keyed with "cached_" prefix to avoid key collisions (see wireName)
         inlineQueryResultSubtypes.put("cached_photo", "InlineQueryResultCachedPhoto");
         inlineQueryResultSubtypes.put("cached_gif", "InlineQueryResultCachedGif");
         inlineQueryResultSubtypes.put("cached_mpeg4_gif", "InlineQueryResultCachedMpeg4Gif");
@@ -271,6 +286,77 @@ public final class UnionRegistry {
      */
     public static Map<String, UnionInfo> all() {
         return Collections.unmodifiableMap(UNIONS);
+    }
+
+    /**
+     * Returns the discriminator value Telegram uses on the wire for a registry key. They differ
+     * only for InlineQueryResult: a result and its cached variant share one {@code type} (e.g.
+     * {@code "photo"} for both InlineQueryResultPhoto and InlineQueryResultCachedPhoto), so the
+     * cached variants are keyed {@code "cached_<type>"} here to keep the keys unique.
+     *
+     * @param parentType the union parent type name
+     * @param key        a key of that union's {@link UnionInfo#subtypes()}
+     * @return the value of the discriminator field in JSON
+     */
+    public static String wireName(String parentType, String key) {
+        if ("InlineQueryResult".equals(parentType) && key.startsWith(CACHED_KEY_PREFIX)) {
+            return key.substring(CACHED_KEY_PREFIX.length());
+        }
+        return key;
+    }
+
+    /**
+     * Compares the registry with the unions the schema declares. The schema describes a union as
+     * a type without fields whose description lists its subtypes, one {@code " - SubtypeName"}
+     * line each; the discriminator values are not machine-readable there, which is why this
+     * registry exists. Unions registered without subtypes (InputMessageContent, resolved by its
+     * fields) are not compared.
+     *
+     * @return one message per difference; empty when the registry matches the schema
+     */
+    public static List<String> differencesFrom(ApiSchema schema) {
+        Set<String> typeNames = schema.types().stream().map(TypeDefinition::name).collect(Collectors.toSet());
+        Map<String, Set<String>> schemaUnions = new TreeMap<>();
+        for (TypeDefinition type : schema.types()) {
+            if (!type.fields().isEmpty() || type.description() == null) {
+                continue;
+            }
+            Set<String> subtypes = SUBTYPE_LINE.matcher(type.description()).results()
+                    .map(match -> match.group(1))
+                    .filter(typeNames::contains)
+                    .collect(Collectors.toCollection(TreeSet::new));
+            if (!subtypes.isEmpty()) {
+                schemaUnions.put(type.name(), subtypes);
+            }
+        }
+
+        List<String> differences = new ArrayList<>();
+        schemaUnions.forEach((parent, schemaSubtypes) -> {
+            UnionInfo info = UNIONS.get(parent);
+            if (info == null) {
+                differences.add(parent + " is a union in the schema but not registered; subtypes: " + schemaSubtypes);
+                return;
+            }
+            if (info.subtypes().isEmpty()) {
+                return;
+            }
+            Set<String> registered = new TreeSet<>(info.subtypes().values());
+            Set<String> missing = new TreeSet<>(schemaSubtypes);
+            missing.removeAll(registered);
+            Set<String> extra = new TreeSet<>(registered);
+            extra.removeAll(schemaSubtypes);
+            if (!missing.isEmpty()) {
+                differences.add(parent + ": subtypes missing from the registry: " + missing);
+            }
+            if (!extra.isEmpty()) {
+                differences.add(parent + ": registered subtypes the schema does not list: " + extra);
+            }
+        });
+        UNIONS.keySet().stream()
+                .filter(parent -> !schemaUnions.containsKey(parent))
+                .sorted()
+                .forEach(parent -> differences.add(parent + " is registered but is not a union in the schema"));
+        return differences;
     }
 
     private static void register(String parentType, String discriminator, Map<String, String> subtypes) {

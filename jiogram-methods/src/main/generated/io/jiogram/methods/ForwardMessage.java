@@ -7,6 +7,29 @@ import io.jiogram.types.SuggestedPostParameters;
 import io.jiogram.types.TelegramMethod;
 import org.jspecify.annotations.Nullable;
 
+/**
+ * Use this method to forward messages of any kind. Service messages and messages with protected
+ * content can't be forwarded. On success, the sent Message is returned.
+ *
+ * @param chatId Unique identifier for the target chat or username of the target channel (in the
+ *     format &#64;channelusername)
+ * @param messageThreadId Unique identifier for the target message thread (topic) of a forum; for
+ *     forum supergroups and private chats of bots with forum topic mode enabled only
+ * @param directMessagesTopicId Identifier of the direct messages topic to which the message will be
+ *     forwarded; required if the message is forwarded to a direct messages chat
+ * @param fromChatId Unique identifier for the chat where the original message was sent (or channel
+ *     username in the format &#64;channelusername)
+ * @param videoStartTimestamp New start timestamp for the forwarded video in the message
+ * @param disableNotification Sends the message silently. Users will receive a notification with no
+ *     sound.
+ * @param protectContent Protects the contents of the forwarded message from forwarding and saving
+ * @param messageEffectId Unique identifier of the message effect to be added to the message; only
+ *     available when forwarding to private chats
+ * @param suggestedPostParameters A JSON-serialized object containing the parameters of the
+ *     suggested post to send; for direct messages chats only
+ * @param messageId Message identifier in the chat specified in from_chat_id
+ * @see <a href="https://core.telegram.org/bots/api#forwardmessage">forwardMessage in the Bot API</a>
+ */
 public record ForwardMessage(
     @JsonProperty("chat_id") ChatId chatId,
     @JsonProperty("message_thread_id") @Nullable Long messageThreadId,
@@ -32,5 +55,45 @@ public record ForwardMessage(
 
     public static ForwardMessage of(ChatId chatId, ChatId fromChatId, long messageId) {
         return new ForwardMessage(chatId, null, null, fromChatId, null, null, null, null, null, messageId);
+    }
+
+    public ForwardMessage withChatId(ChatId chatId) {
+        return new ForwardMessage(chatId, messageThreadId, directMessagesTopicId, fromChatId, videoStartTimestamp, disableNotification, protectContent, messageEffectId, suggestedPostParameters, messageId);
+    }
+
+    public ForwardMessage withMessageThreadId(@Nullable Long messageThreadId) {
+        return new ForwardMessage(chatId, messageThreadId, directMessagesTopicId, fromChatId, videoStartTimestamp, disableNotification, protectContent, messageEffectId, suggestedPostParameters, messageId);
+    }
+
+    public ForwardMessage withDirectMessagesTopicId(@Nullable Long directMessagesTopicId) {
+        return new ForwardMessage(chatId, messageThreadId, directMessagesTopicId, fromChatId, videoStartTimestamp, disableNotification, protectContent, messageEffectId, suggestedPostParameters, messageId);
+    }
+
+    public ForwardMessage withFromChatId(ChatId fromChatId) {
+        return new ForwardMessage(chatId, messageThreadId, directMessagesTopicId, fromChatId, videoStartTimestamp, disableNotification, protectContent, messageEffectId, suggestedPostParameters, messageId);
+    }
+
+    public ForwardMessage withVideoStartTimestamp(@Nullable Long videoStartTimestamp) {
+        return new ForwardMessage(chatId, messageThreadId, directMessagesTopicId, fromChatId, videoStartTimestamp, disableNotification, protectContent, messageEffectId, suggestedPostParameters, messageId);
+    }
+
+    public ForwardMessage withDisableNotification(@Nullable Boolean disableNotification) {
+        return new ForwardMessage(chatId, messageThreadId, directMessagesTopicId, fromChatId, videoStartTimestamp, disableNotification, protectContent, messageEffectId, suggestedPostParameters, messageId);
+    }
+
+    public ForwardMessage withProtectContent(@Nullable Boolean protectContent) {
+        return new ForwardMessage(chatId, messageThreadId, directMessagesTopicId, fromChatId, videoStartTimestamp, disableNotification, protectContent, messageEffectId, suggestedPostParameters, messageId);
+    }
+
+    public ForwardMessage withMessageEffectId(@Nullable String messageEffectId) {
+        return new ForwardMessage(chatId, messageThreadId, directMessagesTopicId, fromChatId, videoStartTimestamp, disableNotification, protectContent, messageEffectId, suggestedPostParameters, messageId);
+    }
+
+    public ForwardMessage withSuggestedPostParameters(@Nullable SuggestedPostParameters suggestedPostParameters) {
+        return new ForwardMessage(chatId, messageThreadId, directMessagesTopicId, fromChatId, videoStartTimestamp, disableNotification, protectContent, messageEffectId, suggestedPostParameters, messageId);
+    }
+
+    public ForwardMessage withMessageId(long messageId) {
+        return new ForwardMessage(chatId, messageThreadId, directMessagesTopicId, fromChatId, videoStartTimestamp, disableNotification, protectContent, messageEffectId, suggestedPostParameters, messageId);
     }
 }

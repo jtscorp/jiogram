@@ -3,13 +3,18 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+/**
+ * Discriminator values for ChatMember.
+ */
 public enum ChatMemberType {
     ADMINISTRATOR("administrator"),
     CREATOR("creator"),
     KICKED("kicked"),
     LEFT("left"),
     MEMBER("member"),
-    RESTRICTED("restricted");
+    RESTRICTED("restricted"),
+    /** A value unknown to this library version; {@link #value()} returns {@code null}. */
+    UNKNOWN(null);
 
     private final String value;
 
@@ -25,10 +30,10 @@ public enum ChatMemberType {
     @JsonCreator
     public static ChatMemberType fromValue(String value) {
         for (ChatMemberType e : values()) {
-            if (e.value.equals(value)) {
+            if (e.value != null && e.value.equals(value)) {
                 return e;
             }
         }
-        throw new IllegalArgumentException("Unknown ChatMemberType: " + value);
+        return UNKNOWN;
     }
 }

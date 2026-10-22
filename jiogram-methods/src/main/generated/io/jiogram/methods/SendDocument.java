@@ -13,6 +13,52 @@ import io.jiogram.types.TelegramMethod;
 import java.util.List;
 import org.jspecify.annotations.Nullable;
 
+/**
+ * Use this method to send general files. On success, the sent Message is returned. Bots can
+ * currently send files of any type of up to 50 MB in size, this limit may be changed in the future.
+ *
+ * @param businessConnectionId Unique identifier of the business connection on behalf of which the
+ *     message will be sent
+ * @param chatId Unique identifier for the target chat or username of the target channel (in the
+ *     format &#64;channelusername)
+ * @param messageThreadId Unique identifier for the target message thread (topic) of a forum; for
+ *     forum supergroups and private chats of bots with forum topic mode enabled only
+ * @param directMessagesTopicId Identifier of the direct messages topic to which the message will be
+ *     sent; required if the message is sent to a direct messages chat
+ * @param document File to send. Pass a file_id as String to send a file that exists on the Telegram
+ *     servers (recommended), pass an HTTP URL as a String for Telegram to get a file from the
+ *     Internet, or upload a new one using multipart/form-data. More information on Sending Files
+ * @param thumbnail Thumbnail of the file sent; can be ignored if thumbnail generation for the file
+ *     is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in
+ *     size. A thumbnail's width and height should not exceed 320. Ignored if the file is not
+ *     uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a
+ *     new file, so you can pass 'attach://&lt;file_attach_name&gt;' if the thumbnail was uploaded
+ *     using multipart/form-data under &lt;file_attach_name&gt;. More information on Sending Files
+ * @param caption Document caption (may also be used when resending documents by file_id), 0-1024
+ *     characters after entities parsing
+ * @param parseMode Mode for parsing entities in the document caption. See formatting options for
+ *     more details.
+ * @param captionEntities A JSON-serialized list of special entities that appear in the caption,
+ *     which can be specified instead of parse_mode
+ * @param disableContentTypeDetection Disables automatic server-side content type detection for
+ *     files uploaded using multipart/form-data
+ * @param disableNotification Sends the message silently. Users will receive a notification with no
+ *     sound.
+ * @param protectContent Protects the contents of the sent message from forwarding and saving
+ * @param allowPaidBroadcast Pass True to allow up to 1000 messages per second, ignoring
+ *     broadcasting limits for a fee of 0.1 Telegram Stars per message. The relevant Stars will be
+ *     withdrawn from the bot's balance
+ * @param messageEffectId Unique identifier of the message effect to be added to the message; for
+ *     private chats only
+ * @param suggestedPostParameters A JSON-serialized object containing the parameters of the
+ *     suggested post to send; for direct messages chats only. If the message is sent as a reply to
+ *     another suggested post, then that suggested post is automatically declined.
+ * @param replyParameters Description of the message to reply to
+ * @param replyMarkup Additional interface options. A JSON-serialized object for an inline keyboard,
+ *     custom reply keyboard, instructions to remove a reply keyboard or to force a reply from the
+ *     user
+ * @see <a href="https://core.telegram.org/bots/api#senddocument">sendDocument in the Bot API</a>
+ */
 public record SendDocument(
     @JsonProperty("business_connection_id") @Nullable String businessConnectionId,
     @JsonProperty("chat_id") ChatId chatId,
@@ -45,5 +91,88 @@ public record SendDocument(
 
     public static SendDocument of(ChatId chatId, InputFileOrString document) {
         return new SendDocument(null, chatId, null, null, document, null, null, null, null, null, null, null, null, null, null, null, null);
+    }
+
+    /**
+     * Sends to the chat of {@code message}, and to its forum topic, business connection or direct
+     * messages topic when it came from one.
+     */
+    public static SendDocument answer(Message message, InputFileOrString document) {
+        return new SendDocument(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), document, null, null, null, null, null, null, null, null, null, null, null, null);
+    }
+
+    /**
+     * Like {@code answer}, as a reply to {@code message}.
+     */
+    public static SendDocument reply(Message message, InputFileOrString document) {
+        return new SendDocument(ReplyTarget.businessConnectionId(message), ReplyTarget.chatId(message), ReplyTarget.messageThreadId(message), ReplyTarget.directMessagesTopicId(message), document, null, null, null, null, null, null, null, null, null, null, ReplyTarget.replyTo(message), null);
+    }
+
+    public SendDocument withBusinessConnectionId(@Nullable String businessConnectionId) {
+        return new SendDocument(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, document, thumbnail, caption, parseMode, captionEntities, disableContentTypeDetection, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendDocument withChatId(ChatId chatId) {
+        return new SendDocument(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, document, thumbnail, caption, parseMode, captionEntities, disableContentTypeDetection, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendDocument withMessageThreadId(@Nullable Long messageThreadId) {
+        return new SendDocument(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, document, thumbnail, caption, parseMode, captionEntities, disableContentTypeDetection, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendDocument withDirectMessagesTopicId(@Nullable Long directMessagesTopicId) {
+        return new SendDocument(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, document, thumbnail, caption, parseMode, captionEntities, disableContentTypeDetection, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendDocument withDocument(InputFileOrString document) {
+        return new SendDocument(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, document, thumbnail, caption, parseMode, captionEntities, disableContentTypeDetection, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendDocument withThumbnail(@Nullable InputFileOrString thumbnail) {
+        return new SendDocument(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, document, thumbnail, caption, parseMode, captionEntities, disableContentTypeDetection, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendDocument withCaption(@Nullable String caption) {
+        return new SendDocument(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, document, thumbnail, caption, parseMode, captionEntities, disableContentTypeDetection, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendDocument withParseMode(@Nullable ParseMode parseMode) {
+        return new SendDocument(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, document, thumbnail, caption, parseMode, captionEntities, disableContentTypeDetection, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendDocument withCaptionEntities(@Nullable List<MessageEntity> captionEntities) {
+        return new SendDocument(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, document, thumbnail, caption, parseMode, captionEntities, disableContentTypeDetection, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendDocument withDisableContentTypeDetection(@Nullable Boolean disableContentTypeDetection) {
+        return new SendDocument(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, document, thumbnail, caption, parseMode, captionEntities, disableContentTypeDetection, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendDocument withDisableNotification(@Nullable Boolean disableNotification) {
+        return new SendDocument(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, document, thumbnail, caption, parseMode, captionEntities, disableContentTypeDetection, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendDocument withProtectContent(@Nullable Boolean protectContent) {
+        return new SendDocument(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, document, thumbnail, caption, parseMode, captionEntities, disableContentTypeDetection, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendDocument withAllowPaidBroadcast(@Nullable Boolean allowPaidBroadcast) {
+        return new SendDocument(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, document, thumbnail, caption, parseMode, captionEntities, disableContentTypeDetection, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendDocument withMessageEffectId(@Nullable String messageEffectId) {
+        return new SendDocument(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, document, thumbnail, caption, parseMode, captionEntities, disableContentTypeDetection, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendDocument withSuggestedPostParameters(@Nullable SuggestedPostParameters suggestedPostParameters) {
+        return new SendDocument(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, document, thumbnail, caption, parseMode, captionEntities, disableContentTypeDetection, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendDocument withReplyParameters(@Nullable ReplyParameters replyParameters) {
+        return new SendDocument(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, document, thumbnail, caption, parseMode, captionEntities, disableContentTypeDetection, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
+    }
+
+    public SendDocument withReplyMarkup(@Nullable ReplyMarkup replyMarkup) {
+        return new SendDocument(businessConnectionId, chatId, messageThreadId, directMessagesTopicId, document, thumbnail, caption, parseMode, captionEntities, disableContentTypeDetection, disableNotification, protectContent, allowPaidBroadcast, messageEffectId, suggestedPostParameters, replyParameters, replyMarkup);
     }
 }

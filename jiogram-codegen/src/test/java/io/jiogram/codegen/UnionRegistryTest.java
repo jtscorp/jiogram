@@ -1,11 +1,17 @@
 package io.jiogram.codegen;
 
 import io.jiogram.codegen.UnionRegistry.UnionInfo;
+import io.jiogram.codegen.model.ApiSchema;
+import io.jiogram.codegen.model.FieldDefinition;
+import io.jiogram.codegen.model.TypeDefinition;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 class UnionRegistryTest {
 
@@ -175,6 +181,14 @@ class UnionRegistryTest {
     }
 
     @Test
+    void wireName_mapsCachedInlineResultsToTelegramsTypeValue() {
+        assertEquals("photo", UnionRegistry.wireName("InlineQueryResult", "cached_photo"));
+        assertEquals("mpeg4_gif", UnionRegistry.wireName("InlineQueryResult", "cached_mpeg4_gif"));
+        assertEquals("photo", UnionRegistry.wireName("InlineQueryResult", "photo"));
+        assertEquals("cached_x", UnionRegistry.wireName("ChatMember", "cached_x"), "Only InlineQueryResult is remapped");
+    }
+
+    @Test
     void transactionPartner_hasAllSubtypes() {
         UnionInfo info = UnionRegistry.get("TransactionPartner");
         assertNotNull(info);
@@ -217,5 +231,68 @@ class UnionRegistryTest {
         assertEquals(2, info.subtypes().size());
         assertEquals("OwnedGiftRegular", info.subtypes().get("regular"));
         assertEquals("OwnedGiftUnique", info.subtypes().get("unique"));
+    }
+
+    // ---- differencesFrom() ----
+
+    @Test
+    void registry_matchesTheRealSchema() throws Exception {
+        File schemaFile = realSchemaFile();
+        assumeTrue(schemaFile.exists(), "schema/schema.json not found");
+
+        assertEquals(List.of(), UnionRegistry.differencesFrom(SchemaParser.parse(schemaFile)));
+    }
+
+    @Test
+    void newSubtypeInTheSchema_isReported() {
+        ApiSchema schema = schemaWith(
+                union("ReactionType", "ReactionTypeEmoji", "ReactionTypeCustomEmoji", "ReactionTypePaid", "ReactionTypeStar"),
+                plain("ReactionTypeEmoji"), plain("ReactionTypeCustomEmoji"), plain("ReactionTypePaid"),
+                plain("ReactionTypeStar"));
+
+        assertTrue(UnionRegistry.differencesFrom(schema)
+                        .contains("ReactionType: subtypes missing from the registry: [ReactionTypeStar]"),
+                () -> UnionRegistry.differencesFrom(schema).toString());
+    }
+
+    @Test
+    void unregisteredUnion_andRemovedSubtype_areReported() {
+        ApiSchema schema = schemaWith(
+                union("GiftSource", "GiftSourceUser"), plain("GiftSourceUser"),
+                union("OwnedGift", "OwnedGiftRegular"), plain("OwnedGiftRegular"));
+
+        List<String> differences = UnionRegistry.differencesFrom(schema);
+
+        assertTrue(differences.contains(
+                "GiftSource is a union in the schema but not registered; subtypes: [GiftSourceUser]"), differences::toString);
+        assertTrue(differences.contains(
+                "OwnedGift: registered subtypes the schema does not list: [OwnedGiftUnique]"), differences::toString);
+        // Everything else the registry knows is absent from this small schema.
+        assertTrue(differences.contains("ChatMember is registered but is not a union in the schema"), differences::toString);
+    }
+
+    private static ApiSchema schemaWith(TypeDefinition... types) {
+        return new ApiSchema("test", List.of(types), List.of(), List.of());
+    }
+
+    private static TypeDefinition union(String name, String... subtypes) {
+        String description = "This object describes something. It can be one of\n - " + String.join("\n - ", subtypes);
+        return new TypeDefinition(name, description, List.of(), "types");
+    }
+
+    private static TypeDefinition plain(String name) {
+        return new TypeDefinition(name, "A type.", List.of(new FieldDefinition("type", "String", true, "")), "types");
+    }
+
+    private static File realSchemaFile() {
+        File dir = new File(System.getProperty("user.dir"));
+        while (dir != null) {
+            File candidate = new File(dir, "schema/schema.json");
+            if (candidate.exists()) {
+                return candidate;
+            }
+            dir = dir.getParentFile();
+        }
+        return new File("schema/schema.json");
     }
 }

@@ -23,6 +23,9 @@ import java.util.stream.Collectors;
  *   <li>{@code apiMethod()} returning the original API method name</li>
  *   <li>{@code apiReturnType()} returning the return type string</li>
  *   <li>A static {@code of()} factory with only required parameters</li>
+ *   <li>For sending methods, static {@code answer(Message, ...)} and {@code reply(Message, ...)}
+ *       factories that target the chat (and topic) of a received message</li>
+ *   <li>A {@code withX(...)} method per parameter returning a copy with that value replaced</li>
  * </ul>
  */
 public final class MethodGenerator {
@@ -87,6 +90,7 @@ public final class MethodGenerator {
 
         // Build record components
         List<String> components = new ArrayList<>();
+        List<Withers.Component> witherComponents = new ArrayList<>();
         boolean hasOptionalRefField = false;
 
         for (FieldDefinition param : method.parameters()) {
@@ -96,18 +100,23 @@ public final class MethodGenerator {
             StringBuilder comp = new StringBuilder();
             comp.append("    @JsonProperty(\"").append(param.name()).append("\")");
 
-            if (!param.required() && !javaType.isPrimitive()) {
+            boolean nullable = !param.required() && !javaType.isPrimitive();
+            if (nullable) {
                 comp.append(" @Nullable");
                 hasOptionalRefField = true;
             }
 
             comp.append(" ").append(typeString).append(" ").append(param.javaName());
             components.add(comp.toString());
+            witherComponents.add(new Withers.Component(param.javaName(), typeString, nullable, true));
         }
 
         if (hasOptionalRefField) {
             imports.add(NULLABLE_PACKAGE + ".Nullable");
         }
+
+        // Built before the imports are written: it may add some.
+        String answerFactories = answerFactories(method, imports);
 
         // Build the source
         StringBuilder sb = new StringBuilder();
@@ -118,6 +127,7 @@ public final class MethodGenerator {
         sb.append("\n");
 
         // Record declaration
+        sb.append(Javadoc.render(method.description(), method.parameters(), method.name()));
         sb.append("public record ").append(method.className()).append("(\n");
         sb.append(String.join(",\n", components));
         sb.append("\n) implements TelegramMethod<").append(returnTypeStr).append("> {\n\n");
@@ -145,6 +155,8 @@ public final class MethodGenerator {
             sb.append("\n");
             generateStaticFactory(sb, method, requiredParams, imports);
         }
+        sb.append(answerFactories);
+        sb.append(Withers.render(method.className(), witherComponents));
 
         sb.append("}\n");
 
@@ -186,6 +198,82 @@ public final class MethodGenerator {
         sb.append("    }\n");
     }
 
+    /**
+     * For methods that send something into a chat, factories that answer a received message the
+     * way aiogram's {@code Message.answer()} / {@code reply()} do: {@code answer(Message, ...)}
+     * fills in the chat, forum topic, business connection and direct messages topic from the
+     * message (see the hand-written {@code ReplyTarget}); {@code reply(Message, ...)} also replies
+     * to it. The other required parameters follow the message.
+     */
+    private String answerFactories(MethodDefinition method, Set<String> imports) {
+        if (!isAnswering(method)) {
+            return "";
+        }
+        imports.add(typesPackage + ".Message");
+        String messageParam = method.parameters().stream().anyMatch(p -> p.javaName().equals("message"))
+                ? "target" : "message";
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n");
+        appendAnswerFactory(sb, method, messageParam, false, imports);
+        if (method.parameters().stream().anyMatch(p -> p.name().equals("reply_parameters"))) {
+            sb.append("\n");
+            appendAnswerFactory(sb, method, messageParam, true, imports);
+        }
+        return sb.toString();
+    }
+
+    private static boolean isAnswering(MethodDefinition method) {
+        boolean sends = method.name().startsWith("send") || method.name().equals("copyMessage");
+        boolean hasChat = method.parameters().stream().anyMatch(p -> p.name().equals("chat_id") && p.required());
+        boolean hasOptionalThread = method.parameters().stream()
+                .anyMatch(p -> p.name().equals("message_thread_id") && !p.required());
+        return sends && hasChat && hasOptionalThread;
+    }
+
+    private void appendAnswerFactory(StringBuilder sb, MethodDefinition method, String messageParam, boolean reply,
+                                     Set<String> imports) {
+        List<String> factoryParams = new ArrayList<>();
+        factoryParams.add("Message " + messageParam);
+        List<String> constructorArgs = new ArrayList<>();
+        for (FieldDefinition param : method.parameters()) {
+            TypeName javaType = typeMapper.resolveMethodParameter(method.name(), param);
+            String fromMessage = switch (param.name()) {
+                // Most methods take a ChatId; a few (sendGame, sendMessageDraft) only a numeric id.
+                case "chat_id" -> javaType.isPrimitive()
+                        ? messageParam + ".chat().id()"
+                        : "ReplyTarget.chatId(" + messageParam + ")";
+                case "message_thread_id" -> "ReplyTarget.messageThreadId(" + messageParam + ")";
+                case "business_connection_id" -> "ReplyTarget.businessConnectionId(" + messageParam + ")";
+                case "direct_messages_topic_id" -> "ReplyTarget.directMessagesTopicId(" + messageParam + ")";
+                case "reply_parameters" -> reply ? "ReplyTarget.replyTo(" + messageParam + ")" : null;
+                default -> null;
+            };
+            if (fromMessage != null) {
+                constructorArgs.add(fromMessage);
+            } else if (param.required()) {
+                factoryParams.add(resolveTypeString(javaType, imports) + " " + param.javaName());
+                constructorArgs.add(param.javaName());
+            } else {
+                constructorArgs.add(javaType.isPrimitive() ? defaultPrimitiveValue(javaType) : "null");
+            }
+        }
+
+        sb.append("    /**\n");
+        if (reply) {
+            sb.append("     * Like {@code answer}, as a reply to {@code ").append(messageParam).append("}.\n");
+        } else {
+            sb.append("     * Sends to the chat of {@code ").append(messageParam)
+                    .append("}, and to its forum topic, business connection or direct\n")
+                    .append("     * messages topic when it came from one.\n");
+        }
+        sb.append("     */\n");
+        sb.append("    public static ").append(method.className()).append(reply ? " reply(" : " answer(")
+                .append(String.join(", ", factoryParams)).append(") {\n");
+        sb.append("        return new ").append(method.className()).append("(")
+                .append(String.join(", ", constructorArgs)).append(");\n");
+        sb.append("    }\n");
+    }
+
     private String defaultPrimitiveValue(TypeName typeName) {
         if (typeName.equals(TypeName.BOOLEAN)) return "false";
         if (typeName.equals(TypeName.LONG)) return "0L";
@@ -202,7 +290,6 @@ public final class MethodGenerator {
         if (typeName.isPrimitive()) {
             return typeName.toString();
         }
-
         if (typeName instanceof ParameterizedTypeName paramType) {
             String rawString = resolveTypeString(paramType.rawType, imports);
             String args = paramType.typeArguments.stream()
@@ -210,7 +297,6 @@ public final class MethodGenerator {
                     .collect(Collectors.joining(", "));
             return rawString + "<" + args + ">";
         }
-
         if (typeName instanceof ClassName className) {
             String fullName = className.packageName() + "." + className.simpleName();
             if (!"java.lang".equals(className.packageName())) {
@@ -218,8 +304,6 @@ public final class MethodGenerator {
             }
             return className.simpleName();
         }
-
-        // Boxed primitives
         return typeName.box().toString();
     }
 }

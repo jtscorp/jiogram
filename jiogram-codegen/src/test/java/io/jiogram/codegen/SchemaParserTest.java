@@ -8,7 +8,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -156,5 +158,34 @@ class SchemaParserTest {
                 .filter(m -> m.name().equals(name))
                 .findFirst()
                 .orElseThrow(() -> new AssertionError("Method not found: " + name));
+    }
+
+    // ---- requireKnownReturnTypes() ----
+
+    @Test
+    void knownReturnTypes_pass() {
+        assertDoesNotThrow(() -> SchemaParser.requireKnownReturnTypes(List.of(
+                method("getMe", "User"), method("getUpdates", "Array of Update"),
+                method("close", "Boolean"), method("getChatMemberCount", "Int")), Set.of("User", "Update")));
+    }
+
+    @Test
+    void unreadableOrUnknownReturnType_failsNamingTheMethods() {
+        var error = assertThrows(IllegalStateException.class, () -> SchemaParser.requireKnownReturnTypes(List.of(
+                method("getMe", "User"), method("doSomethingNew", null), method("getThing", "Thing")),
+                Set.of("User")));
+
+        assertTrue(error.getMessage().contains("doSomethingNew -> <not found>"), error.getMessage());
+        assertTrue(error.getMessage().contains("getThing -> 'Thing'"), error.getMessage());
+        assertFalse(error.getMessage().contains("getMe"), error.getMessage());
+    }
+
+    @Test
+    void descriptionWithoutAReturnPhrase_yieldsNoType() {
+        assertNull(SchemaParser.extractReturnType("Use this method to do something new."));
+    }
+
+    private static MethodDefinition method(String name, String returnType) {
+        return new MethodDefinition(name, "", List.of(), returnType, "methods");
     }
 }

@@ -204,4 +204,21 @@ class TypeMapperTest {
     void resolve_nullType_throws() {
         assertThrows(NullPointerException.class, () -> mapper.resolve(null, true));
     }
+
+    // ---- attach:// String fields ----
+
+    @Test
+    void stringFieldAcceptingAttach_mapsToInputFileOrString() {
+        var media = new io.jiogram.codegen.model.FieldDefinition("media", "String", true,
+                "File to send. Pass a file_id ... or pass \"attach://<file_attach_name>\" to upload a new one");
+
+        assertEquals(ClassName.get(TYPES_PKG, "InputFileOrString"), mapper.resolveTypeField("InputMediaPhoto", media));
+    }
+
+    @Test
+    void plainStringField_staysString() {
+        var caption = new io.jiogram.codegen.model.FieldDefinition("caption", "String", false, "Caption of the photo");
+
+        assertEquals(ClassName.get(String.class), mapper.resolveTypeField("InputMediaPhoto", caption));
+    }
 }

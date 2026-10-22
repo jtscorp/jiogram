@@ -4,6 +4,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.TelegramMethod;
 import org.jspecify.annotations.Nullable;
 
+/**
+ * Changes the first and last name of a managed business account. Requires the can_change_name
+ * business bot right. Returns True on success.
+ *
+ * @param businessConnectionId Unique identifier of the business connection
+ * @param firstName The new value of the first name for the business account; 1-64 characters
+ * @param lastName The new value of the last name for the business account; 0-64 characters
+ * @see <a href="https://core.telegram.org/bots/api#setbusinessaccountname">setBusinessAccountName in the Bot API</a>
+ */
 public record SetBusinessAccountName(
     @JsonProperty("business_connection_id") String businessConnectionId,
     @JsonProperty("first_name") String firstName,
@@ -22,5 +31,17 @@ public record SetBusinessAccountName(
 
     public static SetBusinessAccountName of(String businessConnectionId, String firstName) {
         return new SetBusinessAccountName(businessConnectionId, firstName, null);
+    }
+
+    public SetBusinessAccountName withBusinessConnectionId(String businessConnectionId) {
+        return new SetBusinessAccountName(businessConnectionId, firstName, lastName);
+    }
+
+    public SetBusinessAccountName withFirstName(String firstName) {
+        return new SetBusinessAccountName(businessConnectionId, firstName, lastName);
+    }
+
+    public SetBusinessAccountName withLastName(@Nullable String lastName) {
+        return new SetBusinessAccountName(businessConnectionId, firstName, lastName);
     }
 }

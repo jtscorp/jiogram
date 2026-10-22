@@ -3,9 +3,14 @@ package io.jiogram.types;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+/**
+ * Discriminator values for InputPaidMedia.
+ */
 public enum InputPaidMediaType {
     PHOTO("photo"),
-    VIDEO("video");
+    VIDEO("video"),
+    /** A value unknown to this library version; {@link #value()} returns {@code null}. */
+    UNKNOWN(null);
 
     private final String value;
 
@@ -21,10 +26,10 @@ public enum InputPaidMediaType {
     @JsonCreator
     public static InputPaidMediaType fromValue(String value) {
         for (InputPaidMediaType e : values()) {
-            if (e.value.equals(value)) {
+            if (e.value != null && e.value.equals(value)) {
                 return e;
             }
         }
-        throw new IllegalArgumentException("Unknown InputPaidMediaType: " + value);
+        return UNKNOWN;
     }
 }

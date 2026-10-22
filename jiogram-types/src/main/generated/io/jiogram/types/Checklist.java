@@ -6,10 +6,47 @@ import io.jiogram.types.MessageEntity;
 import java.util.List;
 import org.jspecify.annotations.Nullable;
 
+/**
+ * Describes a checklist.
+ *
+ * @param title Title of the checklist
+ * @param titleEntities Special entities that appear in the checklist title
+ * @param tasks List of tasks in the checklist
+ * @param othersCanAddTasks True, if users other than the creator of the list can add tasks to the
+ *     list
+ * @param othersCanMarkTasksAsDone True, if users other than the creator of the list can mark tasks
+ *     as done or not done
+ * @see <a href="https://core.telegram.org/bots/api#checklist">Checklist in the Bot API</a>
+ */
 public record Checklist(
     @JsonProperty("title") String title,
     @JsonProperty("title_entities") @Nullable List<MessageEntity> titleEntities,
     @JsonProperty("tasks") List<ChecklistTask> tasks,
     @JsonProperty("others_can_add_tasks") @Nullable Boolean othersCanAddTasks,
     @JsonProperty("others_can_mark_tasks_as_done") @Nullable Boolean othersCanMarkTasksAsDone
-) {}
+) {
+
+    public static Checklist of(String title, List<ChecklistTask> tasks) {
+        return new Checklist(title, null, tasks, null, null);
+    }
+
+    public Checklist withTitle(String title) {
+        return new Checklist(title, titleEntities, tasks, othersCanAddTasks, othersCanMarkTasksAsDone);
+    }
+
+    public Checklist withTitleEntities(@Nullable List<MessageEntity> titleEntities) {
+        return new Checklist(title, titleEntities, tasks, othersCanAddTasks, othersCanMarkTasksAsDone);
+    }
+
+    public Checklist withTasks(List<ChecklistTask> tasks) {
+        return new Checklist(title, titleEntities, tasks, othersCanAddTasks, othersCanMarkTasksAsDone);
+    }
+
+    public Checklist withOthersCanAddTasks(@Nullable Boolean othersCanAddTasks) {
+        return new Checklist(title, titleEntities, tasks, othersCanAddTasks, othersCanMarkTasksAsDone);
+    }
+
+    public Checklist withOthersCanMarkTasksAsDone(@Nullable Boolean othersCanMarkTasksAsDone) {
+        return new Checklist(title, titleEntities, tasks, othersCanAddTasks, othersCanMarkTasksAsDone);
+    }
+}

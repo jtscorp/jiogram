@@ -3,6 +3,13 @@ package io.jiogram.methods;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jiogram.types.TelegramMethod;
 
+/**
+ * Use this method to set the title of a created sticker set. Returns True on success.
+ *
+ * @param name Sticker set name
+ * @param title Sticker set title, 1-64 characters
+ * @see <a href="https://core.telegram.org/bots/api#setstickersettitle">setStickerSetTitle in the Bot API</a>
+ */
 public record SetStickerSetTitle(
     @JsonProperty("name") String name,
     @JsonProperty("title") String title
@@ -16,5 +23,13 @@ public record SetStickerSetTitle(
     @Override
     public String apiReturnType() {
         return "Boolean";
+    }
+
+    public SetStickerSetTitle withName(String name) {
+        return new SetStickerSetTitle(name, title);
+    }
+
+    public SetStickerSetTitle withTitle(String title) {
+        return new SetStickerSetTitle(name, title);
     }
 }
