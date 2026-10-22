@@ -1,3 +1,5 @@
+[O'zbekcha](uz/migration-from-0.1.x.md) · [English](migration-from-0.1.x.md)
+
 # Migrating from jiogram 0.1.0 to 0.2.0
 
 `jiogram` 0.2.0 is a hard break from 0.1.0. The single artifact `uz.jtscorp.jiogram:jiogram-spring-boot-starter` is **frozen**: it will not receive 0.2.0 or any later updates. To upgrade, switch your dependency to the new branch-specific starter that matches your Spring Boot version.
@@ -10,7 +12,7 @@
 | Single starter artifact | `jiogram-spring-boot-starter` | three starters: `jiogram-spring-boot-{2,3,4}-starter` |
 | Module artifacts | `jiogram-core`, `jiogram-fsm`, etc. | `jiogram-core-sb{2,3,4}`, `jiogram-fsm-sb{2,3,4}`, etc. |
 | Spring Boot supported | 3.5 only | 2.7, 3.5, and 4.0 |
-| Java baseline | 25 (preview features required) | 17 |
+| Java baseline | 25 (preview features required) | 11 on sb2.x, 17 on sb3.x, 25 on main |
 
 Most handler, filter, FSM and middleware code carries over unchanged, but 0.2.0 also fixes
 behaviour that was wrong in 0.1.0 and changes a few APIs. Read
