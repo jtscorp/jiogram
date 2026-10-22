@@ -1,0 +1,11 @@
+plugins {
+    id 'java-library'
+}
+
+// The @FSMStates annotation processor on its own, without runtime dependencies, so that
+// `annotationProcessor 'uz.jtscorp.jiogram:jiogram-fsm-processor-sb3'` adds nothing else to the
+// processor path. The @FSMStates annotation itself stays in jiogram-fsm.
+dependencies {
+    // FSMStatesProcessorTest compiles sources that use @FSMStates.
+    testImplementation project(':jiogram-fsm')
+}

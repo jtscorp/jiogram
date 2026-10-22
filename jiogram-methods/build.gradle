@@ -6,7 +6,7 @@ plugins {
 dependencies {
     api project(':jiogram-types')
 
-    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
     implementation 'org.jspecify:jspecify:1.0.0'
 }
 
