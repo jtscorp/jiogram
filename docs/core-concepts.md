@@ -30,6 +30,27 @@ They fill in the chat, the forum topic (only when the message is a topic message
 connection and the direct messages topic. With `SendMessage.of(ChatId.of(chatId), text)` instead,
 an answer in a forum group lands in the General topic.
 
+### Building requests
+
+Methods and types are records with a canonical constructor of every Bot API field. For the
+optional ones there are shorter ways: `of(...)` takes only the required values, and every record
+has a `withX(...)` per field that returns a copy with that value set.
+
+```java
+var keyboard = new InlineKeyboardMarkup(List.of(List.of(
+    InlineKeyboardButton.of("About").withCallbackData("about"),
+    InlineKeyboardButton.of("Docs").withUrl("https://core.telegram.org/bots/api"))));
+
+bot.execute(SendDocument.answer(message, InputFileOrString.of(InputFile.fromPath(report)))
+    .withCaption("<b>Report</b>")
+    .withReplyMarkup(keyboard));
+```
+
+`InputFile.fromPath(...)` and `InputFile.fromBytes(name, bytes)` upload a file from the
+application; they can stand wherever the Bot API accepts a file, also inside a media group, and
+the request is then sent as `multipart/form-data`. Union subtypes fill in their `type`
+themselves: `InputMediaPhoto.of(media)` is already a photo.
+
 With Spring Boot auto-configuration, the `Bot` bean is created from your `telegram.token` property. You can also inject it anywhere:
 
 ```java
@@ -118,8 +139,8 @@ public class MyHandlers {
     @OnMessage
     @Command("start")
     public SendMessage onStart(Message message) {
-        return SendMessage.of(
-            ChatId.of(message.chat().id()),
+        return SendMessage.answer(
+            message,
             "Welcome!"
         );
     }
@@ -180,8 +201,8 @@ public class BotConfig {
         router.onMessage()
             .filter(Filters.command("ping"))
             .handle((message, context) -> {
-                var reply = SendMessage.of(
-                    ChatId.of(message.chat().id()),
+                var reply = SendMessage.answer(
+                    message,
                     "pong!"
                 );
                 return context.bot().execute(reply).then();
@@ -404,8 +425,8 @@ public class RegistrationBot {
     public Mono<Void> startRegistration(Message message, Bot bot, UpdateContext context) {
         FSMContext fsm = context.get("state", FSMContext.class);
         return fsm.setState(FormState.WAITING_FOR_NAME)
-            .then(bot.execute(SendMessage.of(
-                ChatId.of(message.chat().id()),
+            .then(bot.execute(SendMessage.answer(
+                message,
                 "What is your name?"
             )))
             .then();
@@ -417,8 +438,8 @@ public class RegistrationBot {
         FSMContext fsm = context.get("state", FSMContext.class);
         return fsm.updateData("name", message.text())
             .then(fsm.setState(FormState.WAITING_FOR_AGE))
-            .then(bot.execute(SendMessage.of(
-                ChatId.of(message.chat().id()),
+            .then(bot.execute(SendMessage.answer(
+                message,
                 "How old are you?"
             )))
             .then();
@@ -433,8 +454,8 @@ public class RegistrationBot {
             .then(fsm.getData().flatMap(data -> {
                 String summary = "Name: " + data.get("name") + "\nAge: " + data.get("age")
                     + "\n\nIs this correct? (yes/no)";
-                return bot.execute(SendMessage.of(
-                    ChatId.of(message.chat().id()),
+                return bot.execute(SendMessage.answer(
+                    message,
                     summary
                 ));
             }))
@@ -447,8 +468,8 @@ public class RegistrationBot {
         FSMContext fsm = context.get("state", FSMContext.class);
         String text = "yes".equalsIgnoreCase(message.text()) ? "Registration complete!" : "Registration cancelled.";
         return fsm.clear()
-            .then(bot.execute(SendMessage.of(
-                ChatId.of(message.chat().id()),
+            .then(bot.execute(SendMessage.answer(
+                message,
                 text
             )))
             .then();

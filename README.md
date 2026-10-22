@@ -48,7 +48,6 @@ telegram:
 import io.jiogram.annotation.OnMessage;
 import io.jiogram.annotation.TelegramController;
 import io.jiogram.methods.SendMessage;
-import io.jiogram.types.ChatId;
 import io.jiogram.types.Message;
 
 @TelegramController
@@ -56,10 +55,7 @@ public class EchoBot {
 
     @OnMessage
     public SendMessage echo(Message message) {
-        return SendMessage.of(
-            ChatId.of(message.chat().id()),
-            message.text()
-        );
+        return SendMessage.answer(message, message.text());
     }
 }
 ```
@@ -76,9 +72,14 @@ That's it. Run your Spring Boot app and the bot starts polling for updates autom
 - **Middleware pipeline** -- intercept and transform updates before they reach handlers
 - **Finite State Machine (FSM)** -- enum states, generated `@StateFilter` constants, and `FSMContext` for multi-step conversations
 - **Pluggable FSM storage** -- in-memory (default) or Redis for distributed deployments
-- **Reactive throughout** -- built on Project Reactor (`Mono`/`Flux`), fully non-blocking
+- **Reactive throughout** -- built on Project Reactor (`Mono`/`Flux`); annotated handlers run on virtual threads, so they may block
 - **Auto-return-value handling** -- return `SendMessage` from a handler and it gets executed automatically
-- **Long-polling and webhook modes** -- switch with a single config property
+- **Request builders** -- `SendMessage.answer(message, text)` / `reply(...)` answer into the right chat and forum topic; `of(...)` and `withX(...)` instead of long constructors
+- **File uploads** -- `InputFile.fromPath(...)` / `fromBytes(...)` anywhere in a request, sent as multipart automatically
+- **Bot defaults** -- parse mode, link previews and content protection filled into every request, nested objects included
+- **Long-polling and webhook modes** -- switch with a single config property; polling processes chats in parallel and keeps each chat in order
+- **Graceful shutdown** -- a running batch finishes and is confirmed to Telegram before the app stops
+- **Forward compatible** -- unknown enum values and union variants from newer Bot API versions do not break parsing
 - **Spring Boot auto-configuration** -- just add the starter dependency and a token
 
 ## Module Structure
@@ -97,7 +98,7 @@ That's it. Run your Spring Boot app and the bot starts polling for updates autom
 
 - **Java 25** or newer
 - **Spring Boot 4.0.x** (this branch)
-- **Project Reactor** (comes with Spring Boot WebFlux)
+- Webhook mode only: a web server, e.g. `spring-boot-starter-webflux` (polling bots need none)
 
 For other Spring Boot versions, see [`docs/spring-boot-versions.md`](docs/spring-boot-versions.md).
 
@@ -110,19 +111,27 @@ All properties live under the `telegram` prefix. See [docs/configuration.md](doc
 | `telegram.token` | *(required)* | Bot API token from @BotFather |
 | `telegram.mode` | `POLLING` | `POLLING` or `WEBHOOK` |
 | `telegram.api.base-url` | `https://api.telegram.org` | Telegram Bot API endpoint; set to a local Bot API server URL when self-hosting |
+| `telegram.api.request-timeout` | `60s` | Time to wait for a response; `getUpdates` adds its polling timeout |
 | `telegram.polling.timeout` | `30` | Long-polling timeout in seconds |
 | `telegram.polling.limit` | `100` | Max updates per poll |
 | `telegram.polling.backoff` | `1000` | Error backoff in ms |
+| `telegram.polling.concurrency` | `32` | Chats of one batch processed in parallel |
+| `telegram.polling.shutdown-timeout` | `10s` | How long shutdown waits for the running batch |
+| `telegram.webhook.secret-token` | *(generated)* | Checked on every webhook request; generated when `webhook.url` is set |
 | `telegram.defaults.parse-mode` | `null` | Default parse mode (`HTML`, `MARKDOWN`, `MARKDOWN_V2`) |
+| `telegram.handlers.virtual-threads` | `true` | Run annotated handlers on virtual threads |
 | `telegram.fsm.enabled` | `true` | Enable FSM middleware |
 | `telegram.fsm.strategy` | `USER_IN_CHAT` | FSM key strategy |
 | `telegram.fsm.storage` | `memory` | `memory` or `redis` |
+| `telegram.fsm.redis.key-prefix` | `jiogram:fsm` | Redis key prefix |
+| `telegram.fsm.redis.state-ttl` / `data-ttl` | none | Expire FSM state / data after the last change |
 
 ## Documentation
 
 - [Getting Started](docs/getting-started.md)
 - [Core Concepts](docs/core-concepts.md)
 - [Configuration Reference](docs/configuration.md)
+- [Migrating from 0.1.x](docs/migration-from-0.1.x.md)
 
 ## Examples
 
