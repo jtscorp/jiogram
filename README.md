@@ -2,7 +2,7 @@
 
 [O'zbekcha](#-ozbekcha) · [English](#-english)
 
-[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-support-yellow?logo=buymeacoffee&logoColor=black)](https://buymeacoffee.com/jtscorp)
+[![Maven Central](https://img.shields.io/maven-central/v/uz.jtscorp.jiogram/jiogram-spring-boot-4-starter)](https://central.sonatype.com/artifact/uz.jtscorp.jiogram/jiogram-spring-boot-4-starter) [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-support-yellow?logo=buymeacoffee&logoColor=black)](https://buymeacoffee.com/jtscorp)
 
 ***
 
@@ -118,9 +118,9 @@ Barcha sozlamalar `telegram` prefiksi ostida. To'liq ro'yxat: [docs/uz/configura
 |---|---|---|
 | `telegram.token` | *(majburiy)* | @BotFatherdan olingan Bot API token |
 | `telegram.mode` | `POLLING` | `POLLING` yoki `WEBHOOK` |
-| `telegram.api.base-url` | `https://api.telegram.org` | Bot API manzili; o'zingizning Bot API server'ingiz bo'lsa, uning URLini qo'ying |
-| `telegram.api.request-timeout` | `60s` | Javobni kutish vaqti; `getUpdates`'ga polling timeout'i qo'shiladi |
-| `telegram.polling.timeout` | `30` | Long polling timeout'i, soniyada |
+| `telegram.api.base-url` | `https://api.telegram.org` | Bot API manzili; o'zingizning Bot API serveringiz bo'lsa, uning URLini qo'ying |
+| `telegram.api.request-timeout` | `60s` | Javobni kutish vaqti; `getUpdates`ga polling timeouti qo'shiladi |
+| `telegram.polling.timeout` | `30` | Long polling timeouti, soniyada |
 | `telegram.polling.limit` | `100` | Bitta polldagi eng ko'p update soni |
 | `telegram.polling.backoff` | `1000` | Xatodan keyingi kutish, ms |
 | `telegram.polling.concurrency` | `32` | Bitta batchda parallel qayta ishlanadigan chatlar soni |
@@ -170,9 +170,9 @@ Barcha sozlamalar `telegram` prefiksi ostida. To'liq ro'yxat: [docs/uz/configura
 
 ## 🇺🇸 English
 
-A Java Spring Boot framework for building Telegram bots, inspired by Python's [aiogram](https://github.com/aiogram/aiogram).
+Jiogram is a Java Spring Boot framework for building Telegram bots. I took the inspiration from Python's [aiogram](https://github.com/aiogram/aiogram).
 
-Jiogram brings the ergonomic, annotation-driven handler model of aiogram to the Java/Spring ecosystem with full reactive support via Project Reactor.
+I adapted aiogram's convenient, annotation-driven handler model to Java/Spring; it runs fully on Project Reactor.
 
 > **This branch (`main`) targets Spring Boot 4.0.x.**
 > For Spring Boot 3.5.x see the [`sb3.x` branch](https://github.com/jtscorp/jiogram/tree/sb3.x).
@@ -234,23 +234,23 @@ That's it. Run your Spring Boot app and the bot starts polling for updates autom
 
 ### Features
 
-- **Annotation-driven handlers** -- `@OnMessage`, `@OnCallbackQuery`, `@OnInlineQuery`, `@Command`, `@StateFilter`
-- **Programmatic handler API** -- `router.onMessage().filter(Filters.command("start")).handle(...)`
-- **Hierarchical routing** -- compose routers with `router.includeRouter(childRouter)`
-- **Built-in filters** -- `Filters.command()`, `Filters.text()`, `Filters.regex()`, `Filters.callbackData()`, `Filters.state()`
-- **Composable filters** -- `.and()`, `.or()`, `.negate()` on any filter
-- **Middleware pipeline** -- intercept and transform updates before they reach handlers
-- **Finite State Machine (FSM)** -- enum states, generated `@StateFilter` constants, and `FSMContext` for multi-step conversations
-- **Pluggable FSM storage** -- in-memory (default) or Redis for distributed deployments
-- **Reactive throughout** -- built on Project Reactor (`Mono`/`Flux`); annotated handlers run on virtual threads, so they may block
-- **Auto-return-value handling** -- return `SendMessage` from a handler and it gets executed automatically
-- **Request builders** -- `SendMessage.answer(message, text)` / `reply(...)` answer into the right chat and forum topic; `of(...)` and `withX(...)` instead of long constructors
-- **File uploads** -- `InputFile.fromPath(...)` / `fromBytes(...)` anywhere in a request, sent as multipart automatically
-- **Bot defaults** -- parse mode, link previews and content protection filled into every request, nested objects included
-- **Long-polling and webhook modes** -- switch with a single config property; polling processes chats in parallel and keeps each chat in order
-- **Graceful shutdown** -- a running batch finishes and is confirmed to Telegram before the app stops
-- **Forward compatible** -- unknown enum values and union variants from newer Bot API versions do not break parsing
-- **Spring Boot auto-configuration** -- just add the starter dependency and a token
+- **Annotation-driven handlers:** `@OnMessage`, `@OnCallbackQuery`, `@OnInlineQuery`, `@Command`, `@StateFilter`.
+- **Programmatic handler API:** `router.onMessage().filter(Filters.command("start")).handle(...)`.
+- **Hierarchical routing:** compose routers with `router.includeRouter(childRouter)`.
+- **Built-in filters:** `Filters.command()`, `Filters.text()`, `Filters.regex()`, `Filters.callbackData()`, `Filters.state()`.
+- **Composable filters:** `.and()`, `.or()`, `.negate()` on any filter.
+- **Middleware pipeline:** intercept and transform updates before they reach handlers.
+- **Finite State Machine (FSM):** enum states, generated `@StateFilter` constants, and `FSMContext` for multi-step conversations.
+- **Pluggable FSM storage:** in-memory (default) or Redis for distributed deployments.
+- **Reactive throughout:** built on Project Reactor (`Mono`/`Flux`); annotated handlers run on virtual threads, so they may block.
+- **Auto-return-value handling:** return `SendMessage` from a handler and it gets executed automatically.
+- **Request builders:** `SendMessage.answer(message, text)` / `reply(...)` answer into the right chat and forum topic; `of(...)` and `withX(...)` instead of long constructors.
+- **File uploads:** `InputFile.fromPath(...)` / `fromBytes(...)` anywhere in a request, sent as multipart automatically.
+- **Bot defaults:** parse mode, link previews and content protection filled into every request, nested objects included.
+- **Long-polling and webhook modes:** switch with a single config property; polling processes chats in parallel and keeps each chat in order.
+- **Graceful shutdown:** a running batch finishes and is confirmed to Telegram before the app stops.
+- **Forward compatible:** unknown enum values and union variants from newer Bot API versions do not break parsing.
+- **Spring Boot auto-configuration:** just add the starter dependency and a token.
 
 ### Module Structure
 
@@ -301,7 +301,6 @@ All properties live under the `telegram` prefix. See [docs/configuration.md](doc
 - [Getting Started](docs/getting-started.md)
 - [Core Concepts](docs/core-concepts.md)
 - [Configuration Reference](docs/configuration.md)
-- [Migrating from 0.1.x](docs/migration-from-0.1.x.md)
 
 ### Examples
 

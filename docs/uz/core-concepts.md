@@ -4,7 +4,7 @@
 
 ## Bot
 
-`Bot` class Telegram bot token'i va API chaqiruvlari uchun `TelegramSession`'ni o'z ichiga oladi.
+`Bot` class Telegram bot tokeni va API chaqiruvlari uchun `TelegramSession`ni o'z ichiga oladi.
 
 ```java
 import io.jiogram.bot.Bot;
@@ -19,24 +19,24 @@ public Mono<Void> greet(Message message, Bot bot) {
 
 ### Xabarga javob berish
 
-Chat'ga biror narsa yuboradigan har bir method'da (`SendMessage`, `SendPhoto`, `SendMediaGroup`,
+Chatga biror narsa yuboradigan har bir methodda (`SendMessage`, `SendPhoto`, `SendMediaGroup`,
 `SendPoll`, `CopyMessage`, `SendChatAction`, ...) ikkita factory bor. Ular javob qayerga borishini
-kelgan xabarning o'zidan aniqlaydi, xuddi aiogram'dagi `message.answer()` va `message.reply()` kabi:
+kelgan xabarning o'zidan aniqlaydi, xuddi aiogramdagi `message.answer()` va `message.reply()` kabi:
 
 ```java
 SendMessage.answer(message, "Hi");       // to the message's chat
 SendPhoto.reply(message, photo);         // the same, as a reply to the message
 ```
 
-Ular chat'ni, forum topic'ni (faqat xabar topic ichida bo'lsa), business connection'ni va direct
-messages topic'ni o'zi to'ldiradi. Buning o'rniga `SendMessage.of(ChatId.of(chatId), text)`
-ishlatilsa, forum guruhidagi javob General topic'ga tushadi.
+Ular chatni, forum topicni (faqat xabar topic ichida bo'lsa), business connectionni va direct
+messages topicni o'zi to'ldiradi. Buning o'rniga `SendMessage.of(ChatId.of(chatId), text)`
+ishlatilsa, forum guruhidagi javob General topicga tushadi.
 
-### Request'larni tuzish
+### Requestlarni tuzish
 
-Method'lar va type'lar record'lar bo'lib, ularning canonical constructor'i Bot API'ning barcha
-field'larini qabul qiladi. Optional field'lar uchun qisqaroq yo'llar bor: `of(...)` faqat majburiy
-qiymatlarni oladi, har bir record'da esa har bir field uchun `withX(...)` bor. U shu qiymat
+Methodlar va typelar recordlar bo'lib, ularning canonical constructori Bot APIning barcha
+fieldlarini qabul qiladi. Optional fieldlar uchun qisqaroq yo'llar bor: `of(...)` faqat majburiy
+qiymatlarni oladi, har bir recordda esa har bir field uchun `withX(...)` bor. U shu qiymat
 o'rnatilgan nusxani qaytaradi.
 
 ```java
@@ -51,10 +51,10 @@ bot.execute(SendDocument.answer(message, InputFileOrString.of(InputFile.fromPath
 
 `InputFile.fromPath(...)` va `InputFile.fromBytes(name, bytes)` ilovaning o'zidan fayl upload
 qiladi. Ularni Bot API fayl qabul qiladigan istalgan joyda, jumladan media group ichida ham
-ishlatish mumkin. Bunda request `multipart/form-data` sifatida yuboriladi. Union subtype'lar
-o'zining `type`'ini o'zi to'ldiradi: `InputMediaPhoto.of(media)` allaqachon photo hisoblanadi.
+ishlatish mumkin. Bunda request `multipart/form-data` sifatida yuboriladi. Union subtypelar
+o'zining `type`ini o'zi to'ldiradi: `InputMediaPhoto.of(media)` allaqachon photo hisoblanadi.
 
-Spring Boot auto-configuration bilan `Bot` bean'i `telegram.token` property'sidan yaratiladi. Uni istalgan joyga inject qilish ham mumkin:
+Spring Boot auto-configuration bilan `Bot` beani `telegram.token` propertysidan yaratiladi. Uni istalgan joyga inject qilish ham mumkin:
 
 ```java
 @Service
@@ -83,16 +83,16 @@ telegram:
     link-preview: true
 ```
 
-Ular request'dagi siz bo'sh qoldirgan har bir field'ga qo'yiladi, ichma-ich field'larga ham
-(masalan, media group caption'lari yoki inline query natijalari). O'zingiz bergan field hech qachon
-o'zgartirilmaydi, entity'lari bilan kelgan text'ga esa default parse mode qo'yilmaydi. Bu
+Ular requestdagi siz bo'sh qoldirgan har bir fieldga qo'yiladi, ichma-ich fieldlarga ham
+(masalan, media group captionlari yoki inline query natijalari). O'zingiz bergan field hech qachon
+o'zgartirilmaydi, entitylari bilan kelgan textga esa default parse mode qo'yilmaydi. Bu
 qiymatlarni `bot.defaults()` orqali olish mumkin.
 
 ---
 
 ## Router
 
-`Router` event'larni ierarxik tarzda yo'naltiradi. `Dispatcher` — bu root vazifasini bajaradigan va middleware qo'llab-quvvatlashini qo'shadigan maxsus Router.
+`Router` eventlarni ierarxik tarzda yo'naltiradi. `Dispatcher` — bu root vazifasini bajaradigan va middleware qo'llab-quvvatlashini qo'shadigan maxsus Router.
 
 ### Ierarxik routing
 
@@ -106,11 +106,11 @@ dispatcher.includeRouter(adminRouter);
 dispatcher.includeRouter(userRouter);
 ```
 
-Event'lar depth-first tarqaladi: avval dispatcher'ning o'z handler'lari tekshiriladi. Ularning hech biri mos kelmasa, sub-router'lar ro'yxatdan o'tkazilgan tartibda sinab ko'riladi.
+Eventlar depth-first tarqaladi: avval dispatcherning o'z handlerlari tekshiriladi. Ularning hech biri mos kelmasa, sub-routerlar ro'yxatdan o'tkazilgan tartibda sinab ko'riladi.
 
-### Annotation'lar bilan
+### Annotationlar bilan
 
-`@TelegramController` ishlatilganda handler'lar root `Dispatcher`'da ro'yxatdan o'tadi (u ham `Router`). Handler method'lar har bir class'da yozilgan tartibda sinab ko'riladi. Bir nechta controller class kerak bo'lsa, ularning hammasi bitta dispatcher'da ro'yxatdan o'tadi:
+`@TelegramController` ishlatilganda handlerlar root `Dispatcher`da ro'yxatdan o'tadi (u ham `Router`). Handler methodlar har bir classda yozilgan tartibda sinab ko'riladi. Bir nechta controller class kerak bo'lsa, ularning hammasi bitta dispatcherda ro'yxatdan o'tadi:
 
 ```java
 @TelegramController
@@ -130,11 +130,11 @@ public class UserHandlers {
 
 ---
 
-## Handler'lar
+## Handlerlar
 
-### Annotation asosidagi handler'lar
+### Annotation asosidagi handlerlar
 
-`@TelegramController` class ichidagi method'larga `@OnMessage`, `@OnCallbackQuery` yoki `@OnInlineQuery` qo'ying.
+`@TelegramController` class ichidagi methodlarga `@OnMessage`, `@OnCallbackQuery` yoki `@OnInlineQuery` qo'ying.
 
 ```java
 @TelegramController
@@ -171,15 +171,15 @@ public class MyHandlers {
 
 #### Method parametrlariga inject qilish
 
-Handler method'lar quyidagi parametr type'larini istalgan tartibda e'lon qilishi mumkin:
+Handler methodlar quyidagi parametr typelarini istalgan tartibda e'lon qilishi mumkin:
 
 | Type | Nima inject qilinadi |
 |---|---|
 | `Message` | Kelgan xabar (`@OnMessage` uchun) |
 | `CallbackQuery` | Callback query (`@OnCallbackQuery` uchun) |
 | `InlineQuery` | Inline query (`@OnInlineQuery` uchun) |
-| `Bot` | Bot instance'i |
-| `UpdateContext` | Shu update'ning context map'i |
+| `Bot` | Bot instancei |
+| `UpdateContext` | Shu updatening context mapi |
 
 #### Return qiymatini qayta ishlash
 
@@ -190,9 +190,9 @@ Handler method'lar quyidagi parametr type'larini istalgan tartibda e'lon qilishi
 | `Mono<Void>` | To'g'ridan-to'g'ri subscribe qilinadi |
 | `void` yoki `null` | Hech narsa qilinmaydi (no-op) |
 
-### Programmatic handler'lar
+### Programmatic handlerlar
 
-Kodda e'lon qilinadigan handler'lar uchun `Router`'dagi fluent builder API'dan foydalaning:
+Kodda e'lon qilinadigan handlerlar uchun `Router`dagi fluent builder APIdan foydalaning:
 
 ```java
 @Configuration
@@ -227,11 +227,11 @@ public class BotConfig {
 
 ---
 
-## Filter'lar
+## Filterlar
 
-Filter'lar handler berilgan event'ni qayta ishlashi kerakmi yoki yo'qligini hal qiladi. Ular `FilterResult.passed()` yoki `FilterResult.failed()` qaytaradi.
+Filterlar handler berilgan eventni qayta ishlashi kerakmi yoki yo'qligini hal qiladi. Ular `FilterResult.passed()` yoki `FilterResult.failed()` qaytaradi.
 
-### Tayyor filter'lar
+### Tayyor filterlar
 
 ```java
 // Match specific commands (without leading slash), in the text or a media caption
@@ -256,9 +256,9 @@ Filters.callbackDataPrefix("page_")
 Filters.state("FormState.WAITING_FOR_NAME")
 ```
 
-### Filter'larni birlashtirish
+### Filterlarni birlashtirish
 
-Filter'larda `.and()`, `.or()` va `.negate()` bor:
+Filterlarda `.and()`, `.or()` va `.negate()` bor:
 
 ```java
 // Match messages that are commands AND in a specific state
@@ -273,9 +273,9 @@ Filter<CallbackQuery> either = Filters.callbackData("yes")
 Filter<Message> notCommand = Filters.command().negate();
 ```
 
-### Custom filter'lar
+### Custom filterlar
 
-`Filter<E>` functional interface'ini implement qiling:
+`Filter<E>` functional interfaceini implement qiling:
 
 ```java
 Filter<Message> photoFilter = (message, context) -> {
@@ -286,7 +286,7 @@ Filter<Message> photoFilter = (message, context) -> {
 };
 ```
 
-Filter'lar `UpdateContext`'ga qo'shiladigan ma'lumot ham biriktirishi mumkin:
+Filterlar `UpdateContext`ga qo'shiladigan ma'lumot ham biriktirishi mumkin:
 
 ```java
 Filter<Message> extractEmail = (message, context) -> {
@@ -298,7 +298,7 @@ Filter<Message> extractEmail = (message, context) -> {
 };
 ```
 
-Custom filter'larni programmatic API bilan ishlating:
+Custom filterlarni programmatic API bilan ishlating:
 
 ```java
 router.onMessage()
@@ -309,9 +309,9 @@ router.onMessage()
     });
 ```
 
-### Annotation filter'lar
+### Annotation filterlar
 
-`@Command` va `@StateFilter` — `Filters.command()` va `Filters.state()` ustidan yozilgan annotation'lar:
+`@Command` va `@StateFilter` — `Filters.command()` va `Filters.state()` ustidan yozilgan annotationlar:
 
 ```java
 @OnMessage
@@ -320,7 +320,7 @@ router.onMessage()
 public SendMessage handler(Message message) { /* ... */ }
 ```
 
-Generate qilingan constant'lari bo'lmagan enum asosidagi FSM state'lar uchun `enumClass`'dan foydalaning, shunda enum type chaqiruv joyida ko'rinib turadi:
+Generate qilingan constantlari bo'lmagan enum asosidagi FSM statelar uchun `enumClass`dan foydalaning, shunda enum type chaqiruv joyida ko'rinib turadi:
 
 ```java
 @OnMessage
@@ -328,7 +328,7 @@ Generate qilingan constant'lari bo'lmagan enum asosidagi FSM state'lar uchun `en
 public SendMessage handler(Message message) { /* ... */ }
 ```
 
-`@OnCallbackQuery`'da tayyor `data` va `prefix` attribute'lari bor:
+`@OnCallbackQuery`da tayyor `data` va `prefix` attributelari bor:
 
 ```java
 @OnCallbackQuery(data = "confirm")      // same as Filters.callbackData("confirm")
@@ -339,7 +339,7 @@ public SendMessage handler(Message message) { /* ... */ }
 
 ## Middleware
 
-Middleware event'ni qayta ishlashning butun pipeline'ini o'rab oladi. Har bir middleware event'ni, context'ni va keyingi middleware'ni (yoki oxirgi handler'ni) chaqirish uchun chain'ni oladi.
+Middleware eventni qayta ishlashning butun pipelineini o'rab oladi. Har bir middleware eventni, contextni va keyingi middlewareni (yoki oxirgi handlerni) chaqirish uchun chainni oladi.
 
 ### Custom middleware yozish
 
@@ -364,7 +364,7 @@ public class LoggingMiddleware implements Middleware {
 }
 ```
 
-### Middleware'ni ro'yxatdan o'tkazish
+### Middlewareni ro'yxatdan o'tkazish
 
 ```java
 @Bean
@@ -376,14 +376,14 @@ public Dispatcher dispatcher() {
 }
 ```
 
-Middleware'lar ro'yxatdan o'tkazilgan tartibda bajariladi. Tayyor `ErrorMiddleware` exception'larni ushlab, log'ga yozadi, shunda bitta update'dagi xato polling loop'ni to'xtatib qo'ymaydi.
+Middlewarelar ro'yxatdan o'tkazilgan tartibda bajariladi. Tayyor `ErrorMiddleware` exceptionlarni ushlab, logga yozadi, shunda bitta updatedagi xato polling loopni to'xtatib qo'ymaydi.
 
-### Tayyor middleware'lar
+### Tayyor middlewarelar
 
 | Middleware | Tavsif |
 |---|---|
-| `ErrorMiddleware` | Handler exception'larini ushlaydi va log'ga yozadi (default qo'shilgan) |
-| `FSMMiddleware` | FSM state'ni aniqlaydi va `FSMContext`'ni `UpdateContext`'ga inject qiladi (FSM yoqilganda qo'shiladi) |
+| `ErrorMiddleware` | Handler exceptionlarini ushlaydi va logga yozadi (default qo'shilgan) |
+| `FSMMiddleware` | FSM stateni aniqlaydi va `FSMContext`ni `UpdateContext`ga inject qiladi (FSM yoqilganda qo'shiladi) |
 
 ---
 
@@ -391,7 +391,7 @@ Middleware'lar ro'yxatdan o'tkazilgan tartibda bajariladi. Tayyor `ErrorMiddlewa
 
 FSM bilan bir necha qadamli suhbatlar qurish mumkin: bot har bir user qaysi qadamda turganini eslab qoladi.
 
-### 1. State'larni e'lon qilish
+### 1. Statelarni e'lon qilish
 
 Enum yarating va unga `@FSMStates` qo'ying:
 
@@ -407,10 +407,10 @@ public enum FormState {
 ```
 
 Har bir constant `"FormState.WAITING_FOR_NAME"` kabi state nomi sifatida saqlanadi va solishtiriladi.
-`@FSMStates` annotation'larda ishlatish uchun `FormStateStates` constant'larini ham generate qiladi.
+`@FSMStates` annotationlarda ishlatish uchun `FormStateStates` constantlarini ham generate qiladi.
 
-Processor'ni Gradle'da yoqing. U dependency'larsiz alohida artifact (`@FSMStates`
-annotation'ining o'zi `jiogram-fsm` bilan keladi):
+Processorni Gradleda yoqing. U dependencylarsiz alohida artifact (`@FSMStates`
+annotationining o'zi `jiogram-fsm` bilan keladi):
 
 ```groovy
 dependencies {
@@ -418,7 +418,7 @@ dependencies {
 }
 ```
 
-### 2. Handler'larda @StateFilter ishlatish
+### 2. Handlerlarda @StateFilter ishlatish
 
 ```java
 @TelegramController
@@ -483,7 +483,7 @@ public class RegistrationBot {
 
 ### 3. FSMContext API
 
-`FSMContext`'ni `FSMMiddleware` `UpdateContext`'ga `"state"` key'i bilan inject qiladi:
+`FSMContext`ni `FSMMiddleware` `UpdateContext`ga `"state"` keyi bilan inject qiladi:
 
 ```java
 FSMContext fsm = context.get("state", FSMContext.class);
@@ -491,14 +491,14 @@ FSMContext fsm = context.get("state", FSMContext.class);
 
 | Method | Tavsif |
 |---|---|
-| `fsm.setState(Enum<?> state)` | Joriy state'ni enum constant orqali o'rnatadi |
-| `fsm.setState(String state)` | Joriy state'ni oddiy string orqali o'rnatadi |
+| `fsm.setState(Enum<?> state)` | Joriy stateni enum constant orqali o'rnatadi |
+| `fsm.setState(String state)` | Joriy stateni oddiy string orqali o'rnatadi |
 | `fsm.getState()` | Joriy state nomini `Mono<String>` sifatida qaytaradi |
 | `fsm.updateData(String field, Object value)` | Saqlangan ma'lumotga key-value juftligini qo'shadi |
 | `fsm.setData(Map<String, Object> data)` | Saqlangan ma'lumotning hammasini almashtiradi |
 | `fsm.getData()` | Saqlangan ma'lumotning hammasini `Mono<Map<String, Object>>` sifatida qaytaradi |
 | `fsm.getValue(String field, Class<T> type)` | Key bo'yicha bitta qiymatni qaytaradi |
-| `fsm.clear()` | State'ni ham, ma'lumotni ham tozalaydi |
+| `fsm.clear()` | Stateni ham, ma'lumotni ham tozalaydi |
 
 ### 4. FSM strategiyasi
 
@@ -506,18 +506,18 @@ FSMContext fsm = context.get("state", FSMContext.class);
 
 | Strategiya | Ajratish |
 |---|---|
-| `USER_IN_CHAT` (default) | Har bir user'ning har bir chat'da o'z state'i bor |
-| `CHAT` | Chat'dagi barcha user'lar bitta state'ni bo'lishadi |
-| `USER` | User'ning barcha chat'larda bitta state'i bor |
-| `USER_IN_TOPIC` | Har bir user'ning har bir forum topic'da o'z state'i bor |
-| `CHAT_TOPIC` | Forum topic'dagi barcha user'lar bitta state'ni bo'lishadi |
+| `USER_IN_CHAT` (default) | Har bir userning har bir chatda o'z statei bor |
+| `CHAT` | Chatdagi barcha userlar bitta stateni bo'lishadi |
+| `USER` | Userning barcha chatlarda bitta statei bor |
+| `USER_IN_TOPIC` | Har bir userning har bir forum topicda o'z statei bor |
+| `CHAT_TOPIC` | Forum topicdagi barcha userlar bitta stateni bo'lishadi |
 
-Forum topic'lardan tashqarida topic strategiyalari `USER_IN_CHAT` / `CHAT` kabi ishlaydi. User'ga
-bog'langan strategiyalar user'i yo'q update'lar uchun (channel post'lar, reaction count'lar,
-boost'lar) FSM'ni o'tkazib yuboradi: bunda `context.get("state")` `null` bo'ladi. Business
-connection orqali kelgan update'lar har bir connection uchun alohida state oladi.
+Forum topiclardan tashqarida topic strategiyalari `USER_IN_CHAT` / `CHAT` kabi ishlaydi. Userga
+bog'langan strategiyalar useri yo'q updatelar uchun (channel postlar, reaction countlar,
+boostlar) FSMni o'tkazib yuboradi: bunda `context.get("state")` `null` bo'ladi. Business
+connection orqali kelgan updatelar har bir connection uchun alohida state oladi.
 
-`application.yml`'da sozlang:
+`application.yml`da sozlang:
 
 ```yaml
 telegram:
@@ -525,18 +525,18 @@ telegram:
     strategy: USER_IN_CHAT
 ```
 
-### 5. Storage backend'lar
+### 5. Storage backendlar
 
 | Backend | Config | Tavsif |
 |---|---|---|
-| Memory | `telegram.fsm.storage: memory` | Xotiradagi `ConcurrentHashMap`. Default. Restart'da yo'qoladi. |
-| Redis | `telegram.fsm.storage: redis` | Spring Data Redis orqali distributed storage. Classpath'da `spring-boot-starter-data-redis` bo'lishi kerak. |
+| Memory | `telegram.fsm.storage: memory` | Xotiradagi `ConcurrentHashMap`. Default. Restartda yo'qoladi. |
+| Redis | `telegram.fsm.storage: redis` | Spring Data Redis orqali distributed storage. Classpathda `spring-boot-starter-data-redis` bo'lishi kerak. |
 
 ---
 
 ## Return qiymatlar
 
-Jiogram handler method'larning return qiymatini avtomatik qayta ishlaydi:
+Jiogram handler methodlarning return qiymatini avtomatik qayta ishlaydi:
 
 ```java
 // Return a TelegramMethod -> auto-executed via bot.execute()

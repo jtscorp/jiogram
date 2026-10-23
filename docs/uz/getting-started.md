@@ -2,13 +2,13 @@
 
 # Ishni boshlash
 
-Bu qo'llanmada Jiogram bilan birinchi Telegram bot'ingizni qadamma-qadam yaratamiz.
+Bu qo'llanmada Jiogram bilan birinchi Telegram botingizni qadamma-qadam yaratamiz.
 
 ## Talablar
 
 - Java 25 yoki undan yangi
 - Gradle 8.x yoki undan yangi
-- [@BotFather](https://t.me/BotFather)'dan olingan bot token
+- [@BotFather](https://t.me/BotFather)dan olingan bot token
 
 ## 1. Spring Boot loyihasini yaratish
 
@@ -39,14 +39,14 @@ dependencies {
 }
 ```
 
-> **Eslatma:** Agar Jiogram'ni source'dan build qilayotgan bo'lsangiz, o'rniga project dependency ishlating:
+> **Eslatma:** Agar Jiogramni sourcedan build qilayotgan bo'lsangiz, o'rniga project dependency ishlating:
 > ```groovy
 > dependencies {
 >     implementation project(':jiogram-spring-boot-starter')
 > }
 > ```
 
-## 2. Bot token'ini sozlash
+## 2. Bot tokenini sozlash
 
 `src/main/resources/application.yml` faylini yarating:
 
@@ -55,9 +55,9 @@ telegram:
   token: ${BOT_TOKEN}
 ```
 
-Ishga tushirishdan oldin `BOT_TOKEN` environment variable'ini o'rnating yoki token'ni to'g'ridan-to'g'ri yozib qo'ying (production uchun tavsiya etilmaydi).
+Ishga tushirishdan oldin `BOT_TOKEN` environment variableini o'rnating yoki tokenni to'g'ridan-to'g'ri yozib qo'ying (production uchun tavsiya etilmaydi).
 
-## 3. Ilovaning entry point'ini yozish
+## 3. Ilovaning entry pointini yozish
 
 `src/main/java/uz/example/Application.java` faylini yarating:
 
@@ -76,7 +76,7 @@ public class Application {
 }
 ```
 
-## 4. Birinchi bot handler'ini yozish
+## 4. Birinchi bot handlerini yozish
 
 `src/main/java/uz/example/MyBot.java` faylini yarating:
 
@@ -129,11 +129,11 @@ public class MyBot {
 
 ### Bu qanday ishlaydi
 
-- `@TelegramController` class'ni Spring component sifatida belgilaydi, Jiogram undan handler method'larni qidiradi.
-- `@OnMessage` method'ni kiruvchi xabarlar uchun handler sifatida belgilaydi.
-- `@Command("start")` filter: handler faqat `/start` command'iga ishlaydi.
+- `@TelegramController` classni Spring component sifatida belgilaydi, Jiogram undan handler methodlarni qidiradi.
+- `@OnMessage` methodni kiruvchi xabarlar uchun handler sifatida belgilaydi.
+- `@Command("start")` filter: handler faqat `/start` commandiga ishlaydi.
 - Method parametr sifatida `Message`, `Bot` va `UpdateContext` qabul qila oladi -- ular avtomatik inject qilinadi.
-- `SendMessage` (yoki istalgan `TelegramMethod`) qaytarilsa, u avtomatik execute qilinadi. `bot.execute(...)`'ni o'zingiz chaqirmoqchi bo'lsangiz, `Mono<Void>` yoki `void` qaytarishingiz ham mumkin.
+- `SendMessage` (yoki istalgan `TelegramMethod`) qaytarilsa, u avtomatik execute qilinadi. `bot.execute(...)`ni o'zingiz chaqirmoqchi bo'lsangiz, `Mono<Void>` yoki `void` qaytarishingiz ham mumkin.
 
 ## 5. Ishga tushirish va tekshirish
 
@@ -141,10 +141,10 @@ public class MyBot {
 BOT_TOKEN=123456:ABC-DEF ./gradlew bootRun
 ```
 
-Telegram'da bot'ingizni oching va `/start` yuboring. Javobga "Hello! I am your first Jiogram bot." kelishi kerak.
+Telegramda botingizni oching va `/start` yuboring. Javobga "Hello! I am your first Jiogram bot." kelishi kerak.
 
 ## Keyingi qadamlar
 
 - Router, filter, middleware va FSM haqida bilish uchun [Asosiy tushunchalar](core-concepts.md)ni o'qing.
-- Barcha mavjud property'lar uchun [Konfiguratsiya ma'lumotnomasi](configuration.md)ga qarang.
-- To'liq ishlaydigan bot'lar uchun [examples](../../examples/)ni ko'rib chiqing.
+- Barcha mavjud propertylar uchun [Konfiguratsiya ma'lumotnomasi](configuration.md)ga qarang.
+- To'liq ishlaydigan botlar uchun [examples](../../examples/)ni ko'rib chiqing.
