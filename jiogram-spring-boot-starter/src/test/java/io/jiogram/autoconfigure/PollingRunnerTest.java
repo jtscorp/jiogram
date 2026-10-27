@@ -193,6 +193,23 @@ class PollingRunnerTest {
         assertThat(handled).containsExactly("OK");
     }
 
+    @Test
+    void updateMissingTheFieldsOfItsSequenceKey_doesNotStopPolling() {
+        // A callback query without "from" and "message": sequenceKey cannot read a user from it.
+        Update callbackWithoutUser = update(
+            "{\"update_id\": 1, \"callback_query\": {\"id\": \"q\", \"chat_instance\": \"c\"}}");
+        Dispatcher dispatcher = new Dispatcher();
+        dispatcher.onMessage().handle((message, context) -> Mono.fromRunnable(() -> handled.add(message.text())));
+
+        runner = new PollingRunner(botServing(List.of(callbackWithoutUser, message(2, 200, "OK"))),
+            dispatcher, properties(32, Duration.ofSeconds(10)));
+        runner.start();
+
+        await().atMost(Duration.ofSeconds(5)).until(() -> requests.size() >= 2);
+        assertThat(requests.get(1).offset()).isEqualTo(3L);
+        assertThat(handled).containsExactly("OK");
+    }
+
     private Bot botServing(List<Update> firstBatch) {
         return botAnswering(List.of(Mono.just(firstBatch)));
     }
