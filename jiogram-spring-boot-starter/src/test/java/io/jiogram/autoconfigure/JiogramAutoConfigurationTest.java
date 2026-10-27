@@ -10,6 +10,7 @@ import io.jiogram.fsm.storage.MemoryStateStorage;
 import io.jiogram.fsm.storage.StateStorage;
 import io.jiogram.handler.HandlerRegistry;
 import io.jiogram.methods.GetMe;
+import io.jiogram.methods.GetUpdates;
 import io.jiogram.methods.SetWebhook;
 import io.jiogram.session.TelegramSession;
 import io.jiogram.types.Message;
@@ -27,6 +28,7 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.boot.test.context.runner.ReactiveWebApplicationContextRunner;
 import org.springframework.boot.test.system.CapturedOutput;
 import org.springframework.boot.test.system.OutputCaptureExtension;
+import org.springframework.core.io.buffer.DataBufferLimitException;
 import org.springframework.web.reactive.function.client.ClientRequestObservationContext;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -34,9 +36,11 @@ import reactor.netty.DisposableServer;
 import reactor.netty.http.server.HttpServer;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class JiogramAutoConfigurationTest {
 
@@ -292,9 +296,42 @@ class JiogramAutoConfigurationTest {
             .run(context -> assertThat(context).hasSingleBean(WebhookRegistrar.class));
     }
 
+    /** A getUpdates answer of about 300 KB, more than WebClient's default limit of 256 KB. */
+    private static final String LARGE_RESPONSE = "{\"ok\": true, \"result\": []" + " ".repeat(300_000) + "}";
+
     private final ApplicationContextRunner sessionRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(JiogramAutoConfiguration.class))
         .withPropertyValues("telegram.token=123456789:ABCDEFghijklmnop");
+
+    @Test
+    void responseLargerThanWebClientsDefaultLimit_isRead() {
+        DisposableServer server = botApiRespondingWith(LARGE_RESPONSE);
+        try {
+            sessionRunner
+                .withPropertyValues("telegram.api.base-url=http://localhost:" + server.port())
+                .run(context -> assertThat(context.getBean(Bot.class)
+                    .execute(new GetUpdates(null, 100L, 0L, null)).block(Duration.ofSeconds(10)))
+                    .isEqualTo(List.of()));
+        } finally {
+            server.disposeNow();
+        }
+    }
+
+    @Test
+    void responseLargerThanMaxResponseSize_fails() {
+        DisposableServer server = botApiRespondingWith(LARGE_RESPONSE);
+        try {
+            sessionRunner
+                .withPropertyValues(
+                    "telegram.api.base-url=http://localhost:" + server.port(),
+                    "telegram.api.max-response-size=100KB")
+                .run(context -> assertThatThrownBy(() -> context.getBean(Bot.class)
+                    .execute(new GetUpdates(null, 100L, 0L, null)).block(Duration.ofSeconds(10)))
+                    .isInstanceOf(DataBufferLimitException.class));
+        } finally {
+            server.disposeNow();
+        }
+    }
 
     @Test
     void observedClientRequests_doNotContainTheToken() {
@@ -332,6 +369,13 @@ class JiogramAutoConfigurationTest {
         } finally {
             server.disposeNow();
         }
+    }
+
+    @Test
+    void apiPropertiesCreatedWithThe020Constructor_getTheDefaultMaxResponseSize() {
+        var api = new JiogramProperties.ApiProperties("https://api.telegram.org", Duration.ofSeconds(60));
+
+        assertThat(api.maxResponseSize()).isEqualTo(JiogramProperties.ApiProperties.DEFAULT_MAX_RESPONSE_SIZE);
     }
 
     private static DisposableServer botApiRespondingWith(String body) {
