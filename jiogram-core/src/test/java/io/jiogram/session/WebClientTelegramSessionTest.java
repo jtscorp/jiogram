@@ -28,6 +28,9 @@ import reactor.netty.DisposableServer;
 import reactor.netty.http.server.HttpServer;
 import reactor.test.StepVerifier;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.net.ServerSocket;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -37,6 +40,7 @@ import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -181,6 +185,25 @@ class WebClientTelegramSessionTest {
                 .filter(keyValue -> keyValue.getKey().equals("uri"))
                 .findFirst().orElseThrow().getValue();
         assertEquals("/bot{token}/getMe", uriTag);
+    }
+
+    @Test
+    void transportFailure_doesNotPutTheTokenIntoTheStackTrace() throws Exception {
+        int closedPort;
+        try (ServerSocket socket = new ServerSocket(0)) {
+            closedPort = socket.getLocalPort();
+        }
+        var session = new WebClientTelegramSession(WebClient.create(), "http://localhost:" + closedPort);
+
+        StepVerifier.create(session.makeRequest(TOKEN, new GetMe()))
+                .expectErrorSatisfies(error -> {
+                    TelegramTransportException transport = assertInstanceOf(TelegramTransportException.class, error);
+                    assertEquals("getMe", transport.apiMethod());
+                    StringWriter trace = new StringWriter();
+                    error.printStackTrace(new PrintWriter(trace));
+                    assertFalse(trace.toString().contains(TOKEN), trace.toString());
+                })
+                .verify(Duration.ofSeconds(10));
     }
 
     @Test
