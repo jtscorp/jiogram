@@ -14,9 +14,14 @@ import io.jiogram.types.InputMediaPhoto;
 import io.jiogram.types.Message;
 import io.jiogram.types.Update;
 import io.jiogram.types.User;
+import io.micrometer.observation.Observation;
+import io.micrometer.observation.ObservationHandler;
+import io.micrometer.observation.ObservationRegistry;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.springframework.web.reactive.function.client.ClientRequestObservationContext;
+import org.springframework.web.reactive.function.client.DefaultClientRequestObservationConvention;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import reactor.netty.DisposableServer;
@@ -149,6 +154,33 @@ class WebClientTelegramSessionTest {
                 .block(Duration.ofSeconds(10));
 
         assertEquals(List.of(), updates);
+    }
+
+    @Test
+    void metricsUriTag_doesNotContainTheToken() {
+        AtomicReference<ClientRequestObservationContext> observed = new AtomicReference<>();
+        ObservationRegistry registry = ObservationRegistry.create();
+        registry.observationConfig().observationHandler(new ObservationHandler<>() {
+            @Override
+            public boolean supportsContext(Observation.Context context) {
+                return context instanceof ClientRequestObservationContext;
+            }
+
+            @Override
+            public void onStop(Observation.Context context) {
+                observed.set((ClientRequestObservationContext) context);
+            }
+        });
+        String baseUrl = serverRespondingWith("{\"id\": 123, \"is_bot\": true, \"first_name\": \"Bot\"}", Duration.ZERO);
+        var session = new WebClientTelegramSession(WebClient.builder().observationRegistry(registry).build(), baseUrl);
+
+        session.makeRequest(TOKEN, new GetMe()).block(Duration.ofSeconds(10));
+
+        String uriTag = new DefaultClientRequestObservationConvention()
+                .getLowCardinalityKeyValues(observed.get()).stream()
+                .filter(keyValue -> keyValue.getKey().equals("uri"))
+                .findFirst().orElseThrow().getValue();
+        assertEquals("/bot{token}/getMe", uriTag);
     }
 
     @Test
