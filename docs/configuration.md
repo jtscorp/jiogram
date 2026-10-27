@@ -21,6 +21,8 @@ telegram:
     base-url: https://api.telegram.org
     # How long to wait for a response; getUpdates adds its polling timeout (default: 60s)
     request-timeout: 60s
+    # Largest response that is read; a full getUpdates batch can exceed 256 KB (default: 16MB)
+    max-response-size: 16MB
 
   # Polling configuration (only used when mode=POLLING)
   polling:
@@ -47,10 +49,12 @@ telegram:
     # Local endpoint path (default: /bot/webhook)
     path: /bot/webhook
     # Secret token Telegram sends with every update; required unless `url` is set
-    # (then a random one is generated and registered via setWebhook)
+    # (then one derived from the bot token is registered via setWebhook)
     secret-token: "your-secret-token"
     # Maximum number of concurrent webhook connections (default: 40)
     max-connections: 40
+    # Largest request body that is read; bigger requests get 413 (default: 1MB)
+    max-body-size: 1MB
 
   # Default properties applied to all outgoing bot requests
   defaults:
@@ -102,6 +106,10 @@ prints full request URLs. Do not enable DEBUG for
 `org.springframework.web.reactive.function.client.ExchangeFunctions` or `reactor.netty.http.client`
 in production.
 
+HTTP client metrics and traces (`http.client.requests`) of the auto-configured session show the
+path as `/bot{token}/sendMessage`. A `TelegramSession` built by hand gets the same with
+`WebClient.builder().observationConvention(new TokenMaskingObservationConvention())`.
+
 ### telegram.mode
 
 Controls how the bot receives updates from Telegram.
@@ -123,6 +131,7 @@ Configures the Bot API server endpoint used for outgoing requests.
 |---|---|---|---|
 | `base-url` | `String` | `https://api.telegram.org` | Base URL of the Telegram Bot API server. Set to a local server URL such as `http://localhost:8081` for self-hosted Bot API deployments. |
 | `request-timeout` | `Duration` | `60s` | How long to wait for a response before the request fails with a `TimeoutException`. `getUpdates` gets its long-polling `timeout` on top. Raise it for large uploads on slow links. Applies to the auto-configured session only. |
+| `max-response-size` | `DataSize` | `16MB` | Largest response body that is read. WebClient's own default of 256 KB is too small for a full `getUpdates` batch after some downtime. Applies to the auto-configured session only. |
 
 ### telegram.polling
 
@@ -145,8 +154,9 @@ Only applies when `mode=WEBHOOK`.
 |---|---|---|---|
 | `url` | `String` | `null` | The public HTTPS URL Telegram will POST updates to. |
 | `path` | `String` | `/bot/webhook` | The local endpoint path that receives webhook POSTs. |
-| `secret-token` | `String` | `null` | Value Telegram must send in the `X-Telegram-Bot-Api-Secret-Token` header; requests without it are rejected with 401. If unset and `url` is set, a random token is generated and registered via `setWebhook`; if both are unset, startup fails. |
+| `secret-token` | `String` | `null` | Value Telegram must send in the `X-Telegram-Bot-Api-Secret-Token` header; requests without it are rejected with 401. If unset and `url` is set, a token derived from the bot token (an HMAC-SHA256 of it) is registered via `setWebhook`; it is the same on every instance, so several instances behind one URL all accept the requests. If both are unset, startup fails. |
 | `max-connections` | `int` | `40` | Max simultaneous connections Telegram will use to deliver updates. |
+| `max-body-size` | `DataSize` | `1MB` | Largest request body that is read. The secret token is checked before the body is read; a bigger body is rejected with 413. Works with both WebFlux and Spring MVC. |
 
 ### telegram.defaults
 
