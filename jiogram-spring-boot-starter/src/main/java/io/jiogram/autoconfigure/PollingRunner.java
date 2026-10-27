@@ -148,7 +148,7 @@ public class PollingRunner implements SmartLifecycle {
         // Plain grouping instead of Flux.groupBy, which can stall when groups outnumber concurrency.
         Map<Object, List<Update>> byChat = new LinkedHashMap<>();
         for (Update update : updates) {
-            byChat.computeIfAbsent(sequenceKey(update), key -> new ArrayList<>()).add(update);
+            byChat.computeIfAbsent(sequenceKeyOrOwn(update), key -> new ArrayList<>()).add(update);
         }
 
         return Flux.fromIterable(byChat.values())
@@ -167,6 +167,21 @@ public class PollingRunner implements SmartLifecycle {
                     update.updateId(), e.getMessage(), e);
                 return Mono.empty();
             });
+    }
+
+    /**
+     * The {@link #sequenceKey} of an update, or a key of its own when the update lacks a field
+     * the key is read from. An exception here would fail the whole batch, and polling would then
+     * fetch the same batch again and again.
+     */
+    private static Object sequenceKeyOrOwn(Update update) {
+        try {
+            return sequenceKey(update);
+        } catch (RuntimeException e) {
+            log.warn("Cannot tell which chat update {} belongs to, processing it on its own: {}",
+                update.updateId(), e.toString());
+            return "update:" + update.updateId();
+        }
     }
 
     /**
