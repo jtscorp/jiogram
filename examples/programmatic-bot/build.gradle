@@ -36,5 +36,5 @@ repositories {
 dependencies {
     // When building from the Jiogram source tree, use:
     // implementation project(':jiogram-spring-boot-starter')
-    implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-2-starter:0.2.1'
+    implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-2-starter:0.2.2-SNAPSHOT'
 }
