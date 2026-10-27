@@ -46,7 +46,10 @@ public class MiddlewareChain {
     public Mono<Void> next(Object event, UpdateContext context) {
         if (position < middlewares.size()) {
             Middleware middleware = middlewares.get(position);
-            return middleware.process(event, context, new MiddlewareChain(middlewares, finalHandler, position + 1));
+            MiddlewareChain rest = new MiddlewareChain(middlewares, finalHandler, position + 1);
+            // Deferred, so a middleware that throws instead of returning Mono.error still becomes
+            // an error signal, which the middlewares before it (e.g. ErrorMiddleware) can handle.
+            return Mono.defer(() -> middleware.process(event, context, rest));
         }
         return finalHandler;
     }
