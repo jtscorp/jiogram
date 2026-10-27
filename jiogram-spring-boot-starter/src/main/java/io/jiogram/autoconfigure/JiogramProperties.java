@@ -4,7 +4,9 @@ import io.jiogram.fsm.FSMStrategy;
 import io.jiogram.types.ParseMode;
 import io.jiogram.types.UpdateType;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.bind.ConstructorBinding;
 import org.springframework.boot.context.properties.bind.DefaultValue;
+import org.springframework.util.unit.DataSize;
 
 import java.time.Duration;
 import java.util.List;
@@ -103,14 +105,28 @@ public record JiogramProperties(
     /**
      * Telegram Bot API endpoint configuration.
      *
-     * @param baseUrl        base URL of the Bot API server
-     * @param requestTimeout how long to wait for a response to a request; {@code getUpdates}
-     *                       gets its long-polling timeout on top
+     * @param baseUrl         base URL of the Bot API server
+     * @param requestTimeout  how long to wait for a response to a request; {@code getUpdates}
+     *                        gets its long-polling timeout on top
+     * @param maxResponseSize largest response body that is read; a full {@code getUpdates} batch
+     *                        after downtime easily exceeds WebClient's default of 256 KB
      */
     public record ApiProperties(
         @DefaultValue("https://api.telegram.org") String baseUrl,
-        @DefaultValue("60s") Duration requestTimeout
-    ) {}
+        @DefaultValue("60s") Duration requestTimeout,
+        @DefaultValue("16MB") DataSize maxResponseSize
+    ) {
+        public static final DataSize DEFAULT_MAX_RESPONSE_SIZE = DataSize.ofMegabytes(16);
+
+        @ConstructorBinding
+        public ApiProperties {
+        }
+
+        /** The constructor of 0.2.0, kept for code that creates these properties itself. */
+        public ApiProperties(String baseUrl, Duration requestTimeout) {
+            this(baseUrl, requestTimeout, DEFAULT_MAX_RESPONSE_SIZE);
+        }
+    }
 
     /**
      * Default properties applied to all outgoing bot requests.

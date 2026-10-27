@@ -16,6 +16,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
+import org.springframework.util.unit.DataSize;
 import org.springframework.web.reactive.function.client.WebClient;
 
 /**
@@ -42,12 +43,17 @@ public class JiogramAutoConfiguration {
         // session uses its own NON_NULL-configured ObjectMapper internally.
         //
         // The token is part of every request URL, so the observation convention masks it in the
-        // metrics and traces of the client.
+        // metrics and traces of the client. The response size limit replaces the builder's codec
+        // limit: a full getUpdates batch does not fit into the default 256 KB.
         JiogramProperties.ApiProperties api = properties.api();
+        DataSize maxResponseSize = api != null
+            ? api.maxResponseSize()
+            : JiogramProperties.ApiProperties.DEFAULT_MAX_RESPONSE_SIZE;
         String observationName = environment.getProperty(
             "management.observations.http.client.requests.name", "http.client.requests");
         WebClient webClient = webClientBuilder.getIfAvailable(WebClient::builder)
             .observationConvention(new TokenMaskingObservationConvention(observationName))
+            .codecs(codecs -> codecs.defaultCodecs().maxInMemorySize(Math.toIntExact(maxResponseSize.toBytes())))
             .build();
         return new WebClientTelegramSession(webClient, WebClientTelegramSession.defaultObjectMapper(),
             api != null ? api.baseUrl() : null,
