@@ -13,7 +13,10 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplicat
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.security.SecureRandom;
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
+import java.security.GeneralSecurityException;
 import java.util.Base64;
 import java.util.Objects;
 
@@ -22,8 +25,8 @@ import java.util.Objects;
  * Active only when {@code telegram.mode=webhook}.
  * <p>
  * The webhook endpoint always requires Telegram's secret token header. If
- * {@code telegram.webhook.secret-token} is not set but {@code telegram.webhook.url} is, a random
- * token is generated and registered with {@code setWebhook}. Without either, startup fails:
+ * {@code telegram.webhook.secret-token} is not set but {@code telegram.webhook.url} is, a token is
+ * derived from the bot token and registered with {@code setWebhook}. Without either, startup fails:
  * an unauthenticated endpoint would accept forged updates from anyone.
  * <p>
  * The starter brings no web server; webhook mode needs one from the application (e.g.
@@ -35,6 +38,9 @@ import java.util.Objects;
 public class WebhookAutoConfiguration {
 
     private static final Logger log = LoggerFactory.getLogger(WebhookAutoConfiguration.class);
+
+    private static final String HMAC_ALGORITHM = "HmacSHA256";
+    private static final String SECRET_LABEL = "jiogram-webhook";
 
     /**
      * The secret token shared by the {@link WebhookController} (to verify requests) and the
@@ -87,8 +93,9 @@ public class WebhookAutoConfiguration {
                     + "is not set (the webhook is registered outside this application, so a generated "
                     + "token could not be passed to setWebhook)");
         }
-        log.info("telegram.webhook.secret-token is not set; generated a random one for this run");
-        return new WebhookSecretToken(generateToken());
+        log.info("telegram.webhook.secret-token is not set; using one derived from the bot token, "
+            + "the same on every instance of this bot");
+        return new WebhookSecretToken(deriveToken(properties.token()));
     }
 
     @Bean
@@ -117,11 +124,20 @@ public class WebhookAutoConfiguration {
     }
 
     /**
-     * 32 random bytes as URL-safe Base64: within Telegram's allowed alphabet (A-Z, a-z, 0-9, _ and -).
+     * HMAC-SHA256 of a fixed label keyed with the bot token, as URL-safe Base64 (within Telegram's
+     * alphabet: A-Z, a-z, 0-9, _ and -). Every instance of the bot derives the same token, so all
+     * of them accept the requests whichever instance called {@code setWebhook} last; a random
+     * token per instance made the others reject them with 401. It cannot be computed without the
+     * bot token.
      */
-    private static String generateToken() {
-        byte[] bytes = new byte[32];
-        new SecureRandom().nextBytes(bytes);
-        return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
+    static String deriveToken(String botToken) {
+        try {
+            Mac mac = Mac.getInstance(HMAC_ALGORITHM);
+            mac.init(new SecretKeySpec(botToken.getBytes(StandardCharsets.UTF_8), HMAC_ALGORITHM));
+            byte[] digest = mac.doFinal(SECRET_LABEL.getBytes(StandardCharsets.UTF_8));
+            return Base64.getUrlEncoder().withoutPadding().encodeToString(digest);
+        } catch (GeneralSecurityException e) {
+            throw new IllegalStateException(HMAC_ALGORITHM + " is not available", e);
+        }
     }
 }
