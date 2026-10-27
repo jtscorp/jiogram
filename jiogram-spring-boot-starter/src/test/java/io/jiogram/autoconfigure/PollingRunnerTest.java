@@ -13,12 +13,16 @@ import io.jiogram.types.TelegramMethod;
 import io.jiogram.types.Update;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.boot.test.system.CapturedOutput;
+import org.springframework.boot.test.system.OutputCaptureExtension;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
@@ -188,6 +192,28 @@ class PollingRunnerTest {
         await().atMost(Duration.ofSeconds(5)).until(() -> requests.size() >= 2);
         assertThat(requests.get(1).offset()).isEqualTo(3L);
         assertThat(handled).containsExactly("OK");
+    }
+
+    @Test
+    @ExtendWith(OutputCaptureExtension.class)
+    void backoff_restartsAfterASuccessfulPoll(CapturedOutput output) {
+        RuntimeException failure = new IllegalStateException("Telegram unreachable");
+        // Three failed polls, one successful (no updates), then one more failure.
+        Bot bot = botAnswering(List.of(Mono.error(failure), Mono.error(failure), Mono.error(failure),
+            Mono.just(List.of()), Mono.error(failure)));
+
+        runner = new PollingRunner(bot, new Dispatcher(), properties(32, Duration.ofSeconds(10)));
+        runner.start();
+
+        await().atMost(Duration.ofSeconds(5)).until(() -> requests.size() >= 6);
+        // Counted from 1 again after the successful poll, and so is the backoff delay.
+        assertThat(attempts(output.getOut())).containsExactly(1, 2, 3, 1);
+    }
+
+    private static List<Integer> attempts(String log) {
+        return Pattern.compile("Polling error, retrying \\(attempt (\\d+)\\)").matcher(log).results()
+            .map(match -> Integer.parseInt(match.group(1)))
+            .toList();
     }
 
     private Bot botServing(List<Update> firstBatch) {

@@ -98,7 +98,10 @@ public class PollingRunner implements SmartLifecycle {
                         allowedUpdates
                     );
                     return bot.execute(request)
-                        .flatMapMany(updates -> processUpdates(updates, concurrency));
+                        .flatMapMany(updates -> processUpdates(updates, concurrency))
+                        // One element per finished poll: transientErrors below restarts the
+                        // backoff only when an element arrives, and the batch itself has none.
+                        .then(Mono.just(true));
                 })
                 .repeat(() -> running.get())
                 .retryWhen(Retry.backoff(Long.MAX_VALUE, Duration.ofMillis(backoff))
@@ -108,7 +111,7 @@ public class PollingRunner implements SmartLifecycle {
                     .transientErrors(true)
                     .doBeforeRetry(signal ->
                         log.warn("Polling error, retrying (attempt {}): {}",
-                            signal.totalRetries() + 1, signal.failure().getMessage())
+                            signal.totalRetriesInARow() + 1, signal.failure().getMessage())
                     )
                     .filter(throwable -> running.get()))
                 .doFinally(signal -> terminated.tryEmitEmpty())
