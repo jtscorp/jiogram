@@ -44,6 +44,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class WebClientTelegramSessionTest {
 
     private static final String TOKEN = "123:abc";
+    private static final String URI_TEMPLATE_ATTRIBUTE = WebClient.class.getName() + ".uriTemplate";
     private static final String MESSAGE_JSON = "{\"message_id\": 1, \"chat\": {\"id\": 42, \"type\": \"private\"}, \"date\": 1775538971}";
 
     private final AtomicReference<String> contentType = new AtomicReference<>();
@@ -147,6 +148,24 @@ class WebClientTelegramSessionTest {
                 .block(Duration.ofSeconds(10));
 
         assertEquals(List.of(), updates);
+    }
+
+    @Test
+    void metricsUriTemplate_doesNotContainTheToken() {
+        AtomicReference<Object> uriTemplate = new AtomicReference<>();
+        String baseUrl = serverRespondingWith("{\"id\": 123, \"is_bot\": true, \"first_name\": \"Bot\"}", Duration.ZERO);
+        // Spring Boot's WebClient metrics take their uri tag from this request attribute.
+        WebClient webClient = WebClient.builder()
+                .filter((request, next) -> {
+                    uriTemplate.set(request.attribute(URI_TEMPLATE_ATTRIBUTE).orElse(null));
+                    return next.exchange(request);
+                })
+                .build();
+        var session = new WebClientTelegramSession(webClient, baseUrl);
+
+        session.makeRequest(TOKEN, new GetMe()).block(Duration.ofSeconds(10));
+
+        assertEquals(baseUrl + "/bot{token}/getMe", uriTemplate.get());
     }
 
     @Test

@@ -19,11 +19,13 @@ import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.net.URI;
 import java.time.Duration;
 import java.util.Iterator;
 import java.util.Map;
@@ -104,7 +106,12 @@ public class WebClientTelegramSession implements TelegramSession {
 
     @Override
     public <T> Mono<T> makeRequest(String token, TelegramMethod<T> method) {
-        String url = baseUrl + "/bot" + token + "/" + method.apiMethod();
+        // Encoded like WebClient's own uri(String), which this replaces.
+        URI url = UriComponentsBuilder.fromUriString(baseUrl + "/bot" + token + "/" + method.apiMethod())
+            .encode().build().toUri();
+        // WebClient records the URI template for metrics and traces (the "uri" tag); a template
+        // without the token keeps it out of them while the request still goes to the real URL.
+        String uriTemplate = baseUrl + "/bot{token}/" + method.apiMethod();
 
         JavaType resultType = resolveResultType(method);
         Duration timeout = timeoutFor(method);
@@ -120,7 +127,7 @@ public class WebClientTelegramSession implements TelegramSession {
             byte[] json = objectMapper.writer()
                 .withAttribute(InputFile.Attachments.ATTRIBUTE, attachments)
                 .writeValueAsBytes(method);
-            WebClient.RequestBodySpec post = webClient.post().uri(url);
+            WebClient.RequestBodySpec post = webClient.post().uri(uriTemplate, ignored -> url);
             request = attachments.isEmpty()
                 ? post.contentType(MediaType.APPLICATION_JSON).bodyValue(json)
                 : post.contentType(MediaType.MULTIPART_FORM_DATA)
