@@ -15,6 +15,10 @@ dependencies {
     // Optional Redis support for distributed FSM storage
     compileOnly 'org.springframework.data:spring-data-redis'
 
+    // The webhook endpoint for Spring MVC applications; WebFlux comes with jiogram-core.
+    compileOnly 'org.springframework:spring-webmvc'
+    compileOnly 'javax.servlet:javax.servlet-api'
+
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -22,4 +26,6 @@ dependencies {
     // Spring Boot 2.7's spring-boot-starter-test does not include Awaitility (3.x does); the BOM
     // manages its version.
     testImplementation 'org.awaitility:awaitility'
+    testImplementation 'org.springframework:spring-webmvc'
+    testImplementation 'javax.servlet:javax.servlet-api'
 }

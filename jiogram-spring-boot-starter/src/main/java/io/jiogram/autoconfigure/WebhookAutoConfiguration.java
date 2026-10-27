@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnNotWebApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -43,7 +44,7 @@ public class WebhookAutoConfiguration {
     private static final String SECRET_LABEL = "jiogram-webhook";
 
     /**
-     * The secret token shared by the {@link WebhookController} (to verify requests) and the
+     * The secret token shared by the webhook endpoint (to verify requests) and the
      * {@link WebhookRegistrar} (to register it with Telegram).
      */
     public static final class WebhookSecretToken {
@@ -90,18 +91,36 @@ public class WebhookAutoConfiguration {
         if (webhook.url() == null || webhook.url().isBlank()) {
             throw new IllegalStateException(
                 "telegram.mode=webhook requires telegram.webhook.secret-token when telegram.webhook.url "
-                    + "is not set (the webhook is registered outside this application, so a generated "
-                    + "token could not be passed to setWebhook)");
+                    + "is not set (the webhook is registered outside this application, so a token of "
+                    + "its own could not be passed to setWebhook)");
         }
         log.info("telegram.webhook.secret-token is not set; using one derived from the bot token, "
             + "the same on every instance of this bot");
         return new WebhookSecretToken(deriveToken(properties.token()));
     }
 
-    @Bean
-    @ConditionalOnWebApplication
-    public WebhookController webhookController(Bot bot, Dispatcher dispatcher, WebhookSecretToken secretToken) {
-        return new WebhookController(bot, dispatcher, secretToken.value());
+    /** The endpoint of a WebFlux application. */
+    @Configuration(proxyBeanMethods = false)
+    @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
+    static class ReactiveEndpoint {
+        @Bean
+        WebhookController webhookController(Bot bot, Dispatcher dispatcher, WebhookSecretToken secretToken,
+                                            JiogramProperties properties) {
+            return new WebhookController(bot, dispatcher, secretToken.value(), properties.webhook().maxBodySize());
+        }
+    }
+
+    /** The endpoint of a Spring MVC application. */
+    @Configuration(proxyBeanMethods = false)
+    @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
+    @ConditionalOnClass(name = "javax.servlet.http.HttpServletRequest")
+    static class ServletEndpoint {
+        @Bean
+        ServletWebhookController servletWebhookController(Bot bot, Dispatcher dispatcher,
+                                                          WebhookSecretToken secretToken, JiogramProperties properties) {
+            return new ServletWebhookController(bot, dispatcher, secretToken.value(),
+                properties.webhook().maxBodySize());
+        }
     }
 
     @Bean

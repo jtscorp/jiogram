@@ -283,6 +283,8 @@ public final class JiogramProperties {
     @ConstructorBinding
     public static final class WebhookProperties {
 
+        public static final DataSize DEFAULT_MAX_BODY_SIZE = DataSize.ofMegabytes(1);
+
         /** The public URL where Telegram sends updates. */
         private final String url;
 
@@ -296,22 +298,37 @@ public final class JiogramProperties {
         private final int maxConnections;
 
         /**
+         * Largest request body that is read; bigger requests are rejected with 413 (Telegram's
+         * updates are far smaller).
+         */
+        private final DataSize maxBodySize;
+
+        /**
          * Creates the webhook properties.
          *
          * @param url            the public URL where Telegram sends updates
          * @param path           the local endpoint path
          * @param secretToken    the secret token for request validation
          * @param maxConnections maximum concurrent webhook connections
+         * @param maxBodySize    largest request body that is read
          */
+        @ConstructorBinding
         public WebhookProperties(
                 String url,
                 @DefaultValue("/bot/webhook") String path,
                 String secretToken,
-                @DefaultValue("40") int maxConnections) {
+                @DefaultValue("40") int maxConnections,
+                @DefaultValue("1MB") DataSize maxBodySize) {
             this.url = url;
             this.path = path;
             this.secretToken = secretToken;
             this.maxConnections = maxConnections;
+            this.maxBodySize = maxBodySize;
+        }
+
+        /** The constructor of 0.2.0, kept for code that creates these properties itself. */
+        public WebhookProperties(String url, String path, String secretToken, int maxConnections) {
+            this(url, path, secretToken, maxConnections, DEFAULT_MAX_BODY_SIZE);
         }
 
         /** @return the public URL where Telegram sends updates */
@@ -334,6 +351,11 @@ public final class JiogramProperties {
             return maxConnections;
         }
 
+        /** @return the largest request body that is read */
+        public DataSize maxBodySize() {
+            return maxBodySize;
+        }
+
         @Override
         public boolean equals(Object other) {
             if (this == other) {
@@ -346,19 +368,20 @@ public final class JiogramProperties {
             return Objects.equals(url, that.url)
                 && Objects.equals(path, that.path)
                 && Objects.equals(secretToken, that.secretToken)
-                && maxConnections == that.maxConnections;
+                && maxConnections == that.maxConnections
+                && Objects.equals(maxBodySize, that.maxBodySize);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(url, path, secretToken, maxConnections);
+            return Objects.hash(url, path, secretToken, maxConnections, maxBodySize);
         }
 
         /** Keeps the webhook secret out of logs and error messages. */
         @Override
         public String toString() {
             return "WebhookProperties[url=" + url + ", path=" + path + ", secretToken=" + mask(secretToken)
-                + ", maxConnections=" + maxConnections + "]";
+                + ", maxConnections=" + maxConnections + ", maxBodySize=" + maxBodySize + "]";
         }
     }
 

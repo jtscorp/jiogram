@@ -24,9 +24,11 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.boot.test.context.runner.ReactiveWebApplicationContextRunner;
+import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.boot.test.system.CapturedOutput;
 import org.springframework.boot.test.system.OutputCaptureExtension;
 import org.springframework.core.io.buffer.DataBufferLimitException;
+import org.springframework.util.unit.DataSize;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import reactor.netty.DisposableServer;
@@ -136,6 +138,27 @@ class JiogramAutoConfigurationTest {
                 assertThat(context).hasSingleBean(WebhookController.class);
                 assertThat(context.getBean(WebhookAutoConfiguration.WebhookSecretToken.class).value())
                     .isEqualTo("configured_secret");
+            });
+    }
+
+    @Test
+    void whenWebhookModeRunsInASpringMvcApplication_theServletEndpointIsCreated() {
+        new WebApplicationContextRunner()
+            .withConfiguration(AutoConfigurations.of(
+                JiogramAutoConfiguration.class,
+                WebhookAutoConfiguration.class
+            ))
+            .withPropertyValues(
+                "telegram.token=123456789:ABCDEFghijklmnop",
+                "telegram.mode=webhook",
+                "telegram.webhook.secret-token=configured_secret",
+                "telegram.webhook.max-body-size=2KB"
+            )
+            .run(context -> {
+                assertThat(context).hasSingleBean(ServletWebhookController.class);
+                assertThat(context).doesNotHaveBean(WebhookController.class);
+                assertThat(context.getBean(JiogramProperties.class).webhook().maxBodySize())
+                    .isEqualTo(DataSize.ofKilobytes(2));
             });
     }
 
