@@ -6,10 +6,19 @@ import io.jiogram.session.TelegramSession;
 import io.jiogram.types.Message;
 import io.jiogram.types.TelegramMethod;
 import org.junit.jupiter.api.Test;
+import org.springframework.core.io.buffer.DefaultDataBufferFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.mock.http.server.reactive.MockServerHttpRequest;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.util.unit.DataSize;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -72,6 +81,54 @@ class WebhookControllerTest {
                 .expectStatus().isOk();
 
         assertThat(received.get()).isNull();
+    }
+
+    @Test
+    void bodyLargerThanTheLimit_isRejectedWith413WithoutDispatching() {
+        WebTestClient limited = WebTestClient
+                .bindToController(new WebhookController(bot(), dispatcher(), SECRET, DataSize.ofBytes(100)))
+                .build();
+
+        limited.post().uri("/bot/webhook")
+                .header("X-Telegram-Bot-Api-Secret-Token", SECRET)
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(UPDATE_JSON)
+                .exchange()
+                .expectStatus().isEqualTo(HttpStatus.PAYLOAD_TOO_LARGE);
+
+        assertThat(received.get()).isNull();
+    }
+
+    @Test
+    void chunkedBodyLargerThanTheLimit_isRejectedWith413() {
+        var controller = new WebhookController(bot(), dispatcher(), SECRET, DataSize.ofBytes(100));
+        // No Content-Length: the limit applies while the body is read.
+        var request = MockServerHttpRequest.post("/bot/webhook")
+                .header("X-Telegram-Bot-Api-Secret-Token", SECRET)
+                .body(Flux.just(UPDATE_JSON.substring(0, 80), UPDATE_JSON.substring(80))
+                        .map(part -> DefaultDataBufferFactory.sharedInstance.wrap(part.getBytes(StandardCharsets.UTF_8))));
+
+        ResponseEntity<Void> response = controller.handleUpdate(request).block(Duration.ofSeconds(5));
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.PAYLOAD_TOO_LARGE);
+        assertThat(received.get()).isNull();
+    }
+
+    @Test
+    void wrongSecret_isRejectedBeforeTheBodyIsRead() {
+        var controller = new WebhookController(bot(), dispatcher(), SECRET);
+        AtomicBoolean bodyRead = new AtomicBoolean();
+        var request = MockServerHttpRequest.post("/bot/webhook")
+                .header("X-Telegram-Bot-Api-Secret-Token", "wrong")
+                .body(Flux.defer(() -> {
+                    bodyRead.set(true);
+                    return Flux.just(DefaultDataBufferFactory.sharedInstance.wrap(UPDATE_JSON.getBytes(StandardCharsets.UTF_8)));
+                }));
+
+        ResponseEntity<Void> response = controller.handleUpdate(request).block(Duration.ofSeconds(5));
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+        assertThat(bodyRead).isFalse();
     }
 
     private WebTestClient.ResponseSpec post(String secret) {
