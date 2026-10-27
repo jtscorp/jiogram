@@ -159,7 +159,17 @@ class JiogramAutoConfigurationTest {
     }
 
     @Test
-    void whenWebhookUrlIsSetWithoutSecret_generatedSecretIsRegisteredWithTelegram() {
+    void whenWebhookUrlIsSetWithoutSecret_secretDerivedFromTheBotTokenIsRegisteredWithTelegram() {
+        String derived = derivedWebhookSecret("123456789:ABCDEFghijklmnop");
+        assertThat(derived).matches("[A-Za-z0-9_-]{43}");
+        // The same on every instance, so they all accept what Telegram sends to any of them.
+        assertThat(derivedWebhookSecret("123456789:ABCDEFghijklmnop")).isEqualTo(derived);
+        // Another bot gets another secret.
+        assertThat(derivedWebhookSecret("987654321:ZYXWvutsrqponmlk")).isNotEqualTo(derived);
+    }
+
+    private static String derivedWebhookSecret(String botToken) {
+        AtomicReference<String> secret = new AtomicReference<>();
         new ReactiveWebApplicationContextRunner()
             .withBean(TelegramSession.class, StubTelegramSession::new)
             .withConfiguration(AutoConfigurations.of(
@@ -167,18 +177,18 @@ class JiogramAutoConfigurationTest {
                 WebhookAutoConfiguration.class
             ))
             .withPropertyValues(
-                "telegram.token=123456789:ABCDEFghijklmnop",
+                "telegram.token=" + botToken,
                 "telegram.mode=webhook",
                 "telegram.webhook.url=https://example.com/bot/webhook"
             )
             .run(context -> {
-                String generated = context.getBean(WebhookAutoConfiguration.WebhookSecretToken.class).value();
-                assertThat(generated).matches("[A-Za-z0-9_-]{43}");
-
+                String value = context.getBean(WebhookAutoConfiguration.WebhookSecretToken.class).value();
                 StubTelegramSession session = (StubTelegramSession) context.getBean(TelegramSession.class);
                 assertThat(session.lastMethod).isInstanceOfSatisfying(SetWebhook.class,
-                    setWebhook -> assertThat(setWebhook.secretToken()).isEqualTo(generated));
+                    setWebhook -> assertThat(setWebhook.secretToken()).isEqualTo(value));
+                secret.set(value);
             });
+        return secret.get();
     }
 
     @Test
