@@ -6,6 +6,7 @@ import io.jiogram.types.UpdateType;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;
 import org.springframework.boot.context.properties.bind.DefaultValue;
+import org.springframework.util.unit.DataSize;
 
 import java.time.Duration;
 import java.util.List;
@@ -367,6 +368,8 @@ public final class JiogramProperties {
     @ConstructorBinding
     public static final class ApiProperties {
 
+        public static final DataSize DEFAULT_MAX_RESPONSE_SIZE = DataSize.ofMegabytes(16);
+
         /** Base URL of the Bot API server. */
         private final String baseUrl;
 
@@ -377,17 +380,32 @@ public final class JiogramProperties {
         private final Duration requestTimeout;
 
         /**
+         * Largest response body that is read; a full {@code getUpdates} batch after downtime
+         * easily exceeds WebClient's default of 256 KB.
+         */
+        private final DataSize maxResponseSize;
+
+        /**
          * Creates the API properties.
          *
-         * @param baseUrl        base URL of the Bot API server
-         * @param requestTimeout how long to wait for a response to a request; {@code getUpdates}
-         *                       gets its long-polling timeout on top
+         * @param baseUrl         base URL of the Bot API server
+         * @param requestTimeout  how long to wait for a response to a request; {@code getUpdates}
+         *                        gets its long-polling timeout on top
+         * @param maxResponseSize largest response body that is read
          */
+        @ConstructorBinding
         public ApiProperties(
                 @DefaultValue("https://api.telegram.org") String baseUrl,
-                @DefaultValue("60s") Duration requestTimeout) {
+                @DefaultValue("60s") Duration requestTimeout,
+                @DefaultValue("16MB") DataSize maxResponseSize) {
             this.baseUrl = baseUrl;
             this.requestTimeout = requestTimeout;
+            this.maxResponseSize = maxResponseSize;
+        }
+
+        /** The constructor of 0.2.0, kept for code that creates these properties itself. */
+        public ApiProperties(String baseUrl, Duration requestTimeout) {
+            this(baseUrl, requestTimeout, DEFAULT_MAX_RESPONSE_SIZE);
         }
 
         /** @return the base URL of the Bot API server */
@@ -400,6 +418,11 @@ public final class JiogramProperties {
             return requestTimeout;
         }
 
+        /** @return the largest response body that is read */
+        public DataSize maxResponseSize() {
+            return maxResponseSize;
+        }
+
         @Override
         public boolean equals(Object other) {
             if (this == other) {
@@ -410,17 +433,19 @@ public final class JiogramProperties {
             }
             ApiProperties that = (ApiProperties) other;
             return Objects.equals(baseUrl, that.baseUrl)
-                && Objects.equals(requestTimeout, that.requestTimeout);
+                && Objects.equals(requestTimeout, that.requestTimeout)
+                && Objects.equals(maxResponseSize, that.maxResponseSize);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(baseUrl, requestTimeout);
+            return Objects.hash(baseUrl, requestTimeout, maxResponseSize);
         }
 
         @Override
         public String toString() {
-            return "ApiProperties[baseUrl=" + baseUrl + ", requestTimeout=" + requestTimeout + "]";
+            return "ApiProperties[baseUrl=" + baseUrl + ", requestTimeout=" + requestTimeout
+                + ", maxResponseSize=" + maxResponseSize + "]";
         }
     }
 

@@ -15,6 +15,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
+import org.springframework.util.unit.DataSize;
 import org.springframework.web.reactive.function.client.WebClient;
 
 /**
@@ -39,8 +40,16 @@ public class JiogramAutoConfiguration {
         // Intentionally does NOT depend on the application's shared ObjectMapper.
         // The Telegram Bot API rejects null-valued optional parameters, so this
         // session uses its own NON_NULL-configured ObjectMapper internally.
-        WebClient webClient = webClientBuilder.getIfAvailable(WebClient::builder).build();
+        //
+        // The response size limit replaces the builder's codec limit: a full getUpdates batch
+        // does not fit into the default 256 KB.
         JiogramProperties.ApiProperties api = properties.api();
+        DataSize maxResponseSize = api != null
+            ? api.maxResponseSize()
+            : JiogramProperties.ApiProperties.DEFAULT_MAX_RESPONSE_SIZE;
+        WebClient webClient = webClientBuilder.getIfAvailable(WebClient::builder)
+            .codecs(codecs -> codecs.defaultCodecs().maxInMemorySize(Math.toIntExact(maxResponseSize.toBytes())))
+            .build();
         return new WebClientTelegramSession(webClient, WebClientTelegramSession.defaultObjectMapper(),
             api != null ? api.baseUrl() : null,
             api != null ? api.requestTimeout() : WebClientTelegramSession.DEFAULT_REQUEST_TIMEOUT);
