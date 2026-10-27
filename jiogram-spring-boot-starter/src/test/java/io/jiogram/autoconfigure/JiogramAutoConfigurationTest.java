@@ -9,11 +9,15 @@ import io.jiogram.fsm.middleware.FSMMiddleware;
 import io.jiogram.fsm.storage.MemoryStateStorage;
 import io.jiogram.fsm.storage.StateStorage;
 import io.jiogram.handler.HandlerRegistry;
+import io.jiogram.methods.GetMe;
 import io.jiogram.methods.SetWebhook;
 import io.jiogram.session.TelegramSession;
 import io.jiogram.types.Message;
 import io.jiogram.types.TelegramMethod;
 import io.jiogram.types.Update;
+import io.micrometer.observation.Observation;
+import io.micrometer.observation.ObservationHandler;
+import io.micrometer.observation.ObservationRegistry;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -23,8 +27,14 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.boot.test.context.runner.ReactiveWebApplicationContextRunner;
 import org.springframework.boot.test.system.CapturedOutput;
 import org.springframework.boot.test.system.OutputCaptureExtension;
+import org.springframework.web.reactive.function.client.ClientRequestObservationContext;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+import reactor.netty.DisposableServer;
+import reactor.netty.http.server.HttpServer;
+
+import java.time.Duration;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -295,5 +305,55 @@ class JiogramAutoConfigurationTest {
                 "telegram.webhook.url=https://example.com/bot/webhook"
             )
             .run(context -> assertThat(context).hasSingleBean(WebhookRegistrar.class));
+    }
+
+    private final ApplicationContextRunner sessionRunner = new ApplicationContextRunner()
+        .withConfiguration(AutoConfigurations.of(JiogramAutoConfiguration.class))
+        .withPropertyValues("telegram.token=123456789:ABCDEFghijklmnop");
+
+    @Test
+    void observedClientRequests_doNotContainTheToken() {
+        DisposableServer server = botApiRespondingWith("""
+            {"ok": true, "result": {"id": 123456789, "is_bot": true, "first_name": "Bot"}}""");
+        AtomicReference<ClientRequestObservationContext> observed = new AtomicReference<>();
+        ObservationRegistry registry = ObservationRegistry.create();
+        registry.observationConfig().observationHandler(new ObservationHandler<>() {
+            @Override
+            public boolean supportsContext(Observation.Context context) {
+                return context instanceof ClientRequestObservationContext;
+            }
+
+            @Override
+            public void onStop(Observation.Context context) {
+                observed.set((ClientRequestObservationContext) context);
+            }
+        });
+        try {
+            sessionRunner
+                // Stands in for Boot's builder, which carries the registry when actuator is present.
+                .withBean(WebClient.Builder.class, () -> WebClient.builder().observationRegistry(registry))
+                .withPropertyValues(
+                    "telegram.api.base-url=http://localhost:" + server.port(),
+                    "management.observations.http.client.requests.name=telegram.client.requests")
+                .run(context -> {
+                    context.getBean(Bot.class).execute(new GetMe()).block(Duration.ofSeconds(10));
+
+                    ClientRequestObservationContext request = observed.get();
+                    assertThat(request.getName()).isEqualTo("telegram.client.requests");
+                    assertThat(request.getLowCardinalityKeyValue("uri").getValue()).isEqualTo("/bot{token}/getMe");
+                    assertThat(request.getHighCardinalityKeyValue("http.url").getValue())
+                        .isEqualTo("http://localhost:" + server.port() + "/bot{token}/getMe");
+                });
+        } finally {
+            server.disposeNow();
+        }
+    }
+
+    private static DisposableServer botApiRespondingWith(String body) {
+        return HttpServer.create()
+            .port(0)
+            .handle((request, response) -> request.receive().then(
+                response.header("Content-Type", "application/json").sendString(Mono.just(body)).then()))
+            .bindNow();
     }
 }

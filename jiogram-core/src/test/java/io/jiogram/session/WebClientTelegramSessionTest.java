@@ -14,6 +14,7 @@ import io.jiogram.types.InputMediaPhoto;
 import io.jiogram.types.Message;
 import io.jiogram.types.Update;
 import io.jiogram.types.User;
+import io.micrometer.common.KeyValues;
 import io.micrometer.observation.Observation;
 import io.micrometer.observation.ObservationHandler;
 import io.micrometer.observation.ObservationRegistry;
@@ -53,6 +54,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class WebClientTelegramSessionTest {
 
     private static final String TOKEN = "123:abc";
+    private static final String ME_JSON = """
+            {"id": 123, "is_bot": true, "first_name": "Bot"}""";
     private static final String MESSAGE_JSON = """
             {"message_id": 1, "chat": {"id": 42, "type": "private"}, "date": 1775538971}""";
 
@@ -163,28 +166,31 @@ class WebClientTelegramSessionTest {
     @Test
     void metricsUriTag_doesNotContainTheToken() {
         AtomicReference<ClientRequestObservationContext> observed = new AtomicReference<>();
-        ObservationRegistry registry = ObservationRegistry.create();
-        registry.observationConfig().observationHandler(new ObservationHandler<>() {
-            @Override
-            public boolean supportsContext(Observation.Context context) {
-                return context instanceof ClientRequestObservationContext;
-            }
-
-            @Override
-            public void onStop(Observation.Context context) {
-                observed.set((ClientRequestObservationContext) context);
-            }
-        });
-        String baseUrl = serverRespondingWith("{\"id\": 123, \"is_bot\": true, \"first_name\": \"Bot\"}", Duration.ZERO);
-        var session = new WebClientTelegramSession(WebClient.builder().observationRegistry(registry).build(), baseUrl);
+        String baseUrl = serverRespondingWith(ME_JSON, Duration.ZERO);
+        var session = new WebClientTelegramSession(
+                WebClient.builder().observationRegistry(recordingRegistry(observed)).build(), baseUrl);
 
         session.makeRequest(TOKEN, new GetMe()).block(Duration.ofSeconds(10));
 
-        String uriTag = new DefaultClientRequestObservationConvention()
-                .getLowCardinalityKeyValues(observed.get()).stream()
-                .filter(keyValue -> keyValue.getKey().equals("uri"))
-                .findFirst().orElseThrow().getValue();
-        assertEquals("/bot{token}/getMe", uriTag);
+        var keyValues = new DefaultClientRequestObservationConvention().getLowCardinalityKeyValues(observed.get());
+        assertEquals("/bot{token}/getMe", valueOf(keyValues, "uri"));
+    }
+
+    @Test
+    void tokenMaskingConvention_masksTheTokenInTheTracedUrl() {
+        AtomicReference<ClientRequestObservationContext> observed = new AtomicReference<>();
+        String baseUrl = serverRespondingWith(ME_JSON, Duration.ZERO);
+        var convention = new TokenMaskingObservationConvention();
+        var session = new WebClientTelegramSession(WebClient.builder()
+                .observationRegistry(recordingRegistry(observed))
+                .observationConvention(convention)
+                .build(), baseUrl);
+
+        session.makeRequest(TOKEN, new GetMe()).block(Duration.ofSeconds(10));
+
+        assertEquals(baseUrl + "/bot{token}/getMe",
+                valueOf(convention.getHighCardinalityKeyValues(observed.get()), "http.url"));
+        assertEquals("/bot{token}/getMe", valueOf(convention.getLowCardinalityKeyValues(observed.get()), "uri"));
     }
 
     @Test
@@ -218,6 +224,28 @@ class WebClientTelegramSessionTest {
 
         assertThrows(JsonMappingException.class,
                 () -> WebClientTelegramSession.defaultObjectMapper().writeValueAsString(upload));
+    }
+
+    /** A registry that hands the context of every finished client request to {@code observed}. */
+    private static ObservationRegistry recordingRegistry(AtomicReference<ClientRequestObservationContext> observed) {
+        ObservationRegistry registry = ObservationRegistry.create();
+        registry.observationConfig().observationHandler(new ObservationHandler<>() {
+            @Override
+            public boolean supportsContext(Observation.Context context) {
+                return context instanceof ClientRequestObservationContext;
+            }
+
+            @Override
+            public void onStop(Observation.Context context) {
+                observed.set((ClientRequestObservationContext) context);
+            }
+        });
+        return registry;
+    }
+
+    private static String valueOf(KeyValues keyValues, String key) {
+        return keyValues.stream().filter(keyValue -> keyValue.getKey().equals(key))
+                .findFirst().orElseThrow().getValue();
     }
 
     private WebClientTelegramSession sessionRespondingWith(String resultJson) {
