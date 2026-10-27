@@ -1,84 +1,61 @@
 package io.jiogram.autoconfigure;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jiogram.bot.Bot;
 import io.jiogram.dispatcher.Dispatcher;
-import io.jiogram.session.WebClientTelegramSession;
-import io.jiogram.types.Update;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
+import org.springframework.core.io.buffer.DataBuffer;
+import org.springframework.core.io.buffer.DataBufferLimitException;
+import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.util.unit.DataSize;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-
 /**
- * REST controller that receives Telegram webhook updates.
+ * WebFlux controller that receives Telegram webhook updates. Spring MVC applications get
+ * {@link ServletWebhookController} instead.
  * <p>
- * Every request must carry the secret token in {@value #SECRET_TOKEN_HEADER}; it is checked
- * before the body is parsed. The body is read with the session's Jackson 2 mapper rather than
- * Spring's codecs, which on Spring Boot 4 use Jackson 3 and ignore the databind annotations on
- * the generated types (e.g. the MaybeInaccessibleMessage resolver).
+ * Every request must carry the secret token in the {@code X-Telegram-Bot-Api-Secret-Token}
+ * header. It is checked before the body is read, and the body is read only up to
+ * {@code telegram.webhook.max-body-size}; a bigger one is rejected with 413.
  */
 @RestController
 public class WebhookController {
 
-    static final String SECRET_TOKEN_HEADER = "X-Telegram-Bot-Api-Secret-Token";
-
-    private static final Logger log = LoggerFactory.getLogger(WebhookController.class);
-
-    private final Bot bot;
-    private final Dispatcher dispatcher;
-    private final byte[] secretToken;
-    private final ObjectMapper objectMapper = WebClientTelegramSession.defaultObjectMapper();
+    private final WebhookUpdateHandler handler;
 
     public WebhookController(Bot bot, Dispatcher dispatcher, String secretToken) {
-        this.bot = bot;
-        this.dispatcher = dispatcher;
-        if (secretToken == null || secretToken.isBlank()) {
-            throw new IllegalArgumentException("Webhook secret token must not be blank");
-        }
-        this.secretToken = secretToken.getBytes(StandardCharsets.UTF_8);
+        this(bot, dispatcher, secretToken, JiogramProperties.WebhookProperties.DEFAULT_MAX_BODY_SIZE);
+    }
+
+    public WebhookController(Bot bot, Dispatcher dispatcher, String secretToken, DataSize maxBodySize) {
+        this.handler = new WebhookUpdateHandler(bot, dispatcher, secretToken, maxBodySize);
     }
 
     @PostMapping("${telegram.webhook.path:/bot/webhook}")
-    public Mono<ResponseEntity<Void>> handleUpdate(
-            @RequestBody byte[] body,
-            @RequestHeader(value = SECRET_TOKEN_HEADER, required = false) String headerToken) {
-
-        if (!isValidSecret(headerToken)) {
-            log.warn("Rejected webhook request: missing or invalid secret token");
-            return Mono.just(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
+    public Mono<ResponseEntity<Void>> handleUpdate(ServerHttpRequest request) {
+        if (!handler.isValidSecret(request.getHeaders().getFirst(WebhookUpdateHandler.SECRET_TOKEN_HEADER))) {
+            return Mono.just(handler.unauthorized());
         }
-
-        Update update;
-        try {
-            update = objectMapper.readValue(body, Update.class);
-        } catch (IOException e) {
-            // Acknowledge anyway: Telegram would otherwise redeliver the same payload forever.
-            log.error("Dropping unparseable webhook update: {}", e.getMessage(), e);
-            return Mono.just(ResponseEntity.ok().build());
+        if (request.getHeaders().getContentLength() > handler.maxBodySize()) {
+            return Mono.just(handler.payloadTooLarge());
         }
-
-        return dispatcher.feedUpdate(bot, update)
-            .then(Mono.just(ResponseEntity.ok().<Void>build()))
-            .onErrorResume(e -> {
-                log.error("Error processing webhook update {}: {}",
-                    update.updateId(), e.getMessage(), e);
-                return Mono.just(ResponseEntity.ok().build());
-            });
+        // A chunked body has no Content-Length: join() stops reading once it exceeds the limit.
+        return DataBufferUtils.join(request.getBody(), handler.maxBodySize())
+            .map(WebhookController::readAndRelease)
+            .defaultIfEmpty(new byte[0])
+            .flatMap(handler::handle)
+            .onErrorResume(DataBufferLimitException.class, e -> Mono.just(handler.payloadTooLarge()));
     }
 
-    private boolean isValidSecret(String headerToken) {
-        // Constant-time comparison so the token cannot be guessed byte by byte from timing.
-        return headerToken != null
-            && MessageDigest.isEqual(secretToken, headerToken.getBytes(StandardCharsets.UTF_8));
+    private static byte[] readAndRelease(DataBuffer buffer) {
+        try {
+            byte[] bytes = new byte[buffer.readableByteCount()];
+            buffer.read(bytes);
+            return bytes;
+        } finally {
+            DataBufferUtils.release(buffer);
+        }
     }
 }

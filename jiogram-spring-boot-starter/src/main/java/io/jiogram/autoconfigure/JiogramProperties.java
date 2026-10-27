@@ -87,18 +87,32 @@ public record JiogramProperties(
      * @param path           the local endpoint path
      * @param secretToken    the secret token for request validation
      * @param maxConnections maximum concurrent webhook connections
+     * @param maxBodySize    largest request body that is read; bigger requests are rejected
+     *                       with 413 (Telegram's updates are far smaller)
      */
     public record WebhookProperties(
         String url,
         @DefaultValue("/bot/webhook") String path,
         String secretToken,
-        @DefaultValue("40") int maxConnections
+        @DefaultValue("40") int maxConnections,
+        @DefaultValue("1MB") DataSize maxBodySize
     ) {
+        public static final DataSize DEFAULT_MAX_BODY_SIZE = DataSize.ofMegabytes(1);
+
+        @ConstructorBinding
+        public WebhookProperties {
+        }
+
+        /** The constructor of 0.2.0, kept for code that creates these properties itself. */
+        public WebhookProperties(String url, String path, String secretToken, int maxConnections) {
+            this(url, path, secretToken, maxConnections, DEFAULT_MAX_BODY_SIZE);
+        }
+
         /** Keeps the webhook secret out of logs and error messages. */
         @Override
         public String toString() {
             return "WebhookProperties[url=" + url + ", path=" + path + ", secretToken=" + mask(secretToken)
-                + ", maxConnections=" + maxConnections + "]";
+                + ", maxConnections=" + maxConnections + ", maxBodySize=" + maxBodySize + "]";
         }
     }
 

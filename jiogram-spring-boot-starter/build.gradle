@@ -15,8 +15,14 @@ dependencies {
     // Optional Redis support for distributed FSM storage
     compileOnly 'org.springframework.data:spring-data-redis'
 
+    // The webhook endpoint for Spring MVC applications; WebFlux comes with jiogram-core.
+    compileOnly 'org.springframework:spring-webmvc'
+    compileOnly 'jakarta.servlet:jakarta.servlet-api'
+
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.projectreactor:reactor-test'
+    testImplementation 'org.springframework:spring-webmvc'
+    testImplementation 'jakarta.servlet:jakarta.servlet-api'
 }
