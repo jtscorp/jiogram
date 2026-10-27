@@ -18,7 +18,7 @@ U Pythondagi qulay aiogram libini, annotationlarga asoslangan handler modelini J
 >
 > **Maven koordinatalari:**
 > ```
-> implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-3-starter:0.2.0'
+> implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-3-starter:0.2.1'
 > ```
 
 ### Ishlatish bo'yicha yo'riqnoma:
@@ -39,7 +39,7 @@ java {
 }
 
 dependencies {
-    implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-3-starter:0.2.0'
+    implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-3-starter:0.2.1'
 }
 ```
 
@@ -181,7 +181,7 @@ I adapted aiogram's convenient, annotation-driven handler model to Java/Spring; 
 >
 > **Maven coordinates:**
 > ```
-> implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-3-starter:0.2.0'
+> implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-3-starter:0.2.1'
 > ```
 
 ### Quick Start
@@ -202,7 +202,7 @@ java {
 }
 
 dependencies {
-    implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-3-starter:0.2.0'
+    implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-3-starter:0.2.1'
 }
 ```
 

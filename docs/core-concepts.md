@@ -412,7 +412,7 @@ itself comes with `jiogram-fsm`):
 
 ```groovy
 dependencies {
-    annotationProcessor 'uz.jtscorp.jiogram:jiogram-fsm-processor-sb3:0.2.0'
+    annotationProcessor 'uz.jtscorp.jiogram:jiogram-fsm-processor-sb3:0.2.1'
 }
 ```
 

@@ -27,16 +27,16 @@ Ko'pchilikka faqat starter kerak bo'ladi; qolganlari transitive dependency sifat
 
 ```groovy
 // Spring Boot 2.7.x
-implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-2-starter:0.2.0'
-annotationProcessor 'uz.jtscorp.jiogram:jiogram-fsm-processor-sb2:0.2.0' // for @FSMStates
+implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-2-starter:0.2.1'
+annotationProcessor 'uz.jtscorp.jiogram:jiogram-fsm-processor-sb2:0.2.1' // for @FSMStates
 
 // Spring Boot 3.5.x
-implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-3-starter:0.2.0'
-annotationProcessor 'uz.jtscorp.jiogram:jiogram-fsm-processor-sb3:0.2.0'
+implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-3-starter:0.2.1'
+annotationProcessor 'uz.jtscorp.jiogram:jiogram-fsm-processor-sb3:0.2.1'
 
 // Spring Boot 4.0.x
-implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-4-starter:0.2.0'
-annotationProcessor 'uz.jtscorp.jiogram:jiogram-fsm-processor-sb4:0.2.0'
+implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-4-starter:0.2.1'
+annotationProcessor 'uz.jtscorp.jiogram:jiogram-fsm-processor-sb4:0.2.1'
 ```
 
 Modul artifactlarini (`jiogram-types-sbN`, `jiogram-methods-sbN`, `jiogram-core-sbN`,
