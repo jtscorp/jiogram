@@ -6,6 +6,7 @@ import io.jiogram.dispatcher.Dispatcher;
 import io.jiogram.handler.HandlerRegistry;
 import io.jiogram.middleware.ErrorMiddleware;
 import io.jiogram.session.TelegramSession;
+import io.jiogram.session.TokenMaskingObservationConvention;
 import io.jiogram.session.WebClientTelegramSession;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -30,7 +31,7 @@ public class JiogramAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public TelegramSession telegramSession(
-            ObjectProvider<WebClient.Builder> webClientBuilder, JiogramProperties properties) {
+            ObjectProvider<WebClient.Builder> webClientBuilder, JiogramProperties properties, Environment environment) {
         // The WebClient is built here rather than exposed as a bean, so the application's own
         // WebClient beans are neither replaced by nor injected into the Telegram session.
         // Boot's WebClient.Builder (when present) carries the app's codec/connector customizers.
@@ -39,8 +40,15 @@ public class JiogramAutoConfiguration {
         // Intentionally does NOT depend on the application's shared ObjectMapper.
         // The Telegram Bot API rejects null-valued optional parameters, so this
         // session uses its own NON_NULL-configured ObjectMapper internally.
-        WebClient webClient = webClientBuilder.getIfAvailable(WebClient::builder).build();
+        //
+        // The token is part of every request URL, so the observation convention masks it in the
+        // metrics and traces of the client.
         JiogramProperties.ApiProperties api = properties.api();
+        String observationName = environment.getProperty(
+            "management.observations.http.client.requests.name", "http.client.requests");
+        WebClient webClient = webClientBuilder.getIfAvailable(WebClient::builder)
+            .observationConvention(new TokenMaskingObservationConvention(observationName))
+            .build();
         return new WebClientTelegramSession(webClient, WebClientTelegramSession.defaultObjectMapper(),
             api != null ? api.baseUrl() : null,
             api != null ? api.requestTimeout() : WebClientTelegramSession.DEFAULT_REQUEST_TIMEOUT);
