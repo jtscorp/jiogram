@@ -120,12 +120,13 @@ Barcha sozlamalar `telegram` prefiksi ostida. To'liq ro'yxat: [docs/uz/configura
 | `telegram.mode` | `POLLING` | `POLLING` yoki `WEBHOOK` |
 | `telegram.api.base-url` | `https://api.telegram.org` | Bot API manzili; o'zingizning Bot API serveringiz bo'lsa, uning URLini qo'ying |
 | `telegram.api.request-timeout` | `60s` | Javobni kutish vaqti; `getUpdates`ga polling timeouti qo'shiladi |
+| `telegram.api.max-response-size` | `16MB` | O'qiladigan javobning eng katta hajmi |
 | `telegram.polling.timeout` | `30` | Long polling timeouti, soniyada |
 | `telegram.polling.limit` | `100` | Bitta polldagi eng ko'p update soni |
 | `telegram.polling.backoff` | `1000` | Xatodan keyingi kutish, ms |
 | `telegram.polling.concurrency` | `32` | Bitta batchda parallel qayta ishlanadigan chatlar soni |
 | `telegram.polling.shutdown-timeout` | `10s` | To'xtashda ishlayotgan batch qancha kutiladi |
-| `telegram.webhook.secret-token` | *(generate qilinadi)* | Har bir webhook so'rovida tekshiriladi; `webhook.url` berilsa, o'zi generate qilinadi |
+| `telegram.webhook.secret-token` | *(bot tokendan)* | Har bir webhook so'rovida tekshiriladi; `webhook.url` berilsa, bot tokendan hosil qilinadi |
 | `telegram.defaults.parse-mode` | `null` | Default parse mode (`HTML`, `MARKDOWN`, `MARKDOWN_V2`) |
 | `telegram.handlers.virtual-threads` | `true` | Annotationli handlerlarni virtual threadlarda ishlatish |
 | `telegram.fsm.enabled` | `true` | FSM middlewareni yoqish |
@@ -282,12 +283,13 @@ All properties live under the `telegram` prefix. See [docs/configuration.md](doc
 | `telegram.mode` | `POLLING` | `POLLING` or `WEBHOOK` |
 | `telegram.api.base-url` | `https://api.telegram.org` | Telegram Bot API endpoint; set to a local Bot API server URL when self-hosting |
 | `telegram.api.request-timeout` | `60s` | Time to wait for a response; `getUpdates` adds its polling timeout |
+| `telegram.api.max-response-size` | `16MB` | Largest response that is read |
 | `telegram.polling.timeout` | `30` | Long-polling timeout in seconds |
 | `telegram.polling.limit` | `100` | Max updates per poll |
 | `telegram.polling.backoff` | `1000` | Error backoff in ms |
 | `telegram.polling.concurrency` | `32` | Chats of one batch processed in parallel |
 | `telegram.polling.shutdown-timeout` | `10s` | How long shutdown waits for the running batch |
-| `telegram.webhook.secret-token` | *(generated)* | Checked on every webhook request; generated when `webhook.url` is set |
+| `telegram.webhook.secret-token` | *(from the bot token)* | Checked on every webhook request; derived from the bot token when `webhook.url` is set |
 | `telegram.defaults.parse-mode` | `null` | Default parse mode (`HTML`, `MARKDOWN`, `MARKDOWN_V2`) |
 | `telegram.handlers.virtual-threads` | `true` | Run annotated handlers on virtual threads |
 | `telegram.fsm.enabled` | `true` | Enable FSM middleware |

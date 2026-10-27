@@ -21,6 +21,8 @@ telegram:
     base-url: https://api.telegram.org
     # How long to wait for a response; getUpdates adds its polling timeout (default: 60s)
     request-timeout: 60s
+    # Largest response that is read; a full getUpdates batch can exceed 256 KB (default: 16MB)
+    max-response-size: 16MB
 
   # Polling configuration (only used when mode=POLLING)
   polling:
@@ -47,10 +49,12 @@ telegram:
     # Local endpoint path (default: /bot/webhook)
     path: /bot/webhook
     # Secret token Telegram sends with every update; required unless `url` is set
-    # (then a random one is generated and registered via setWebhook)
+    # (then one derived from the bot token is registered via setWebhook)
     secret-token: "your-secret-token"
     # Maximum number of concurrent webhook connections (default: 40)
     max-connections: 40
+    # Largest request body that is read; bigger requests get 413 (default: 1MB)
+    max-body-size: 1MB
 
   # Default properties applied to all outgoing bot requests
   defaults:
@@ -102,6 +106,10 @@ loggingi request URLlarini to'liq chiqaradi. Productionda
 `org.springframework.web.reactive.function.client.ExchangeFunctions` yoki `reactor.netty.http.client`
 uchun DEBUGni yoqmang.
 
+Auto-configured sessionning HTTP client metrikalari va tracelarida (`http.client.requests`) path
+`/bot{token}/sendMessage` ko'rinishida chiqadi. `TelegramSession`ni o'zingiz qursangiz, xuddi shunday
+bo'lishi uchun `WebClient.builder().observationConvention(new TokenMaskingObservationConvention())`ni ishlating.
+
 ### telegram.mode
 
 Bot Telegramdan updatelarni qanday olishini belgilaydi.
@@ -123,6 +131,7 @@ Chiquvchi requestlar yuboriladigan Bot API server endpointini sozlaydi.
 |---|---|---|---|
 | `base-url` | `String` | `https://api.telegram.org` | Telegram Bot API serverining base URLi. Bot APIni o'zingiz host qilsangiz, local server URLini qo'ying, masalan `http://localhost:8081`. |
 | `request-timeout` | `Duration` | `60s` | Javob qancha kutilishi; bu vaqt o'tsa request `TimeoutException` bilan fail bo'ladi. `getUpdates` uchun bunga long-polling `timeout`i qo'shiladi. Sekin internetda katta fayllarni upload qilish uchun oshiring. Faqat auto-configured sessionga ta'sir qiladi. |
+| `max-response-size` | `DataSize` | `16MB` | O'qiladigan javob bodysining eng katta hajmi. WebClientning o'z defaulti (256 KB) bir muddat ishlamay turgandan keyingi to'liq `getUpdates` batchiga yetmaydi. Faqat auto-configured sessionga ta'sir qiladi. |
 
 ### telegram.polling
 
@@ -145,8 +154,9 @@ Faqat `mode=WEBHOOK` bo'lganda ishlaydi.
 |---|---|---|---|
 | `url` | `String` | `null` | Telegram updatelarni POST qiladigan public HTTPS URL. |
 | `path` | `String` | `/bot/webhook` | Webhook POSTlarini qabul qiladigan local endpoint pathi. |
-| `secret-token` | `String` | `null` | Telegram `X-Telegram-Bot-Api-Secret-Token` headerida yuborishi shart bo'lgan qiymat; usiz kelgan requestlar 401 bilan rad etiladi. Agar bu berilmagan, lekin `url` berilgan bo'lsa, tasodifiy token generate qilinadi va `setWebhook` orqali ro'yxatdan o'tkaziladi; ikkalasi ham berilmagan bo'lsa, ilova ishga tushmaydi. |
+| `secret-token` | `String` | `null` | Telegram `X-Telegram-Bot-Api-Secret-Token` headerida yuborishi shart bo'lgan qiymat; usiz kelgan requestlar 401 bilan rad etiladi. Agar bu berilmagan, lekin `url` berilgan bo'lsa, bot tokendan hosil qilingan token (uning HMAC-SHA256i) `setWebhook` orqali ro'yxatdan o'tkaziladi; u har bir instanceda bir xil, shuning uchun bitta URL ortidagi bir nechta instance ham requestlarni qabul qiladi. Ikkalasi ham berilmagan bo'lsa, ilova ishga tushmaydi. |
 | `max-connections` | `int` | `40` | Telegram updatelarni yetkazish uchun bir vaqtda ochadigan connectionlarning maksimal soni. |
+| `max-body-size` | `DataSize` | `1MB` | O'qiladigan request bodysining eng katta hajmi. Secret token body o'qilishidan oldin tekshiriladi; bundan katta body 413 bilan rad etiladi. WebFlux bilan ham, Spring MVC bilan ham ishlaydi. |
 
 ### telegram.defaults
 
