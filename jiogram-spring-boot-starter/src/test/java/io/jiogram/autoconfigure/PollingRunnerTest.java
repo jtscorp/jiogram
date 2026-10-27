@@ -6,8 +6,10 @@ import io.jiogram.bot.Bot;
 import io.jiogram.dispatcher.Dispatcher;
 import io.jiogram.dispatcher.EventType;
 import io.jiogram.methods.GetUpdates;
+import io.jiogram.middleware.ErrorMiddleware;
 import io.jiogram.session.TelegramSession;
 import io.jiogram.session.WebClientTelegramSession;
+import io.jiogram.types.Message;
 import io.jiogram.types.TelegramMethod;
 import io.jiogram.types.Update;
 import org.junit.jupiter.api.AfterEach;
@@ -169,7 +171,34 @@ class PollingRunnerTest {
             .isFalse();
     }
 
+    @Test
+    void middlewareThrowingInsteadOfReturningAnError_doesNotStopPolling() {
+        Dispatcher dispatcher = new Dispatcher();
+        dispatcher.addOuterMiddleware(new ErrorMiddleware());
+        dispatcher.addOuterMiddleware((event, context, chain) -> {
+            if (event instanceof Message && "BAD".equals(((Message) event).text())) {
+                throw new IllegalStateException("thrown by a middleware");
+            }
+            return chain.next(event, context);
+        });
+        dispatcher.onMessage().handle((message, context) -> Mono.fromRunnable(() -> handled.add(message.text())));
+
+        runner = new PollingRunner(botServing(List.of(message(1, 100, "BAD"), message(2, 200, "OK"))),
+            dispatcher, properties(32, Duration.ofSeconds(10)));
+        runner.start();
+
+        // The batch completes and is confirmed instead of being fetched again.
+        await().atMost(Duration.ofSeconds(5)).until(() -> requests.size() >= 2);
+        assertThat(requests.get(1).offset()).isEqualTo(3L);
+        assertThat(handled).containsExactly("OK");
+    }
+
     private Bot botServing(List<Update> firstBatch) {
+        return botAnswering(List.of(Mono.just(firstBatch)));
+    }
+
+    /** A bot whose polls get the given answers in turn, and then no answer at all. */
+    private Bot botAnswering(List<Mono<List<Update>>> answers) {
         AtomicInteger calls = new AtomicInteger();
         return new Bot("123:abc", new TelegramSession() {
             @Override
@@ -180,7 +209,8 @@ class PollingRunnerTest {
                 if (Long.valueOf(0).equals(request.timeout()) && Long.valueOf(1).equals(request.limit())) {
                     return (Mono<T>) Mono.just(List.of()); // the confirming call on stop
                 }
-                return calls.getAndIncrement() == 0 ? (Mono<T>) Mono.just(firstBatch) : Mono.never();
+                int call = calls.getAndIncrement();
+                return call < answers.size() ? (Mono<T>) answers.get(call) : Mono.never();
             }
 
             @Override

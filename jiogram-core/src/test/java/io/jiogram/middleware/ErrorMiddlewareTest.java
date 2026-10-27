@@ -80,6 +80,24 @@ class ErrorMiddlewareTest {
     }
 
     @Test
+    void swallowsExceptionThrownByDownstreamMiddleware() {
+        var errorMiddleware = new ErrorMiddleware();
+
+        // Throws instead of returning Mono.error.
+        Middleware throwingMiddleware = (event, context, ch) -> {
+            throw new IllegalStateException("Thrown, not signalled");
+        };
+
+        var chain = new MiddlewareChain(
+                List.of(throwingMiddleware),
+                Mono.empty()
+        );
+
+        StepVerifier.create(errorMiddleware.process("event", DUMMY_CONTEXT, chain))
+                .verifyComplete();
+    }
+
+    @Test
     void doesNotPropagateError() {
         var errorMiddleware = new ErrorMiddleware();
 

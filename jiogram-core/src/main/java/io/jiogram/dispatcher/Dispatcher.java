@@ -39,19 +39,23 @@ public class Dispatcher extends Router {
      * @return a Mono that completes when the update has been processed
      */
     public Mono<Void> feedUpdate(Bot bot, Update update) {
-        EventType type = EventType.of(update);
-        if (type == null) {
-            return Mono.empty();
-        }
-        Object event = type.extract(update);
+        // Deferred, so nothing here throws at the caller: a failure is an error signal of the
+        // returned Mono, which polling and the webhook controller handle per update.
+        return Mono.defer(() -> {
+            EventType type = EventType.of(update);
+            if (type == null) {
+                return Mono.empty();
+            }
+            Object event = type.extract(update);
 
-        var context = new UpdateContext(bot, update);
-        context.put("event_type", type.apiName());
+            var context = new UpdateContext(bot, update);
+            context.put("event_type", type.apiName());
 
-        Mono<Void> finalHandler = propagateEvent(type.apiName(), event, context).then();
+            Mono<Void> finalHandler = propagateEvent(type.apiName(), event, context).then();
 
-        var chain = new MiddlewareChain(outerMiddlewares, finalHandler);
-        return chain.next(event, context);
+            var chain = new MiddlewareChain(outerMiddlewares, finalHandler);
+            return chain.next(event, context);
+        });
     }
 
     /**
