@@ -35,7 +35,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-4-starter:0.2.0'
+    implementation 'uz.jtscorp.jiogram:jiogram-spring-boot-4-starter:0.2.1'
 }
 ```
 
