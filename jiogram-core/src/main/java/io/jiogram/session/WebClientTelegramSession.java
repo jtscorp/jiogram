@@ -19,6 +19,7 @@ import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientRequestException;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
 
@@ -162,6 +163,12 @@ public class WebClientTelegramSession implements TelegramSession {
                         : "Unknown error";
                     return Mono.error(new TelegramApiException(errorCode, description));
                 }))
+            // A transport failure (DNS, refused or reset connection, TLS) carries WebClient's
+            // checkpoint "Request to POST <url>" as a suppressed exception, so logging it with its
+            // stack trace would print the token. Replaced by an exception that has neither.
+            .onErrorMap(WebClientRequestException.class, e -> new TelegramTransportException(
+                method.apiMethod(), Objects.toString(e.getMessage(), e.getClass().getSimpleName())
+                    .replace(token, "<token>")))
             .timeout(timeout, Mono.error(() -> new TimeoutException(
                 "No response from the Telegram Bot API to " + method.apiMethod() + " within " + timeout)));
     }
